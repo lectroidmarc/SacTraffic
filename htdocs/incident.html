@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Sacramento Area Traffic Alert</title>
+<meta name="description" content="Sacramento area traffic alerts from the California Highway Patrol."/>
+<link rel="shortcut icon" href="/images/sactraffic.png" />
+
+<link rel="stylesheet" type="text/css" href="style.css" />
+<link media="only screen and (max-device-width: 480px)" href="iphone.css" type= "text/css" rel="stylesheet" />
+
+<script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAlAZP1OSueWm4o6pWOnsJahT8awnw3lCjmpiGr3BOlHAKhFGNCRS5zrKL_yiOOy6TBcqg5U2TjCHYTQ"></script>
+<script type="text/javascript">
+	google.load("maps", "2");
+	google.load("jquery", "1.2");
+</script>
+
+<script type="text/javascript" src="sactraffic.js"></script>
+<script type="text/javascript" src="sactraffic-single.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		init_map();
+		get_incident(get_query("id"));
+	});	
+</script>
+
+<meta name = "viewport" content = "width = 370" />
+</head>
+
+<body>
+<div id="top_banner" class="ad leaderboard">
+	<script type="text/javascript"><!--
+		google_ad_client = "pub-0887871162421804";
+		if (screen.width <= 480) {
+			$("#top_banner").removeClass('leaderboard').addClass('halfbanner');
+
+			/* Mobile Leaderboard */
+			google_ad_slot = "1236279869";
+			google_ad_width = 234;
+			google_ad_height = 60;
+		} else {
+			/* Leaderboard */
+			google_ad_slot = "3264684355";
+			google_ad_width = 728;
+			google_ad_height = 90;
+		}
+		//-->
+	</script>
+	<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+</div>
+
+<div id="content">
+	<div id="header">
+		<h1>Live CHP traffic alerts in the Sacramento area</h1>
+	</div>
+	
+	<div id="leftcol">
+		<ul id="incidents_above" class="incidents"><li style="border:0"><!-- this space for rent --></li></ul>
+	
+		<div id="inline_ad" class="ad halfbanner">
+			<script type="text/javascript"><!--
+				google_ad_client = "pub-0887871162421804";
+				/* Half Banner */
+				google_ad_slot = "9377068793";
+				google_ad_width = 234;
+				google_ad_height = 60;
+				//-->
+			</script>
+			<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+		</div>
+
+		<ul id="incidents_below" class="incidents"><li style="border:0"><!-- this space for rent --></li></ul>
+	</div>
+	
+	<div id="rightcol">
+		<div id="map"></div>
+	
+		<form id="mapopts" action="">
+			<input type="checkbox" class="traffic" /><span class="traffic">Show traffic conditions</span>
+			<input type="checkbox" class="live_cams" /><span class="live_cams">Show live cameras</span>
+		</form>
+	</div>
+	
+	<div id="footer">
+		<span style="float:right"><a href="about.html">About this site</a></span>
+		$Id: incident.html,v 1.7 2008/11/19 04:22:17 marcm Exp $
+	</div>
+</div> <!-- #content -->
+	
+<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+	var pageTracker = _gat._getTracker("UA-4894819-1");
+	pageTracker._initData();
+	pageTracker._trackPageview();
+</script>	
+
+</body>
+</html>
+<!--
+vim: ts=4
+-->

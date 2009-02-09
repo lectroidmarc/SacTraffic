@@ -1,0 +1,17 @@
+<!-- $Id -->
+
+<!ELEMENT config		(jsonpath, dispatch*)>
+
+<!ELEMENT jsonpath		(#PCDATA)>
+
+<!ELEMENT dispatch		(geocode*, twitter*)>
+<!ATTLIST dispatch name		CDATA #REQUIRED>
+
+<!ELEMENT geocode		(#PCDATA)>
+<!ATTLIST geocode name		CDATA #REQUIRED>
+<!ATTLIST geocode apikey	CDATA #REQUIRED>
+
+<!ELEMENT twitter		(#PCDATA)>
+<!ATTLIST twitter login		CDATA #REQUIRED>
+<!ATTLIST twitter password	CDATA #REQUIRED>
+

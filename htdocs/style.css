@@ -1,0 +1,266 @@
+/*
+ * $Id: style.css,v 1.23 2008/11/23 04:44:09 marcm Exp $
+ */
+
+body {
+	margin: 0;
+	width: 900px;
+	background-color: #165279;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:visited {
+	color: blue;
+}
+
+img {
+	border: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: black;
+}
+
+h1 {
+	font-size: 170%;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 10px;
+	margin-top: 0;
+}
+
+h1 img {
+	vertical-align: middle;
+}
+
+h2 {
+	font-size: 120%;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 10px;
+}
+
+p.info {
+	font-style: italic;
+}
+
+
+div#content {
+	font-family: arial, verdana, sans-serif;
+	font-size: 10pt;
+	margin: 0 20px 20px 20px;
+	padding: 10px;
+	background-color: white;
+	color: #333;
+	
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+
+/* Begin Header */
+#header {
+	/*width: 730px;*/
+}
+
+#mediainfo {
+	border: 1px solid red;
+	background-color: #fee;
+	margin: 0px 25px 15px 25px;
+	display: none;
+}
+
+#mediainfo ul {
+	padding: 10px 10px 5px 10px;
+	margin: 0;
+}
+
+#mediainfo li {
+	list-style: none;
+	margin-bottom: 5px;
+}
+
+#mediainfo span.alert {
+	font-weight: bold;
+}
+/* End Header */
+
+
+/* Begin Left Column */
+#leftcol {
+	float: left;
+	width: 330px;
+	margin-right: 10px;
+}
+
+#incidents_above {
+	border-bottom: 1px solid #ccc;
+}
+
+#incidents_below {
+	border-top: 1px solid #ccc;
+	padding-top: 10px;
+}
+
+.incidents {
+	margin: 0;
+	padding: 0;
+}
+
+.incidents > li {
+	margin-bottom: 10px;
+	list-style: none;
+}
+
+.incidents li:hover {
+	background-color: #eeeeee;
+}
+
+.incidents li img {
+	padding-right: 5px;
+}
+
+.incidents li span.logtype,
+div.marker span.logtype {
+	font-weight: bold;
+}
+
+.incidents li span.location,
+div.marker span.logtime {
+}
+
+.incidents li button {
+	float: right;
+	display: none;
+}
+
+.incidents li span.logtime,
+div.marker span.logtime {
+	font-size: 8pt;
+	color: gray;
+	font-style: italic;
+}
+
+.incidents li span.dtstart {
+	display: none;
+}
+
+.incidents li .geo {
+	display: none;
+}
+
+.incidents ul.details {
+	padding-left: 20px;
+	display: none;
+}
+
+.incidents ul.details li {
+	font-size: 8pt;
+	list-style: disc;
+	list-style-position: inside;
+	padding-top: 7px;
+}
+
+.incidents ul.details .incidentdetail,
+#mediainfo .incidentdetail{
+	padding-left: 1em;
+}
+/* End Left Column */
+
+
+/* Begin Right Column */
+#rightcol {
+	float: right;
+	width: 500px;
+}
+
+#map {
+	height: 450px;
+	width: 498px;
+	border: 1px solid black;
+}
+
+#mapopts {
+	margin-top: 0;
+}
+
+#mapopts .traffic,
+#mapopts .live_cams {
+	display: none;
+}
+
+#sitenews {
+}
+
+#sitenews ul {
+	list-style: none;
+	margin-left: 0;
+	padding-left: 0;
+	padding-right: 10px;
+}
+
+#freewayfeeds {
+}
+
+#freewayfeeds input {
+	height: 12px;
+	width: 110px;
+	font-size: 8pt;
+	border: 1px solid #165279;
+}
+
+#freewayfeeds ul {
+	list-style: none;
+	margin-left: 0;
+	padding-left: 0;
+}
+/* End Right Column */
+
+
+#footer {
+	clear: both;
+	border-top: 1px solid #ccc;
+	font-size: 8pt;
+	color: #ccc;
+}
+
+#footer a {
+	color: gray;
+}
+
+
+/* ads */
+.ad {
+	/*border: 1px solid black;*/
+	margin: 10px auto;
+}
+
+.leaderboard {
+	width: 728px;
+	height: 90px;
+}
+
+.banner {
+	width: 468px;
+	height: 60px;
+}
+
+.halfbanner {
+	width: 234px;
+	height: 60px;
+}
+
+.largerec {
+	width: 336px;
+	height: 280px;
+}
+
+.medrec {
+	width: 300px;
+	height: 250px;
+}

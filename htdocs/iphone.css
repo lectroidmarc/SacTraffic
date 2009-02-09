@@ -1,0 +1,52 @@
+/*
+ * $Id: iphone.css,v 1.9 2008/11/11 22:29:14 marcm Exp $
+ */
+
+body {
+	width: 370px;
+}
+
+#top_banner {
+	background: white;
+	padding: 0 5px;
+	-webkit-border-radius: 5px;
+}
+
+div#content {
+	font-size: 12pt;
+	margin: 10px;
+}
+
+span.additional {
+ 	display: none;
+}
+
+#mediainfo {
+	margin: 10px;;
+}
+
+.incidents > li {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #165279;
+}
+
+.incidents li button {
+	display: inline;
+}
+
+.incidents li.last {
+	border-bottom: 0;
+	padding-bottom: 0;
+}
+
+#incidents_above {
+	border-bottom: 1px solid #165279;
+}
+
+#incidents_below {
+	border-top: 1px solid #165279;
+}
+
+#rightcol {
+	display: none;
+}
