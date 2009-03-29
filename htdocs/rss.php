@@ -26,7 +26,8 @@
 	header('Last-Modified: '.$last_mod);
 
 	$title = "Sacramento Area Traffic Alerts";
-	switch ($_GET['f']) {
+	$freeway = (isset($_GET['f'])) ? $_GET['f'] : "";
+	switch ($freeway) {
 		case "I5":
 			$title .= " along I5";
 			break;
