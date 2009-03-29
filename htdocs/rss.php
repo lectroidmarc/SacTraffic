@@ -1,5 +1,6 @@
 <?php
 	require_once "XML/Util.php";
+	require_once "Zend/Json/Decoder.php";
 
 	$base_url = "http://www.sactraffic.org/";
 	$last_mod = date ("D, d M Y H:i:s T", filemtime("json/STCC-STCC.json"));
@@ -17,7 +18,8 @@
 		exit;
 	}
 
-	$chp_info = json_decode(file_get_contents("json/STCC-STCC.json"));
+	#$chp_info = json_decode(file_get_contents("json/STCC-STCC.json"));
+	$chp_info = Zend_Json::decode(file_get_contents("json/STCC-STCC.json"), Zend_Json::TYPE_OBJECT);
 
 	header('Content-type: text/xml');
 	header('Etag: '.$etag);
