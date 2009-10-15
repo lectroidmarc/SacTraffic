@@ -2,9 +2,13 @@ logs
 temp
 cgi-bin
 TODO.txt
-CVS
-.#*
-.cvs*
+
+htdocs/json
+htdocs/devel
+htdocs/Zend
+htdocs/google*.html
+htdocs/y_key_*.html
+htdocs/*.min.js
 
 htdocs/images/alert_oragne.gif
 htdocs/images/alert_red.gif
