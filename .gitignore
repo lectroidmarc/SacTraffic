@@ -3,9 +3,10 @@ temp
 cgi-bin
 TODO.txt
 
-htdocs/json
 htdocs/devel
 htdocs/Zend
+htdocs/json/*.json
+htdocs/json/*.json.gz
 htdocs/google*.html
 htdocs/y_key_*.html
 htdocs/*.min.js
