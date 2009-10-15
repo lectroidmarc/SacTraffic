@@ -229,6 +229,11 @@ div.marker span.logtime {
 	color: #ccc;
 }
 
+#footer span {
+	margin-bottom: 5px;
+	float: right;
+}
+
 #footer a {
 	color: gray;
 }
