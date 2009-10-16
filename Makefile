@@ -6,5 +6,3 @@ all: htdocs/sactraffic.min.js htdocs/sactraffic-single.min.js htdocs/sitenews.mi
 
 .js.min.js:
 	${JSMIN} < $< > $@
-
-
