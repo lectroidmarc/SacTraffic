@@ -11,6 +11,7 @@ htdocs/json/*.json.gz
 htdocs/google*.html
 htdocs/y_key_*.html
 htdocs/*.min.js
+htdocs/*.min.css
 
 htdocs/images/alert_oragne.gif
 htdocs/images/alert_red.gif
