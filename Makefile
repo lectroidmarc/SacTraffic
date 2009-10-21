@@ -15,7 +15,7 @@ CSS = htdocs/style.min.css \
 	htdocs/iphone.min.css
 
 
-all: ${JS} ${CSS} htdocs/javascript/sactraffic.min.js
+all: ${JS} htdocs/javascript/sactraffic.min.js
 
 
 htdocs/javascript/sactraffic.min.js: ${JS}
