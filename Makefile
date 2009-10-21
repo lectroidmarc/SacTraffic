@@ -4,7 +4,9 @@
 
 .SUFFIXES: .js .min.js .css .min.css
 
-JSMIN = jsmin
+YUICOMP = java -jar ${HOME}/Java/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar
+
+JSDOC_DIR = ${HOME}/Java/jsdoc-toolkit
 
 JS = htdocs/javascript/sactraffic-base.min.js \
 	htdocs/javascript/sactraffic-list.min.js \
@@ -21,12 +23,17 @@ all: ${JS} htdocs/javascript/sactraffic.min.js
 htdocs/javascript/sactraffic.min.js: ${JS}
 	cat $^ > $@
 
-#htdocs/sactraffic.css: ${CSS}
-#	cat $^ > $@
+htdocs/sactraffic.css: ${CSS}
+	cat $^ > $@
 
 
 .js.min.js:
-	${JSMIN} < $< > $@
+	${YUICOMP} $< -o $@
 
 .css.min.css:
-	${JSMIN} < $< > $@
+	${YUICOMP} $< -o $@
+
+jsdoc:
+	java -jar ${JSDOC_DIR}/jsrun.jar ${JSDOC_DIR}/app/run.js -p -a \
+		-E='.min.js' -t=${JSDOC_DIR}/templates/jsdoc -d=htdocs/devel/jsdocs \
+		htdocs/javascript
