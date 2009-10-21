@@ -6,21 +6,22 @@
 
 JSMIN = jsmin
 
-JS = htdocs/sactraffic.min.js \
-	htdocs/sactraffic-single.min.js \
-	htdocs/sitenews.min.js
+JS = htdocs/javascript/sactraffic-base.min.js \
+	htdocs/javascript/sactraffic-list.min.js \
+	htdocs/javascript/sactraffic-map.min.js \
+	htdocs/javascript/sactraffic-news.min.js
 
 CSS = htdocs/style.min.css \
 	htdocs/iphone.min.css
 
 
-all: ${JS} ${CSS}
+all: ${JS} ${CSS} htdocs/javascript/sactraffic.min.js
 
 
-#aggegated.js: ${JS}
-#	cat $^ > $@
-#
-#aggegated.css: ${CSS}
+htdocs/javascript/sactraffic.min.js: ${JS}
+	cat $^ > $@
+
+#htdocs/sactraffic.css: ${CSS}
 #	cat $^ > $@
 
 
