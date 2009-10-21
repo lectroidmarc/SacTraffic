@@ -7,7 +7,7 @@
 <link rel="shortcut icon" href="/images/sactraffic.png" />
 
 <link rel="stylesheet" type="text/css" href="style.css" />
-<link media="only screen and (max-device-width: 480px)" href="iphone.css" type= "text/css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="iphone.css" media="only screen and (max-device-width: 480px)"/>
 
 <link rel="alternate" type="application/rss+xml" title="Sac Traffic RSS Feed" href="http://feedproxy.google.com/SacTrafficIncidents" />
 
@@ -18,18 +18,50 @@
 	google.load("feeds", "1");
 </script>
 
-<script type="text/javascript" src="sactraffic.js"></script>
-<script type="text/javascript" src="sitenews.js"></script>
+<script type="text/javascript" src="/javascript/sactraffic.min.js"></script>
+<!--
+<script type="text/javascript" src="/javascript/sactraffic-base.js"></script>
+<script type="text/javascript" src="/javascript/sactraffic-list.js"></script>
+<script type="text/javascript" src="/javascript/sactraffic-map.js"></script>
+<script type="text/javascript" src="/javascript/sactraffic-news.js"></script>
+-->
 
 <script type="text/javascript">
-	$(document).ready(function() {
+	jQuery(document).ready(function() {
+		trafficmap = new TrafficMap("map");
+		trafficmap.load_live_cams("/cameras.xml");
+		
+		jQuery("span.traffic").click(function () {
+	 		jQuery("input.traffic").click();
+		}).click();
+		jQuery("input.traffic").click(function () {
+			if (jQuery("input.traffic").attr('checked')) {
+				trafficmap.show_gtraffic();
+			} else {
+				trafficmap.hide_gtraffic();
+			}
+		});
+		jQuery(".traffic").show();
+		
+		jQuery("span.live_cams").click(function () {
+			jQuery("input.live_cams").click();
+		}).click();
+		jQuery("input.live_cams").click(function () {
+			if (jQuery("input.live_cams").attr('checked')) {
+				trafficmap.show_live_cams();
+			} else {
+				trafficmap.hide_live_cams();
+			}
+		});
+		
 		get_incidents();
-		setInterval('get_incidents()', 60000);
+		//setInterval('get_incidents()', 60000);
+		
 		get_heads ("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7)
 	});
 </script>
 
-<meta name = "viewport" content = "width = 370" />
+<meta name="viewport" content="width = 370" />
 </head>
 
 <body>
@@ -37,7 +69,7 @@
 	<script type="text/javascript"><!--
 		google_ad_client = "pub-0887871162421804";
 		if (screen.width <= 480) {
-			$("#top_banner").removeClass('leaderboard').addClass('halfbanner');
+			jQuery("#top_banner").removeClass('leaderboard').addClass('halfbanner');
 
 			/* Mobile Leaderboard */
 			google_ad_slot = "1236279869";
@@ -109,7 +141,7 @@
 	</div>
 
 	<div id="footer">
-		<span><a href="about.html">About this site</a></span>
+		<span><a href="/about.html">About this site</a></span>
 	</div>
 </div> <!-- #content -->
 	
