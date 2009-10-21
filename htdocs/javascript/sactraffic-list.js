@@ -68,7 +68,7 @@ function display_incident (incident) {
 			details.toggle(show_speed);
 			showing_details[incident.ID] = (showing_details[incident.ID]) ? false : true;
 		}
-	}).css('background', '#f3f3f3').css('padding', '4px 0 3px 5px');
+	});
 
 	if (latlng) {
 		var incident_icon = "/images/incident.png";
