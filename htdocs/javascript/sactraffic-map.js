@@ -170,7 +170,14 @@ function TrafficMap (elementId) {
 					else if (/Collision/.test(incident.LogType))
 						incident_icon = ST_COLLISION_ICON;
 		
-					var marker = new GMarker(latlng, {icon: incident_icon});
+					var marker = new GMarker(latlng, {
+						icon: incident_icon,
+						zIndexProcess: function () {
+							// Put the CHP incidents *under* everything else because everything
+							// else can be turned off to get it out of the way.
+							return GOverlay.getZIndex(latlng.lat()) * 2;
+						}
+					});
 					
 					GEvent.addListener(marker, "click", function() {
 						marker.openInfoWindowHtml(
