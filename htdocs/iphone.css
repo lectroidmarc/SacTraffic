@@ -50,3 +50,7 @@ span.additional {
 #rightcol {
 	display: none;
 }
+
+#leftcol {
+	height: auto
+}

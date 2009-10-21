@@ -96,14 +96,17 @@ div#content {
 	float: left;
 	width: 330px;
 	margin-right: 10px;
+	margin-bottom: 10px;
+	height: 650px;
+	overflow: auto;
 }
 
 #incidents_above {
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #aaa;
 }
 
 #incidents_below {
-	border-top: 1px solid #ccc;
+	border-top: 1px solid #aaa;
 	padding-top: 10px;
 }
 
@@ -115,14 +118,17 @@ div#content {
 .incidents > li {
 	margin-bottom: 10px;
 	list-style: none;
+	background: #f3f3f3;
+	padding: 4px 3px 3px 4px;
+	border: 1px solid #aaa;
 }
 
 .incidents li:hover {
-	background-color: #eeeeee;
+	background-color: #ebebeb;
 }
 
 .incidents li img {
-	padding-right: 5px;
+	padding-right: 4px;
 }
 
 .incidents li span.logtype,
@@ -130,8 +136,8 @@ div.marker span.logtype {
 	font-weight: bold;
 }
 
-.incidents li span.location,
-div.marker span.logtime {
+.incidents li span.location {
+	font-size: 12px;
 }
 
 .incidents li button {
