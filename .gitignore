@@ -2,6 +2,7 @@ process_chp-config.xml
 logs
 temp
 cgi-bin
+TODO.txt
 
 htdocs/devel
 htdocs/Zend
