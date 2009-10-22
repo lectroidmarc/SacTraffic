@@ -21,7 +21,7 @@
 	#$chp_info = json_decode(file_get_contents("json/STCC-STCC.json"));
 	$chp_info = Zend_Json::decode(file_get_contents("json/STCC-STCC.json"), Zend_Json::TYPE_OBJECT);
 
-	header('Content-type: text/xml');
+	header('Content-type: application/rss+xml');
 	header('Etag: '.$etag);
 	header('Last-Modified: '.$last_mod);
 
@@ -59,7 +59,7 @@
 
 	<image>
 		<url>http://www.sactraffic.org/images/sactraffic.png</url>
-		<title>Sac Traffic Incidents</title>
+		<title>Sacramento Area Traffic Alerts</title>
 		<link>http://www.sactraffic.org/</link>
 		<height>105</height>
 		<width>105</width>
