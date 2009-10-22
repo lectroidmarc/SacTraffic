@@ -13,17 +13,11 @@ JS = htdocs/javascript/sactraffic-base.min.js \
 	htdocs/javascript/sactraffic-map.min.js \
 	htdocs/javascript/sactraffic-news.min.js
 
-CSS = htdocs/style.min.css \
-	htdocs/iphone.min.css
 
-
-all: ${JS} htdocs/javascript/sactraffic.min.js
+all: ${JS} htdocs/javascript/sactraffic.min.js htdocs/style.min.css
 
 
 htdocs/javascript/sactraffic.min.js: ${JS}
-	cat $^ > $@
-
-htdocs/sactraffic.css: ${CSS}
 	cat $^ > $@
 
 
