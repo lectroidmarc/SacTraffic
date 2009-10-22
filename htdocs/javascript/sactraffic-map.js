@@ -124,10 +124,17 @@ function TrafficMap (elementId) {
 	 * Centers the map on the given incident ID.
 	 * @param {String} incident_id The incident ID to center on.
 	 */
-	this.center_on_incident = function (incident_id) {
+	this.center_on_id = function (incident_id) {
 		if (this.marker_list[incident_id]) {
 			this.gmap.panTo(this.marker_list[incident_id].getLatLng());
 		}
+	}
+	
+	/**
+	 * Recenters the map on the saved center
+	 */
+	this.recenter = function () {
+		this.gmap.panTo(this.center);
 	}
 	
 	/**

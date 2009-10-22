@@ -1,6 +1,5 @@
 /**
  * @fileoverview Base functions for sactraffic.org
- * @requires Google Maps API
  * @requires jQuery
  */
 
@@ -13,23 +12,6 @@ function get_incidents () {
 		
 		if (typeof trafficmap != "undefined") trafficmap.update(incidents);
 	});
-}
-
-/**
- * Returns a GLatLng for a given incident.
- * @param {Object} incident The incidnet to get the location for.
- * @deprecated
- */
-function get_location (incident) {
-	if (google.maps && incident.TBXY && incident.TBXY != "") {
-		var point = tbxy2latlng(incident.TBXY);
-		return new GLatLng(point.lat, point.lng);
-	} else if (google.maps && incident.GeoCode) {
-		var point = incident.GeoCode.split(", ");
-		return new GLatLng(point[0], point[1]);
-	}
-
-	return null;
 }
 
 /**
