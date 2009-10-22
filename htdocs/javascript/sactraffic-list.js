@@ -60,10 +60,10 @@ function display_incident (incident) {
 		details
 	).hover(
 		function () {
-			if (trafficmap) trafficmap.center_on_id(incident.ID);
+			if (typeof trafficmap != "undefined") trafficmap.center_on_id(incident.ID);
 		},
 		function () {
-			if (trafficmap) trafficmap.recenter();
+			if (typeof trafficmap != "undefined") trafficmap.recenter();
 		}
 	).click(function () {
 		if (incident.LogDetails.details.length > 0) {
