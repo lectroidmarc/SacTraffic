@@ -1,5 +1,5 @@
-/*
- * $Id: style.css,v 1.23 2008/11/23 04:44:09 marcm Exp $
+/**
+ * Sactraffic.org styles
  */
 
 body {
@@ -273,4 +273,52 @@ div.marker span.logtime {
 .medrec {
 	width: 300px;
 	height: 250px;
+}
+
+/**
+ * Smartphone overrides.
+ */
+@media only screen and (max-device-width: 480px) {
+	body {
+		width: 370px;
+	}
+	
+	#top_banner {
+		background: white;
+		padding: 0 5px;
+		-webkit-border-radius: 5px;
+	}
+	
+	div#content {
+		font-size: 12pt;
+		margin: 10px;
+	}
+	
+	span.additional {
+		display: none;
+	}
+	
+	#mediainfo {
+		margin: 10px;;
+	}
+	
+	.incidents li button {
+		display: inline;
+	}
+	
+	#incidents_above {
+		border-bottom: 1px solid #165279;
+	}
+	
+	#incidents_below {
+		border-top: 1px solid #165279;
+	}
+	
+	#rightcol {
+		display: none;
+	}
+	
+	#leftcol {
+		height: auto
+	}
 }
