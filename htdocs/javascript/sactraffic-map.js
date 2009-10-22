@@ -198,6 +198,37 @@ function TrafficMap (elementId) {
 		}
 	};
 	
+	/**
+	 * Show a single incident on the map.
+	 */
+	this.show_incident = function (incidents, incident_id) {
+		for (var x = 0; x < incidents.length; x++) {
+			var incident = incidents[x];
+			if (incident.ID == incident_id) {
+				if (incident.TBXY && incident.TBXY != "") {
+					var point = tbxy2latlng(incident.TBXY);
+					var latlng = new GLatLng(point.lat, point.lng);
+					var incident_icon = ST_DEFAULT_ICON;
+					
+					if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType))
+						incident_icon = ST_HAZARD_ICON;
+					else if (/Collision/.test(incident.LogType))
+						incident_icon = ST_COLLISION_ICON;
+					
+					var marker = new GMarker(latlng, {icon: incident_icon});
+					
+					this.gmap.addOverlay(marker);
+					this.gmap.setZoom(13);
+					this.gmap.disableDragging();
+					this.center = latlng;
+					this.recenter();
+					
+					break;
+				}
+			}
+		}
+	}
+	
 	jQuery(window).unload( function () { GUnload(); } );
 }
 

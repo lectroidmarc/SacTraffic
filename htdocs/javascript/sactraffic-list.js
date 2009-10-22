@@ -5,6 +5,27 @@
 
 var showing_details = new Object();
 
+function show_incident (incidents, id) {
+	var has_incident = false;
+	$('#incidents_above').empty();
+	$('#incidents_below').hide();
+
+	$.each(incidents, function(i, incident) {
+		if (incident.ID == id) {
+			document.title += ": " + incident.LogType;
+			$('#header h1').html(incident.LogType);
+			display_incident(incident).appendTo('#incidents_above');
+			$('#incidents_above .details').show();
+			
+			has_incident = true;
+		}
+	});
+
+	if (!has_incident) $('#incidents_above').append(
+		$("<b/>").html("The incident you requested does not exist or is no longer active.")
+	);
+}
+
 function build_incident_list (incidents) {
 	jQuery('.incidents').empty();
 	jQuery('#mediainfo').empty();
