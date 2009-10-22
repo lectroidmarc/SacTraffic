@@ -25,18 +25,8 @@ span.additional {
 	margin: 10px;;
 }
 
-.incidents > li {
-	padding-bottom: 10px;
-	border-bottom: 1px solid #165279;
-}
-
 .incidents li button {
 	display: inline;
-}
-
-.incidents li.last {
-	border-bottom: 0;
-	padding-bottom: 0;
 }
 
 #incidents_above {
