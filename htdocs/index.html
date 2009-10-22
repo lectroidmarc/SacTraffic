@@ -27,36 +27,38 @@
 
 <script type="text/javascript">
 	jQuery(document).ready(function() {
-		trafficmap = new TrafficMap("map");
-		trafficmap.load_live_cams("/cameras.xml");
-		
-		jQuery("span.traffic").click(function () {
-	 		jQuery("input.traffic").click();
-		}).click();
-		jQuery("input.traffic").click(function () {
-			if (jQuery("input.traffic").attr('checked')) {
-				trafficmap.show_gtraffic();
-			} else {
-				trafficmap.hide_gtraffic();
-			}
-		});
-		jQuery(".traffic").show();
-		
-		jQuery("span.live_cams").click(function () {
-			jQuery("input.live_cams").click();
-		}).click();
-		jQuery("input.live_cams").click(function () {
-			if (jQuery("input.live_cams").attr('checked')) {
-				trafficmap.show_live_cams();
-			} else {
-				trafficmap.hide_live_cams();
-			}
-		});
+		if (screen.width > 480) {
+			trafficmap = new TrafficMap("map");
+			trafficmap.load_live_cams("/cameras.xml");
+			
+			jQuery("span.traffic").click(function () {
+				jQuery("input.traffic").click();
+			}).click();
+			jQuery("input.traffic").click(function () {
+				if (jQuery("input.traffic").attr('checked')) {
+					trafficmap.show_gtraffic();
+				} else {
+					trafficmap.hide_gtraffic();
+				}
+			});
+			jQuery(".traffic").show();
+			
+			jQuery("span.live_cams").click(function () {
+				jQuery("input.live_cams").click();
+			}).click();
+			jQuery("input.live_cams").click(function () {
+				if (jQuery("input.live_cams").attr('checked')) {
+					trafficmap.show_live_cams();
+				} else {
+					trafficmap.hide_live_cams();
+				}
+			});
+			
+			get_heads ("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
+		}
 		
 		get_incidents();
 		setInterval('get_incidents()', 60000);
-		
-		get_heads ("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7)
 	});
 </script>
 
