@@ -185,12 +185,12 @@ function TrafficMap (elementId) {
 				var latlng = new GLatLng(point.lat, point.lng);
 				
 				if (incident.LogType != "Media Information") {
-					var incident_icon = self.DEFAULT_ICON;
+					var incident_icon = DEFAULT_ICON;
 					
 					if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType))
-						incident_icon = self.HAZARD_ICON;
+						incident_icon = HAZARD_ICON;
 					else if (/Collision/.test(incident.LogType))
-						incident_icon = self.COLLISION_ICON;
+						incident_icon = COLLISION_ICON;
 		
 					var marker = new GMarker(latlng, {
 						icon: incident_icon,
@@ -223,12 +223,12 @@ function TrafficMap (elementId) {
 				if (incident.TBXY && incident.TBXY != "") {
 					var point = tbxy2latlng(incident.TBXY);
 					var latlng = new GLatLng(point.lat, point.lng);
-					var incident_icon = this.DEFAULT_ICON;
+					var incident_icon = DEFAULT_ICON;
 					
 					if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType))
-						incident_icon = this.HAZARD_ICON;
+						incident_icon = HAZARD_ICON;
 					else if (/Collision/.test(incident.LogType))
-						incident_icon = this.COLLISION_ICON;
+						incident_icon = COLLISION_ICON;
 					
 					var marker = new GMarker(latlng, {icon: incident_icon});
 					
@@ -248,26 +248,26 @@ function TrafficMap (elementId) {
 	 * Default incident icon.
 	 * @returns {GIcon}
 	 */
-	this.DEFAULT_ICON = new GIcon(G_DEFAULT_ICON);
-	this.DEFAULT_ICON.image = "/images/incident.png";
-	this.DEFAULT_ICON.shadow = "/images/traffic_incident_shadow.png";
-	this.DEFAULT_ICON.iconSize = new GSize(18, 18);
-	this.DEFAULT_ICON.shadowSize = new GSize(23, 23);
-	this.DEFAULT_ICON.iconAnchor = new GPoint(9, 9);
-	this.DEFAULT_ICON.infoWindowAnchor = new GPoint(8, 3);
+	var DEFAULT_ICON = new GIcon(G_DEFAULT_ICON);
+	DEFAULT_ICON.image = "/images/incident.png";
+	DEFAULT_ICON.shadow = "/images/traffic_incident_shadow.png";
+	DEFAULT_ICON.iconSize = new GSize(18, 18);
+	DEFAULT_ICON.shadowSize = new GSize(23, 23);
+	DEFAULT_ICON.iconAnchor = new GPoint(9, 9);
+	DEFAULT_ICON.infoWindowAnchor = new GPoint(8, 3);
 
 	/**
 	 * Default hazard icon.
 	 * @returns {GIcon}
 	 */
-	this.HAZARD_ICON = new GIcon(this.DEFAULT_ICON);
+	var HAZARD_ICON = new GIcon(DEFAULT_ICON);
 
 	/**
 	 * Default collision icon.
 	 * @returns {GIcon}
 	 */
-	this.COLLISION_ICON = new GIcon(this.DEFAULT_ICON);
-	this.COLLISION_ICON.image = "/images/accident.png";
+	var COLLISION_ICON = new GIcon(DEFAULT_ICON);
+	COLLISION_ICON.image = "/images/accident.png";
 
 	jQuery(window).unload( function () { GUnload(); } );
 }
