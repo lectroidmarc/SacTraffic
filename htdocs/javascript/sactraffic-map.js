@@ -177,13 +177,7 @@ function TrafficMap (elementId) {
 				var latlng = new GLatLng(point.lat, point.lng);
 				
 				if (incident.LogType != "Media Information") {
-					var incident_icon = DEFAULT_ICON;
-					
-					if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType))
-						incident_icon = HAZARD_ICON;
-					else if (/Collision/.test(incident.LogType))
-						incident_icon = COLLISION_ICON;
-		
+					var incident_icon = _get_incident_icon(incident);
 					var marker = new GMarker(latlng, {
 						icon: incident_icon,
 						zIndexProcess: function () {
@@ -215,13 +209,7 @@ function TrafficMap (elementId) {
 				if (incident.TBXY && incident.TBXY != "") {
 					var point = tbxy2latlng(incident.TBXY);
 					var latlng = new GLatLng(point.lat, point.lng);
-					var incident_icon = DEFAULT_ICON;
-					
-					if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType))
-						incident_icon = HAZARD_ICON;
-					else if (/Collision/.test(incident.LogType))
-						incident_icon = COLLISION_ICON;
-					
+					var incident_icon = _get_incident_icon(incident);
 					var marker = new GMarker(latlng, {icon: incident_icon});
 					
 					this.gmap.addOverlay(marker);
@@ -236,19 +224,33 @@ function TrafficMap (elementId) {
 		}
 	}
 
-	// Icon constants
-	var DEFAULT_ICON = new GIcon(G_DEFAULT_ICON);
-	DEFAULT_ICON.image = "/images/incident.png";
-	DEFAULT_ICON.shadow = "/images/traffic_incident_shadow.png";
-	DEFAULT_ICON.iconSize = new GSize(18, 18);
-	DEFAULT_ICON.shadowSize = new GSize(23, 23);
-	DEFAULT_ICON.iconAnchor = new GPoint(9, 9);
-	DEFAULT_ICON.infoWindowAnchor = new GPoint(8, 3);
-
-	var HAZARD_ICON = new GIcon(DEFAULT_ICON);
-
-	var COLLISION_ICON = new GIcon(DEFAULT_ICON);
-	COLLISION_ICON.image = "/images/accident.png";
+	/**
+	 * Returns the proper icon for a given incident.
+	 * @param {Incident} incident The incident.
+	 * @returns {GIcon}
+	 */
+	function _get_incident_icon (incident) {
+		var default_icon = new GIcon(G_DEFAULT_ICON);
+		default_icon.image = "/images/incident.png";
+		default_icon.shadow = "/images/traffic_incident_shadow.png";
+		default_icon.iconSize = new GSize(18, 18);
+		default_icon.shadowSize = new GSize(23, 23);
+		default_icon.iconAnchor = new GPoint(9, 9);
+		default_icon.infoWindowAnchor = new GPoint(8, 3);
+		
+		if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType)) {
+			var hazard_icon = new GIcon(default_icon);
+			
+			return hazard_icon;
+		} else if (/Collision/.test(incident.LogType)) {
+			var collision_icon = new GIcon(default_icon);
+			collision_icon.image = "/images/accident.png";
+			
+			return collision_icon;
+		} else {
+			return default_icon;
+		}
+	}
 
 	// Set this up per:
 	// http://code.google.com/apis/maps/documentation/index.html#Memory_Leaks
