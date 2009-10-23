@@ -129,14 +129,14 @@ function TrafficMap (elementId) {
 	}
 
 	/**
-	 * Recenters the map on the saved center
+	 * Recenters the map on the saved center.
 	 */
 	this.recenter = function () {
 		this.gmap.panTo(center);
 	}
 
 	/**
-	 * Hides the CHP incidents
+	 * Hides the CHP incidents.
 	 */
 	this.hide_incidents = function () {
 		for (var id in this.marker_list) {
@@ -236,10 +236,7 @@ function TrafficMap (elementId) {
 		}
 	}
 
-	/**
-	 * Default incident icon.
-	 * @returns {GIcon}
-	 */
+	// Icon constants
 	var DEFAULT_ICON = new GIcon(G_DEFAULT_ICON);
 	DEFAULT_ICON.image = "/images/incident.png";
 	DEFAULT_ICON.shadow = "/images/traffic_incident_shadow.png";
@@ -248,18 +245,12 @@ function TrafficMap (elementId) {
 	DEFAULT_ICON.iconAnchor = new GPoint(9, 9);
 	DEFAULT_ICON.infoWindowAnchor = new GPoint(8, 3);
 
-	/**
-	 * Default hazard icon.
-	 * @returns {GIcon}
-	 */
 	var HAZARD_ICON = new GIcon(DEFAULT_ICON);
 
-	/**
-	 * Default collision icon.
-	 * @returns {GIcon}
-	 */
 	var COLLISION_ICON = new GIcon(DEFAULT_ICON);
 	COLLISION_ICON.image = "/images/accident.png";
 
+	// Set this up per:
+	// http://code.google.com/apis/maps/documentation/index.html#Memory_Leaks
 	jQuery(window).unload( function () { GUnload(); } );
 }
