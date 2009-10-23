@@ -14,6 +14,7 @@ function TrafficMap (elementId) {
 
 	var center = new GLatLng(38.56, -121.40);
 	var zoom = 10;
+	var traffic_overlay;
 
 	/**
 	 * The encapsulated Google Map.
@@ -114,16 +115,15 @@ function TrafficMap (elementId) {
 	 * Shows Google traffic info.
 	 */
 	this.show_gtraffic = function () {
-		/** The Google traffic overlay. */
-		this.traffic_overlay = new GTrafficOverlay({incidents:true});
-		this.gmap.addOverlay(this.traffic_overlay);
+		traffic_overlay = new GTrafficOverlay({incidents:true});
+		this.gmap.addOverlay(traffic_overlay);
 	}
 
 	/**
 	 * Hides Google traffic info.
 	 */
 	this.hide_gtraffic = function () {
-		this.gmap.removeOverlay(this.traffic_overlay);
+		this.gmap.removeOverlay(traffic_overlay);
 	}
 
 	/**
