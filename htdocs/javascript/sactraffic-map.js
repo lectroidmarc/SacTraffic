@@ -23,12 +23,6 @@ function TrafficMap (elementId) {
 	this.gmap.setCenter(center, zoom);
 	this.gmap.addControl(new GSmallMapControl());
 
-	/**
-	 * The map center.
-	 * @returns {GLatLng}
-	 */
-	this.center = center;
-
 	// Save the map's center after a user drag...
 	GEvent.addListener(this.gmap, "dragend", function() {
 		self.center = self.gmap.getCenter();
@@ -146,7 +140,7 @@ function TrafficMap (elementId) {
 	 * Recenters the map on the saved center
 	 */
 	this.recenter = function () {
-		this.gmap.panTo(this.center);
+		this.gmap.panTo(center);
 	}
 
 	/**
@@ -241,7 +235,7 @@ function TrafficMap (elementId) {
 					this.gmap.addOverlay(marker);
 					this.gmap.setZoom(13);
 					this.gmap.disableDragging();
-					this.center = latlng;
+					center = latlng;
 					this.recenter();
 					
 					break;
