@@ -25,7 +25,7 @@ function TrafficMap (elementId) {
 
 	// Save the map's center after a user drag...
 	GEvent.addListener(this.gmap, "dragend", function() {
-		self.center = self.gmap.getCenter();
+		center = self.gmap.getCenter();
 	});
 
 	/**
