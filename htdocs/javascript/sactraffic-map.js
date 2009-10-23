@@ -58,7 +58,8 @@ function TrafficMap (elementId) {
 					live_cams.push(marker);
 				}
 				
-				jQuery(".live_cams").fadeIn("slow");
+				// Add the live cams by default
+				self.show_live_cams();
 				
 				// Closure needed to make marker GEvents work right
 				function make_marker (camera_dom_node) {
@@ -115,7 +116,8 @@ function TrafficMap (elementId) {
 	 * Hides Google traffic info.
 	 */
 	this.hide_gtraffic = function () {
-		this.gmap.removeOverlay(traffic_overlay);
+		if (traffic_overlay)
+			this.gmap.removeOverlay(traffic_overlay);
 	}
 
 	/**
@@ -149,16 +151,8 @@ function TrafficMap (elementId) {
 	 * @param {object} incidents The incidents object fetched via AJAX.
 	 */
 	this.update = function (incidents) {
+		this.hide_incidents();
 		this.marker_list = {};
-		this.gmap.clearOverlays();
-		
-		// Put stuff back on the map that should be there
-		if (jQuery("input.live_cams").attr('checked')) {
-			this.show_live_cams();
-		}
-		if (jQuery("input.traffic").attr('checked')) {
-			this.show_gtraffic();
-		}
 		
 		for (var x = 0; x < incidents.length; x++) {
 			var incident = incidents[x];
@@ -251,6 +245,9 @@ function TrafficMap (elementId) {
 			return default_icon;
 		}
 	}
+
+	// Add the Google Traffic overlay by default
+	this.show_gtraffic();
 
 	// Set this up per:
 	// http://code.google.com/apis/maps/documentation/index.html#Memory_Leaks
