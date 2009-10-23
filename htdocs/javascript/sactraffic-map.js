@@ -15,6 +15,7 @@ function TrafficMap (elementId) {
 	var center = new GLatLng(38.56, -121.40);
 	var zoom = 10;
 	var traffic_overlay;
+	var live_cams = [];
 
 	/**
 	 * The encapsulated Google Map.
@@ -28,12 +29,6 @@ function TrafficMap (elementId) {
 	GEvent.addListener(this.gmap, "dragend", function() {
 		center = self.gmap.getCenter();
 	});
-
-	/**
-	 * Array of live cameras, loaded by {@link load_live_cams}.
-	 * @returns {Array}
-	 */
-	this.live_cams = [];
 
 	/**
 	 * Named array of incident markers by ID.
@@ -50,8 +45,6 @@ function TrafficMap (elementId) {
 			url: cam_url,
 			dataType: "xml",
 			success: function (cameras) {
-				var camera_markers = [];
-				
 				var camera_icon = new GIcon();
 				camera_icon.image = "/images/camera_icon.gif";
 				camera_icon.iconSize = new GSize(24, 24);
@@ -62,10 +55,9 @@ function TrafficMap (elementId) {
 					var camera = cameras.getElementsByTagName("camera")[x];
 					var marker = make_marker (camera);
 							
-					camera_markers.push(marker);
+					live_cams.push(marker);
 				}
 				
-				self.live_cams = camera_markers;
 				jQuery(".live_cams").fadeIn("slow");
 				
 				// Closure needed to make marker GEvents work right
@@ -97,8 +89,8 @@ function TrafficMap (elementId) {
 	 * Shows the live cams.
 	 */
 	this.show_live_cams = function () {
-		for (var x = 0; x < this.live_cams.length; x++) {
-			this.gmap.addOverlay(this.live_cams[x]);
+		for (var x = 0; x < live_cams.length; x++) {
+			this.gmap.addOverlay(live_cams[x]);
 		}
 	}
 
@@ -106,8 +98,8 @@ function TrafficMap (elementId) {
 	 * Hides the live cams.
 	 */
 	this.hide_live_cams = function () {
-		for (var x = 0; x < this.live_cams.length; x++) {
-			this.gmap.removeOverlay(this.live_cams[x]);
+		for (var x = 0; x < live_cams.length; x++) {
+			this.gmap.removeOverlay(live_cams[x]);
 		}
 	}
 
