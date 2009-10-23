@@ -2,12 +2,8 @@
 
 <!ELEMENT jsonpath		(#PCDATA)>
 
-<!ELEMENT dispatch		(geocode*, twitter*, bitly?)?>
+<!ELEMENT dispatch		(twitter*, bitly?)?>
 <!ATTLIST dispatch name		CDATA #REQUIRED>
-
-<!ELEMENT geocode		(#PCDATA)>
-<!ATTLIST geocode name		CDATA #REQUIRED>
-<!ATTLIST geocode apikey	CDATA #REQUIRED>
 
 <!ELEMENT twitter		(#PCDATA)>
 <!ATTLIST twitter login		CDATA #REQUIRED>

@@ -1,6 +1,10 @@
 #!/usr/bin/perl
 
-# $Id: process_chp_feed2.pl,v 1.9 2008/11/08 17:44:26 marcm Exp $
+#
+# process_chp_feed2.pl
+#
+# Script to pull in and process the CHP XML and build out JSON files.  Optionally tweeting the alerts.
+#
 
 use strict;
 use warnings;
@@ -46,7 +50,6 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 		my $j = JSON::Any->new();
 		my @incident_list;
 		my $old_json_data = "";
-		my $geocode_data;
 		my $last_logdate;
 
 		my $incidents = $chp_feed->{'Center'}->{$center}->{'Dispatch'}->{$dispatch}->{'Log'};
@@ -61,7 +64,6 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 			close (JSON);
 
 			my $old_incidents = $j->jsonToObj($old_json_data);
-			$geocode_data = index_geocode_data($old_incidents);
 			$last_logdate = as_datetime($old_incidents->[0]->{'LogTime'}) if $old_incidents->[0]->{'LogTime'};
 		}
 
@@ -80,15 +82,8 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 
 			if ($is_new_incident) {
 				print "  ".$incident->{'LogType'}.": ".$incident->{'Location'}.", ".$incident->{'Area'}."\n" unless $opts{'q'};
-		
-				# Geocode, if possible, using the unmunged incident info
-				if ($config->{'dispatch'}->{$center."-".$dispatch}->{'geocode'}) {
-					$geocode_data->{$incident_id} = geocode($incident->{'Location'}, $incident->{'Area'}, $config->{'dispatch'}->{$center."-".$dispatch}->{'geocode'});
-				}
 			}
 			
-			$incident->{'GeoCode'} = $geocode_data->{$incident_id} if $geocode_data->{$incident_id};
-
 			# Make or munge the data
 			$incident->{'ID'} = $incident_id;
 			
@@ -120,8 +115,6 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 		
 			# RFC-822 (needed for RSS)
 			$incident->{'LogTimeRFC822'} = $logdate->strftime("%a, %d %b %Y %T %z");
-			# DEPRECATED ISO8601 (needed for microformats)
-			$incident->{'LogTimeISO8601'} = $logdate->strftime("%FT%T%z");
 			# Epoch (needed for javascript)
 			$incident->{'LogTimeEpoch'} = $logdate->strftime("%s");
 
@@ -143,8 +136,9 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 			if ($is_new_incident) {
 				print "  Final: ".$incident->{'LogType'}.": ".$incident->{'Location'}."\n" unless $opts{'q'};
 
+				my $bitly_info = $config->{'dispatch'}->{$center."-".$dispatch}->{'bitly'};
 				foreach my $twitter_info (@{$config->{'dispatch'}->{$center."-".$dispatch}->{'twitter'}}) {
-					twitter($incident, $twitter_info) unless (!$have_twitter || $opts{'t'} || $opts{'f'});
+					twitter($incident, $twitter_info, $bitly_info) unless (!$have_twitter || $opts{'t'} || $opts{'f'});
 				}
 			}
 
@@ -221,119 +215,10 @@ sub get_chp_incidents {
 }
 
 
-sub index_geocode_data {
-	my $array_ref = shift;
-	my $data = {};
-
-	foreach my $item (@{$array_ref}) {
-		$data->{$item->{'ID'}} = $item->{'GeoCode'} if $item->{'GeoCode'};
-	}
-
-	return $data;
-}
-
-
-sub geocode {
-	my $location = shift;
-	my $area = shift;
-	my $geocoder_data = shift;
-
-	return undef if ($location eq "TMC");
-	return undef if ($location eq "Freeway Service");
-
-	$area =~ s/.* (Sacramento)/$1/;
-
-	$location =~ s/\bJ(?:N|S|E|W)O\b/at/i;			# JWO etc.
-	$location =~ s/\b(?:N|S|E|W)B\b//gi;			# NB, WB etc.
-	$location =~ s/\b(?:OFR|ONR|CON)\b//gi;			# OFR, ONR and CON
-	$location =~ s/\b(?:AT|ON|TO)\b/and/gi;			# AT, ON, TO to 'and'
-
-	$location =~ s/\s+/ /g;							# whitespace
-	$location =~ s/^\s+|\s+$//g;
-
-	if ($geocoder_data->{'google'} && $geocoder_data->{'yahoo'}) {
-		# HA, use both!
-		# Google sucks for freeways
-		if ($location =~ /(?:I|US|SR|CR)\d+/) {
-			return y_geocode($location, $area, $geocoder_data->{'yahoo'}->{'apikey'});
-		} else {
-			return g_geocode($location, $area, $geocoder_data->{'google'}->{'apikey'});
-		}
-	} elsif ($geocoder_data->{'google'}) {
-		return g_geocode($location, $area, $geocoder_data->{'google'}->{'apikey'});
-	} elsif ($geocoder_data->{'yahoo'}) {
-		return y_geocode($location, $area, $geocoder_data->{'yahoo'}->{'apikey'});
-	} else {
-		return undef;
-	}
-}
-
-
-sub g_geocode {
-	my $location = shift;
-	my $area = shift;
-	my $google_api_key = shift;
-
-	# http://maps.google.com/maps/geo?q=XXX&output=csv&key=ABQIAAAAlAZP1OSueWm4o6pWOnsJahTWfCw_DNErtpfmuWl6JQkzmGW7WBT9Yucup9PJ4DO-lhEdGj3-tXkTwQ
-
-	# http://code.google.com/apis/maps/faq.html#geocoder_highways
-	$location =~ s/\b(I|US)(\d+)\b/$1-$2/g;
-	$location =~ s/\b(?:SR|CR)(\d+)\b/CA-$1/g;
-
-	print "    Google Geocoding: \'".$location.", ".$area.", CA\'... " unless $opts{'q'};
-
-	my $ua = LWP::UserAgent->new();
-	my $response = $ua->get("http://maps.google.com/maps/geo?output=csv&q=".$location.", ".$area.", CA&key=".$google_api_key);
-
-	if ($response->is_success) {
-		my @google_info = split(/,/, $response->content);
-		if ($google_info[1] > 5) {
-			print "ok.\n" unless $opts{'q'};
-			return $google_info[2].", ".$google_info[3];
-		} else {
-			print "failed.\n" unless $opts{'q'};
-		}
-	} else {
-		print $response->status_line unless $opts{'q'};
-	}
-
-	return undef;
-}
-
-
-sub y_geocode {
-	my $location = shift;
-	my $area = shift;
-	my $yahoo_app_id = shift;
-
-	# http://local.yahooapis.com/MapsService/V1/geocode?location=XXX&appid=.7eSeNXV34FtD2sVFkwjUCKHS_PCGPyud.paQ5Az7xX3zBUFC6DoVsu5E3.1hPowluSe
-
-	print "    Yahoo Geocoding: \'".$location.", ".$area.", CA\'... " unless $opts{'q'};
-
-	my $ua = LWP::UserAgent->new();
-	my $response = $ua->get("http://local.yahooapis.com/MapsService/V1/geocode?location=".$location.", ".$area.", CA&appid=".$yahoo_app_id);
-
-	if ($response->is_success) {
-		my $yahoo_result = XMLin($response->content, ForceArray => ['Result']);
-		my $result = $yahoo_result->{'Result'}[0];
-
-		if ($result->{'precision'} eq "address" || $result->{'precision'} eq "street") {
-			print "ok.\n" unless $opts{'q'};
-			return $result->{'Latitude'}.", ".$result->{'Longitude'};
-		} else {
-			print "failed (".$result->{'precision'}.").\n" unless $opts{'q'};
-		}
-	} else {
-		print $response->status_line."\n" unless $opts{'q'};
-	}
-
-	return undef;
-}
-
-
 sub twitter {
 	my $incident = shift;
 	my $twitter_data = shift;
+	my $bitly_data = shift;
 
 	my $twitter = Net::Twitter->new(username => $twitter_data->{'login'}, password => $twitter_data->{'password'});
 
@@ -347,8 +232,8 @@ sub twitter {
 	} else {
 		my $link = "";
 
-		if ($incident->{'GeoCode'} || $incident->{'TBXY'}) {
-			$link = bitlyify("http://www.sactraffic.org/incident.html?id=".$incident->{'ID'});
+		if ($incident->{'TBXY'} && $incident->{'TBXY'} ne "") {
+			$link = bitlyify("http://www.sactraffic.org/incident.html?id=".$incident->{'ID'}, $bitly_data);
 		}
 
 		my $result = $twitter->update($incident->{'LogType'}.": ".$incident->{'Location'}.", ".$incident->{'Area'}." ".$link);
@@ -361,15 +246,22 @@ sub twitter {
 	}
 }
 
-
 sub bitlyify {
 	my $url = shift;
+	my $auth_info = shift;
 
 	my $ua = LWP::UserAgent->new(timeout => 5);
-	my $response = $ua->get("http://bit.ly/api?url=" . $url);
+	my $response = $ua->get("http://api.bit.ly/shorten?version=2.0.1&login=".$auth_info->{'login'}."&apiKey=".$auth_info->{'apikey'}."&longUrl=".$url);
 
 	if ($response->is_success) {
-		return $response->content 
+		my $j = JSON::Any->new();
+		my $bitly = $j->jsonToObj($response->content);
+
+		if ($bitly->{'errorCode'} == 0) {
+			return $bitly->{'results'}->{$url}->{'shortUrl'};
+		} else {
+			return "";
+		}
 	} else {
 		return "";
 	}
@@ -387,6 +279,5 @@ sub as_datetime {
 
 	return $strp->parse_datetime($date_str);
 }
-
 
 # vim: ts=4
