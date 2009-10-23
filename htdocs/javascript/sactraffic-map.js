@@ -11,29 +11,41 @@
  */
 function TrafficMap (elementId) {
 	var self = this;
-	
+
 	var center = new GLatLng(38.56, -121.40);
 	var zoom = 10;
-	
-	/** The encapsulated Google Map. */
+
+	/**
+	 * The encapsulated Google Map.
+	 * @returns {GMap2}
+	 */
 	this.gmap = new GMap2(document.getElementById(elementId));
 	this.gmap.setCenter(center, zoom);
 	this.gmap.addControl(new GSmallMapControl());
-	
-	/** The map center. */
+
+	/**
+	 * The map center.
+	 * @returns {GLatLng}
+	 */
 	this.center = center;
-	
+
 	// Save the map's center after a user drag...
 	GEvent.addListener(this.gmap, "dragend", function() {
 		self.center = self.gmap.getCenter();
 	});
-	
-	/** Array of live cameras, loaded by {@link load_live_cams}. */
+
+	/**
+	 * Array of live cameras, loaded by {@link load_live_cams}.
+	 * @returns {Array}
+	 */
 	this.live_cams = [];
-	
-	/** Named array of incident markers by ID. */
+
+	/**
+	 * Named array of incident markers by ID.
+	 * @returns {Object}
+	 */
 	this.marker_list = {};
-	
+
 	/** 
 	 * Loads live cam data from an XML file.
 	 * @param {String} cam_url The url of the camera xml file.
@@ -85,7 +97,7 @@ function TrafficMap (elementId) {
 			}
 		});
 	}
-	
+
 	/**
 	 * Shows the live cams.
 	 */
@@ -94,7 +106,7 @@ function TrafficMap (elementId) {
 			this.gmap.addOverlay(this.live_cams[x]);
 		}
 	}
-	
+
 	/**
 	 * Hides the live cams.
 	 */
@@ -112,14 +124,14 @@ function TrafficMap (elementId) {
 		this.traffic_overlay = new GTrafficOverlay({incidents:true});
 		this.gmap.addOverlay(this.traffic_overlay);
 	}
-	
+
 	/**
 	 * Hides Google traffic info.
 	 */
 	this.hide_gtraffic = function () {
 		this.gmap.removeOverlay(this.traffic_overlay);
 	}
-	
+
 	/**
 	 * Centers the map on the given incident ID.
 	 * @param {String} incident_id The incident ID to center on.
@@ -129,14 +141,14 @@ function TrafficMap (elementId) {
 			this.gmap.panTo(this.marker_list[incident_id].getLatLng());
 		}
 	}
-	
+
 	/**
 	 * Recenters the map on the saved center
 	 */
 	this.recenter = function () {
 		this.gmap.panTo(this.center);
 	}
-	
+
 	/**
 	 * Update incident data.
 	 * @param {object} incidents The incidents object fetched via AJAX.
@@ -170,12 +182,12 @@ function TrafficMap (elementId) {
 				var latlng = new GLatLng(point.lat, point.lng);
 				
 				if (incident.LogType != "Media Information") {
-					var incident_icon = ST_DEFAULT_ICON;
+					var incident_icon = self.DEFAULT_ICON;
 					
 					if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType))
-						incident_icon = ST_HAZARD_ICON;
+						incident_icon = self.HAZARD_ICON;
 					else if (/Collision/.test(incident.LogType))
-						incident_icon = ST_COLLISION_ICON;
+						incident_icon = self.COLLISION_ICON;
 		
 					var marker = new GMarker(latlng, {
 						icon: incident_icon,
@@ -197,7 +209,7 @@ function TrafficMap (elementId) {
 			}
 		}
 	};
-	
+
 	/**
 	 * Show a single incident on the map.
 	 */
@@ -208,12 +220,12 @@ function TrafficMap (elementId) {
 				if (incident.TBXY && incident.TBXY != "") {
 					var point = tbxy2latlng(incident.TBXY);
 					var latlng = new GLatLng(point.lat, point.lng);
-					var incident_icon = ST_DEFAULT_ICON;
+					var incident_icon = this.DEFAULT_ICON;
 					
 					if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType))
-						incident_icon = ST_HAZARD_ICON;
+						incident_icon = this.HAZARD_ICON;
 					else if (/Collision/.test(incident.LogType))
-						incident_icon = ST_COLLISION_ICON;
+						incident_icon = this.COLLISION_ICON;
 					
 					var marker = new GMarker(latlng, {icon: incident_icon});
 					
@@ -228,22 +240,31 @@ function TrafficMap (elementId) {
 			}
 		}
 	}
-	
+
+	/**
+	 * Default incident icon.
+	 * @returns {GIcon}
+	 */
+	this.DEFAULT_ICON = new GIcon(G_DEFAULT_ICON);
+	this.DEFAULT_ICON.image = "/images/incident.png";
+	this.DEFAULT_ICON.shadow = "/images/traffic_incident_shadow.png";
+	this.DEFAULT_ICON.iconSize = new GSize(18, 18);
+	this.DEFAULT_ICON.shadowSize = new GSize(23, 23);
+	this.DEFAULT_ICON.iconAnchor = new GPoint(9, 9);
+	this.DEFAULT_ICON.infoWindowAnchor = new GPoint(8, 3);
+
+	/**
+	 * Default hazard icon.
+	 * @returns {GIcon}
+	 */
+	this.HAZARD_ICON = new GIcon(this.DEFAULT_ICON);
+
+	/**
+	 * Default collision icon.
+	 * @returns {GIcon}
+	 */
+	this.COLLISION_ICON = new GIcon(this.DEFAULT_ICON);
+	this.COLLISION_ICON.image = "/images/accident.png";
+
 	jQuery(window).unload( function () { GUnload(); } );
 }
-
-/** Default incident icon. */
-var ST_DEFAULT_ICON = new GIcon(G_DEFAULT_ICON);
-ST_DEFAULT_ICON.image = "/images/incident.png";
-ST_DEFAULT_ICON.shadow = "/images/traffic_incident_shadow.png";
-ST_DEFAULT_ICON.iconSize = new GSize(18, 18);
-ST_DEFAULT_ICON.shadowSize = new GSize(23, 23);
-ST_DEFAULT_ICON.iconAnchor = new GPoint(9, 9);
-ST_DEFAULT_ICON.infoWindowAnchor = new GPoint(8, 3);
-
-/** Default hazard icon. */
-var ST_HAZARD_ICON = new GIcon(ST_DEFAULT_ICON);
-
-/** Default collision icon. */
-var ST_COLLISION_ICON = new GIcon(ST_DEFAULT_ICON);
-ST_COLLISION_ICON.image = "/images/accident.png";
