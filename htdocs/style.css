@@ -168,7 +168,6 @@ div.marker span.logtime {
 .incidents ul.details li {
 	font-size: 8pt;
 	list-style: disc;
-	list-style-position: inside;
 	padding-top: 7px;
 }
 
