@@ -18,12 +18,6 @@
 </script>
 
 <script type="text/javascript" src="/javascript/sactraffic.min.js"></script>
-<!--
-<script type="text/javascript" src="/javascript/sactraffic-base.js"></script>
-<script type="text/javascript" src="/javascript/sactraffic-list.js"></script>
-<script type="text/javascript" src="/javascript/sactraffic-map.js"></script>
-<script type="text/javascript" src="/javascript/sactraffic-news.js"></script>
--->
 
 <script type="text/javascript">
 	jQuery(document).ready(function() {
@@ -33,7 +27,7 @@
 			
 			jQuery("span.traffic").click(function () {
 				jQuery("input.traffic").click();
-			}).click();
+			});
 			jQuery("input.traffic").click(function () {
 				if (jQuery("input.traffic").attr('checked')) {
 					trafficmap.show_gtraffic();
@@ -45,7 +39,7 @@
 			
 			jQuery("span.live_cams").click(function () {
 				jQuery("input.live_cams").click();
-			}).click();
+			});
 			jQuery("input.live_cams").click(function () {
 				if (jQuery("input.live_cams").attr('checked')) {
 					trafficmap.show_live_cams();
@@ -53,6 +47,7 @@
 					trafficmap.hide_live_cams();
 				}
 			});
+			jQuery(".live_cams").show();
 			
 			get_heads ("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
 		}
@@ -118,8 +113,8 @@
 		<div id="map"></div>
 	
 		<form id="mapopts" action="">
-			<input type="checkbox" class="traffic" /><span class="traffic">Show traffic conditions</span>
-			<input type="checkbox" class="live_cams" /><span class="live_cams">Show live cameras</span>
+			<input type="checkbox" class="traffic" checked="checked"/><span class="traffic">Show traffic conditions</span>
+			<input type="checkbox" class="live_cams" checked="checked"/><span class="live_cams">Show live cameras</span>
 		</form>
 	
 		<div id="sitenews" style="display:none">
