@@ -150,6 +150,15 @@ function TrafficMap (elementId) {
 	}
 
 	/**
+	 * Hides the CHP incidents
+	 */
+	this.hide_incidents = function () {
+		for (var id in this.marker_list) {
+			this.gmap.removeOverlay(this.marker_list[id]);
+		}
+	}
+
+	/**
 	 * Update incident data.
 	 * @param {object} incidents The incidents object fetched via AJAX.
 	 */
