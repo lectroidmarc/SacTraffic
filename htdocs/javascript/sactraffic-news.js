@@ -5,9 +5,17 @@
  */
 
 /**
- * Display current headlines.
+ * @namespace Namespace encapsulating the headline functionality.
  */
-function get_heads (element, url, days_old) {
+var TrafficNews = {};
+
+/**
+ * Display headlines.
+ * @param {String} element The selector to append the headlines too.
+ * @param {String} url The URL of the feed to fetch from.
+ * @param {Number} [days_old] Days to keep headlines up for.
+ */
+TrafficNews.show = function (element, url, days_old) {
 	var feed = new google.feeds.Feed(url);
 	feed.load(function (result) {
 		if (!result.error) {
