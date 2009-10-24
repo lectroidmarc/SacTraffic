@@ -5,8 +5,8 @@
  */
 
 /**
- * Creates a new Traffic Map.
- * @constructor
+ * Creates a new traffic map.
+ * @class Represents a traffic map.
  * @param {String} elementId An ID to load the map into.
  */
 function TrafficMap (elementId) {
