@@ -71,11 +71,9 @@ div#content {
 }
 
 
-/* Begin Header */
-#header {
-	/*width: 730px;*/
-}
-
+/**
+ * @section Header
+ */
 #mediainfo {
 	border: 1px solid red;
 	background-color: #fee;
@@ -99,7 +97,9 @@ div#content {
 /* End Header */
 
 
-/* Begin Left Column */
+/**
+ * @section Left Column
+ */
 #leftcol {
 	float: left;
 	width: 330px;
@@ -186,7 +186,9 @@ div.marker span.logtime {
 /* End Left Column */
 
 
-/* Begin Right Column */
+/**
+ * @section Right Column
+ */
 #rightcol {
 	float: right;
 	width: 500px;
@@ -207,17 +209,11 @@ div.marker span.logtime {
 	display: none;
 }
 
-#sitenews {
-}
-
 #sitenews ul {
 	list-style: none;
 	margin-left: 0;
 	padding-left: 0;
 	padding-right: 10px;
-}
-
-#freewayfeeds {
 }
 
 #freewayfeeds input {
@@ -235,6 +231,9 @@ div.marker span.logtime {
 /* End Right Column */
 
 
+/**
+ * @section Footer
+ */
 #footer {
 	clear: both;
 	border-top: 1px solid #ccc;
@@ -249,9 +248,12 @@ div.marker span.logtime {
 #footer a {
 	color: gray;
 }
+/* End Footer */
 
 
-/* ads */
+/**
+ * @section Ads
+ */
 .ad {
 	/*border: 1px solid black;*/
 	margin: 10px auto;
@@ -281,6 +283,8 @@ div.marker span.logtime {
 	width: 300px;
 	height: 250px;
 }
+/* End Ads */
+
 
 /**
  * Smartphone overrides.
