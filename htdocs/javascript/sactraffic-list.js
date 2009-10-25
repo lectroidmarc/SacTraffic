@@ -50,7 +50,7 @@ function build_incident_list (incidents) {
 function display_incident (incident) {
 	var incident_date = new Date(incident.LogTimeEpoch * 1000);
 
-	var location = (incident.TBXY && incident.TBXY != "") ? tbxy2latlng(incident.TBXY) : null;
+	var point = (incident.TBXY && incident.TBXY != "") ? tbxy2latlng(incident.TBXY) : null;
 	var show_speed = (incident.LogDetails.details.length > 1) ? "slow" : "fast";
 	var detail_message = (incident.LogDetails.details.length > 0) ? 'Click for incident details (' + incident.LogDetails.details.length + ')' : '';
 	var details = display_details(incident.LogDetails.details);
@@ -65,9 +65,9 @@ function display_incident (incident) {
 	).append(
 		jQuery('<button/>').html('Show on map').click(
 			function () {
-				if (location) {
+				if (point) {
 					jQuery(this).parent().click();
-					location = "http://maps.google.com/maps?q=" + location.lat + "," + location.lon;
+					location = "http://maps.google.com/maps?q=" + point.lat + "," + point.lng;
 				}
 			}
 		)
@@ -93,7 +93,7 @@ function display_incident (incident) {
 		}
 	});
 
-	if (location) {
+	if (point) {
 		var incident_icon = "/images/incident.png";
 		if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType))
 			incident_icon = "/images/incident.png";
@@ -108,9 +108,9 @@ function display_incident (incident) {
 
 		// Add the geo microfoemat
 		jQuery('<span/>').addClass('geo').append(
-			jQuery('<span/>').addClass('latitude').html(location.lat)
+			jQuery('<span/>').addClass('latitude').html(point.lat)
 		).append(
-			jQuery('<span/>').addClass('longitude').html(location.lng)
+			jQuery('<span/>').addClass('longitude').html(point.lng)
 		).appendTo(incident_li)
 	}
 
