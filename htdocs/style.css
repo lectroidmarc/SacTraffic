@@ -49,6 +49,14 @@ p.info {
 	font-style: italic;
 }
 
+code.codeblock {
+	white-space: pre;
+	display: block;
+	padding: 4px;
+	margin-left: 20px;
+	margin-right: 20px;
+	background: #eee;
+}
 
 div#content {
 	font-family: arial, verdana, sans-serif;
@@ -282,6 +290,13 @@ div.marker span.logtime {
 		width: 370px;
 	}
 	
+	code.codeblock {
+		font-size: 8px;
+		overflow: auto;
+		margin-left: 0;
+		margin-right: 0;
+	}
+
 	#top_banner {
 		background: white;
 		padding: 0 5px;

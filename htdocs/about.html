@@ -62,13 +62,11 @@
 		<p>I also have a <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP</a> hook set up through <a href="http://www.sactraffic.org/jsonp.php">http://www.sactraffic.org/jsonp.php</a>.	 Simply pass a <code>callback</code> and a <code>dispatch</code> argument and go nuts.</p>
 		<p>Here's a <a href="http://jquery.com">jQuery</a> example:</p>
 
-		<code style="white-space: pre">
-	$.getJSON("http://www.sactraffic.org/jsonp.php?dispatch=STCC-STCC&amp;callback=?",
-	    function(data){
-	        // do stuff...
-	    });
-	});
-		</code>
+		<code class="codeblock">$.getJSON("http://www.sactraffic.org/jsonp.php?dispatch=STCC-STCC&amp;callback=?",
+    function(data){
+        // do stuff...
+    });
+});</code>
 
 		<p>Feel free to use them as you see fit.  If you do, let me know if you come up with something cool.</p>
 
