@@ -27,7 +27,7 @@ htdocs/javascript/sactraffic.min.js: ${JS}
 	${YUICOMP} $< -o $@
 
 .css.min.css:
-	${YUICOMP} $< -o $@
+	${YUICOMP} $< -o $@ && perl -pi -e "s/screen and\(max/screen and \(max/" $@
 
 jsdoc:
 	java -jar ${JSDOC_DIR}/jsrun.jar ${JSDOC_DIR}/app/run.js -p -a \
