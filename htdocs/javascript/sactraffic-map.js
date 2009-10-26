@@ -34,7 +34,7 @@ function TrafficMap (elementId) {
 	jQuery(window).unload( function () { GUnload(); } );
 }
 
-/** 
+/**
  * Loads live cam data from an XML file.
  * @param {String} cam_url The url of the camera xml file.
  */
@@ -108,7 +108,7 @@ TrafficMap.prototype.update = function (incidents) {
 
 /**
  * Show a single incident on the map.
- * @param {Incidents} incident The incidents object fetched via AJAX.
+ * @param {Incidents} incidents The incidents object fetched via AJAX.
  * @param {String} incident_id The incident ID to show.
  */
 TrafficMap.prototype.show_incident = function (incidents, incident_id) {
