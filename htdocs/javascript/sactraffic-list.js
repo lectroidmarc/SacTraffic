@@ -71,7 +71,6 @@ function display_incident (incident) {
 	var show_speed = (incident.LogDetails.details.length > 1) ? "slow" : "fast";
 	var detail_message = (incident.LogDetails.details.length > 0) ? 'Click for incident details (' + incident.LogDetails.details.length + ')' : '';
 	var details = display_details(incident.LogDetails.details);
-	if (showing_details[incident.ID]) details.show();
 
 	var incident_li = jQuery('<li/>').attr('id', incident.ID).attr('title', detail_message).addClass('vevent').append(
 		jQuery('<span/>').addClass('logtype summary').html(incident.LogType)
@@ -109,6 +108,11 @@ function display_incident (incident) {
 			showing_details[incident.ID] = (showing_details[incident.ID]) ? false : true;
 		}
 	});
+
+	// Display the details block if it was being displayed before...
+	if (showing_details[incident.ID]) {
+		details.css('display', 'block');
+	}
 
 	if (point) {
 		var incident_icon = "/images/incident.png";
