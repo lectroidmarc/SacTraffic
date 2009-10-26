@@ -17,6 +17,7 @@ function get_incidents () {
 /**
  * Converts the CHP "TBXY" type coordinated to latitude and longitude.
  * @param {String} tbxy_str The TBXY data from the CHP feed.
+ * @returns {Object}
  */
 function tbxy2latlng (tbxy_str) {
 	var tbxy = tbxy_str.split(/:/);
