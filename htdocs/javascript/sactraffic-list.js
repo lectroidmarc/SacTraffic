@@ -3,34 +3,46 @@
  * @requires jQuery
  */
 
+/**
+ * Placeholder for saving the state of opened/closed incidents
+ */
 var showing_details = new Object();
 
+/**
+ * Shows a single incident.
+ * @param {Incident} incidents The incidents object fetched via AJAX.
+ * @param {String} id The incident ID to show.
+ */
 function show_incident (incidents, id) {
 	var has_incident = false;
-	$('#incidents_above').empty();
-	$('#incidents_below').hide();
+	jQuery('#incidents_above').empty();
+	jQuery('#incidents_below').hide();
 
-	$.each(incidents, function(i, incident) {
+	jQuery.each(incidents, function(i, incident) {
 		if (incident.ID == id) {
 			document.title += ": " + incident.LogType;
-			$('#header h1').html(incident.LogType);
+			jQuery('#header h1').html(incident.LogType);
 			display_incident(incident).appendTo('#incidents_above');
-			$('#incidents_above .details').show();
+			jQuery('#incidents_above .details').show();
 			
 			has_incident = true;
 		}
 	});
 
-	if (!has_incident) $('#incidents_above').append(
-		$("<b/>").html("The incident you requested does not exist or is no longer active.")
+	if (!has_incident) jQuery('#incidents_above').append(
+		jQuery("<b/>").html("The incident you requested does not exist or is no longer active.")
 	);
 }
 
+/**
+ * Shows a full list of CHP incidents.
+ * @param {Incidents} incidents The incidents object fetched via AJAX.
+ */
 function build_incident_list (incidents) {
 	jQuery('.incidents').empty();
 	jQuery('#mediainfo').empty();
 
-	$.each(incidents, function(i, incident) {
+	jQuery.each(incidents, function(i, incident) {
 		if (incident.LogType == "Media Information") {
 			if (incident.LogDetails.details.length > 0) {
 				display_details(incident.LogDetails.details).appendTo('#mediainfo');
@@ -47,6 +59,10 @@ function build_incident_list (incidents) {
 	jQuery('.incidents li:last-child').addClass('last');
 };
 
+/**
+ * Displays an incident.
+ * @param {String} id The incident ID to show.
+ */
 function display_incident (incident) {
 	var incident_date = new Date(incident.LogTimeEpoch * 1000);
 
@@ -117,10 +133,14 @@ function display_incident (incident) {
 	return incident_li;
 }
 
+/**
+ * Displays an incident's details
+ * @param {Details} details A detail object.
+ */
 function display_details (details) {
 	var details_ul = jQuery('<ul/>').addClass('details');
 
-	$.each(details, function(i, detail) {
+	jQuery.each(details, function(i, detail) {
 		jQuery('<li/>').append(
 			jQuery('<span/>').addClass('detailtime').html(detail.DetailTime)
 		).append(
