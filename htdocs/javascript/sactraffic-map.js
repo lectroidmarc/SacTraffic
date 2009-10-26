@@ -98,37 +98,12 @@ TrafficMap.prototype.update = function (incidents) {
 
 	for (var x = 0; x < incidents.length; x++) {
 		var incident = incidents[x];
-		if (incident.TBXY && incident.TBXY != "" && incident.LogType != "Media Information") {
-			var marker = make_marker(incident);
-
+		var marker = this.make_marker(incident);
+		if (marker) {
 			this.marker_list[incident.ID] = marker;
 			this.gmap.addOverlay(marker);
 		}
 	};
-
-	// Closure needed to make marker GEvents work right
-	function make_marker (incident) {
-		var point = tbxy2latlng(incident.TBXY);
-		var latlng = new GLatLng(point.lat, point.lng);
-		var incident_icon = self.get_incident_icon(incident);
-
-		var marker = new GMarker(latlng, {
-			icon: incident_icon,
-			zIndexProcess: function () {
-				// Put the CHP incidents *under* everything else because everything
-				// else can be turned off to get it out of the way.
-				return GOverlay.getZIndex(latlng.lat()) * 2;
-			}
-		});
-
-		GEvent.addListener(marker, "click", function() {
-			marker.openInfoWindowHtml(
-				'<div class="marker"><span class="logtype">' + incident.LogType + '</span><br/><span class="location">' + incident.Location + '</span><br/><span class="logtime">' + incident.LogTime + '</span></div>'
-			);
-		});
-
-		return marker;
-	}
 };
 
 /**
@@ -140,16 +115,12 @@ TrafficMap.prototype.show_incident = function (incidents, incident_id) {
 	for (var x = 0; x < incidents.length; x++) {
 		var incident = incidents[x];
 		if (incident.ID == incident_id) {
-			if (incident.TBXY && incident.TBXY != "") {
-				var point = tbxy2latlng(incident.TBXY);
-				var latlng = new GLatLng(point.lat, point.lng);
-				var incident_icon = this.get_incident_icon(incident);
-
-				this.gmap.addOverlay(new GMarker(latlng, {icon: incident_icon}));
-				this.gmap.setCenter(latlng, 13);
-
-				break;
+			var marker = this.make_marker(incident);
+			if (marker) {
+				this.gmap.addOverlay(marker);
+				this.gmap.setCenter(marker.getLatLng() , 13);
 			}
+			break;
 		}
 	}
 }
@@ -215,30 +186,47 @@ TrafficMap.prototype.hide_incidents = function () {
 }
 
 /**
- * Returns the proper icon for a given incident.
+ * Makes a GMarker for a given incident.
  * @param {Incident} incident The incident.
- * @returns {GIcon}
+ * @returns {GMarker}
  */
-TrafficMap.prototype.get_incident_icon = function (incident) {
-	var default_icon = new GIcon(G_DEFAULT_ICON);
-	default_icon.image = "/images/incident.png";
-	default_icon.shadow = "/images/traffic_incident_shadow.png";
-	default_icon.iconSize = new GSize(18, 18);
-	default_icon.shadowSize = new GSize(23, 23);
-	default_icon.iconAnchor = new GPoint(9, 9);
-	default_icon.infoWindowAnchor = new GPoint(8, 3);
+TrafficMap.prototype.make_marker = function (incident) {
+	if (incident.TBXY && incident.TBXY != "" && incident.LogType != "Media Information") {
+		// Default icon...
+		var incident_icon = new GIcon(G_DEFAULT_ICON);
+		incident_icon.image = "/images/incident.png";
+		incident_icon.shadow = "/images/traffic_incident_shadow.png";
+		incident_icon.iconSize = new GSize(18, 18);
+		incident_icon.shadowSize = new GSize(23, 23);
+		incident_icon.iconAnchor = new GPoint(9, 9);
+		incident_icon.infoWindowAnchor = new GPoint(8, 3);
 
-	if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType)) {
-		var hazard_icon = new GIcon(default_icon);
+		var point = tbxy2latlng(incident.TBXY);
+		var latlng = new GLatLng(point.lat, point.lng);
 
-		return hazard_icon;
-	} else if (/Collision/.test(incident.LogType)) {
-		var collision_icon = new GIcon(default_icon);
-		collision_icon.image = "/images/accident.png";
+		if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType)) {
+			// Hazard icon...
+			// Note: placeholder, we don't actually have a hazard icon
+		} else if (/Collision/.test(incident.LogType)) {
+			// Collision icon...
+			incident_icon.image = "/images/accident.png";
+		}
 
-		return collision_icon;
-	} else {
-		return default_icon;
+		var marker = new GMarker(latlng, {
+			icon: incident_icon,
+			zIndexProcess: function () {
+				// Put the CHP incidents *under* everything else because everything
+				// else can be turned off to get it out of the way.
+				return GOverlay.getZIndex(latlng.lat()) * 2;
+			}
+		});
+
+		GEvent.addListener(marker, "click", function() {
+			marker.openInfoWindowHtml(
+				'<div class="marker"><span class="logtype">' + incident.LogType + '</span><br/><span class="location">' + incident.Location + '</span><br/><span class="logtime">' + incident.LogTime + '</span></div>'
+			);
+		});
+
+		return marker;
 	}
 }
-
