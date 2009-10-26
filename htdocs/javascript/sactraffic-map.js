@@ -91,8 +91,6 @@ TrafficMap.prototype.load_live_cams = function (cam_url) {
  * @param {Incidents} incidents The incidents object fetched via AJAX.
  */
 TrafficMap.prototype.update = function (incidents) {
-	var self = this;
-
 	this.hide_incidents();
 	this.marker_list = {};
 
