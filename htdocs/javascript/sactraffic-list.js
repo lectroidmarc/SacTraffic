@@ -60,8 +60,9 @@ function build_incident_list (incidents) {
 };
 
 /**
- * Displays an incident.
+ * Returns an incident block.
  * @param {String} id The incident ID to show.
+ * @returns {jQuery}
  */
 function display_incident (incident) {
 	var incident_date = new Date(incident.LogTimeEpoch * 1000);
@@ -134,8 +135,9 @@ function display_incident (incident) {
 }
 
 /**
- * Displays an incident's details
+ * Returns an incident's detail block.
  * @param {Details} details A detail object.
+ * @returns {jQuery}
  */
 function display_details (details) {
 	var details_ul = jQuery('<ul/>').addClass('details');
