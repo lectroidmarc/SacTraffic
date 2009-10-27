@@ -8,7 +8,7 @@
 
 	// Check conditional headers...
 	$request_headers = apache_request_headers();
-	if ( 
+	if (
 		isset($request_headers["If-None-Match"]) &&
 		$request_headers["If-None-Match"] == $etag ||
 		isset($request_headers["If-Modified-Since"]) &&
@@ -83,8 +83,6 @@
 
 		if (isset ($incident->TBXY)) {
 			$description = "<a href=\"http://maps.google.com/maps?q=".tbxy2georss($incident->TBXY)."\">".$incident->Location."</a>, ".$incident->Area;
-		} else if (isset ($incident->GeoCode)) {
-			$description = "<a href=\"http://maps.google.com/maps?q=".$incident->GeoCode."\">".$incident->Location."</a>, ".$incident->Area;
 		} else {
 			$description = $incident->Location.", ".$incident->Area;
 		}
@@ -101,7 +99,7 @@
 		}
 
 		print XML_Util::createTag('description', null, $description);
-		print XML_Util::createTag('pubDate', null, $incident->LogTimeRFC822);
+		print XML_Util::createTag('pubDate', null, date("r", $incident->LogTimeEpoch));
 		print XML_Util::createTag('guid', array("isPermaLink" => "false"), $incident->ID);
 		print XML_Util::createTag('source', array("url" => "http://media.chp.ca.gov/sa_xml/sa.xml"), "CHP");
 		print XML_Util::createTag('category', null, $incident->LogTypeId);
