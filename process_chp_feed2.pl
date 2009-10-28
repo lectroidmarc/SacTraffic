@@ -113,8 +113,6 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 		
 			$incident->{'Location'} = ucfirst($incident->{'Location'});
 		
-			# RFC-822 (needed for RSS)
-			$incident->{'LogTimeRFC822'} = $logdate->strftime("%a, %d %b %Y %T %z");
 			# Epoch (needed for javascript)
 			$incident->{'LogTimeEpoch'} = $logdate->strftime("%s");
 
