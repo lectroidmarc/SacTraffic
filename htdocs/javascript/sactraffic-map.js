@@ -205,7 +205,7 @@ TrafficMap.prototype.make_marker = function (incident) {
 		if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType)) {
 			// Hazard icon...
 			// Note: placeholder, we don't actually have a hazard icon
-		} else if (/Collision/.test(incident.LogType)) {
+		} else if (/Collision|Fatality|Hit \& Run/.test(incident.LogType)) {
 			// Collision icon...
 			incident_icon.image = "/images/accident.png";
 		}
