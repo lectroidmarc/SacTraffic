@@ -73,26 +73,22 @@ function display_incident (incident) {
 	var details = display_details(incident.LogDetails.details);
 
 	var incident_li = jQuery('<li/>').attr('id', incident.ID).attr('title', detail_message).addClass('vevent').append(
-		jQuery('<span/>').addClass('logtype summary').html(incident.LogType)
+		jQuery('<div/>').addClass('logtype summary').html(incident.LogType)
 	).append(
-		jQuery('<br/>')
-	).append(
-		jQuery('<span/>').addClass('location').html(incident.Location + "<br/>" + incident.Area)
-	).append(
-		jQuery('<button/>').html('Show on map').click(
-			function () {
-				if (point) {
-					jQuery(this).parent().click();
-					location = "http://maps.google.com/maps?q=" + point.lat + "," + point.lng;
+		jQuery('<div/>').addClass('location').html(incident.Location + "<br/>" + incident.Area).append(
+			jQuery('<button/>').html('Show on map').click(
+				function () {
+					if (point) {
+						jQuery(this).parent().click();
+						location = "http://maps.google.com/maps?q=" + point.lat + "," + point.lng;
+					}
 				}
-			}
+			)
 		)
 	).append(
-		jQuery('<br/>')
-	).append(
-		jQuery('<span/>').addClass('logtime').html(incident.LogTime)
-	).append(
-		jQuery('<span/>').addClass('dtstart').html(incident_date.getISO8601())
+		jQuery('<div/>').addClass('logtime').html(incident.LogTime).append(
+			jQuery('<span/>').addClass('dtstart').html(incident_date.getISO8601())
+		)
 	).append(
 		details
 	).hover(
@@ -128,7 +124,7 @@ function display_incident (incident) {
 			.prependTo(incident_li);
 
 		// Add the geo microfoemat
-		jQuery('<span/>').addClass('geo').append(
+		jQuery('<div/>').addClass('geo').append(
 			jQuery('<span/>').addClass('latitude').html(point.lat)
 		).append(
 			jQuery('<span/>').addClass('longitude').html(point.lng)

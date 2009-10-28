@@ -137,15 +137,18 @@ div#content {
 
 .incidents li img {
 	padding-right: 4px;
+	float: left;
+	margin-bottom: 1px;
 }
 
-.incidents li span.logtype,
-div.marker span.logtype {
+.incidents li div.logtype {
+	margin-top: 3px;
 	font-weight: bold;
 }
 
-.incidents li span.location {
+.incidents li div.location {
 	font-size: 12px;
+	clear: left;
 }
 
 .incidents li button {
@@ -153,8 +156,7 @@ div.marker span.logtype {
 	display: none;
 }
 
-.incidents li span.logtime,
-div.marker span.logtime {
+.incidents li div.logtime {
 	font-size: 8pt;
 	color: gray;
 	font-style: italic;
@@ -164,7 +166,7 @@ div.marker span.logtime {
 	display: none;
 }
 
-.incidents li .geo {
+.incidents li div.geo {
 	display: none;
 }
 
@@ -198,6 +200,18 @@ div.marker span.logtime {
 	height: 450px;
 	width: 498px;
 	border: 1px solid black;
+}
+
+div.marker div.logtype {
+	margin-top: 3px;
+	font-weight: bold;
+}
+
+div.marker div.logtime {
+	margin-top: 3px;
+	font-size: 8pt;
+	color: gray;
+	font-style: italic;
 }
 
 #mapopts {

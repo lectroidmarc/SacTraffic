@@ -221,7 +221,7 @@ TrafficMap.prototype.make_marker = function (incident) {
 
 		GEvent.addListener(marker, "click", function() {
 			marker.openInfoWindowHtml(
-				'<div class="marker"><span class="logtype">' + incident.LogType + '</span><br/><span class="location">' + incident.Location + '</span><br/><span class="logtime">' + incident.LogTime + '</span></div>'
+				'<div class="marker"><div class="logtype">' + incident.LogType + '</div><div class="location">' + incident.Location + '</div><div class="logtime">' + incident.LogTime + '</div></div>'
 			);
 		});
 
