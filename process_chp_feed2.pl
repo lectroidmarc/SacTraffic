@@ -127,7 +127,7 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 				$details->{'IncidentDetail'} =~ s/(\w+)\*\*/$1 **/g;
 				$details->{'IncidentDetail'} =~ s/\*\*(\w+)/** $1/g;
 		
-				$incident->{'hasSigalert'} = $j->false() if ($details->{'IncidentDetail'} =~ /SIG\s*ALERT/);
+				$incident->{'hasSigalert'} = $j->true() if ($details->{'IncidentDetail'} =~ /SIG\s*ALERT/);
 			}
 
 			# More stuff if this is a new incident...
