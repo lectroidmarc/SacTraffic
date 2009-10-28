@@ -111,11 +111,16 @@ function display_incident (incident) {
 	}
 
 	if (point) {
+		// Default icon...
 		var incident_icon = "/images/incident.png";
-		if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType))
-			incident_icon = "/images/incident.png";
-		else if (/Collision/.test(incident.LogType))
+
+		if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType)) {
+			// Hazard icon...
+			// Note: placeholder, we don't actually have a hazard icon
+		} else if (/Collision|Fatality|Hit \& Run/.test(incident.LogType)) {
+			// Collision icon...
 			incident_icon = "/images/accident.png";
+		}
 		
 		jQuery('<img/>')
 			.attr('src', incident_icon)
