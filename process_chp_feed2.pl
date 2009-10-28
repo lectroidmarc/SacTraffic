@@ -12,7 +12,7 @@ use lib '/home/mmatteo/perl_lib';
 
 use DateTime::Format::Strptime;
 use Getopt::Std;
-use JSON::Any;
+use JSON::Any 1.17;	# Needs 1.17 for the true/false support
 use IO::Compress::Gzip qw(gzip $GzipError);
 use LWP::UserAgent;
 use Storable;
@@ -117,7 +117,7 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 			$incident->{'LogTimeEpoch'} = $logdate->strftime("%s");
 
 			# Look for sigalerts...
-			$incident->{'sigalert'} = 0;
+			$incident->{'hasSigalert'} = $j->false();
 			foreach my $details (@{$incident->{'LogDetails'}->{'details'}}) {
 				# Hey, get the quotes while we're here...
 				$details->{'DetailTime'} =~ s/^"\s*|\s*"$//g;
@@ -127,7 +127,7 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 				$details->{'IncidentDetail'} =~ s/(\w+)\*\*/$1 **/g;
 				$details->{'IncidentDetail'} =~ s/\*\*(\w+)/** $1/g;
 		
-				$incident->{'sigalert'} = 1 if ($details->{'IncidentDetail'} =~ /SIG\s*ALERT/);
+				$incident->{'hasSigalert'} = $j->false() if ($details->{'IncidentDetail'} =~ /SIG\s*ALERT/);
 			}
 
 			# More stuff if this is a new incident...
