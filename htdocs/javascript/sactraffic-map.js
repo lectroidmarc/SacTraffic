@@ -26,9 +26,6 @@ function TrafficMap (elementId) {
 		self.center = self.gmap.getCenter();
 	});
 
-	// Show the Google Traffic overlay by default
-	this.show_gtraffic();
-
 	// Set this up per:
 	// http://code.google.com/apis/maps/documentation/index.html#Memory_Leaks
 	jQuery(window).unload( function () { GUnload(); } );
