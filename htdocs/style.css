@@ -53,9 +53,10 @@ code.codeblock {
 	white-space: pre;
 	display: block;
 	padding: 4px;
-	margin-left: 20px;
-	margin-right: 20px;
-	background: #eee;
+	margin: 0 40px 0 20px;
+	border: 1px solid #aaa;
+	background: #f3f3f3;
+	font-size: 9pt;
 }
 
 div#content {
@@ -147,7 +148,7 @@ div#content {
 }
 
 .incidents li div.location {
-	font-size: 12px;
+	font-size: 9pt;
 	clear: left;
 }
 
@@ -309,7 +310,7 @@ div.marker div.logtime {
 	}
 	
 	code.codeblock {
-		font-size: 8px;
+		font-size: 6pt;
 		overflow: auto;
 		margin-left: 0;
 		margin-right: 0;

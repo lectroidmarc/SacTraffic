@@ -58,7 +58,36 @@
 
 		<h2>Can I build on your work?</h2>
 
-		<p>Of course!  The <a href="http://json.org/">JSON</a> data for every CHP "dispatch" is located here: <a href="http://www.sactraffic.org/json/">http://www.sactraffic.org/json/</a> -- where <a href="http://www.sactraffic.org/json/STCC-STCC.json">http://www.sactraffic.org/json/STCC-STCC.json</a> is the data for the Sacramento area.</p>
+		<p>Of course!  The <a href="http://json.org/">JSON</a> data for every CHP Dispatch in California is located here: <a href="http://www.sactraffic.org/json/">http://www.sactraffic.org/json/</a>. The filename is based on the CHP "center" and "dispatch" so <a href="http://www.sactraffic.org/json/STCC-STCC.json">http://www.sactraffic.org/json/STCC-STCC.json</a> would be the data for the Sacramento area.</p>
+		<p>The JSON format looks like:</p>
+		<code class="codeblock">[
+    {
+        ID: "0787D1101"
+        LogDetails: {
+            details: [
+                {
+                    DetailTime: "9:18AM"
+                    IncidentDetail: "BLU FORD EXP VS SIL TOYT SD"
+                }
+            ],
+            units: [
+                {
+                    DetailTime: "\" 9:23AM\""
+                    IncidentDetail: "\"CHP Unit Enroute\""
+                }
+            ],
+        }
+        ThomasBrothers: "259 7C"
+        LogTypeId: "1182"
+        LogType: "Collision - Non Injury"
+        LogTimeEpoch: "1257095928"
+        TBXY: "6752401:2003123"
+        Area: "North Sacramento"
+        hasSigalert: false
+        Location: "MADISON AV at HACKBERRY LN"
+        LogTime: "11/1/2009 9:18:48 AM"
+    }
+]</code>
 		<p>I also have a <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP</a> hook set up through <a href="http://www.sactraffic.org/jsonp.php">http://www.sactraffic.org/jsonp.php</a>.	 Simply pass a <code>callback</code> and a <code>dispatch</code> argument and go nuts.</p>
 		<p>Here's a <a href="http://jquery.com">jQuery</a> example:</p>
 
