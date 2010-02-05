@@ -25,8 +25,11 @@ JS_MIN = htdocs/javascript/sactraffic-base.min.js \
 all: htdocs/javascript/sactraffic.min.js htdocs/style.min.css
 
 
-htdocs/javascript/sactraffic.min.js: ${JS_MIN}
-	cat $^ > $@
+htdocs/javascript/sactraffic.min.js: ${JS}
+	${CLOSURE} -o $@ $^
+
+#htdocs/javascript/sactraffic.min.js: ${JS_MIN}
+#	cat $^ > $@
 
 
 .js.min.js:
