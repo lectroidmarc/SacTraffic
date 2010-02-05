@@ -18,10 +18,11 @@ use JSON::Any;
 use Data::Dumper;
 
 # Args...
-our($opt_c, $opt_o);
+our($opt_c, $opt_o, $opt_w);
 # -c <level>:	compilation level (default: SIMPLE_OPTIMIZATIONS)
-# -o <file>:	output file
-getopts('c:o:');
+# -o <file>:	output file (default: STDOUT)
+# -w <level>:	warning level (default: DEFAULT)
+getopts('c:o:w:');
 
 # Ok, really, we need data of course...
 usage() unless @ARGV;
@@ -32,6 +33,7 @@ my $compiler_args = [
 	'output_info' => 'warnings',
 	'output_info' => 'errors',
 	'output_info' => 'statistics',
+	'warning_level' => $opt_w || 'DEFAULT',
 	'compilation_level' => $opt_c || 'SIMPLE_OPTIMIZATIONS'
 ];
 
@@ -112,6 +114,7 @@ if ($response->is_success) {
 sub usage {
 	print "Usage: $0 [options] <file>...\n";
 	print "  -c <level>: sets the compilation level (defaults to SIMPLE_OPTIMIZATIONS)\n";
-	print "  -o <file>:  the file to output to (default to STDOUT)\n";
+	print "  -o <file>:  the file to output to (defaults to STDOUT)\n";
+	print "  -w <level>: set the warning level (defaults to DEFAULT)\n";
 	exit;
 }
