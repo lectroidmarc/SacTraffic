@@ -229,13 +229,15 @@ sub twitter {
 		print "skipped!\n" unless $opts{'q'};
 	} else {
 		my $link = "";
+		my $geo = {};
 
 		if ($incident->{'TBXY'} && $incident->{'TBXY'} ne "") {
 			$link = bitlyify("http://www.sactraffic.org/incident.html?id=".$incident->{'ID'}, $bitly_data);
+			$geo = tbxy2latlong($incident->{'TBXY'});
 		}
 
 		eval {
-			$twitter->update($incident->{'LogType'}.": ".$incident->{'Location'}.", ".$incident->{'Area'}." ".$link);
+			$twitter->update($incident->{'LogType'}.": ".$incident->{'Location'}.", ".$incident->{'Area'}." ".$link, $geo);
 		};
 
 		if ($@) {
@@ -278,6 +280,15 @@ sub as_datetime {
 	);
 
 	return $strp->parse_datetime($date_str);
+}
+
+sub tbxy2latlong {
+	my @tbxy = split(/:/, shift);
+
+	my $lat =  $tbxy[1] * 0.00000274 +  33.172;
+	my $long = $tbxy[0] * 0.0000035  - 144.966;
+
+	return { lat => $lat, long => $long }
 }
 
 # vim: ts=4
