@@ -40,7 +40,7 @@ my $config = XMLin("process_chp-config.xml", ForceArray => ['geocode', 'twitter'
 #exit;
 
 # We might not have Twitter support, so test for it...
-eval { require Net::Twitter; };
+eval { require Net::Twitter::Lite; };
 my $have_twitter = ($@) ? 0 : 1;
 
 foreach my $center (keys %{$chp_feed->{'Center'}}) {
@@ -83,36 +83,36 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 			if ($is_new_incident) {
 				print "  ".$incident->{'LogType'}.": ".$incident->{'Location'}.", ".$incident->{'Area'}."\n" unless $opts{'q'};
 			}
-			
+
 			# Make or munge the data
 			$incident->{'ID'} = $incident_id;
-			
+
 			# Capture the LogType number
 			$incident->{'LogTypeId'} = $1 if ($incident->{'LogType'} =~ s/^((?:\w|\/)+) - //);
-		
+
 			# Un-cop-shorthand the location
 			$incident->{'Location'} =~ s/\bJNO\b/just north of/i;
 			$incident->{'Location'} =~ s/\bJSO\b/just south of/i;
 			$incident->{'Location'} =~ s/\bJEO\b/just east of/i;
 			$incident->{'Location'} =~ s/\bJWO\b/just west of/i;
-		
+
 			$incident->{'Location'} =~ s/\bNB\b/north bound/i;
 			$incident->{'Location'} =~ s/\bSB\b/south bound/i;
 			$incident->{'Location'} =~ s/\bEB\b/east bound/i;
 			$incident->{'Location'} =~ s/\bWB\b/west bound/i;
-		
+
 			$incident->{'Location'} =~ s/\bOFR\b/offramp/i;
 			$incident->{'Location'} =~ s/\bONR\b/onramp/i;
 			$incident->{'Location'} =~ s/\bCON\b/connector/i;
-		
+
 			$incident->{'Location'} =~ s/\bAT\b/at/;
 			$incident->{'Location'} =~ s/\bON\b/on/;
 			$incident->{'Location'} =~ s/\bTO\b/to/;
-		
+
 			$incident->{'Location'} =~ s/\bSR51\b/CAP CITY FWY/;
-		
+
 			$incident->{'Location'} = ucfirst($incident->{'Location'});
-		
+
 			# Epoch (needed for javascript)
 			$incident->{'LogTimeEpoch'} = $logdate->strftime("%s");
 
@@ -122,11 +122,11 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 				# Hey, get the quotes while we're here...
 				$details->{'DetailTime'} =~ s/^"\s*|\s*"$//g;
 				$details->{'IncidentDetail'} =~ s/^"\s*\^*|\s*"$//g;
-		
+
 				# Pad out those asterics used in alerts
 				$details->{'IncidentDetail'} =~ s/(\w+)\*\*/$1 **/g;
 				$details->{'IncidentDetail'} =~ s/\*\*(\w+)/** $1/g;
-		
+
 				$incident->{'hasSigalert'} = $j->true() if ($details->{'IncidentDetail'} =~ /SIG\s*ALERT/);
 			}
 
@@ -143,7 +143,7 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 			# Save it
 			push (@incident_list, $incident);
 		}
-		
+
 		# Reverse incident list so the JSON data is in the right order
 		my @reversed_list = reverse (@incident_list);
 		my $new_json_data = $j->objToJson(\@reversed_list);
@@ -218,7 +218,7 @@ sub twitter {
 	my $twitter_data = shift;
 	my $bitly_data = shift;
 
-	my $twitter = Net::Twitter->new(username => $twitter_data->{'login'}, password => $twitter_data->{'password'});
+	my $twitter = Net::Twitter::Lite->new(username => $twitter_data->{'login'}, password => $twitter_data->{'password'});
 
 	print "    Twittering... " unless $opts{'q'};
 
@@ -234,12 +234,14 @@ sub twitter {
 			$link = bitlyify("http://www.sactraffic.org/incident.html?id=".$incident->{'ID'}, $bitly_data);
 		}
 
-		my $result = $twitter->update($incident->{'LogType'}.": ".$incident->{'Location'}.", ".$incident->{'Area'}." ".$link);
+		eval {
+			$twitter->update($incident->{'LogType'}.": ".$incident->{'Location'}.", ".$incident->{'Area'}." ".$link);
+		};
 
-		if ($result) {
-			print "ok.\n" unless $opts{'q'};
+		if ($@) {
+			print "$@\n" unless $opts{'q'};
 		} else {
-			print "failed.\n" unless $opts{'q'};
+			print "ok.\n" unless $opts{'q'};
 		}
 	}
 }
