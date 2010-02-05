@@ -81,8 +81,8 @@ if ($response->is_success) {
 		exit 255;
 	} else {
 		# If we have a valid output file, write to it, else to STDOUT
-		if ($opt_o && -w $opt_o) {
-			open (FILE, ">".$opt_o);
+		if ($opt_o) {
+			open (FILE, ">".$opt_o) || die $!;
 			print FILE $closure_output->{'compiledCode'};
 			close (FILE);
 		} else {
@@ -111,7 +111,7 @@ if ($response->is_success) {
 
 sub usage {
 	print "Usage: $0 [options] <file>...\n";
-	print "  -c <WHITESPACE_ONLY|SIMPLE_OPTIMIZATIONS|ADVANCED_OPTIMIZATIONS>:  sets the compilation level\n";
-	print "  -o <file>: the file to output to.\n";
+	print "  -c <level>: sets the compilation level (defaults to SIMPLE_OPTIMIZATIONS)\n";
+	print "  -o <file>:  the file to output to (default to STDOUT)\n";
 	exit;
 }
