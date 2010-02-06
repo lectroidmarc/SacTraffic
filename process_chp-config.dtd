@@ -1,14 +1,18 @@
-<!ELEMENT config		(jsonpath, dispatch*)>
+<!ELEMENT config			(jsonpath, twitter_app, dispatch+)>
 
-<!ELEMENT jsonpath		(#PCDATA)>
+<!ELEMENT jsonpath			(#PCDATA)>
 
-<!ELEMENT dispatch		(twitter*, bitly?)?>
+<!ELEMENT twitter_app					(#PCDATA)>
+<!ATTLIST twitter_app consumer_key		CDATA #REQUIRED>
+<!ATTLIST twitter_app consumer_secret	CDATA #REQUIRED>
+
+<!ELEMENT dispatch			(twitter, bitly?)?>
 <!ATTLIST dispatch name		CDATA #REQUIRED>
 
-<!ELEMENT twitter		(#PCDATA)>
-<!ATTLIST twitter login		CDATA #REQUIRED>
-<!ATTLIST twitter password	CDATA #REQUIRED>
+<!ELEMENT twitter					(#PCDATA)>
+<!ATTLIST twitter accesstoken		CDATA #REQUIRED>
+<!ATTLIST twitter accesstokensecret	CDATA #REQUIRED>
 
-<!ELEMENT bitly			(#PCDATA)>
+<!ELEMENT bitly				(#PCDATA)>
 <!ATTLIST bitly login		CDATA #REQUIRED>
 <!ATTLIST bitly apikey		CDATA #REQUIRED>

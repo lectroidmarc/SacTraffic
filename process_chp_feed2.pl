@@ -35,7 +35,7 @@ $| = 1 unless $opts{'q'};
 # Get the CHP feed... do this first.  If there's a 304 or 400 then we stop
 my $chp_feed = get_chp_incidents();
 
-my $config = XMLin("process_chp-config.xml", ForceArray => ['geocode', 'twitter']);
+my $config = XMLin("process_chp-config.xml");
 #print Dumper($config);
 #exit;
 
@@ -134,10 +134,10 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 			if ($is_new_incident) {
 				print "  Final: ".$incident->{'LogType'}.": ".$incident->{'Location'}."\n" unless $opts{'q'};
 
+				my $twitter_info = $config->{'dispatch'}->{$center."-".$dispatch}->{'twitter'};
 				my $bitly_info = $config->{'dispatch'}->{$center."-".$dispatch}->{'bitly'};
-				foreach my $twitter_info (@{$config->{'dispatch'}->{$center."-".$dispatch}->{'twitter'}}) {
-					twitter($incident, $twitter_info, $bitly_info) unless (!$have_twitter || $opts{'t'} || $opts{'f'});
-				}
+
+				twitter($incident, $twitter_info, $bitly_info) if ($have_twitter && $twitter_info && !$opts{'t'} && !$opts{'f'});
 			}
 
 			# Save it
@@ -218,15 +218,13 @@ sub twitter {
 	my $twitter_data = shift;
 	my $bitly_data = shift;
 
-	my $twitter = Net::Twitter::Lite->new(username => $twitter_data->{'login'}, password => $twitter_data->{'password'});
-
 	print "    Twittering... " unless $opts{'q'};
 
 	if ($incident->{'LogType'} eq "Media Information" ||
 		$incident->{'LogType'} eq "Ped" ||
 		$incident->{'LogType'} eq "Disabled Vehicle" ||
 		$incident->{'LogType'} =~ /Traffic Hazard/) {
-		print "skipped!\n" unless $opts{'q'};
+		print "skipped.\n" unless $opts{'q'};
 	} else {
 		my $link = "";
 		my $geo = {};
@@ -237,6 +235,13 @@ sub twitter {
 		}
 
 		eval {
+			my $twitter = Net::Twitter::Lite->new(
+				consumer_key    => $config->{'twitter_app'}->{'consumer_key'},
+				consumer_secret => $config->{'twitter_app'}->{'consumer_secret'},
+			);
+			$twitter->access_token($twitter_data->{'accesstoken'});
+			$twitter->access_token_secret($twitter_data->{'accesstokensecret'});
+
 			$twitter->update($incident->{'LogType'}.": ".$incident->{'Location'}.", ".$incident->{'Area'}." ".$link, $geo);
 		};
 
