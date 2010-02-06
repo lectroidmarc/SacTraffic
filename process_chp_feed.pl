@@ -43,6 +43,8 @@ my $have_twitter = ($@) ? 0 : 1;
 
 foreach my $center (keys %{$chp_feed->{'Center'}}) {
 	foreach my $dispatch (keys %{$chp_feed->{'Center'}->{$center}->{'Dispatch'}}) {
+		next if ($dispatch eq "");	# Sometimes the dispatch comes up blank, it's rare, but avoid it.
+
 		print "Processing '$center-$dispatch' incidents\n" unless $opts{'q'};
 
 		my $j = JSON::Any->new();
@@ -252,7 +254,7 @@ sub twitter {
 
 sub bitlyify {
 	my $url = shift;
-	my $auth_info = shift;
+	my $auth_info = shift || return "";
 
 	my $ua = LWP::UserAgent->new(timeout => 5);
 	my $response = $ua->get("http://api.bit.ly/shorten?version=2.0.1&login=".$auth_info->{'login'}."&apiKey=".$auth_info->{'apikey'}."&longUrl=".$url);
