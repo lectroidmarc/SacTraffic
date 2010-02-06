@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 #
-# process_chp_feed2.pl
+# process_chp_feed.pl
 #
 # Script to pull in and process the CHP XML and build out JSON files.  Optionally tweeting the alerts.
 #
@@ -36,8 +36,6 @@ $| = 1 unless $opts{'q'};
 my $chp_feed = get_chp_incidents();
 
 my $config = XMLin("process_chp-config.xml");
-#print Dumper($config);
-#exit;
 
 # We might not have Twitter support, so test for it...
 eval { require Net::Twitter::Lite; };
@@ -211,7 +209,6 @@ sub get_chp_incidents {
 
 	return $xml;
 }
-
 
 sub twitter {
 	my $incident = shift;
