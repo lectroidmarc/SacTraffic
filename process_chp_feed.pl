@@ -222,6 +222,8 @@ sub twitter {
 	if ($incident->{'LogType'} eq "Media Information" ||
 		$incident->{'LogType'} eq "Ped" ||
 		$incident->{'LogType'} eq "Disabled Vehicle" ||
+		$incident->{'LogType'} eq "Animal in Roadway" ||
+		$incident->{'LogType'} eq "Advise of Road or Weather conditions" ||
 		$incident->{'LogType'} =~ /Traffic Hazard/) {
 		print "skipped.\n" unless $opts{'q'};
 	} else {
