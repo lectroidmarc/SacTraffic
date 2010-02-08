@@ -116,8 +116,7 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 			# Epoch (needed for javascript)
 			$incident->{'LogTimeEpoch'} = $logdate->strftime("%s");
 
-			# Look for sigalerts...
-			$incident->{'hasSigalert'} = $j->false();
+			# Detail cleanup...
 			foreach my $details (@{$incident->{'LogDetails'}->{'details'}}) {
 				# Hey, get the quotes while we're here...
 				$details->{'DetailTime'} =~ s/^"\s*|\s*"$//g;
@@ -126,8 +125,6 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 				# Pad out those asterics used in alerts
 				$details->{'IncidentDetail'} =~ s/(\w+)\*\*/$1 **/g;
 				$details->{'IncidentDetail'} =~ s/\*\*(\w+)/** $1/g;
-
-				$incident->{'hasSigalert'} = $j->true() if ($details->{'IncidentDetail'} =~ /SIG\s*ALERT/);
 			}
 
 			# More stuff if this is a new incident...
@@ -219,6 +216,7 @@ sub twitter {
 
 	print "    Twittering... " unless $opts{'q'};
 
+	# Filter lame stuff to control the Twitter volume...
 	if ($incident->{'LogType'} eq "Media Information" ||
 		$incident->{'LogType'} eq "Ped" ||
 		$incident->{'LogType'} eq "Disabled Vehicle" ||
