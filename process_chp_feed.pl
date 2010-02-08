@@ -131,8 +131,15 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 			if ($is_new_incident) {
 				print "  Final: ".$incident->{'LogType'}.": ".$incident->{'Location'}."\n" unless $opts{'q'};
 
-				my $twitter_info = $config->{'dispatch'}->{$center."-".$dispatch}->{'twitter'};
-				my $bitly_info = $config->{'dispatch'}->{$center."-".$dispatch}->{'bitly'};
+				my $dispatch_config = $config->{'dispatch'}->{$center."-".$dispatch};
+				my $twitter_info = $dispatch_config->{'twitter'};
+				my $bitly_info = $dispatch_config->{'bitly'};
+
+				# Check for Area-specific overrides
+				if ($dispatch_config->{'area'}->{$incident->{'Area'}}) {
+					$twitter_info = $dispatch_config->{'area'}->{$incident->{'Area'}}->{'twitter'};
+					$bitly_info = $dispatch_config->{'area'}->{$incident->{'Area'}}->{'bitly'};
+				}
 
 				twitter($incident, $twitter_info, $bitly_info) if ($have_twitter && $twitter_info && !$opts{'t'} && !$opts{'f'});
 			}
