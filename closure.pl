@@ -15,7 +15,7 @@ use Getopt::Std;
 use LWP::UserAgent;
 use JSON::Any;
 
-use Data::Dumper;
+#use Data::Dumper;
 
 # Args...
 our($opt_c, $opt_o, $opt_w);
@@ -112,7 +112,7 @@ if ($response->is_success) {
 
 
 sub usage {
-	print "Usage: $0 [options] <file>...\n";
+	print "Usage: $0 [options] <file|url>...\n";
 	print "  -c <level>: sets the compilation level (defaults to SIMPLE_OPTIMIZATIONS)\n";
 	print "  -o <file>:  the file to output to (defaults to STDOUT)\n";
 	print "  -w <level>: set the warning level (defaults to DEFAULT)\n";
