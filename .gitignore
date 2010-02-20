@@ -4,6 +4,7 @@ temp
 cgi-bin
 TODO.txt
 
+htdocs/.htaccess
 htdocs/devel
 htdocs/Zend
 htdocs/json/*.json
