@@ -19,19 +19,19 @@
 <script type="text/javascript" src="/javascript/sactraffic.min.js"></script>
 
 <script type="text/javascript">
-	$(document).ready(function() {
+	jQuery(document).ready(function() {
 		trafficmap = new TrafficMap("map");
-		
+
 		jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
 			show_incident(incidents, get_query("id"));
 			trafficmap.show_incident(incidents, get_query("id"));
 		});
 	});
-	
+
 	function get_query (arg) {
 		var query = window.location.search.substring(1);
 		var params = query.split('&');
-	
+
 		for (var i = 0; i < params.length; i++) {
 			var param = params[i].split('=');
 			if (param[0] == arg)
@@ -69,10 +69,10 @@
 	<div id="header">
 		<h1>Live CHP traffic alerts in the Sacramento area</h1>
 	</div>
-	
+
 	<div id="leftcol">
 		<ul id="incidents_above" class="incidents"><li style="border:0"><!-- this space for rent --></li></ul>
-	
+
 		<div id="inline_ad" class="ad halfbanner">
 			<script type="text/javascript"><!--
 				google_ad_client = "pub-0887871162421804";
@@ -87,21 +87,21 @@
 
 		<ul id="incidents_below" class="incidents"><li style="border:0"><!-- this space for rent --></li></ul>
 	</div>
-	
+
 	<div id="rightcol">
 		<div id="map"></div>
-	
+
 		<form id="mapopts" action="">
 			<input type="checkbox" class="traffic" /><span class="traffic">Show traffic conditions</span>
 			<input type="checkbox" class="live_cams" /><span class="live_cams">Show live cameras</span>
 		</form>
 	</div>
-	
+
 	<div id="footer">
 		<span><a href="about.html">About this site</a></span>
 	</div>
 </div> <!-- #content -->
-	
+
 <script type="text/javascript">
 	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -110,7 +110,7 @@
 	var pageTracker = _gat._getTracker("UA-4894819-1");
 	pageTracker._initData();
 	pageTracker._trackPageview();
-</script>	
+</script>
 
 </body>
 </html>
