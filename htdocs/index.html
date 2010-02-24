@@ -27,7 +27,7 @@
 			trafficmap = new TrafficMap("map");
 			trafficmap.load_live_cams("/cameras.xml");
 			trafficmap.show_gtraffic();
-			
+
 			jQuery("span.traffic").click(function () {
 				jQuery("input.traffic").click();
 			});
@@ -39,7 +39,7 @@
 				}
 			});
 			jQuery(".traffic").show();
-			
+
 			jQuery("span.live_cams").click(function () {
 				jQuery("input.live_cams").click();
 			});
@@ -51,10 +51,10 @@
 				}
 			});
 			jQuery(".live_cams").show();
-			
+
 			TrafficNews.show("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
 		}
-		
+
 		get_incidents();
 		setInterval('get_incidents()', 60000);
 	});
@@ -93,10 +93,10 @@
 
 		<div id="mediainfo"></div>
 	</div>
-	
+
 	<div id="leftcol">
 		<ul id="incidents_above" class="incidents"><li style="border:0"><!-- this space for rent --></li></ul>
-	
+
 		<div id="inline_ad" class="ad halfbanner">
 			<script type="text/javascript"><!--
 				google_ad_client = "pub-0887871162421804";
@@ -111,15 +111,15 @@
 
 		<ul id="incidents_below" class="incidents"><li style="border:0"><!-- this space for rent --></li></ul>
 	</div>
-	
+
 	<div id="rightcol">
 		<div id="map"></div>
-	
+
 		<form id="mapopts" action="">
 			<input type="checkbox" class="traffic" checked="checked"/><span class="traffic">Show traffic conditions</span>
 			<input type="checkbox" class="live_cams" checked="checked"/><span class="live_cams">Show live cameras</span>
 		</form>
-	
+
 		<div id="sitenews" style="display:none">
 			<h2>Site News</h2>
 			<ul id="sactraffic_news"><li><!-- Dewey Defeats Truman --></li></ul>
@@ -143,7 +143,7 @@
 		<span><a href="/about.html">About this site</a></span>
 	</div>
 </div> <!-- #content -->
-	
+
 <script type="text/javascript">
 	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
