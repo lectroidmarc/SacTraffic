@@ -20,24 +20,8 @@
 
 <script type="text/javascript">
 	jQuery(document).ready(function() {
-		trafficmap = new TrafficMap("map");
-
-		jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
-			show_incident(incidents, get_query("id"));
-			trafficmap.show_incident(incidents, get_query("id"));
-		});
+		init_incident();
 	});
-
-	function get_query (arg) {
-		var query = window.location.search.substring(1);
-		var params = query.split('&');
-
-		for (var i = 0; i < params.length; i++) {
-			var param = params[i].split('=');
-			if (param[0] == arg)
-				return param[1];
-		}
-	}
 </script>
 
 <meta name="viewport" content="width = 370" />

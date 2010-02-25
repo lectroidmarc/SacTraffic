@@ -23,40 +23,7 @@
 
 <script type="text/javascript">
 	jQuery(document).ready(function() {
-		if (screen.width > 480) {
-			trafficmap = new TrafficMap("map");
-			trafficmap.load_live_cams("/cameras.xml");
-			trafficmap.show_gtraffic();
-
-			jQuery("span.traffic").click(function () {
-				jQuery("input.traffic").click();
-			});
-			jQuery("input.traffic").click(function () {
-				if (jQuery("input.traffic").attr('checked')) {
-					trafficmap.show_gtraffic();
-				} else {
-					trafficmap.hide_gtraffic();
-				}
-			});
-			jQuery(".traffic").show();
-
-			jQuery("span.live_cams").click(function () {
-				jQuery("input.live_cams").click();
-			});
-			jQuery("input.live_cams").click(function () {
-				if (jQuery("input.live_cams").attr('checked')) {
-					trafficmap.show_live_cams();
-				} else {
-					trafficmap.hide_live_cams();
-				}
-			});
-			jQuery(".live_cams").show();
-
-			TrafficNews.show("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
-		}
-
-		get_incidents();
-		setInterval('get_incidents()', 60000);
+		init_index();
 	});
 </script>
 
