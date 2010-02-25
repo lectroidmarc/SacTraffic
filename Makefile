@@ -6,8 +6,8 @@
 
 .DUMMY: jsdoc checkcfg
 
-YUICOMP = java -jar ${HOME}/Java/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar
-CLOSURE = ./closure.pl
+YUICOMP = java -jar support/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar
+CLOSURE = perl support/closure.pl
 
 JSDOC_DIR = ${HOME}/Java/jsdoc-toolkit
 
@@ -45,3 +45,6 @@ jsdoc:
 
 checkcfg:
 	xmllint --noout --valid process_chp-config.xml
+
+clean:
+	rm -f htdocs/javascript/*min.js
