@@ -16,8 +16,8 @@ function TrafficMap (elementId) {
 	this.live_cams = [];
 	this.traffic_overlay = null;
 	this.marker_list = {};
-	this.gmap = new GMap2(document.getElementById(elementId));
 
+	this.gmap = new GMap2(document.getElementById(elementId));
 	this.gmap.setCenter(this.center, 10);
 	this.gmap.addControl(new GSmallMapControl());
 
