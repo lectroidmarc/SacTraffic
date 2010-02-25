@@ -63,7 +63,7 @@ function init_incident () {
 	trafficmap = new TrafficMap("map");
 
 	jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
-		TrafficList.show_incident(incidents, get_query("id"));
+		TrafficList.show_incident(incidents, $_GET["id"]);
 		trafficmap.show_incident(incidents, $_GET["id"]);
 	});
 }
