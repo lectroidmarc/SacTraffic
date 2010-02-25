@@ -1,15 +1,81 @@
 /**
- * @fileoverview Base functions for sactraffic.org
+ * @fileoverview Base functions and globals for sactraffic.org
  * @requires jQuery
  */
+
+/**
+ * Load any HTTP GET params onto a global _GET object.
+ */
+var $_GET = {};
+document.location.search.replace(/\??(?:([^=]+)(?:=([^&]*))?&?)/g, function () {
+	$_GET[decode(arguments[1])] = decode(arguments[2]);
+
+	function decode(s) {
+		return decodeURIComponent(s.split("+").join(" "));
+	}
+});
+
+/**
+ * Setup code for the index page.
+ */
+function init_index () {
+	if (screen.width > 480) {
+		trafficmap = new TrafficMap("map");
+		trafficmap.load_live_cams("/cameras.xml");
+		trafficmap.show_gtraffic();
+
+		jQuery("span.traffic").click(function () {
+			jQuery("input.traffic").click();
+		});
+		jQuery("input.traffic").click(function () {
+			if (jQuery("input.traffic").attr('checked')) {
+				trafficmap.show_gtraffic();
+			} else {
+				trafficmap.hide_gtraffic();
+			}
+		});
+		jQuery(".traffic").show();
+
+		jQuery("span.live_cams").click(function () {
+			jQuery("input.live_cams").click();
+		});
+		jQuery("input.live_cams").click(function () {
+			if (jQuery("input.live_cams").attr('checked')) {
+				trafficmap.show_live_cams();
+			} else {
+				trafficmap.hide_live_cams();
+			}
+		});
+		jQuery(".live_cams").show();
+
+		TrafficNews.show("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
+	}
+
+	get_incidents();
+	setInterval('get_incidents()', 60000);
+}
+window['init_index'] = init_index;	// Closure-style export: http://code.google.com/closure/compiler/docs/api-tutorial3.html#export
+
+/**
+ * Setup code for the single incident page.
+ */
+function init_incident () {
+	trafficmap = new TrafficMap("map");
+
+	jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
+		TrafficList.show_incident(incidents, get_query("id"));
+		trafficmap.show_incident(incidents, $_GET["id"]);
+	});
+}
+window['init_incident'] = init_incident;	// Closure-style export: http://code.google.com/closure/compiler/docs/api-tutorial3.html#export
 
 /**
  * Fetches the incident JSON and processes it accordingly.
  */
 function get_incidents () {
 	jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
-		build_incident_list(incidents);
-		
+		TrafficList.show_incidents(incidents);
+
 		if (typeof trafficmap != "undefined") trafficmap.update(incidents);
 	});
 }
