@@ -1069,7 +1069,7 @@ GMapType.prototype.getBoundsZoomLevel = function(bounds, viewSize) {};
  * @param {boolean=} short
  * @return {string}
  */
-GMapType.prototype.getName = function(short) {};
+GMapType.prototype.getName = function() {};
 
 /**
  * @return {GProjection}
