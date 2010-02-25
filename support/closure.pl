@@ -18,11 +18,12 @@ use JSON::Any;
 #use Data::Dumper;
 
 # Args...
-our($opt_c, $opt_o, $opt_w);
-# -c <level>:	compilation level (default: SIMPLE_OPTIMIZATIONS)
-# -o <file>:	output file (default: STDOUT)
-# -w <level>:	warning level (default: DEFAULT)
-getopts('c:o:w:');
+our($opt_c, $opt_e, $opt_o, $opt_w);
+# -c <level>:		compilation level (default: SIMPLE_OPTIMIZATIONS)
+# -e <file|url>:	extern files (space separate multiples)
+# -o <file>:		output file (default: STDOUT)
+# -w <level>:		warning level (default: DEFAULT)
+getopts('c:e:o:w:');
 
 # Ok, really, we need data of course...
 usage() unless @ARGV;
@@ -36,6 +37,26 @@ my $compiler_args = [
 	'warning_level' => $opt_w || 'DEFAULT',
 	'compilation_level' => $opt_c || 'SIMPLE_OPTIMIZATIONS'
 ];
+
+# Handle externs...
+if ($opt_e) {
+	foreach (split(/\s+/, $opt_e)) {
+		if (/^http/) {
+			# is a URL
+			push (@$compiler_args, 'externs_url' => $_);
+		} else {
+			# is a file path
+			my $js_externs;
+
+			local $/;
+			open (FILE, "<".$_) || die $!;
+			$js_externs .= <FILE>;
+			close (FILE);
+
+			push (@$compiler_args, 'js_externs' => $js_externs);
+		}
+	}
+}
 
 # Get the conetnts of the files on the command line...
 foreach (@ARGV) {
@@ -114,6 +135,7 @@ if ($response->is_success) {
 sub usage {
 	print "Usage: $0 [options] <file|url>...\n";
 	print "  -c <level>: sets the compilation level (defaults to SIMPLE_OPTIMIZATIONS)\n";
+	print "  -e <file|url>:	extern files (space separate multiples)\b";
 	print "  -o <file>:  the file to output to (defaults to STDOUT)\n";
 	print "  -w <level>: set the warning level (defaults to DEFAULT)\n";
 	exit;
