@@ -79,6 +79,7 @@ function get_incidents () {
 		if (typeof trafficmap != "undefined") trafficmap.update(incidents);
 	});
 }
+window['get_incidents'] = get_incidents;	// Closure-style export: http://code.google.com/closure/compiler/docs/api-tutorial3.html#export
 
 /**
  * Converts the CHP "TBXY" type coordinated to latitude and longitude.
