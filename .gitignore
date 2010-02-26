@@ -1,10 +1,10 @@
-process_chp-config.xml
-logs
-temp
-cgi-bin
-TODO.txt
+.htaccess
 
-htdocs/.htaccess
+/process_chp-config.xml
+/logs
+/temp
+/cgi-bin
+
 htdocs/devel
 htdocs/Zend
 htdocs/json/*.json
