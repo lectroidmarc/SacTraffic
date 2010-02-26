@@ -7,7 +7,7 @@
  * @namespace Namespace encapsulating the traffic list functionality.
  */
 var TrafficList = function () {
-	var showing_details = new Object();
+	var showing_details = {};
 
 	/**
 	 * Returns an incident block.
@@ -43,10 +43,10 @@ var TrafficList = function () {
 			details
 		).hover(
 			function () {
-				if (typeof trafficmap != "undefined") trafficmap.center_on_id(incident.ID);
+				if (typeof trafficmap != "undefined") { trafficmap.center_on_id(incident.ID); }
 			},
 			function () {
-				if (typeof trafficmap != "undefined") trafficmap.recenter();
+				if (typeof trafficmap != "undefined") { trafficmap.recenter(); }
 			}
 		).click(function () {
 			if (incident.LogDetails.details.length > 0) {
@@ -83,7 +83,7 @@ var TrafficList = function () {
 				jQuery('<span/>').addClass('latitude').html(point.lat)
 			).append(
 				jQuery('<span/>').addClass('longitude').html(point.lng)
-			).appendTo(incident_li)
+			).appendTo(incident_li);
 		}
 
 		return incident_li;
@@ -155,9 +155,11 @@ var TrafficList = function () {
 				}
 			});
 
-			if (!has_incident) jQuery('#incidents_above').append(
-				jQuery("<b/>").html("The incident you requested does not exist or is no longer active.")
-			);
+			if (!has_incident) {
+				jQuery('#incidents_above').append(
+					jQuery("<b/>").html("The incident you requested does not exist or is no longer active.")
+				);
+			}
 		}
-	}
+	};
 }();

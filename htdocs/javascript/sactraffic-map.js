@@ -81,7 +81,7 @@ TrafficMap.prototype.load_live_cams = function (cam_url) {
 			}
 		}
 	});
-}
+};
 
 /**
  * Update incident data.
@@ -98,7 +98,7 @@ TrafficMap.prototype.update = function (incidents) {
 			this.marker_list[incident.ID] = marker;
 			this.gmap.addOverlay(marker);
 		}
-	};
+	}
 };
 
 /**
@@ -118,7 +118,7 @@ TrafficMap.prototype.show_incident = function (incidents, incident_id) {
 			break;
 		}
 	}
-}
+};
 
 /**
  * Shows the live cams.
@@ -127,7 +127,7 @@ TrafficMap.prototype.show_live_cams = function () {
 	for (var x = 0; x < this.live_cams.length; x++) {
 		this.gmap.addOverlay(this.live_cams[x]);
 	}
-}
+};
 
 /**
  * Hides the live cams.
@@ -136,7 +136,7 @@ TrafficMap.prototype.hide_live_cams = function () {
 	for (var x = 0; x < this.live_cams.length; x++) {
 		this.gmap.removeOverlay(this.live_cams[x]);
 	}
-}
+};
 
 /**
  * Shows Google traffic info.
@@ -144,7 +144,7 @@ TrafficMap.prototype.hide_live_cams = function () {
 TrafficMap.prototype.show_gtraffic = function () {
 	this.traffic_overlay = new GTrafficOverlay({incidents:true});
 	this.gmap.addOverlay(this.traffic_overlay);
-}
+};
 
 /**
  * Hides Google traffic info.
@@ -152,7 +152,7 @@ TrafficMap.prototype.show_gtraffic = function () {
 TrafficMap.prototype.hide_gtraffic = function () {
 	if (this.traffic_overlay)
 		this.gmap.removeOverlay(this.traffic_overlay);
-}
+};
 
 /**
  * Centers the map on the given incident ID.
@@ -162,14 +162,14 @@ TrafficMap.prototype.center_on_id = function (incident_id) {
 	if (this.marker_list[incident_id]) {
 		this.gmap.panTo(this.marker_list[incident_id].getLatLng());
 	}
-}
+};
 
 /**
  * Recenters the map on the saved center.
  */
 TrafficMap.prototype.recenter = function () {
 	this.gmap.panTo(this.center);
-}
+};
 
 /**
  * Hides the CHP incidents.
@@ -178,7 +178,7 @@ TrafficMap.prototype.hide_incidents = function () {
 	for (var id in this.marker_list) {
 		this.gmap.removeOverlay(this.marker_list[id]);
 	}
-}
+};
 
 /**
  * Makes a GMarker for a given incident.
@@ -224,4 +224,4 @@ TrafficMap.prototype.make_marker = function (incident) {
 
 		return marker;
 	}
-}
+};

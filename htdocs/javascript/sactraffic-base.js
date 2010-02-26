@@ -76,7 +76,7 @@ function get_incidents () {
 	jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
 		TrafficList.show_incidents(incidents);
 
-		if (typeof trafficmap != "undefined") trafficmap.update(incidents);
+		if (typeof trafficmap != "undefined") { trafficmap.update(incidents); }
 	});
 }
 window['get_incidents'] = get_incidents;	// Closure-style export: http://code.google.com/closure/compiler/docs/api-tutorial3.html#export
@@ -90,9 +90,9 @@ function tbxy2latlng (tbxy_str) {
 	var tbxy = tbxy_str.split(/:/);
 
 	var lat = tbxy[1] * 0.00000274 +  33.172;
- 	var lng = tbxy[0] * 0.0000035  - 144.966;
+	var lng = tbxy[0] * 0.0000035  - 144.966;
 
-	return { "lat": lat, "lng": lng }
+	return { "lat": lat, "lng": lng };
 }
 
 /**

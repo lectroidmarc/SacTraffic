@@ -27,7 +27,7 @@ var TrafficNews = function () {
 							var now = new Date();
 							var week_ago = new Date(now.getTime() - 86400 * days_old * 1000);
 							var post_date = new Date(entry.publishedDate);
-							if (post_date < week_ago) return false;
+							if (post_date < week_ago) { return false; }
 						}
 
 						show_sitenews = true;
@@ -43,9 +43,9 @@ var TrafficNews = function () {
 						);
 					});
 
-					if (show_sitenews) jQuery('#sitenews').show("slow");
+					if (show_sitenews) { jQuery('#sitenews').show("slow"); }
 				}
 			});
 		}
-	}
+	};
 }();
