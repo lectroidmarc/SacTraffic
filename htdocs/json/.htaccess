@@ -1,4 +1,0 @@
-Options +Indexes
-IndexOptions FancyIndexing
-
-AddType application/json .json
