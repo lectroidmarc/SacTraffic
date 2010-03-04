@@ -9,7 +9,7 @@
 YUICOMP = java -jar support/yuicompressor-2.4.2.jar
 CLOSURE = perl support/closure.pl
 
-JSDOC_DIR = ${HOME}/Java/jsdoc-toolkit
+JSDOC_DIR = ${HOME}/Java/jsdoc_toolkit-2.3.2/jsdoc-toolkit
 
 FILES = htdocs/javascript/sactraffic.min.js htdocs/style.min.css
 
