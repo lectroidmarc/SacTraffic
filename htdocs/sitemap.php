@@ -2,7 +2,7 @@
 	require_once "XML/Util.php";
 
 	header('Content-type: text/xml');
-	
+
 	print XML_Util::getXMLDeclaration();
 	print '<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>';
 	print XML_Util::createStartElement('urlset', array(
@@ -27,13 +27,13 @@
 
 <?php
 	$xml = new SimpleXMLElement(file_get_contents("cameras.xml"));
-	
+
 	foreach ($xml->camera as $camera) {
 		print "\t".XML_Util::createStartElement('url')."\n";
 		print "\t\t".XML_Util::createTag('loc', null, "http://www.sactraffic.org/showcamera.php?id=" . $camera['id'])."\n";
 		print "\t\t".XML_Util::createTag('priority', null, '0.2')."\n";
 		print "\t".XML_Util::createEndElement("url")."\n";
 	}
-	
+
 	print XML_Util::createEndElement("urlset");
 ?>
