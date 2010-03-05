@@ -13,10 +13,11 @@ What you need to set this stuff up.
 
 `perl` is the primary language used. The following Perl modules are needed as well.
 
+* `Compress::Zlib` (optional, for creating pre-gziped versions of the JSON files).
 * `DateTime::Format::Strptime`
 * `JSON::Any`
 * `LWP::UserAgent`
-* `Net::Twitter::Lite`
+* `Net::Twitter::Lite` (optional, for Twittering)
 * `XML::Simple`
 
 `php` is also used in the web space for some of the dynamic pages.  `Zend_Json::decode` is used for decoding the JSON files because my provider doesn't have php 5.2 yet.

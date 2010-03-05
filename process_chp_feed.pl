@@ -13,7 +13,6 @@ use lib '/home/mmatteo/perl_lib';
 use DateTime::Format::Strptime;
 use Getopt::Std;
 use JSON::Any 1.17;	# Needs 1.17 for the true/false support
-use IO::Compress::Gzip qw(gzip $GzipError);
 use LWP::UserAgent;
 use Storable;
 use XML::Simple;
@@ -40,6 +39,10 @@ my $config = XMLin("process_chp-config.xml");
 # We might not have Twitter support, so test for it...
 eval { require Net::Twitter::Lite; };
 my $have_twitter = ($@) ? 0 : 1;
+
+# Test for Gzip support too...
+eval { require Compress::Zlib; };
+my $have_gzip = ($@) ? 0 : 1;
 
 foreach my $center (keys %{$chp_feed->{'Center'}}) {
 	foreach my $dispatch (keys %{$chp_feed->{'Center'}->{$center}->{'Dispatch'}}) {
@@ -160,10 +163,14 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 			print JSON $new_json_data;
 			close (JSON);
 
-			if (length($new_json_data) >= 500) {
+			if ($have_gzip && length($new_json_data) >= 500) {
 				print "gzipping... " unless $opts{'q'};
-				unless (gzip $json_file => $json_file.".gz", -Level => 9) {
-					print "gzip failed: $GzipError... " unless $opts{'q'};
+				if (my $gz = Compress::Zlib::gzopen($json_file.".gz", "wb9")) {
+					$gz->gzwrite($new_json_data);
+					$gz->gzclose();
+				} else {
+					no warnings;
+					print "gzip failed: $Compress::Zlib::gzerrno... " unless $opts{'q'};
 				}
 			} else {
 				# Not expressly needed as mod_gzip checks
