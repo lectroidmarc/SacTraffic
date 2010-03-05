@@ -163,10 +163,10 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 			if (length($new_json_data) >= 500) {
 				print "gzipping... " unless $opts{'q'};
 				unless (gzip $json_file => $json_file.".gz", -Level => 9) {
-					print "gzip failed: $GzipError " unless $opts{'q'};
+					print "gzip failed: $GzipError... " unless $opts{'q'};
 				}
 			} else {
-				# Not expressly needed as mod_perl checks
+				# Not expressly needed as mod_gzip checks
 				# timestamps on static gz files
 				unlink $json_file.".gz" if -f $json_file.".gz";
 			}
