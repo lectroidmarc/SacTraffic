@@ -106,8 +106,6 @@
 
 		if (isset ($incident->TBXY))
 			print XML_Util::createTag('georss:point', null, tbxy2georss($incident->TBXY));
-		else if (isset ($incident->GeoCode))
-			print XML_Util::createTag('georss:point', null, $incident->GeoCode);
 
 		print XML_Util::createEndElement("item");
 	}
