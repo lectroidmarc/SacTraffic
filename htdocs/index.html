@@ -11,32 +11,17 @@
 
 <link rel="alternate" type="application/rss+xml" title="Sac Traffic RSS Feed" href="/rss.php" />
 
-<script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAlAZP1OSueWm4o6pWOnsJahT8awnw3lCjmpiGr3BOlHAKhFGNCRS5zrKL_yiOOy6TBcqg5U2TjCHYTQ"></script>
-<script type="text/javascript">
-	google.load("jquery", "1");
-	if (screen.width > 480) {
-		google.load("maps", "2");
-		google.load("feeds", "1");
-	}
-</script>
-
-<script type="text/javascript" src="/javascript/sactraffic.min.js"></script>
-
-<script type="text/javascript">
-	jQuery(document).ready(function() {
-		init_index();
-	});
-</script>
-
 <meta name="viewport" content="width = 370" />
 </head>
 
 <body>
 <div id="top_banner" class="ad leaderboard">
-	<script type="text/javascript"><!--
+	<script type="text/javascript">
+		//<!--
 		google_ad_client = "pub-0887871162421804";
 		if (screen.width <= 480) {
-			jQuery("#top_banner").removeClass('leaderboard').addClass('halfbanner');
+			var banner = document.getElementById("top_banner");
+			banner.className = 'ad halfbanner';
 
 			/* Mobile Leaderboard */
 			google_ad_slot = "1236279869";
@@ -111,6 +96,21 @@
 		<span><a href="/about.html">About this site</a></span>
 	</div>
 </div> <!-- #content -->
+
+<script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAlAZP1OSueWm4o6pWOnsJahT8awnw3lCjmpiGr3BOlHAKhFGNCRS5zrKL_yiOOy6TBcqg5U2TjCHYTQ"></script>
+<script type="text/javascript">
+	google.load("jquery", "1");
+	if (screen.width > 480) {
+		google.load("maps", "2");
+		google.load("feeds", "1");
+	}
+</script>
+<script type="text/javascript" src="/javascript/sactraffic.min.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		init_index();
+	});
+</script>
 
 <script type="text/javascript">
 	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
