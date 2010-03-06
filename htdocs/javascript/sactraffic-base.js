@@ -19,40 +19,42 @@ document.location.search.replace(/\??(?:([^=]+)(?:=([^&]*))?&?)/g, function () {
  * Setup code for the index page.
  */
 function init_index () {
-	if (screen.width > 480) {
-		trafficmap = new TrafficMap("map");
-		trafficmap.load_live_cams("/cameras.xml");
-		trafficmap.show_gtraffic();
+	jQuery(document).ready(function() {
+		if (screen.width > 480) {
+			trafficmap = new TrafficMap("map");
+			trafficmap.load_live_cams("/cameras.xml");
+			trafficmap.show_gtraffic();
 
-		jQuery("span.traffic").click(function () {
-			jQuery("input.traffic").click();
-		});
-		jQuery("input.traffic").click(function () {
-			if (jQuery("input.traffic").attr('checked')) {
-				trafficmap.show_gtraffic();
-			} else {
-				trafficmap.hide_gtraffic();
-			}
-		});
-		jQuery(".traffic").show();
+			jQuery("span.traffic").click(function () {
+				jQuery("input.traffic").click();
+			});
+			jQuery("input.traffic").click(function () {
+				if (jQuery("input.traffic").attr('checked')) {
+					trafficmap.show_gtraffic();
+				} else {
+					trafficmap.hide_gtraffic();
+				}
+			});
+			jQuery(".traffic").show();
 
-		jQuery("span.live_cams").click(function () {
-			jQuery("input.live_cams").click();
-		});
-		jQuery("input.live_cams").click(function () {
-			if (jQuery("input.live_cams").attr('checked')) {
-				trafficmap.show_live_cams();
-			} else {
-				trafficmap.hide_live_cams();
-			}
-		});
-		jQuery(".live_cams").show();
+			jQuery("span.live_cams").click(function () {
+				jQuery("input.live_cams").click();
+			});
+			jQuery("input.live_cams").click(function () {
+				if (jQuery("input.live_cams").attr('checked')) {
+					trafficmap.show_live_cams();
+				} else {
+					trafficmap.hide_live_cams();
+				}
+			});
+			jQuery(".live_cams").show();
 
-		TrafficNews.show("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
-	}
+			TrafficNews.show("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
+		}
 
-	get_incidents();
-	setInterval(get_incidents, 60000);
+		get_incidents();
+		setInterval(get_incidents, 60000);
+	});
 }
 window['init_index'] = init_index;	// Closure-style export: http://code.google.com/closure/compiler/docs/api-tutorial3.html#export
 
@@ -60,11 +62,13 @@ window['init_index'] = init_index;	// Closure-style export: http://code.google.c
  * Setup code for the single incident page.
  */
 function init_incident () {
-	trafficmap = new TrafficMap("map");
+	jQuery(document).ready(function() {
+		trafficmap = new TrafficMap("map");
 
-	jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
-		TrafficList.show_incident(incidents, $_GET["id"]);
-		trafficmap.show_incident(incidents, $_GET["id"]);
+		jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
+			TrafficList.show_incident(incidents, $_GET["id"]);
+			trafficmap.show_incident(incidents, $_GET["id"]);
+		});
 	});
 }
 window['init_incident'] = init_incident;	// Closure-style export: http://code.google.com/closure/compiler/docs/api-tutorial3.html#export
