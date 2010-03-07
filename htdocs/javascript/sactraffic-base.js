@@ -3,6 +3,9 @@
  * @requires jQuery
  */
 
+/** Global for the traffic map */
+var trafficmap;
+
 /**
  * Load any HTTP GET params onto a global _GET object.
  */
@@ -61,13 +64,13 @@ window['init_index'] = init_index;	// Closure-style export: http://code.google.c
 /**
  * Setup code for the single incident page.
  */
-function init_incident () {
+function init_incident (id) {
 	jQuery(document).ready(function() {
 		trafficmap = new TrafficMap("map");
 
 		jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
-			TrafficList.show_incident(incidents, $_GET["id"]);
-			trafficmap.show_incident(incidents, $_GET["id"]);
+			TrafficList.show_incident(incidents, id);
+			trafficmap.show_incident(incidents, id);
 		});
 	});
 }
