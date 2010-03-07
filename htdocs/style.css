@@ -66,7 +66,7 @@ div#content {
 	padding: 10px 10px 16px 10px;
 	background-color: white;
 	color: #333;
-	
+
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 }
@@ -185,6 +185,23 @@ div#content {
 .incidents ul.details .incidentdetail,
 #mediainfo .incidentdetail{
 	padding-left: 1em;
+}
+
+.incidents li.loading {
+	background: #ffffff;
+	border: 0;
+	height: 30px;
+	text-align: center;
+}
+
+.incidents li.loading:hover {
+	background: #f3f3f3;
+}
+
+.incidents li.loading img {
+	float: none;
+	height: 19px;
+	width: 220px;
 }
 /* End Left Column */
 
@@ -308,7 +325,7 @@ div.marker div.logtime {
 	body {
 		width: 370px;
 	}
-	
+
 	code.codeblock {
 		font-size: 6pt;
 		overflow: auto;
@@ -321,36 +338,36 @@ div.marker div.logtime {
 		padding: 0 5px;
 		-webkit-border-radius: 5px;
 	}
-	
+
 	div#content {
 		font-size: 12pt;
 		margin: 10px;
 	}
-	
+
 	span.additional {
 		display: none;
 	}
-	
+
 	#mediainfo {
 		margin: 10px;;
 	}
-	
+
 	.incidents li button {
 		display: inline;
 	}
-	
+
 	#incidents_above {
 		border-bottom: 1px solid #165279;
 	}
-	
+
 	#incidents_below {
 		border-top: 1px solid #165279;
 	}
-	
+
 	#rightcol {
 		display: none;
 	}
-	
+
 	#leftcol {
 		height: auto
 	}
