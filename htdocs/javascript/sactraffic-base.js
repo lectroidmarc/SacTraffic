@@ -3,9 +3,6 @@
  * @requires jQuery
  */
 
-/** Global for the traffic map */
-var trafficmap;
-
 /**
  * Load any HTTP GET params onto a global _GET object.
  */
@@ -23,6 +20,8 @@ document.location.search.replace(/\??(?:([^=]+)(?:=([^&]*))?&?)/g, function () {
  */
 function init_index () {
 	jQuery(document).ready(function() {
+		var trafficmap;
+
 		if (screen.width > 480) {
 			trafficmap = new TrafficMap("map");
 			trafficmap.load_live_cams("/cameras.xml");
@@ -55,8 +54,8 @@ function init_index () {
 			TrafficNews.show("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
 		}
 
-		get_incidents();
-		setInterval(get_incidents, 60000);
+		get_incidents(trafficmap);
+		setInterval(get_incidents, 60000, trafficmap);
 	});
 }
 window['init_index'] = init_index;	// Closure-style export: http://code.google.com/closure/compiler/docs/api-tutorial3.html#export
@@ -66,7 +65,7 @@ window['init_index'] = init_index;	// Closure-style export: http://code.google.c
  */
 function init_incident (id) {
 	jQuery(document).ready(function() {
-		trafficmap = new TrafficMap("map");
+		var trafficmap = new TrafficMap("map");
 
 		jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
 			TrafficList.show_incident(incidents, id);
@@ -79,11 +78,11 @@ window['init_incident'] = init_incident;	// Closure-style export: http://code.go
 /**
  * Fetches the incident JSON and processes it accordingly.
  */
-function get_incidents () {
+function get_incidents (map) {
 	jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
 		TrafficList.show_incidents(incidents);
 
-		if (typeof trafficmap != "undefined") { trafficmap.update(incidents); }
+		if (typeof map != "undefined") { map.update(incidents); }
 	});
 }
 
