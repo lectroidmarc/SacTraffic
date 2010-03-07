@@ -142,7 +142,7 @@ var TrafficList = function () {
 		show_incident: function (incidents, id) {
 			var has_incident = false;
 			jQuery('#incidents_above').empty();
-			jQuery('#incidents_below').hide();
+			jQuery('#incidents_below').empty();
 
 			jQuery.each(incidents, function(i, incident) {
 				if (incident.ID == id) {
@@ -157,7 +157,7 @@ var TrafficList = function () {
 
 			if (!has_incident) {
 				jQuery('#incidents_above').append(
-					jQuery("<b/>").html("The incident you requested does not exist or is no longer active.")
+					jQuery("<li/>").addClass('noincident').html("The incident you requested does not exist or is no longer active.")
 				);
 			}
 		}

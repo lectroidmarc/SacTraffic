@@ -187,6 +187,10 @@ div#content {
 	padding-left: 1em;
 }
 
+.incidents li.noincident {
+	font-weight: bold;
+}
+
 .incidents li.loading {
 	background: #ffffff;
 	border: 0;
