@@ -65,11 +65,25 @@ window['init_index'] = init_index;	// Closure-style export: http://code.google.c
  */
 function init_incident (id) {
 	jQuery(document).ready(function() {
-		var trafficmap = new TrafficMap("map");
+		var trafficmap;
+
+		if (screen.width > 480) {
+			trafficmap = new TrafficMap("map");
+		}
 
 		jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
 			TrafficList.show_incident(incidents, id);
-			trafficmap.show_incident(incidents, id);
+
+			if (typeof trafficmap != "undefined") {
+				trafficmap.gmap.zoomIn();
+				trafficmap.show_incident(incidents, id);
+			}
+
+			setInterval(function () {
+				jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
+					TrafficList.show_incident(incidents, id);
+				});
+			}, 10000);
 		});
 	});
 }
