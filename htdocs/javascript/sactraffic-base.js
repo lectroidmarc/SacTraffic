@@ -3,6 +3,9 @@
  * @requires jQuery
  */
 
+/** Global variable for the traffic map.  Allows other elements to interact with it if it's defined. */
+var trafficmap;
+
 /**
  * Load any HTTP GET params onto a global _GET object.
  */
@@ -20,8 +23,6 @@ document.location.search.replace(/\??(?:([^=]+)(?:=([^&]*))?&?)/g, function () {
  */
 function init_index () {
 	jQuery(document).ready(function() {
-		var trafficmap;
-
 		if (screen.width > 480) {
 			trafficmap = new TrafficMap("map");
 			trafficmap.load_live_cams("/cameras.xml");
@@ -64,8 +65,6 @@ window['init_index'] = init_index;	// Closure-style export: http://code.google.c
  */
 function init_incident (id) {
 	jQuery(document).ready(function() {
-		var trafficmap;
-
 		if (screen.width > 480) {
 			trafficmap = new TrafficMap("map");
 		}
