@@ -55,7 +55,6 @@ function init_index () {
 		}
 
 		get_incidents(trafficmap);
-		setInterval(get_incidents, 60000, trafficmap);
 	});
 }
 window['init_index'] = init_index;	// Closure-style export: http://code.google.com/closure/compiler/docs/api-tutorial3.html#export
@@ -97,6 +96,8 @@ function get_incidents (map) {
 		TrafficList.show_incidents(incidents);
 
 		if (typeof map != "undefined") { map.update(incidents); }
+
+		setTimeout(get_incidents, 60000, map);
 	});
 }
 
