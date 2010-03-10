@@ -20,7 +20,7 @@ What you need to set this stuff up.
 * `Net::Twitter::Lite` (optional, for Twittering)
 * `XML::Simple`
 
-`php` is also used in the web space for some of the dynamic pages.  `Zend_Json::decode` is used for decoding the JSON files because my provider doesn't have php 5.2 yet.  PEAR `XML_Util` is also used since I lack XMLWriter.
+`php` is also used in the web space for some of the dynamic pages.  `Zend_Json::decode` is used for decoding the JSON files because my provider doesn't have php 5.2 yet.
 
 JavaScript and CSS compression
 -----

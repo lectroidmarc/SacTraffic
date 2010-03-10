@@ -1,5 +1,4 @@
 <?php
-	require_once "XML/Util.php";
 	require_once "Zend/Json/Decoder.php";
 
 	$base_url = "http://www.sactraffic.org/";
@@ -46,26 +45,36 @@
 			$title .= " customized listing";
 	}
 
-	print XML_Util::getXMLDeclaration();
-	print XML_Util::createStartElement('rss', array("version" => "2.0", "xmlns:atom" => "http://www.w3.org/2005/Atom", "xmlns:georss" => "http://www.georss.org/georss"));
-	print XML_Util::createStartElement('channel');
-	print XML_Util::createTag('title', null, $title);
-?>
+	$writer = new XMLWriter();
+	$writer->openMemory();
+	$writer->setIndent(true);
 
-	<link>http://www.sactraffic.org/</link>
-	<description>Sacramento area traffic alerts as reported by the Califoria Highway Patrol</description>
-	<ttl>5</ttl>
-	<atom:link href="http://www.sactraffic.org/rss.php" rel="self" type="application/rss+xml" />
+	$writer->startDocument();
+	$writer->startElement('rss');
+	$writer->writeAttribute('version', '2.0');
+	$writer->writeAttribute('xmlns:atom', 'http://www.w3.org/2005/Atom');
+	$writer->writeAttribute('xmlns:georss', 'http://www.georss.org/georss');
 
-	<image>
-		<url>http://www.sactraffic.org/images/sactraffic.png</url>
-		<title>Sacramento Area Traffic Alerts</title>
-		<link>http://www.sactraffic.org/</link>
-		<height>105</height>
-		<width>105</width>
-	</image>
+	$writer->startElement('channel');
+	$writer->writeElement('title', $title);
+	$writer->writeElement('link', 'http://www.sactraffic.org/');
+	$writer->writeElement('description', 'Sacramento area traffic alerts as reported by the Califoria Highway Patrol');
+	$writer->writeElement('ttl', '5');
 
-<?php
+	$writer->startElement('atom:link');
+	$writer->writeAttribute("href", "http://www.sactraffic.org/rss.php");
+	$writer->writeAttribute("rel", "self");
+	$writer->writeAttribute("type", "application/rss+xml");
+	$writer->endElement();	//atom:link
+
+	$writer->startElement('image');
+	$writer->writeElement('url', 'http://www.sactraffic.org/images/sactraffic.png');
+	$writer->writeElement('title', 'Sacramento Area Traffic Alerts');
+	$writer->writeElement('link', 'http://www.sactraffic.org/');
+	$writer->writeElement('height', '105');
+	$writer->writeElement('width', '105');
+	$writer->endElement();	//image
+
 	// Support comma notation
 	if (isset ($_GET['f'])) {
 		$regexp_str = preg_replace('/,\s*/', '|', preg_quote($_GET['f']));
@@ -77,9 +86,9 @@
 		if (isset ($_GET['f']) && !preg_match("/".$regexp_str."/i", $incident->Location))
 			continue;
 
-		print XML_Util::createStartElement('item');
-		print XML_Util::createTag('title', null, $incident->LogType);
-		print XML_Util::createTag('link', null, $base_url."incident.html?id=".$incident->ID);
+		$writer->startElement('item');
+		$writer->writeElement('title', $incident->LogType);
+		$writer->writeElement('link', $base_url."incident.html?id=".$incident->ID);
 
 		if (isset ($incident->TBXY)) {
 			$description = "<a href=\"http://maps.google.com/maps?q=".tbxy2georss($incident->TBXY)."\">".$incident->Location."</a>, ".$incident->Area;
@@ -98,20 +107,33 @@
 			$description .= "</ul>";
 		}
 
-		print XML_Util::createTag('description', null, $description);
-		print XML_Util::createTag('pubDate', null, date("r", $incident->LogTimeEpoch));
-		print XML_Util::createTag('guid', array("isPermaLink" => "false"), $incident->ID);
-		print XML_Util::createTag('source', array("url" => "http://media.chp.ca.gov/sa_xml/sa.xml"), "CHP");
-		print XML_Util::createTag('category', null, $incident->LogTypeId);
+		$writer->writeElement('description', $description);
+		$writer->writeElement('pubDate', date("r", $incident->LogTimeEpoch));
 
-		if (isset ($incident->TBXY))
-			print XML_Util::createTag('georss:point', null, tbxy2georss($incident->TBXY));
+		$writer->startElement('guid');
+		$writer->writeAttribute('isPermaLink', 'false');
+		$writer->text($incident->ID);
+		$writer->endElement();	//guid
 
-		print XML_Util::createEndElement("item");
+		$writer->startElement('source');
+		$writer->writeAttribute('url', 'http://media.chp.ca.gov/sa_xml/sa.xml');
+		$writer->text('CHP');
+		$writer->endElement();	//source
+
+		$writer->writeElement('category', $incident->LogTypeId);
+
+		if (isset($incident->TBXY) && !empty($incident->TBXY)) {
+			$writer->writeElement('georss:point', tbxy2georss($incident->TBXY));
+		}
+
+		$writer->endElement();	//item
 	}
 
-	print XML_Util::createEndElement("channel");
-	print XML_Util::createEndElement("rss");
+	$writer->endElement();	//channel
+	$writer->endElement();	//rss
+
+	echo $writer->outputMemory();
+
 
 	function tbxy2georss ($tbxy) {
 		if (isset($tbxy) && $tbxy != "") {
@@ -120,7 +142,7 @@
 			$lat = $tby * 0.00000274 +  33.172;
 			$lng = $tbx * 0.0000035  - 144.966;
 
-			return $lat.",".$lng;
+			return $lat." ".$lng;
 		} else {
 			return "";
 		}
