@@ -70,18 +70,20 @@ function init_incident (id) {
 		}
 
 		jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
-			TrafficList.show_incident(incidents, id);
+			var incident_exists = TrafficList.show_incident(incidents, id);
 
 			if (typeof trafficmap != "undefined") {
 				trafficmap.gmap.zoomIn();
 				trafficmap.show_incident(incidents, id);
 			}
 
-			setInterval(function () {
-				jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
-					TrafficList.show_incident(incidents, id);
-				});
-			}, 10000);
+			if (incident_exists) {
+				setInterval(function () {
+					jQuery.getJSON("/json/STCC-STCC.json", function (incidents) {
+						TrafficList.show_incident(incidents, id);
+					});
+				}, 10000);
+			}
 		});
 	});
 }

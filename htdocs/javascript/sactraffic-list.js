@@ -138,6 +138,7 @@ var TrafficList = function () {
 		 * Shows a single incident.
 		 * @param {Incident} incidents The incidents object fetched via AJAX.
 		 * @param {String} id The incident ID to show.
+		 * @return {Boolean} Boolean indicating whether the incident exists or not.
 		 */
 		show_incident: function (incidents, id) {
 			var has_incident = false;
@@ -159,6 +160,10 @@ var TrafficList = function () {
 				jQuery('#incidents_above').append(
 					jQuery("<li/>").addClass('noincident').html("The incident you requested does not exist or is no longer active.")
 				);
+
+				return false;
+			} else {
+				return true;
 			}
 		}
 	};
