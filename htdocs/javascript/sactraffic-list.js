@@ -147,8 +147,6 @@ var TrafficList = function () {
 
 			jQuery.each(incidents, function(i, incident) {
 				if (incident.ID == id) {
-					document.title += ": " + incident.LogType;
-					jQuery('#header h1').html(incident.LogType);
 					display_incident(incident).appendTo('#incidents_above');
 					jQuery('#incidents_above .details').show();
 

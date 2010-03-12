@@ -7,18 +7,6 @@
 var trafficmap;
 
 /**
- * Load any HTTP GET params onto a global _GET object.
- */
-var $_GET = {};
-document.location.search.replace(/\??(?:([^=]+)(?:=([^&]*))?&?)/g, function () {
-	$_GET[decode(arguments[1])] = decode(arguments[2]);
-
-	function decode(s) {
-		return decodeURIComponent(s.split("+").join(" "));
-	}
-});
-
-/**
  * Setup code for the index page.
  */
 function init_index () {
