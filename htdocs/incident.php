@@ -103,10 +103,7 @@
 	google.load("jquery", "1");
 	google.load("maps", "2");
 </script>
-<script type="text/javascript" src="/javascript/sactraffic-base.js"></script>
-<script type="text/javascript" src="/javascript/sactraffic-list.js"></script>
-<script type="text/javascript" src="/javascript/sactraffic-map.js"></script>
-<script type="text/javascript" src="/javascript/sactraffic-news.js"></script>
+<script type="text/javascript" src="/javascript/sactraffic.min.js"></script>
 <script type="text/javascript">
 	init_incident("<?php echo $_GET['id']; ?>");
 </script>
