@@ -243,7 +243,7 @@ sub twitter {
 		my $geo = {};
 
 		if ($incident->{'TBXY'} && $incident->{'TBXY'} ne "") {
-			$link = bitlyify("http://www.sactraffic.org/incident.html?id=".$incident->{'ID'}, $bitly_data);
+			$link = bitlyify("http://www.sactraffic.org/incident.php?id=".$incident->{'ID'}, $bitly_data);
 			$geo = tbxy2latlong($incident->{'TBXY'});
 		}
 
