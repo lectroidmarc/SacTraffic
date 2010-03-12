@@ -1,8 +1,32 @@
+<?php
+	require_once "Zend/Json/Decoder.php";
+
+	$title = "";
+	$headline = "Expired or Missing Incident";
+	$chp_info = Zend_Json::decode(file_get_contents("json/STCC-STCC.json"), Zend_Json::TYPE_OBJECT);
+
+	if (isset ($_GET['id'])) {
+		if (preg_match('/^\d{4}\w\d{4}$/', $_GET['id'])) {
+			$title = " #" . $_GET['id'];
+			$headline .= " (#" . $_GET['id'] . ")";
+		}
+
+		for ($x = 0; $x < count($chp_info); $x++) {
+			$incident = $chp_info[$x];
+
+			if ($incident->ID == $_GET['id']) {
+				$title = ": ".$incident->LogType;
+				$headline = $incident->LogType;
+				break;
+			}
+		}
+	}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Sacramento Area Traffic Alert</title>
+<title>Sacramento Area Traffic Alert<?php echo $title; ?></title>
 <meta name="description" content="Sacramento area traffic alerts from the California Highway Patrol."/>
 <meta name="keywords" content="accidents, news, CHP, California Highway Patrol, cars, driving, freeway"/>
 <link rel="shortcut icon" href="/images/sactraffic.png" />
@@ -39,7 +63,7 @@
 
 <div id="content">
 	<div id="header">
-		<h1>Live CHP traffic alerts in the Sacramento area</h1>
+		<h1><?php echo $headline; ?></h1>
 	</div>
 
 	<div id="leftcol">
@@ -79,9 +103,12 @@
 	google.load("jquery", "1");
 	google.load("maps", "2");
 </script>
-<script type="text/javascript" src="/javascript/sactraffic.min.js"></script>
+<script type="text/javascript" src="/javascript/sactraffic-base.js"></script>
+<script type="text/javascript" src="/javascript/sactraffic-list.js"></script>
+<script type="text/javascript" src="/javascript/sactraffic-map.js"></script>
+<script type="text/javascript" src="/javascript/sactraffic-news.js"></script>
 <script type="text/javascript">
-	init_incident($_GET['id']);
+	init_incident("<?php echo $_GET['id']; ?>");
 </script>
 
 <script type="text/javascript">
