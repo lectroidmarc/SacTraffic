@@ -116,7 +116,8 @@ TrafficMap.prototype.show_incident = function (incidents, incident_id) {
 			var marker = this.make_marker(incident);
 			if (marker) {
 				this.gmap.addOverlay(marker);
-				this.gmap.setCenter(marker.getLatLng() , 13);
+				this.center = marker.getLatLng();
+				this.gmap.setCenter(this.center , 13);
 			}
 			break;
 		}
