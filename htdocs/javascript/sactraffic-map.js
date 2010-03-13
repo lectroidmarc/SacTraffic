@@ -93,10 +93,13 @@ TrafficMap.prototype.update = function (incidents) {
 
 	for (var x = 0; x < incidents.length; x++) {
 		var incident = incidents[x];
-		var marker = this.make_marker(incident);
-		if (marker) {
-			this.marker_list[incident.ID] = marker;
-			this.gmap.addOverlay(marker);
+
+		if (incident.Status == "active") {
+			var marker = this.make_marker(incident);
+			if (marker) {
+				this.marker_list[incident.ID] = marker;
+				this.gmap.addOverlay(marker);
+			}
 		}
 	}
 };

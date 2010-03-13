@@ -118,16 +118,18 @@ var TrafficList = function () {
 			jQuery('#mediainfo').empty();
 
 			jQuery.each(incidents, function(i, incident) {
-				if (incident.LogType == "Media Information") {
-					if (incident.LogDetails.details.length > 0) {
-						display_details(incident.LogDetails.details).appendTo('#mediainfo');
-						jQuery('#mediainfo').show();
-					}
-				} else {
-					var incident_ul = (i < 4) ? '#incidents_above' : '#incidents_below';
-					var incident_li = display_incident(incident);
+				if (incident.Status == "active") {
+					if (incident.LogType == "Media Information") {
+						if (incident.LogDetails.details.length > 0) {
+							display_details(incident.LogDetails.details).appendTo('#mediainfo');
+							jQuery('#mediainfo').show();
+						}
+					} else {
+						var incident_ul = (i < 4) ? '#incidents_above' : '#incidents_below';
+						var incident_li = display_incident(incident);
 
-					incident_li.appendTo(incident_ul);
+						incident_li.appendTo(incident_ul);
+					}
 				}
 			});
 
@@ -138,10 +140,12 @@ var TrafficList = function () {
 		 * Shows a single incident.
 		 * @param {Incident} incidents The incidents object fetched via AJAX.
 		 * @param {String} id The incident ID to show.
-		 * @return {Boolean} Boolean indicating whether the incident exists or not.
+		 * @return {Boolean} Boolean indicating whether the incident exists and is active.
 		 */
 		show_incident: function (incidents, id) {
 			var has_incident = false;
+			var is_active = false;
+
 			jQuery('#incidents_above').empty();
 			jQuery('#incidents_below').empty();
 
@@ -151,6 +155,9 @@ var TrafficList = function () {
 					jQuery('#incidents_above .details').show();
 
 					has_incident = true;
+					is_active = (incident.Status == "active") ? true : false;
+
+					return false;
 				}
 			});
 
@@ -161,7 +168,7 @@ var TrafficList = function () {
 
 				return false;
 			} else {
-				return true;
+				return (is_active) ? true : false;
 			}
 		}
 	};
