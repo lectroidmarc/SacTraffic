@@ -17,6 +17,10 @@
 			if ($incident->ID == $_GET['id']) {
 				$title = ": ".$incident->LogType;
 				$headline = $incident->LogType;
+				if ($incident->Status == "inactive") {
+					$headline .= " (no longer active)";
+				}
+
 				break;
 			}
 		}
