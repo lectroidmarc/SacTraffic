@@ -59,7 +59,9 @@
 		<p>The JSON format looks like:</p>
 		<code class="codeblock">[
     {
+        Area: "North Sacramento"
         ID: "0787D1101"
+        Location: "MADISON AV at HACKBERRY LN"
         LogDetails: {
             details: [
                 {
@@ -74,14 +76,13 @@
                 }
             ],
         }
-        ThomasBrothers: "259 7C"
-        LogTypeId: "1182"
-        LogType: "Collision - Non Injury"
-        LogTimeEpoch: "1257095928"
-        TBXY: "6752401:2003123"
-        Area: "North Sacramento"
-        Location: "MADISON AV at HACKBERRY LN"
         LogTime: "11/1/2009 9:18:48 AM"
+        LogTimeEpoch: "1257095928"
+        LogType: "Collision - Non Injury"
+        LogTypeId: "1182"
+        Status: "active",
+        TBXY: "6752401:2003123"
+        ThomasBrothers: "259 7C"
     }
 ]</code>
 		<p>I also have a <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP</a> hook set up through <a href="http://www.sactraffic.org/jsonp.php">http://www.sactraffic.org/jsonp.php</a>.	 Simply pass a <code>callback</code> and a <code>dispatch</code> argument and go nuts.</p>
