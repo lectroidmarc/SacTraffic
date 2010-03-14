@@ -176,8 +176,8 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 		my $new_json_data = $j->objToJson(\@reversed_list);
 
 		# Only udpate the JSON file if we have changes
-		if ($new_json_data ne $old_json_data && @incident_list > 0) {
-			print "Updating '$center-$dispatch' JSON file... " unless $opts{'q'};
+		if ($new_json_data ne $old_json_data) {
+			print "  Updating '$center-$dispatch' JSON file... " unless $opts{'q'};
 
 			open (JSON, ">$json_file") || die $!;
 			print JSON $new_json_data;
@@ -193,8 +193,7 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 					print "gzip failed: $Compress::Zlib::gzerrno... " unless $opts{'q'};
 				}
 			} else {
-				# Not expressly needed as mod_gzip checks
-				# timestamps on static gz files
+				# Delete out-of-date Gzip files...
 				unlink $json_file.".gz" if -f $json_file.".gz";
 			}
 
