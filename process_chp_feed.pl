@@ -50,8 +50,9 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 
 		print "Processing '$center-$dispatch' incidents\n" unless $opts{'q'};
 
-		my $j = JSON::Any->new();
+		my $j = JSON::Any->new(canonical => 1);
 		my @incident_list;
+		my @active_ids;
 		my $old_json_data = "";
 		my $last_logdate;
 
@@ -130,9 +131,12 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 				$details->{'IncidentDetail'} =~ s/\*\*(\w+)/** $1/g;
 			}
 
+			# Set this incident 'active'...
+			$incident->{'Status'} = 'active';
+
 			# More stuff if this is a new incident...
 			if ($is_new_incident) {
-				print "  Final: ".$incident->{'LogType'}.": ".$incident->{'Location'}."\n" unless $opts{'q'};
+				print "    Final: ".$incident->{'LogType'}.": ".$incident->{'Location'}."\n" unless $opts{'q'};
 
 				my $dispatch_config = $config->{'dispatch'}->{$center."-".$dispatch};
 				my $twitter_info = $dispatch_config->{'twitter'};
@@ -148,11 +152,27 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 			}
 
 			# Save it
+			push (@active_ids, $incident_id);
 			push (@incident_list, $incident);
 		}
 
 		# Reverse incident list so the JSON data is in the right order
 		my @reversed_list = reverse (@incident_list);
+
+		# push remaining data less than 6 hours old onto the end of the new data and mark it inactive
+		foreach my $old_incident (@{$j->jsonToObj($old_json_data)}) {
+			if (!grep (/$old_incident->{'ID'}/, @active_ids)) {
+				if ($old_incident->{'LogTimeEpoch'} > (time - 21600)) {
+					$old_incident->{'Status'} = 'inactive';
+					push (@reversed_list, $old_incident);
+					# Uncomment for debugging...
+					#print "  ".$old_incident->{'ID'}." inactive.\n" unless $opts{'q'};
+				} else {
+					print "  ".$old_incident->{'ID'}." removed.\n" unless $opts{'q'};
+				}
+			}
+		}
+
 		my $new_json_data = $j->objToJson(\@reversed_list);
 
 		# Only udpate the JSON file if we have changes
