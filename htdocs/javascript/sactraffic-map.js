@@ -28,7 +28,8 @@ function TrafficMap (elementId) {
 
 	// Set this up per:
 	// http://code.google.com/apis/maps/documentation/index.html#Memory_Leaks
-	jQuery(window).unload( function () { GUnload(); } );
+	// Note: .unload() broken in IE7
+	//jQuery(window).unload( function () { GUnload(); } );
 }
 
 /**
