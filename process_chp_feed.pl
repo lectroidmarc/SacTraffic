@@ -53,7 +53,7 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 		my $j = JSON::Any->new(canonical => 1);
 		my @incident_list;
 		my @active_ids;
-		my $old_json_data = "";
+		my $old_json_data = "[]";
 		my $last_logdate;
 
 		my $incidents = $chp_feed->{'Center'}->{$center}->{'Dispatch'}->{$dispatch}->{'Log'};
