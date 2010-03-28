@@ -44,6 +44,10 @@ my $have_twitter = ($@) ? 0 : 1;
 eval { require Compress::Zlib; };
 my $have_gzip = ($@) ? 0 : 1;
 
+# Test for PuSH support...
+eval { require Net::PubSubHubbub::Publisher; };
+my $have_pubsub = ($@) ? 0 : 1;
+
 foreach my $center (keys %{$chp_feed->{'Center'}}) {
 	foreach my $dispatch (keys %{$chp_feed->{'Center'}->{$center}->{'Dispatch'}}) {
 		next if ($dispatch eq "");	# Sometimes the dispatch comes up blank, it's rare, but avoid it.
@@ -195,6 +199,17 @@ foreach my $center (keys %{$chp_feed->{'Center'}}) {
 			} else {
 				# Delete out-of-date Gzip files...
 				unlink $json_file.".gz" if -f $json_file.".gz";
+			}
+
+			my $push_info = $config->{'dispatch'}->{$center."-".$dispatch}->{'pubsubhub'};
+
+			if ($have_pubsub && $push_info) {
+				print "pinging... " unless $opts{'q'};
+				my $pub = Net::PubSubHubbub::Publisher->new(hub => $push_info->{'hub'});
+
+				if (!$pub->publish_update($push_info->{'topic'})) {
+					print "ping failed: " . $pub->last_response->status_line unless $opts{'q'};
+				}
 			}
 
 			print "done.\n" unless $opts{'q'};
