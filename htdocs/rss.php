@@ -1,8 +1,13 @@
 <?php
 	require_once "Zend/Json/Decoder.php";
 
+	$dispatch = 'STCC-STCC';
+	if (isset($_GET['dispatch']) && preg_match('/^[A-Z]{4}-[A-Z]{4}$/', $_GET['dispatch']) && file_exists("json/".$_GET['dispatch'].".json")) {
+		$dispatch = $_GET['dispatch'];
+	}
+
 	$base_url = "http://www.sactraffic.org/";
-	$last_mod = date ("D, d M Y H:i:s T", filemtime("json/STCC-STCC.json"));
+	$last_mod = date ("D, d M Y H:i:s T", filemtime("json/$dispatch.json"));
 	$etag = sha1($last_mod);
 
 	// Check conditional headers...
@@ -17,8 +22,8 @@
 		exit;
 	}
 
-	#$chp_info = json_decode(file_get_contents("json/STCC-STCC.json"));
-	$chp_info = Zend_Json::decode(file_get_contents("json/STCC-STCC.json"), Zend_Json::TYPE_OBJECT);
+	#$chp_info = json_decode(file_get_contents("json/$dispatch.json"));
+	$chp_info = Zend_Json::decode(file_get_contents("json/$dispatch.json"), Zend_Json::TYPE_OBJECT);
 
 	header('Content-type: application/rss+xml');
 	header('Etag: '.$etag);
@@ -67,6 +72,13 @@
 	$writer->writeAttribute("type", "application/rss+xml");
 	$writer->endElement();	//atom:link
 
+	if (!isset($_GET['f'])) {	// Don't use a hub for custom RSS feeds since we don't ping for them
+		$writer->startElement('atom:link');
+		$writer->writeAttribute("href", "http://pubsubhubbub.appspot.com");
+		$writer->writeAttribute("rel", "hub");
+		$writer->endElement();	//atom:link
+	}
+
 	$writer->startElement('image');
 	$writer->writeElement('url', 'http://www.sactraffic.org/images/sactraffic.png');
 	$writer->writeElement('title', 'Sacramento Area Traffic Alerts');
@@ -82,6 +94,9 @@
 
 	for ($x = 0; $x < count($chp_info); $x++) {
 		$incident = $chp_info[$x];
+
+		if ($incident->Status == "inactive")
+			continue;
 
 		if (isset ($_GET['f']) && !preg_match("/".$regexp_str."/i", $incident->Location))
 			continue;
