@@ -122,6 +122,7 @@
 	pageTracker._trackPageview();
 </script>
 
+<script type="text/javascript" src="http://media.sacbee.com/static/sacconnect/sacconnect-min.js"></script>
 </body>
 </html>
 <!--
