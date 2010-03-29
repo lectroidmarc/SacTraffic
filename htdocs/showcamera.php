@@ -25,6 +25,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Live Traffic Camera: <?php echo $name?></title>
+<meta name="description" content="Live video feed of Sacramento traffic conditions."/>
+<meta name="keywords" content="accidents, news, CHP, California Highway Patrol, cars, driving, freeway, video, live"/>
 <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 
