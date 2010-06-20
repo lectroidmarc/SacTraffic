@@ -61,32 +61,17 @@ class UpdateHandler(webapp.RequestHandler):
 						#
 						# Special handling for the LogDetails
 						#
-						LogDetails = {}
+						LogDetails = {
+							'details': [],
+							'units': []
+						}
 						logdetails_element = chpLog.find('LogDetails')
-
-						# details
-						#
-						details = []
-						details_element = logdetails_element.findall('details')
-						for element in details_element:
+						for element in logdetails_element:
 							detail_dict = {
 								'DetailTime': element.find('DetailTime').text.strip('"'),
 								'IncidentDetail': element.find('IncidentDetail').text.strip('"')
 							}
-							details.append(detail_dict)
-						LogDetails['details'] = details
-
-						# units
-						#
-						units = []
-						units_element = logdetails_element.findall('units')
-						for element in units_element:
-							detail_dict = {
-								'DetailTime': element.find('DetailTime').text.strip('"'),
-								'IncidentDetail': element.find('IncidentDetail').text.strip('"')
-							}
-							units.append(detail_dict)
-						LogDetails['units'] = units
+							LogDetails[element.tag].append(detail_dict)
 
 						incident.LogDetails = pickle.dumps(LogDetails)
 
