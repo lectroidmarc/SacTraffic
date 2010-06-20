@@ -32,12 +32,19 @@ class UpdateHandler(webapp.RequestHandler):
 							DispatchID = chpDispatch.attrib['ID'],
 							LogID = chpLog.attrib['ID'],
 							LogTime = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific()),
-							LogType = chpLog.find('LogType').text.strip('"'),
 							Location = deCopIfy(chpLog.find('Location').text.strip('"')),
 							Area = chpLog.find('Area').text.strip('"'),
 							ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"'),
 							TBXY = chpLog.find('TBXY').text.strip('"')
 							)
+
+
+						#
+						# LogType/LogTypeID
+						#
+						logtype = chpLog.find('LogType').text.strip('"').partition(" - ")
+						incident.LogTypeID = logtype[0]
+						incident.LogType = logtype[2]
 
 
 						#
@@ -92,33 +99,55 @@ class UpdateHandler(webapp.RequestHandler):
 		self.response.out.write(template.render("../templates/update.html", template_values))
 
 
+# Use app cahing and regex compiling
+reJNO = re.compile(r'\bJNO\b', re.I)
+reJSO = re.compile(r'\bJSO\b', re.I)
+reJEO = re.compile(r'\bJEO\b', re.I)
+reJWO = re.compile(r'\bJWO\b', re.I)
+
+reNB = re.compile(r'\bNB\b', re.I)
+reSB = re.compile(r'\bSB\b', re.I)
+reEB = re.compile(r'\bEB\b', re.I)
+reWB = re.compile(r'\bWB\b', re.I)
+
+reOFR = re.compile(r'\bOFR\b', re.I)
+reONR = re.compile(r'\bONR\b', re.I)
+reCON = re.compile(r'\bCON\b', re.I)
+
+reAT = re.compile(r'\bAT\b', re.I)
+reON = re.compile(r'\bON\b', re.I)
+reTO = re.compile(r'\bTO\b', re.I)
+
+reSR51 = re.compile(r'\bSR51\b', re.I)
+
 def deCopIfy(text):
-	text = re.sub(r'\bJNO\b', 'just north of', text)
-	text = re.sub(r'\bJSO\b', 'just south of', text)
-	text = re.sub(r'\bJEO\b', 'just east of', text)
-	text = re.sub(r'\bJWO\b', 'just west of', text)
+	text = re.sub(reJNO, 'just north of', text)
+	text = re.sub(reJSO, 'just south of', text)
+	text = re.sub(reJEO, 'just east of', text)
+	text = re.sub(reJWO, 'just west of', text)
 
-	text = re.sub(r'\bNB\b', 'north bound', text)
-	text = re.sub(r'\bSB\b', 'south bound', text)
-	text = re.sub(r'\bEB\b', 'east bound', text)
-	text = re.sub(r'\bWB\b', 'west bound', text)
+	text = re.sub(reNB, 'north bound', text)
+	text = re.sub(reSB, 'south bound', text)
+	text = re.sub(reEB, 'east bound', text)
+	text = re.sub(reWB, 'west bound', text)
 
-	text = re.sub(r'\bOFR\b', 'offramp', text)
-	text = re.sub(r'\bONR\b', 'onramp', text)
-	text = re.sub(r'\bCON\b', 'connector', text)
+	text = re.sub(reOFR, 'offramp', text)
+	text = re.sub(reONR, 'onramp', text)
+	text = re.sub(reCON, 'connector', text)
 
-	text = re.sub(r'\bAT\b', 'at', text)
-	text = re.sub(r'\bON\b', 'on', text)
-	text = re.sub(r'\bTO\b', 'to', text)
+	text = re.sub(reAT, 'at', text)
+	text = re.sub(reON, 'on', text)
+	text = re.sub(reTO, 'to', text)
 
-	text = re.sub(r'\bSR51\b', 'CAP CITY FWY', text)
+	text = re.sub(reSR51, 'CAP CITY FWY', text)
 
 	return text
 
 
-def main():
-	application = webapp.WSGIApplication([('/update', UpdateHandler)],
+application = webapp.WSGIApplication([('/update', UpdateHandler)],
 										 debug=True)
+
+def main():
 	util.run_wsgi_app(application)
 
 
