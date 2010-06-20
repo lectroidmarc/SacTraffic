@@ -6,6 +6,7 @@ class CHPIncident(db.Model):
 	LogID = db.StringProperty(required=True)
 	LogTime = db.DateTimeProperty()
 	LogType = db.StringProperty()
+	LogTypeID = db.StringProperty()
 	Location = db.StringProperty()
 	Area = db.StringProperty()
 	ThomasBrothers = db.StringProperty()
