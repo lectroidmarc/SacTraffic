@@ -28,7 +28,10 @@ class JsonHandler(webapp.RequestHandler):
 			}
 
 			if incident.geolocation is not None:
-				incident_dict['geolocation'] = str(incident.geolocation.lat) + "," + str(incident.geolocation.lon)
+				incident_dict['geolocation'] = {
+					'lat': incident.geolocation.lat,
+					'lon': incident.geolocation.lon
+				}
 
 			if incident.last_update < datetime.utcnow() - timedelta(minutes=5):
 				incident_dict['Status'] = 'inactive'
