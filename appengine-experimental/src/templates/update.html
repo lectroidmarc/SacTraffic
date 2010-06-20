@@ -1,0 +1,21 @@
+<html>
+<head>
+	<title>Updated CHP Data</title>
+	<link rel="stylesheet" type="text/css" href="/styles/styles.css" media="screen" />
+</title>
+
+<body>
+<p>Loaded {{ count }} incidents:</p>
+
+<ul>
+{% for incident in incidents %}
+	<li>
+		<span class="dispatch">{{ incident.CenterID }}-{{ incident.DispatchID }}</span>
+		<span class="logid">{{ incident.LogID }}</span>
+		<span class="logtype">{{ incident.LogType }}</span>
+		<span class="location">{{ incident.Location }}</span>
+	</li>
+{% endfor %}
+</ul>
+</body>
+</html>

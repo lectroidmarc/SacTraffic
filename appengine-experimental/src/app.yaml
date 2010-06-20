@@ -1,0 +1,33 @@
+application: sactraffic
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+
+# Static handlers
+
+- url: /(.*\.(html|css|js))
+  static_files: static/\1
+  upload: static/(.*\.(html|css|js))
+
+- url: /favicon.ico
+  static_files: static/images/favicon.ico
+  upload: static/images/favicon.ico
+  expiration: "30d"
+
+# Dynamic handlers
+
+- url: /json
+  script: handlers/json.py
+
+- url: /rss
+  script: handlers/rss.py
+
+- url: /update
+  script: handlers/update.py
+  login: admin
+
+- url: /purge
+  script: handlers/purge.py
+  login: admin
