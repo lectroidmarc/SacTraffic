@@ -1,55 +1,45 @@
-
 from google.appengine.ext import db
 from models import CHPIncident
 
 import hashlib
-import logging
 
-def isNotModified(webapp):
+def getLastMod(webapp):
 	center = webapp.request.get("center")
 	dispatch = webapp.request.get("dispatch")
 	area = webapp.request.get("area")
 
-	query = CHPIncident.all()
-	query.order('-last_update')
+	last_update_query = CHPIncident.all()
+	last_update_query.order('-last_update')
 	if center != "":
-		query.filter('CenterID =', center)
+		last_update_query.filter('CenterID =', center)
 	if dispatch != "":
-		query.filter('DispatchID =', dispatch)
+		last_update_query.filter('DispatchID =', dispatch)
 	if area != "":
-		query.filter('Area =', area)
+		last_update_query.filter('Area =', area)
 
-	last_mod = query.get().last_update.strftime("%a, %d %b %Y %H:%M:%S GMT")
+	last_mod_entity = last_update_query.get()
+	if last_mod_entity is not None:
+		return last_mod_entity.last_update.strftime("%a, %d %b %Y %H:%M:%S GMT")
 
-	logging.info(last_mod)
+	return None
 
-	# HTTP/1.1
-	if 'If-None-Match' in webapp.request.headers and webapp.request.headers['If-None-Match'] == hashlib.sha1(last_mod).hexdigest():
-		webapp.response.set_status(304)
-		return True;
 
-	# HTTP/1.0
-	if 'If-Modified-Since' in webapp.request.headers and webapp.request.headers['If-Modified-Since'] == last_mod:
-		webapp.response.set_status(304)
-		return True;
+def isNotModified(webapp, last_mod):
+	if last_mod is not None:
+		# HTTP/1.1
+		if 'If-None-Match' in webapp.request.headers and webapp.request.headers['If-None-Match'] == hashlib.sha1(last_mod).hexdigest():
+			webapp.response.set_status(304)
+			return True;
+
+		# HTTP/1.0
+		if 'If-Modified-Since' in webapp.request.headers and webapp.request.headers['If-Modified-Since'] == last_mod:
+			webapp.response.set_status(304)
+			return True;
 
 	return False;
 
-def setConditionHeaders(webapp):
-	center = webapp.request.get("center")
-	dispatch = webapp.request.get("dispatch")
-	area = webapp.request.get("area")
 
-	query = CHPIncident.all()
-	query.order('-last_update')
-	if center != "":
-		query.filter('CenterID =', center)
-	if dispatch != "":
-		query.filter('DispatchID =', dispatch)
-	if area != "":
-		query.filter('Area =', area)
-
-	last_mod = query.get().last_update.strftime("%a, %d %b %Y %H:%M:%S GMT")
-
-	webapp.response.headers["Last-Modified"] = last_mod
-	webapp.response.headers["ETag"] = '"'+hashlib.sha1(last_mod).hexdigest()+'"'
+def setConditionalHeaders(webapp, last_mod):
+	if last_mod is not None:
+		webapp.response.headers["Last-Modified"] = last_mod
+		webapp.response.headers["ETag"] = '"'+hashlib.sha1(last_mod).hexdigest()+'"'

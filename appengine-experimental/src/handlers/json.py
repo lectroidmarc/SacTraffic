@@ -13,25 +13,25 @@ import conditional_http
 
 class JsonHandler(webapp.RequestHandler):
 	def get(self):
-		if conditional_http.isNotModified(self):
-			return
-
-		output_list = []
-
 		center = self.request.get("center")
 		dispatch = self.request.get("dispatch")
 		area = self.request.get("area")
 
-		query = CHPIncident.all()
-		query.order('-LogTime')
-		if center != "":
-			query.filter('CenterID =', center)
-		if dispatch != "":
-			query.filter('DispatchID =', dispatch)
-		if area != "":
-			query.filter('Area =', area)
+		last_mod = conditional_http.getLastMod(self)
+		if conditional_http.isNotModified(self, last_mod):
+			return
 
-		for incident in query:
+		incident_query = CHPIncident.all()
+		incident_query.order('-LogTime')
+		if center != "":
+			incident_query.filter('CenterID =', center)
+		if dispatch != "":
+			incident_query.filter('DispatchID =', dispatch)
+		if area != "":
+			incident_query.filter('Area =', area)
+
+		output_list = []
+		for incident in incident_query:
 			incident_dict = {
 				'Area': incident.Area,
 				'ID': incident.LogID,
@@ -67,7 +67,7 @@ class JsonHandler(webapp.RequestHandler):
 
 
 		self.response.headers["Content-Type"] = "application/json"
-		conditional_http.setConditionHeaders(self)
+		conditional_http.setConditionalHeaders(self, last_mod)
 
 		callback = self.request.get("callback")
 		if callback != "":
