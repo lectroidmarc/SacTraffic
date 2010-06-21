@@ -9,9 +9,13 @@ from tzinfo import Pacific
 from datetime import datetime, timedelta
 import pickle
 import time
+import conditional_http
 
 class JsonHandler(webapp.RequestHandler):
 	def get(self):
+		if conditional_http.isNotModified(self):
+			return
+
 		output_list = []
 
 		center = self.request.get("center")
@@ -63,6 +67,7 @@ class JsonHandler(webapp.RequestHandler):
 
 
 		self.response.headers["Content-Type"] = "application/json"
+		conditional_http.setConditionHeaders(self)
 
 		callback = self.request.get("callback")
 		if callback != "":
