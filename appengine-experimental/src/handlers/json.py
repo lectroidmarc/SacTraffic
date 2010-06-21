@@ -14,7 +14,19 @@ class JsonHandler(webapp.RequestHandler):
 	def get(self):
 		output_list = []
 
-		query = CHPIncident.gql("WHERE CenterID = :center AND DispatchID = :dispatch ORDER BY LogTime DESC", center=self.request.get("center", "STCC"), dispatch=self.request.get("dispatch", "STCC"))
+		center = self.request.get("center")
+		dispatch = self.request.get("dispatch")
+		area = self.request.get("area")
+
+		query = CHPIncident.all()
+		query.order('-LogTime')
+		if center != "":
+			query.filter('CenterID =', center)
+		if dispatch != "":
+			query.filter('DispatchID =', dispatch)
+		if area != "":
+			query.filter('Area =', area)
+
 		for incident in query:
 			incident_dict = {
 				'Area': incident.Area,
