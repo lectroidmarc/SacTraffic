@@ -52,10 +52,16 @@ class UpdateHandler(webapp.RequestHandler):
 						#
 						if incident.TBXY != "":
 							tbxy = incident.TBXY.partition(":")
-							incident.geolocation = db.GeoPt(
-								lat = float(tbxy[2]) * 0.00000274 +	 33.172,
-								lon = float(tbxy[0]) * 0.0000035  - 144.966
-							)
+							if incident.CenterID == "STCC":
+								incident.geolocation = db.GeoPt(
+									lat = float(tbxy[2]) * 0.00000274 +	 33.172,
+									lon = float(tbxy[0]) * 0.0000035  - 144.966
+								)
+							elif incident.CenterID == "SLCC":
+								incident.geolocation = db.GeoPt(
+									lat = float(tbxy[2]) * 0.00000275 +	 30.054,
+									lon = float(tbxy[0]) * 0.00000329 - 126.589
+								)
 
 
 						#
@@ -74,6 +80,7 @@ class UpdateHandler(webapp.RequestHandler):
 							LogDetails[element.tag].append(detail_dict)
 
 						incident.LogDetails = pickle.dumps(LogDetails)
+
 
 						incident.put()
 						incident_list.append(incident)
