@@ -2,9 +2,67 @@
 <head>
 	<title>traffic</title>
 	<link rel="stylesheet" type="text/css" href="/styles/styles.css" media="screen" />
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 	<script type="text/javascript" src="/javascript/traffic.js"></script>
+
+	<script type="text/javascript">
+		var map;
+		var incident_markers = [];
+
+		function initialize() {
+			var latlng = new google.maps.LatLng(37.5, -119.2);
+			var myOptions = {
+				zoom: 6,
+				center: latlng,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+			update_incidents();
+		}
+
+		function update_incidents () {
+			jQuery.getJSON("/json", function (data) {
+				jQuery.each(data, function (i, incident) {
+					if (incident.geolocation && (incident.Status == "new" || incident.Status == "active")) {
+						var infowindow = new google.maps.InfoWindow({
+							content: incident.LogType + "<br/>" + incident.Location + "<br/>" + incident.Area
+						});
+
+						var marker = new google.maps.Marker({
+							position: new google.maps.LatLng(incident.geolocation.lat, incident.geolocation.lon),
+							map: map,
+							title: incident.LogType
+						});
+
+						incident_markers.push(marker);
+
+						google.maps.event.addListener(marker, 'click', function() {
+							infowindow.open(map, marker);
+						});
+					}
+				});
+
+				//setTimeout(update_incidents, 60000);
+			});
+		}
+
+		function clear_incidents() {
+			for (var x = 0; x < incident_markers.length; x++) {
+				incident_markers[x].setMap();
+			}
+
+			incident_markers = [];
+		}
+
+		jQuery(document).ready(function() {
+			initialize();
+		});
+	</script>
 </head>
 
 <body>
+<div id="map" style="height:650px; width:500px; border: 1px solid #ccc"></div>
 </body>
 </html>
