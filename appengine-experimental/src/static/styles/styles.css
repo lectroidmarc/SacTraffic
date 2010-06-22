@@ -25,3 +25,7 @@ span.location {
 	height: 650px;
 	width: 500px;
 }
+
+#map .logtype {
+	font-weight: bold;
+}
