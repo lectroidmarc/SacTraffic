@@ -4,7 +4,6 @@ from google.appengine.ext import db
 from django.utils import simplejson as json
 
 from models import CHPIncident
-from tzinfo import Pacific
 
 from datetime import datetime, timedelta
 import pickle
