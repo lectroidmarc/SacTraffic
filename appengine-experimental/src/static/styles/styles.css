@@ -22,10 +22,25 @@ span.location {
 
 #map {
 	border: 1px solid #ccc;
-	height: 650px;
-	width: 500px;
+	height: 100%;
+	width: 100%;
 }
 
 #map .logtype {
 	font-weight: bold;
+}
+
+#map .logtime {
+	font-style: italic;
+}
+
+/**
+ * Smartphone overrides.
+ */
+@media only screen and (max-device-width: 480px) {
+	body {
+		border: 0;
+		margin: 0;
+		padding: 0;
+	}
 }

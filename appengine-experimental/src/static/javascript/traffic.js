@@ -18,7 +18,7 @@ function update_incidents () {
 		jQuery.each(data, function (i, incident) {
 			if (incident.geolocation && (incident.Status == "new" || incident.Status == "active")) {
 				var infowindow = new google.maps.InfoWindow({
-					content: '<div class="logtype">' + incident.LogType + '</div><div class="location">' + incident.Location + '</div><div class="area">' + incident.Area + '</div>'
+					content: '<div class="logtype">' + incident.LogType + '</div><div class="location">' + incident.Location + '</div><div class="area">' + incident.Area + '</div><div class="logtime">' + incident.LogTime + '</div>'
 				});
 
 				if (incident_markers[incident.ID]) {
