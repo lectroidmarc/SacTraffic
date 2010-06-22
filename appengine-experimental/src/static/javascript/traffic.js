@@ -40,21 +40,20 @@ function update_incidents () {
 					});
 
 					incident_markers[incident.ID] = marker;
-					//incident_markers[incident.ID]['listener'] = listener;
 				}
 			} else if (incident.geolocation) {
 				// old incident
 				if (incident_markers[incident.ID]) {
 					// marker exists, we should do something with it...
-					//incident_markers[incident.ID].setIcon("/path/to/something/gray.png");
+					incident_markers[incident.ID].setIcon("http://www.google.com/mapfiles/markerA.png");
 
-					incident_markers[incident.ID].setMap();
-					delete incident_markers[incident.ID];
+					//incident_markers[incident.ID].setMap();
+					//delete incident_markers[incident.ID];
 				}
 			}
 		});
 
-		//setTimeout(update_incidents, 60000);
+		setTimeout(update_incidents, 60000);
 	});
 }
 
