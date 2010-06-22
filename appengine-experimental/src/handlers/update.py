@@ -92,46 +92,31 @@ class UpdateHandler(webapp.RequestHandler):
 
 
 # Use app cahing and regex compiling
-reJNO = re.compile(r'\bJNO\b', re.I)
-reJSO = re.compile(r'\bJSO\b', re.I)
-reJEO = re.compile(r'\bJEO\b', re.I)
-reJWO = re.compile(r'\bJWO\b', re.I)
+coplingo = [
+	{ 'regex': re.compile(r'\bJNO\b', re.I), 'str': "just north of" },
+	{ 'regex': re.compile(r'\bJSO\b', re.I), 'str': "just south of" },
+	{ 'regex': re.compile(r'\bJEO\b', re.I), 'str': "just east of" },
+	{ 'regex': re.compile(r'\bJWO\b', re.I), 'str': "just west of" },
 
-reNB = re.compile(r'\bNB\b', re.I)
-reSB = re.compile(r'\bSB\b', re.I)
-reEB = re.compile(r'\bEB\b', re.I)
-reWB = re.compile(r'\bWB\b', re.I)
+	{ 'regex': re.compile(r'\bNB\b', re.I), 'str': "north bound" },
+	{ 'regex': re.compile(r'\bSB\b', re.I), 'str': "south bound" },
+	{ 'regex': re.compile(r'\bEB\b', re.I), 'str': "east bound" },
+	{ 'regex': re.compile(r'\bWB\b', re.I), 'str': "west bound" },
 
-reOFR = re.compile(r'\bOFR\b', re.I)
-reONR = re.compile(r'\bONR\b', re.I)
-reCON = re.compile(r'\bCON\b', re.I)
+	{ 'regex': re.compile(r'\bOFR\b', re.I), 'str': "offramp" },
+	{ 'regex': re.compile(r'\bONR\b', re.I), 'str': "onramp" },
+	{ 'regex': re.compile(r'\bCON\b', re.I), 'str': "connector" },
 
-reAT = re.compile(r'\bAT\b', re.I)
-reON = re.compile(r'\bON\b', re.I)
-reTO = re.compile(r'\bTO\b', re.I)
+	{ 'regex': re.compile(r'\bAT\b', re.I), 'str': "at" },
+	{ 'regex': re.compile(r'\bON\b', re.I), 'str': "on" },
+	{ 'regex': re.compile(r'\bTO\b', re.I), 'str': "to" },
 
-reSR51 = re.compile(r'\bSR51\b', re.I)
+	{ 'regex': re.compile(r'\bSR51\b', re.I), 'str': "CAP CITY FWY" }
+]
 
 def deCopIfy(text):
-	text = re.sub(reJNO, 'just north of', text)
-	text = re.sub(reJSO, 'just south of', text)
-	text = re.sub(reJEO, 'just east of', text)
-	text = re.sub(reJWO, 'just west of', text)
-
-	text = re.sub(reNB, 'north bound', text)
-	text = re.sub(reSB, 'south bound', text)
-	text = re.sub(reEB, 'east bound', text)
-	text = re.sub(reWB, 'west bound', text)
-
-	text = re.sub(reOFR, 'offramp', text)
-	text = re.sub(reONR, 'onramp', text)
-	text = re.sub(reCON, 'connector', text)
-
-	text = re.sub(reAT, 'at', text)
-	text = re.sub(reON, 'on', text)
-	text = re.sub(reTO, 'to', text)
-
-	text = re.sub(reSR51, 'CAP CITY FWY', text)
+	for lingo in coplingo:
+		text = re.sub(lingo['regex'], lingo['str'], text)
 
 	return text[0].upper() + text[1:]
 
