@@ -133,7 +133,7 @@ def deCopIfy(text):
 
 	text = re.sub(reSR51, 'CAP CITY FWY', text)
 
-	return text
+	return text[0].upper() + text[1:]
 
 
 application = webapp.WSGIApplication([('/update', UpdateHandler)],
