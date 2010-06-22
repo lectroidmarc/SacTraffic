@@ -1,8 +1,8 @@
 cron:
 - description: Fetches the CHP data and updates the datastore.
   url: /update
-  schedule: every 10 minutes
+  schedule: every 5 minutes
 
-- description: Purges old data (anything over a day old) from the datastore.
+- description: Purges old data (anything over 6 hours) from the datastore.
   url: /purge
   schedule: every 1 hours
