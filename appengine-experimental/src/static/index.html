@@ -8,7 +8,7 @@
 
 	<script type="text/javascript">
 		var map;
-		var incident_markers = [];
+		var incident_markers = {};
 
 		function initialize() {
 			var latlng = new google.maps.LatLng(37.5, -119.2);
@@ -30,17 +30,36 @@
 							content: incident.LogType + "<br/>" + incident.Location + "<br/>" + incident.Area
 						});
 
-						var marker = new google.maps.Marker({
-							position: new google.maps.LatLng(incident.geolocation.lat, incident.geolocation.lon),
-							map: map,
-							title: incident.LogType
-						});
+						if (incident_markers[incident.ID]) {
+							// Marker exists, just update the info window...
+							google.maps.event.clearInstanceListeners(incident_markers[incident.ID]);
 
-						incident_markers.push(marker);
+							google.maps.event.addListener(incident_markers[incident.ID], 'click', function() {
+								infowindow.open(map, incident_markers[incident.ID]);
+							});
+						} else {
+							var marker = new google.maps.Marker({
+								position: new google.maps.LatLng(incident.geolocation.lat, incident.geolocation.lon),
+								map: map,
+								title: incident.LogType
+							});
 
-						google.maps.event.addListener(marker, 'click', function() {
-							infowindow.open(map, marker);
-						});
+							var listener = google.maps.event.addListener(marker, 'click', function() {
+								infowindow.open(map, marker);
+							});
+
+							incident_markers[incident.ID] = marker;
+							//incident_markers[incident.ID]['listener'] = listener;
+						}
+					} else {
+						// old incident
+						if (incident_markers[incident.ID]) {
+							// marker exists, we should do something with it...
+							//incident_markers[incident.ID].setIcon("/path/to/something/gray.png");
+
+							incident_markers[incident.ID].setMap();
+							delete incident_markers[incident.ID];
+						}
 					}
 				});
 
@@ -49,11 +68,11 @@
 		}
 
 		function clear_incidents() {
-			for (var x = 0; x < incident_markers.length; x++) {
+			for (var x in incident_markers) {
 				incident_markers[x].setMap();
 			}
 
-			incident_markers = [];
+			incident_markers = {};
 		}
 
 		jQuery(document).ready(function() {
