@@ -2,13 +2,21 @@ var map;
 var incident_markers = {};
 
 function initialize() {
-	var latlng = new google.maps.LatLng(37.5, -119.2);
+	var default_center = new google.maps.LatLng(37.5, -119.2);
 	var myOptions = {
 		zoom: 6,
-		center: latlng,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
+		center: default_center,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		mapTypeControl: false
 	};
 	map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(function (position) {
+			var user_location = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+			map.setCenter(user_location);
+		});
+    }
 
 	update_incidents();
 }
