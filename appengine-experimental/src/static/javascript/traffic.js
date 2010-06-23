@@ -28,11 +28,17 @@ function update_incidents () {
 					google.maps.event.addListener(incident_markers[incident.ID], 'click', function() {
 						infowindow.open(map, incident_markers[incident.ID]);
 					});
+
+					// and the icon
+					incident_markers[incident.ID].setIcon("http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=caution|FF0000");
 				} else {
+					var icon_url = (incident.Status == "new") ? "http://chart.apis.google.com/chart?chst=d_map_xpin_icon&chld=pin_star|caution|FF0000|FFFF00" : "http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=caution|FF0000";
+
 					var marker = new google.maps.Marker({
 						position: new google.maps.LatLng(incident.geolocation.lat, incident.geolocation.lon),
 						map: map,
-						title: incident.LogType
+						title: incident.LogType,
+						icon: icon_url
 					});
 
 					var listener = google.maps.event.addListener(marker, 'click', function() {
@@ -45,7 +51,7 @@ function update_incidents () {
 				// old incident
 				if (incident_markers[incident.ID]) {
 					// marker exists, we should do something with it...
-					incident_markers[incident.ID].setIcon("http://www.google.com/mapfiles/markerA.png");
+					incident_markers[incident.ID].setIcon("http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=caution|bbbbbb");
 
 					//incident_markers[incident.ID].setMap();
 					//delete incident_markers[incident.ID];
