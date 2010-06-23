@@ -10,6 +10,7 @@ from datetime import datetime
 
 from tzinfo import Pacific
 
+import logging
 import pickle
 import re
 
@@ -17,77 +18,87 @@ class UpdateHandler(webapp.RequestHandler):
 	def get(self):
 		template_values = {}
 
-		result = urlfetch.fetch("http://media.chp.ca.gov/sa_xml/sa.xml")
+		try:
+			result = urlfetch.fetch("http://media.chp.ca.gov/sa_xml/sa.xml")
+		except urlfetch.DownloadError:
+			error = "DownloadError. CHP request took too long."
+			logging.warning(error)
+			template_values['error'] = error
+		else:
+			if result.status_code == 200:
+				incident_list = []
 
-		if result.status_code == 200:
-			incident_list = []
+				chpState = ElementTree.XML(result.content)
 
-			chpState = ElementTree.XML(result.content)
-
-			for chpCenter in chpState:
-				for chpDispatch in chpCenter:
-					for chpLog in chpDispatch:
-						incident = CHPIncident.get_by_key_name(chpLog.attrib['ID'])
-						if incident is None:
-							incident = CHPIncident(key_name = chpLog.attrib['ID'],
-								CenterID = chpCenter.attrib['ID'],
-								DispatchID = chpDispatch.attrib['ID'],
-								LogID = chpLog.attrib['ID'],
-								LogTime = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific()),
-								Location = deCopIfy(chpLog.find('Location').text.strip('"')),
-								Area = chpLog.find('Area').text.strip('"'),
-								ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"'),
-								TBXY = chpLog.find('TBXY').text.strip('"')
-								)
-
-							#
-							# Geocoding
-							#
-							if incident.TBXY != "":
-								tbxy = incident.TBXY.partition(":")
-								if incident.CenterID == "STCC":
-									incident.geolocation = db.GeoPt(
-										lat = float(tbxy[2]) * 0.00000274 +	 33.172,
-										lon = float(tbxy[0]) * 0.0000035  - 144.966
-									)
-								elif incident.CenterID == "SLCC":
-									incident.geolocation = db.GeoPt(
-										lat = float(tbxy[2]) * 0.00000275 +	 30.054,
-										lon = float(tbxy[0]) * 0.00000329 - 126.589
+				for chpCenter in chpState:
+					for chpDispatch in chpCenter:
+						for chpLog in chpDispatch:
+							incident = CHPIncident.get_by_key_name(chpLog.attrib['ID'])
+							if incident is None:
+								incident = CHPIncident(key_name = chpLog.attrib['ID'],
+									CenterID = chpCenter.attrib['ID'],
+									DispatchID = chpDispatch.attrib['ID'],
+									LogID = chpLog.attrib['ID'],
+									LogTime = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific()),
+									Location = deCopIfy(chpLog.find('Location').text.strip('"')),
+									Area = chpLog.find('Area').text.strip('"'),
+									ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"'),
+									TBXY = chpLog.find('TBXY').text.strip('"')
 									)
 
+								#
+								# Geocoding
+								#
+								if incident.TBXY != "":
+									tbxy = incident.TBXY.partition(":")
+									if incident.CenterID == "STCC":
+										incident.geolocation = db.GeoPt(
+											lat = float(tbxy[2]) * 0.00000274 +	 33.172,
+											lon = float(tbxy[0]) * 0.0000035  - 144.966
+										)
+									elif incident.CenterID == "SLCC":
+										incident.geolocation = db.GeoPt(
+											lat = float(tbxy[2]) * 0.00000275 +	 30.054,
+											lon = float(tbxy[0]) * 0.00000329 - 126.589
+										)
 
-						#
-						# LogType/LogTypeID
-						#
-						logtype = chpLog.find('LogType').text.strip('"').partition(" - ")
-						incident.LogTypeID = logtype[0]
-						incident.LogType = logtype[2]
+
+							#
+							# LogType/LogTypeID
+							#
+							logtype = chpLog.find('LogType').text.strip('"').partition(" - ")
+							incident.LogTypeID = logtype[0]
+							incident.LogType = logtype[2]
 
 
-						#
-						# Special handling for the LogDetails
-						#
-						LogDetails = {
-							'details': [],
-							'units': []
-						}
-						logdetails_element = chpLog.find('LogDetails')
-						for element in logdetails_element:
-							detail_dict = {
-								'DetailTime': element.find('DetailTime').text.strip('"'),
-								'IncidentDetail': element.find('IncidentDetail').text.strip('"')
+							#
+							# Special handling for the LogDetails
+							#
+							LogDetails = {
+								'details': [],
+								'units': []
 							}
-							LogDetails[element.tag].append(detail_dict)
+							logdetails_element = chpLog.find('LogDetails')
+							for element in logdetails_element:
+								detail_dict = {
+									'DetailTime': element.find('DetailTime').text.strip('"'),
+									'IncidentDetail': element.find('IncidentDetail').text.strip('"')
+								}
+								LogDetails[element.tag].append(detail_dict)
 
-						incident.LogDetails = pickle.dumps(LogDetails)
+							incident.LogDetails = pickle.dumps(LogDetails)
 
 
-						incident.put()
-						incident_list.append(incident)
+							incident.put()
+							incident_list.append(incident)
 
-				template_values['incidents'] = incident_list
-				template_values['count'] = len(incident_list)
+					template_values['incidents'] = incident_list
+					template_values['count'] = len(incident_list)
+
+			else:
+				error = "CHP server returned " + str(result.status_code) + " status."
+				logging.warning(error)
+				template_values['error'] = error
 
 		self.response.out.write(template.render("../templates/update.html", template_values))
 
