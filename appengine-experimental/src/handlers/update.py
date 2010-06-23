@@ -27,16 +27,34 @@ class UpdateHandler(webapp.RequestHandler):
 			for chpCenter in chpState:
 				for chpDispatch in chpCenter:
 					for chpLog in chpDispatch:
-						incident = CHPIncident(key_name = chpLog.attrib['ID'],
-							CenterID = chpCenter.attrib['ID'],
-							DispatchID = chpDispatch.attrib['ID'],
-							LogID = chpLog.attrib['ID'],
-							LogTime = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific()),
-							Location = deCopIfy(chpLog.find('Location').text.strip('"')),
-							Area = chpLog.find('Area').text.strip('"'),
-							ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"'),
-							TBXY = chpLog.find('TBXY').text.strip('"')
-							)
+						incident = CHPIncident.get_by_key_name(chpLog.attrib['ID'])
+						if incident is None:
+							incident = CHPIncident(key_name = chpLog.attrib['ID'],
+								CenterID = chpCenter.attrib['ID'],
+								DispatchID = chpDispatch.attrib['ID'],
+								LogID = chpLog.attrib['ID'],
+								LogTime = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific()),
+								Location = deCopIfy(chpLog.find('Location').text.strip('"')),
+								Area = chpLog.find('Area').text.strip('"'),
+								ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"'),
+								TBXY = chpLog.find('TBXY').text.strip('"')
+								)
+
+							#
+							# Geocoding
+							#
+							if incident.TBXY != "":
+								tbxy = incident.TBXY.partition(":")
+								if incident.CenterID == "STCC":
+									incident.geolocation = db.GeoPt(
+										lat = float(tbxy[2]) * 0.00000274 +	 33.172,
+										lon = float(tbxy[0]) * 0.0000035  - 144.966
+									)
+								elif incident.CenterID == "SLCC":
+									incident.geolocation = db.GeoPt(
+										lat = float(tbxy[2]) * 0.00000275 +	 30.054,
+										lon = float(tbxy[0]) * 0.00000329 - 126.589
+									)
 
 
 						#
@@ -45,23 +63,6 @@ class UpdateHandler(webapp.RequestHandler):
 						logtype = chpLog.find('LogType').text.strip('"').partition(" - ")
 						incident.LogTypeID = logtype[0]
 						incident.LogType = logtype[2]
-
-
-						#
-						# Geocoding
-						#
-						if incident.TBXY != "":
-							tbxy = incident.TBXY.partition(":")
-							if incident.CenterID == "STCC":
-								incident.geolocation = db.GeoPt(
-									lat = float(tbxy[2]) * 0.00000274 +	 33.172,
-									lon = float(tbxy[0]) * 0.0000035  - 144.966
-								)
-							elif incident.CenterID == "SLCC":
-								incident.geolocation = db.GeoPt(
-									lat = float(tbxy[2]) * 0.00000275 +	 30.054,
-									lon = float(tbxy[0]) * 0.00000329 - 126.589
-								)
 
 
 						#
