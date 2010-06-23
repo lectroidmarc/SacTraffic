@@ -85,11 +85,8 @@ function update_incidents () {
 			} else if (incident.geolocation) {
 				// old incident
 				if (incident_markers[incident.ID]) {
-					// marker exists, we should do something with it...
-					incident_markers[incident.ID].setIcon("http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=caution|bbbbbb");
-
-					//incident_markers[incident.ID].setMap();
-					//delete incident_markers[incident.ID];
+					incident_markers[incident.ID].setMap();
+					delete incident_markers[incident.ID];
 				}
 			}
 		});
