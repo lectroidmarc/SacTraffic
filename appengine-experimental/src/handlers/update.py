@@ -32,6 +32,11 @@ class UpdateHandler(webapp.RequestHandler):
 
 				for chpCenter in chpState:
 					for chpDispatch in chpCenter:
+						# For some reason, sometimes the Dispatch ID is blank
+						# so skip these.
+						if chpDispatch.attrib['ID'] is None:
+							continue
+
 						for chpLog in chpDispatch:
 							incident = CHPIncident.get_by_key_name(chpLog.attrib['ID'])
 							if incident is None:
