@@ -2,19 +2,46 @@ var map;
 var incident_markers = {};
 
 function initialize() {
-	var default_center = new google.maps.LatLng(37.5, -119.2);
+	var zoom = 6;
+	if (supports_local_storage() && localStorage['map_zoom']) {
+		zoom = parseInt(localStorage['map_zoom']);
+	}
+
+	var center = new google.maps.LatLng(37.5, -119.2);
+	var wantGPScenter = true;
+	if (supports_local_storage() && localStorage['map_center_lat'] && localStorage['map_center_lng']) {
+		center = new google.maps.LatLng(localStorage['map_center_lat'], localStorage['map_center_lng']);
+		wantGPScenter = false;
+	}
+
 	var myOptions = {
-		zoom: 6,
-		center: default_center,
+		zoom: zoom,
+		center: center,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		mapTypeControl: false
 	};
+
 	map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-	if (navigator.geolocation) {
+	google.maps.event.addListener(map, 'zoom_changed', function() {
+		// save the zoom level for later use...
+		if (supports_local_storage()) {
+			localStorage['map_zoom'] = map.getZoom();
+		}
+	});
+
+	google.maps.event.addListener(map, 'dragend', function() {
+		// save the center for later use...
+		if (supports_local_storage()) {
+			localStorage['map_center_lat'] = map.getCenter().lat();
+			localStorage['map_center_lng'] = map.getCenter().lng();
+		}
+	});
+
+	if (wantGPScenter && navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(function (position) {
-			var user_location = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-			map.setCenter(user_location);
+			var gps_location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+			map.setCenter(gps_location);
 		});
     }
 
@@ -79,3 +106,6 @@ function clear_incidents() {
 	incident_markers = {};
 }
 
+function supports_local_storage() {
+	return ('localStorage' in window) && window['localStorage'] !== null;
+}
