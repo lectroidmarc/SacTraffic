@@ -25,6 +25,9 @@ handlers:
 - url: /json
   script: handlers/json.py
 
+- url: /atom
+  script: handlers/atom.py
+
 - url: /rss
   script: handlers/rss.py
 
