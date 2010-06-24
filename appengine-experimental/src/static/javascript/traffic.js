@@ -3,14 +3,14 @@ var incident_markers = {};
 
 function initialize() {
 	var zoom = 6;
-	if (supports_local_storage() && localStorage['map_zoom']) {
-		zoom = parseInt(localStorage['map_zoom']);
+	if (supports_local_storage() && localStorage.map_zoom) {
+		zoom = parseInt(localStorage.map_zoom);
 	}
 
 	var center = new google.maps.LatLng(37.5, -119.2);
 	var wantGPScenter = true;
-	if (supports_local_storage() && localStorage['map_center_lat'] && localStorage['map_center_lng']) {
-		center = new google.maps.LatLng(localStorage['map_center_lat'], localStorage['map_center_lng']);
+	if (supports_local_storage() && localStorage.map_center_lat && localStorage.map_center_lng) {
+		center = new google.maps.LatLng(localStorage.map_center_lat, localStorage.map_center_lng);
 		wantGPScenter = false;
 	}
 
@@ -26,15 +26,15 @@ function initialize() {
 	google.maps.event.addListener(map, 'zoom_changed', function() {
 		// save the zoom level for later use...
 		if (supports_local_storage()) {
-			localStorage['map_zoom'] = map.getZoom();
+			localStorage.map_zoom = map.getZoom();
 		}
 	});
 
 	google.maps.event.addListener(map, 'dragend', function() {
 		// save the center for later use...
 		if (supports_local_storage()) {
-			localStorage['map_center_lat'] = map.getCenter().lat();
-			localStorage['map_center_lng'] = map.getCenter().lng();
+			localStorage.map_center_lat = map.getCenter().lat();
+			localStorage.map_center_lng = map.getCenter().lng();
 		}
 	});
 
