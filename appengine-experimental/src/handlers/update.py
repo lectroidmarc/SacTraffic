@@ -11,7 +11,7 @@ from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 
 from models import CHPIncident
-from tzinfo import Pacific
+from utils.tzinfo import Pacific
 
 
 class UpdateHandler(webapp.RequestHandler):
