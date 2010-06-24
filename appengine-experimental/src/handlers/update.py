@@ -91,7 +91,11 @@ class UpdateHandler(webapp.RequestHandler):
 								}
 								LogDetails[element.tag].append(detail_dict)
 
-							incident.LogDetails = pickle.dumps(LogDetails)
+							pickledLogDetails = pickle.dumps(LogDetails)
+
+							# Only update the LogDetails if they've changed
+							if incident.LogDetails != pickledLogDetails:
+								incident.LogDetails = pickledLogDetails
 
 
 							incident.put()
