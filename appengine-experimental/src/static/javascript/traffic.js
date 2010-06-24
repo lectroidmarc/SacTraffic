@@ -51,7 +51,7 @@ function initialize() {
 function update_incidents () {
 	jQuery.getJSON("/json", function (data) {
 		jQuery.each(data, function (i, incident) {
-			if (incident.geolocation && (incident.Status == "new" || incident.Status == "active")) {
+			if (incident.geolocation && (incident.status == "new" || incident.status == "active")) {
 				var logtime = new Date(incident.LogTimeEpoch * 1000);
 
 				var infowindow = new google.maps.InfoWindow({
@@ -69,7 +69,7 @@ function update_incidents () {
 					// and the icon
 					incident_markers[incident.ID].setIcon("http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=caution|FF0000");
 				} else {
-					var icon_url = (incident.Status == "new") ? "http://chart.apis.google.com/chart?chst=d_map_xpin_icon&chld=pin_star|caution|FF0000|FFFF00" : "http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=caution|FF0000";
+					var icon_url = (incident.status == "new") ? "http://chart.apis.google.com/chart?chst=d_map_xpin_icon&chld=pin_star|caution|FF0000|FFFF00" : "http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=caution|FF0000";
 
 					var marker = new google.maps.Marker({
 						position: new google.maps.LatLng(incident.geolocation.lat, incident.geolocation.lon),

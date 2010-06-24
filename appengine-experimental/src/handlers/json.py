@@ -41,7 +41,7 @@ class JsonHandler(webapp.RequestHandler):
 				'LogType': incident.LogType,
 				'TBXY': incident.TBXY,
 				'ThomasBrothers': incident.ThomasBrothers,
-				'Status': incident.getStatus()
+				'status': incident.getStatus()
 			}
 
 			if incident.geolocation is not None:
