@@ -35,11 +35,13 @@ class JsonHandler(webapp.RequestHandler):
 				'Area': incident.Area,
 				'ID': incident.LogID,
 				'Location': incident.Location,
+				'LogDetails': pickle.loads(incident.LogDetails),
 				'LogTime': incident.LogTime.strftime("%m/%d/%Y %H:%M:%S GMT"),
 				'LogTimeEpoch': time.mktime(incident.LogTime.timetuple()),
 				'LogType': incident.LogType,
 				'TBXY': incident.TBXY,
-				'ThomasBrothers': incident.ThomasBrothers
+				'ThomasBrothers': incident.ThomasBrothers,
+				'Status': incident.getStatus()
 			}
 
 			if incident.geolocation is not None:
@@ -47,20 +49,6 @@ class JsonHandler(webapp.RequestHandler):
 					'lat': incident.geolocation.lat,
 					'lon': incident.geolocation.lon
 				}
-
-			# If an incident hasn't been updated in the XML update interval
-			# (5 minutes) then it's fallen off the list and is, by definition,
-			# inactive.
-			if incident.last_update < datetime.utcnow() - timedelta(minutes=5):
-				incident_dict['Status'] = 'inactive'
-			else:
-				if incident.added > datetime.utcnow() - timedelta(minutes=5):
-					incident_dict['Status'] = 'new'
-				else:
-					incident_dict['Status'] = 'active'
-
-			if incident.LogDetails is not None:
-				incident_dict['LogDetails'] = pickle.loads(incident.LogDetails)
 
 			output_list.append(incident_dict)
 
