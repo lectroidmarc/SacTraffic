@@ -1,18 +1,18 @@
+import logging
+import pickle
+import re
+from datetime import datetime
+from xml.etree import ElementTree
+
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 
-from xml.etree import ElementTree
 from models import CHPIncident
-from datetime import datetime
-
 from tzinfo import Pacific
 
-import logging
-import pickle
-import re
 
 class UpdateHandler(webapp.RequestHandler):
 	def get(self):

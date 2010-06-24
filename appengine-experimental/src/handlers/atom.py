@@ -1,9 +1,9 @@
 import pickle
 import time
+from xml.etree import ElementTree
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
-from xml.etree import ElementTree
 
 from models import CHPIncident
 from utils import conditional_http
