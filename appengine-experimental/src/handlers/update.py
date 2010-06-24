@@ -34,7 +34,7 @@ class UpdateHandler(webapp.RequestHandler):
 					for chpDispatch in chpCenter:
 						# For some reason, sometimes the Dispatch ID is blank
 						# so skip these.
-						if chpDispatch.attrib['ID'] is None:
+						if chpDispatch.attrib['ID'] == "":
 							continue
 
 						for chpLog in chpDispatch:
