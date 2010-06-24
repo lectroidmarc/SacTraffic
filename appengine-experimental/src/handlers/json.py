@@ -5,7 +5,6 @@ from django.utils import simplejson as json
 
 from models import CHPIncident
 
-from datetime import datetime, timedelta
 import pickle
 import time
 import conditional_http
