@@ -1,6 +1,5 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
-from google.appengine.ext import db
 from django.utils import simplejson as json
 
 from models import CHPIncident
