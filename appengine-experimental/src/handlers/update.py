@@ -71,6 +71,12 @@ class UpdateHandler(webapp.RequestHandler):
 							#
 							# LogType/LogTypeID
 							#
+							# I *think* the LogType/LogTypeID can change as
+							# the situation evolves.
+							#
+							# (ex: 'Traffic Collision - No Details' could
+							# become 'Possible Fatality')
+							#
 							logtype = chpLog.find('LogType').text.strip('"').partition(" - ")
 							incident.LogTypeID = logtype[0]
 							incident.LogType = logtype[2]
@@ -91,11 +97,7 @@ class UpdateHandler(webapp.RequestHandler):
 								}
 								LogDetails[element.tag].append(detail_dict)
 
-							pickledLogDetails = pickle.dumps(LogDetails)
-
-							# Only update the LogDetails if they've changed
-							if incident.LogDetails != pickledLogDetails:
-								incident.LogDetails = pickledLogDetails
+							incident.LogDetails = pickle.dumps(LogDetails)
 
 
 							incident.put()
