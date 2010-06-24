@@ -14,14 +14,14 @@ class CHPIncident(db.Model):
 	TBXY = db.StringProperty()
 	LogDetails = db.BlobProperty()
 	geolocation = db.GeoPtProperty()
-	added = db.DateTimeProperty(auto_now_add=True)
-	last_update = db.DateTimeProperty(auto_now=True)
+	created = db.DateTimeProperty(auto_now_add=True)
+	updated = db.DateTimeProperty(auto_now=True)
 
 	def getStatus(self):
-		if self.added > datetime.utcnow() - timedelta(minutes=5):
+		if self.created > datetime.utcnow() - timedelta(minutes=5):
 			# less than 5 min old == new
 			return 'new'
-		elif self.last_update < datetime.utcnow() - timedelta(minutes=5):
+		elif self.updated < datetime.utcnow() - timedelta(minutes=5):
 			# not updated in 5 min == inactive
 			return 'inactive'
 		else:

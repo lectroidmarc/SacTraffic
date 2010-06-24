@@ -8,18 +8,18 @@ def getLastMod(webapp):
 	dispatch = webapp.request.get("dispatch")
 	area = webapp.request.get("area")
 
-	last_update_query = CHPIncident.all()
-	last_update_query.order('-last_update')
+	last_mod_query = CHPIncident.all()
+	last_mod_query.order('-updated')
 	if center != "":
-		last_update_query.filter('CenterID =', center)
+		last_mod_query.filter('CenterID =', center)
 	if dispatch != "":
-		last_update_query.filter('DispatchID =', dispatch)
+		last_mod_query.filter('DispatchID =', dispatch)
 	if area != "":
-		last_update_query.filter('Area =', area)
+		last_mod_query.filter('Area =', area)
 
-	last_mod_entity = last_update_query.get()
+	last_mod_entity = last_mod_query.get()
 	if last_mod_entity is not None:
-		return last_mod_entity.last_update.strftime("%a, %d %b %Y %H:%M:%S GMT")
+		return last_mod_entity.updated.strftime("%a, %d %b %Y %H:%M:%S GMT")
 
 	return None
 
