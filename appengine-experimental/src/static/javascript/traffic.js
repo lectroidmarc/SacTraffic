@@ -67,9 +67,10 @@ function update_incidents () {
 					});
 
 					// and the icon
-					incident_markers[incident.ID].setIcon("http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=caution|FF0000");
+					incident_markers[incident.ID].setIcon("http://chart.apis.google.com/chart?chst=d_map_pin_icon_withshadow&chld=caution|FF0000");
+					incident_markers[incident.ID].setMap(map);	// how else do you "refresh" the icons?
 				} else {
-					var icon_url = (incident.status == "new") ? "http://chart.apis.google.com/chart?chst=d_map_xpin_icon&chld=pin_star|caution|FF0000|FFFF00" : "http://chart.apis.google.com/chart?chst=d_map_pin_icon&chld=caution|FF0000";
+					var icon_url = (incident.status == "new") ? "http://chart.apis.google.com/chart?chst=d_map_xpin_icon_withshadow&chld=pin_star|caution|FF0000|FFFF00" : "http://chart.apis.google.com/chart?chst=d_map_pin_icon_withshadow&chld=caution|FF0000";
 
 					var marker = new google.maps.Marker({
 						position: new google.maps.LatLng(incident.geolocation.lat, incident.geolocation.lon),
