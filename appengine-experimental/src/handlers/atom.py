@@ -28,29 +28,24 @@ class AtomHandler(webapp.RequestHandler):
 		if area != "":
 			incident_query.filter('Area =', area)
 
-		rssroot = ElementTree.Element('rss', {
-			'version': '2.0',
-			'xmlns:atom': 'http://www.w3.org/2005/Atom',
+		feed = ElementTree.Element('feed', {
+			'xmlns': 'http://www.w3.org/2005/Atom',
 			'xmlns:georss': 'http://www.georss.org/georss'
 		})
-		channel = ElementTree.SubElement(rssroot, 'channel')
 
-		ElementTree.SubElement(channel, 'title').text = 'Traffic'
-		ElementTree.SubElement(channel, 'link').text = 'http://traffic.lectroid.net'
-		ElementTree.SubElement(channel, 'description').text = 'Traffic incidents from the CHP'
-		ElementTree.SubElement(channel, 'ttl').text = '5'
+		ElementTree.SubElement(feed, 'title').text = 'Traffic'
 
 		self_href = "http://traffic.lectroid.net/rss"
 		query_string = "?" + self.request.environ['QUERY_STRING']
 		if query_string != "?":
 			self_href += query_string
 
-		ElementTree.SubElement(channel, 'atom:link', {
+		ElementTree.SubElement(feed, 'link', {
 			'href': self_href,
 			'rel': 'self',
-			'type': 'application/rss+xml'
+			'type': 'application/atom+xml'
 		})
-		ElementTree.SubElement(channel, 'atom:link', {
+		ElementTree.SubElement(feed, 'link', {
 			'href': 'http://pubsubhubbub.appspot.com',
 			'rel': 'hub'
 		})
@@ -62,23 +57,23 @@ class AtomHandler(webapp.RequestHandler):
 				description += "<li>" + detail['DetailTime'] + ": " + detail['IncidentDetail'] + "</li>"
 			description += "</ul>"
 
-			item = ElementTree.SubElement (channel, 'item')
+			entry = ElementTree.SubElement (feed, 'entry')
 
-			ElementTree.SubElement(item, 'title').text = incident.LogType
-			ElementTree.SubElement(item, 'description').text = description
-			ElementTree.SubElement(item, 'pubDate').text = incident.LogTime.strftime("%a, %d %b %Y %H:%M:%S GMT")
-			ElementTree.SubElement(item, 'guid', {'isPermaLink': 'false'}).text = incident.LogID
-			ElementTree.SubElement(item, 'source', {'url': 'http://media.chp.ca.gov/sa_xml/sa.xml'}).text = "CHP"
-			ElementTree.SubElement(item, 'category').text = incident.LogTypeID
+			ElementTree.SubElement(entry, 'title').text = incident.LogType
+			ElementTree.SubElement(entry, 'description').text = description
+			ElementTree.SubElement(entry, 'pubDate').text = incident.LogTime.strftime("%a, %d %b %Y %H:%M:%S GMT")
+			ElementTree.SubElement(entry, 'guid', {'isPermaLink': 'false'}).text = incident.LogID
+			ElementTree.SubElement(entry, 'source', {'url': 'http://media.chp.ca.gov/sa_xml/sa.xml'}).text = "CHP"
+			ElementTree.SubElement(entry, 'category').text = incident.LogTypeID
 
 			if incident.geolocation is not None:
-				ElementTree.SubElement(item, 'georss:point').text = str(incident.geolocation.lat) + " " + str(incident.geolocation.lon)
+				ElementTree.SubElement(entry, 'georss:point').text = str(incident.geolocation.lat) + " " + str(incident.geolocation.lon)
 
 
-		self.response.headers["Content-Type"] = "application/rss+xml"
+		self.response.headers["Content-Type"] = "application/atom+xml"
 		conditional_http.setConditionalHeaders(self, last_mod)
 		self.response.out.write('<?xml version="1.0"?>')	# oh this can't be right!
-		self.response.out.write(ElementTree.tostring(rssroot))
+		self.response.out.write(ElementTree.tostring(feed))
 
 
 application = webapp.WSGIApplication([('/atom', AtomHandler)],
