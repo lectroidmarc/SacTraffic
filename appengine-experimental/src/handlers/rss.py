@@ -4,9 +4,9 @@ from google.appengine.ext.webapp import util
 from models import CHPIncident
 from xml.etree import ElementTree
 
+import conditional_http
 import pickle
 import time
-import conditional_http
 
 class RssHandler(webapp.RequestHandler):
 	def get(self):
@@ -38,8 +38,14 @@ class RssHandler(webapp.RequestHandler):
 		ElementTree.SubElement(channel, 'link').text = 'http://traffic.lectroid.net'
 		ElementTree.SubElement(channel, 'description').text = 'Traffic incidents from the CHP'
 		ElementTree.SubElement(channel, 'ttl').text = '5'
+
+		self_href = "http://traffic.lectroid.net/rss"
+		query_string = "?" + self.request.environ['QUERY_STRING']
+		if query_string != "?":
+			self_href += query_string
+
 		ElementTree.SubElement(channel, 'atom:link', {
-			'href': 'http://traffic.lectroid.net/rss',
+			'href': self_href,
 			'rel': 'self',
 			'type': 'application/rss+xml'
 		})
