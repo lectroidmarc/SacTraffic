@@ -1,12 +1,13 @@
+import pickle
+import time
+
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from django.utils import simplejson as json
 
 from models import CHPIncident
+from utils import conditional_http
 
-import pickle
-import time
-import conditional_http
 
 class JsonHandler(webapp.RequestHandler):
 	def get(self):

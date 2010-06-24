@@ -1,12 +1,13 @@
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp import util
-
-from models import CHPIncident
-from xml.etree import ElementTree
-
-import conditional_http
 import pickle
 import time
+
+from google.appengine.ext import webapp
+from google.appengine.ext.webapp import util
+from xml.etree import ElementTree
+
+from models import CHPIncident
+from utils import conditional_http
+
 
 class RssHandler(webapp.RequestHandler):
 	def get(self):
