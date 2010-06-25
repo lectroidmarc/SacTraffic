@@ -10,7 +10,7 @@ from models import CHPIncident
 class PurgeHandler(webapp.RequestHandler):
 	def get(self):
 		count = 0
-		query = CHPIncident.gql("WHERE last_update < :1", datetime.utcnow() - timedelta(hours=6))
+		query = CHPIncident.gql("WHERE updated < :1", datetime.utcnow() - timedelta(hours=6))
 		for incident in query:
 			count += 1
 			incident.delete()
