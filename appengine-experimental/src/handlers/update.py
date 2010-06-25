@@ -1,7 +1,7 @@
 import logging
 import pickle
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from xml.etree import ElementTree
 
 from google.appengine.ext import webapp
@@ -24,6 +24,13 @@ class UpdateHandler(webapp.RequestHandler):
 			error = "DownloadError. CHP request took too long."
 			logging.warning(error)
 			template_values['error'] = error
+
+			# Since this is an error state, roll through any incidents updated
+			# in the last update (i.e.: "active" incidents or ones updated < 6
+			# minutes ago) and "touch" them so they stay active.
+			query = CHPIncident.gql("WHERE updated > :1", datetime.utcnow() - timedelta(minutes=10))
+			for incident in query:
+				incident.put()
 		else:
 			if result.status_code == 200:
 				incident_list = []
