@@ -48,7 +48,8 @@ class UpdateHandler(webapp.RequestHandler):
 									Location = deCopIfy(chpLog.find('Location').text.strip('"')),
 									Area = chpLog.find('Area').text.strip('"'),
 									ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"'),
-									TBXY = chpLog.find('TBXY').text.strip('"')
+									TBXY = chpLog.find('TBXY').text.strip('"'),
+									modified = datetime.utcnow()
 									)
 
 								#
@@ -78,8 +79,10 @@ class UpdateHandler(webapp.RequestHandler):
 							# become 'Possible Fatality')
 							#
 							logtype = chpLog.find('LogType').text.strip('"').partition(" - ")
-							incident.LogTypeID = logtype[0]
-							incident.LogType = logtype[2]
+							if incident.LogTypeID != logtype[0]:
+								incident.LogTypeID = logtype[0]
+								incident.LogType = logtype[2]
+								incident.modified = datetime.utcnow()
 
 
 							#
@@ -97,7 +100,11 @@ class UpdateHandler(webapp.RequestHandler):
 								}
 								LogDetails[element.tag].append(detail_dict)
 
-							incident.LogDetails = pickle.dumps(LogDetails)
+							pickedLogDetails = pickle.dumps(LogDetails)
+
+							if incident.LogDetails != pickedLogDetails:
+								incident.LogDetails = pickle.dumps(LogDetails)
+								incident.modified = datetime.utcnow()
 
 
 							incident.put()
