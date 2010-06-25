@@ -1,11 +1,11 @@
+from datetime import datetime, timedelta
+
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
-from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 
 from models import CHPIncident
 
-from datetime import datetime, timedelta
 
 class PurgeHandler(webapp.RequestHandler):
 	def get(self):
@@ -18,11 +18,11 @@ class PurgeHandler(webapp.RequestHandler):
 		self.response.out.write(template.render("../templates/purge.html", { 'number': count }))
 
 
-def main():
-	application = webapp.WSGIApplication([('/purge', PurgeHandler)],
+application = webapp.WSGIApplication([('/purge', PurgeHandler)],
 										 debug=True)
-	util.run_wsgi_app(application)
 
+def main():
+	util.run_wsgi_app(application)
 
 if __name__ == '__main__':
 	main()
