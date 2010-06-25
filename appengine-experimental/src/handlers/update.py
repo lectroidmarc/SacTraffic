@@ -67,7 +67,11 @@ class UpdateHandler(webapp.RequestHandler):
 											lat = float(tbxy[2]) * 0.00000275 +	 30.054,
 											lon = float(tbxy[0]) * 0.00000329 - 126.589
 										)
-
+									elif incident.CenterID == "FRCC":
+										incident.geolocation = db.GeoPt(
+											lat = float(tbxy[2]) * 0.00000274 +	 30.84,
+											lon = float(tbxy[0]) * 0.00000335 -  141
+										)
 
 							#
 							# LogType/LogTypeID
