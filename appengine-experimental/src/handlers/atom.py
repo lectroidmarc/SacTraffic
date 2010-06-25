@@ -37,7 +37,7 @@ class AtomHandler(webapp.RequestHandler):
 		ElementTree.SubElement(feed, 'subtitle').text = 'Traffic incidents from the CHP'
 		ElementTree.SubElement(ElementTree.SubElement(feed, 'author'), 'name').text = 'The California Highway Patrol'
 		ElementTree.SubElement(feed, 'id').text = 'tag:traffic.lectroid.net,2010-06-24:100'
-		ElementTree.SubElement(feed, 'updated').text = last_mod		# crap
+		ElementTree.SubElement(feed, 'updated').text = last_mod.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 		# self link...
 		self_href = "http://traffic.lectroid.net/rss"
@@ -70,7 +70,7 @@ class AtomHandler(webapp.RequestHandler):
 			ElementTree.SubElement(entry, 'id').text = 'tag:traffic.lectroid.net,2010-06-24:' + incident.LogID
 			ElementTree.SubElement(entry, 'content', {'type': 'html'}).text = description
 			ElementTree.SubElement(entry, 'published').text = incident.LogTime.strftime("%Y-%m-%dT%H:%M:%SZ")
-			ElementTree.SubElement(entry, 'updated').text = incident.LogTime.strftime("%Y-%m-%dT%H:%M:%SZ")
+			ElementTree.SubElement(entry, 'updated').text = incident.modified.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 			if incident.geolocation is not None:
 				ElementTree.SubElement(entry, 'georss:point').text = str(incident.geolocation.lat) + " " + str(incident.geolocation.lon)
