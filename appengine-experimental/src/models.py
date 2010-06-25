@@ -24,8 +24,10 @@ class CHPIncident(db.Model):
 		if self.created > datetime.utcnow() - timedelta(minutes=5):
 			# less than 5 min old == new
 			return 'new'
-		elif self.updated < datetime.utcnow() - timedelta(minutes=5):
-			# not updated in 5 min == inactive
+		elif self.updated < datetime.utcnow() - timedelta(minutes=6):
+			# not updated in the last update == inactive
+			#
+			# Note this is the cronned update interval + 1.
 			return 'inactive'
 		else:
 			return 'active'
