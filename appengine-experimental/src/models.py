@@ -1,5 +1,7 @@
-from google.appengine.ext import db
 from datetime import datetime, timedelta
+
+from google.appengine.ext import db
+
 
 class CHPIncident(db.Model):
 	CenterID = db.StringProperty(required=True)
