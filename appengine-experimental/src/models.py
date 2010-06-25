@@ -18,6 +18,7 @@ class CHPIncident(db.Model):
 	geolocation = db.GeoPtProperty()
 	created = db.DateTimeProperty(auto_now_add=True)
 	updated = db.DateTimeProperty(auto_now=True)
+	modified = db.DateTimeProperty()
 
 	def getStatus(self):
 		if self.created > datetime.utcnow() - timedelta(minutes=5):
