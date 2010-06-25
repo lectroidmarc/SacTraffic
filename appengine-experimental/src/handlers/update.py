@@ -19,7 +19,7 @@ class UpdateHandler(webapp.RequestHandler):
 		template_values = {}
 
 		try:
-			result = urlfetch.fetch("http://media.chp.ca.gov/sa_xml/sa.xml")
+			result = urlfetch.fetch("http://media.chp.ca.gov/sa_xml/sa.xml", deadline=10)
 		except urlfetch.DownloadError:
 			error = "DownloadError. CHP request took too long."
 			logging.warning(error)
