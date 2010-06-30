@@ -35,94 +35,99 @@ class UpdateHandler(webapp.RequestHandler):
 			if result.status_code == 200:
 				incident_list = []
 
-				chpState = ElementTree.XML(result.content)
+				try:
+					chpState = ElementTree.XML(result.content)
+				except ExpatError, e:
+					error = "XML processing error. %s" % e.message
+					logging.warning(error)
+					template_values['error'] = error
+				else:
+					for chpCenter in chpState:
+						for chpDispatch in chpCenter:
+							# For some reason, sometimes the Dispatch ID is blank
+							# so skip these.
+							if chpDispatch.attrib['ID'] == "":
+								continue
 
-				for chpCenter in chpState:
-					for chpDispatch in chpCenter:
-						# For some reason, sometimes the Dispatch ID is blank
-						# so skip these.
-						if chpDispatch.attrib['ID'] == "":
-							continue
+							for chpLog in chpDispatch:
+								incident = CHPIncident.get_by_key_name(chpLog.attrib['ID'])
+								if incident is None:
+									incident = CHPIncident(key_name = chpLog.attrib['ID'],
+										CenterID = chpCenter.attrib['ID'],
+										DispatchID = chpDispatch.attrib['ID'],
+										LogID = chpLog.attrib['ID'],
+										LogTime = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific()),
+										Location = deCopIfy(chpLog.find('Location').text.strip('"')),
+										Area = chpLog.find('Area').text.strip('"'),
+										ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"'),
+										TBXY = chpLog.find('TBXY').text.strip('"'),
+										modified = datetime.utcnow()
+										)
 
-						for chpLog in chpDispatch:
-							incident = CHPIncident.get_by_key_name(chpLog.attrib['ID'])
-							if incident is None:
-								incident = CHPIncident(key_name = chpLog.attrib['ID'],
-									CenterID = chpCenter.attrib['ID'],
-									DispatchID = chpDispatch.attrib['ID'],
-									LogID = chpLog.attrib['ID'],
-									LogTime = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific()),
-									Location = deCopIfy(chpLog.find('Location').text.strip('"')),
-									Area = chpLog.find('Area').text.strip('"'),
-									ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"'),
-									TBXY = chpLog.find('TBXY').text.strip('"'),
-									modified = datetime.utcnow()
-									)
+									#
+									# Geocoding
+									#
+									if incident.TBXY != "":
+										tbxy = incident.TBXY.partition(":")
+										if incident.CenterID == "STCC":
+											incident.geolocation = db.GeoPt(
+												lat = float(tbxy[2]) * 0.00000274 +	 33.172,
+												lon = float(tbxy[0]) * 0.0000035  - 144.966
+											)
+										elif incident.CenterID == "SLCC":
+											incident.geolocation = db.GeoPt(
+												lat = float(tbxy[2]) * 0.00000275 +	 30.054,
+												lon = float(tbxy[0]) * 0.00000329 - 126.589
+											)
+										elif incident.CenterID == "FRCC":
+											incident.geolocation = db.GeoPt(
+												lat = float(tbxy[2]) * 0.00000274 +	 30.84,
+												lon = float(tbxy[0]) * 0.00000335 -  141
+											)
 
 								#
-								# Geocoding
+								# LogType/LogTypeID
 								#
-								if incident.TBXY != "":
-									tbxy = incident.TBXY.partition(":")
-									if incident.CenterID == "STCC":
-										incident.geolocation = db.GeoPt(
-											lat = float(tbxy[2]) * 0.00000274 +	 33.172,
-											lon = float(tbxy[0]) * 0.0000035  - 144.966
-										)
-									elif incident.CenterID == "SLCC":
-										incident.geolocation = db.GeoPt(
-											lat = float(tbxy[2]) * 0.00000275 +	 30.054,
-											lon = float(tbxy[0]) * 0.00000329 - 126.589
-										)
-									elif incident.CenterID == "FRCC":
-										incident.geolocation = db.GeoPt(
-											lat = float(tbxy[2]) * 0.00000274 +	 30.84,
-											lon = float(tbxy[0]) * 0.00000335 -  141
-										)
-
-							#
-							# LogType/LogTypeID
-							#
-							# I *think* the LogType/LogTypeID can change as
-							# the situation evolves.
-							#
-							# (ex: 'Traffic Collision - No Details' could
-							# become 'Possible Fatality')
-							#
-							logtype = chpLog.find('LogType').text.strip('"').partition(" - ")
-							if incident.LogTypeID != logtype[0]:
-								incident.LogTypeID = logtype[0]
-								incident.LogType = logtype[2]
-								incident.modified = datetime.utcnow()
+								# I *think* the LogType/LogTypeID can change as
+								# the situation evolves.
+								#
+								# (ex: 'Traffic Collision - No Details' could
+								# become 'Possible Fatality')
+								#
+								logtype = chpLog.find('LogType').text.strip('"').partition(" - ")
+								if incident.LogTypeID != logtype[0]:
+									incident.LogTypeID = logtype[0]
+									incident.LogType = logtype[2]
+									incident.modified = datetime.utcnow()
 
 
-							#
-							# Special handling for the LogDetails
-							#
-							LogDetails = {
-								'details': [],
-								'units': []
-							}
-							logdetails_element = chpLog.find('LogDetails')
-							for element in logdetails_element:
-								detail_dict = {
-									'DetailTime': element.find('DetailTime').text.strip('"'),
-									'IncidentDetail': element.find('IncidentDetail').text.strip('"')
+								#
+								# Special handling for the LogDetails
+								#
+								LogDetails = {
+									'details': [],
+									'units': []
 								}
-								LogDetails[element.tag].append(detail_dict)
+								logdetails_element = chpLog.find('LogDetails')
+								for element in logdetails_element:
+									detail_dict = {
+										'DetailTime': element.find('DetailTime').text.strip('"'),
+										'IncidentDetail': element.find('IncidentDetail').text.strip('"')
+									}
+									LogDetails[element.tag].append(detail_dict)
 
-							pickedLogDetails = pickle.dumps(LogDetails)
+								pickedLogDetails = pickle.dumps(LogDetails)
 
-							if incident.LogDetails != pickedLogDetails:
-								incident.LogDetails = pickle.dumps(LogDetails)
-								incident.modified = datetime.utcnow()
+								if incident.LogDetails != pickedLogDetails:
+									incident.LogDetails = pickle.dumps(LogDetails)
+									incident.modified = datetime.utcnow()
 
 
-							incident.put()
-							incident_list.append(incident)
+								incident.put()
+								incident_list.append(incident)
 
-					template_values['incidents'] = incident_list
-					template_values['count'] = len(incident_list)
+						template_values['incidents'] = incident_list
+						template_values['count'] = len(incident_list)
 
 			else:
 				error = "CHP server returned " + str(result.status_code) + " status."
