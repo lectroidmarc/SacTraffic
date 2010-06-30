@@ -37,7 +37,7 @@ class UpdateHandler(webapp.RequestHandler):
 
 				try:
 					chpState = ElementTree.XML(result.content)
-				except ExpatError, e:
+				except ElementTree.ExpatError, e:
 					error = "XML processing error. %s" % e.message
 					logging.warning(error)
 					template_values['error'] = error
