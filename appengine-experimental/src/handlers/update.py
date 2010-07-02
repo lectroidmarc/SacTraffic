@@ -41,6 +41,10 @@ class UpdateHandler(webapp.RequestHandler):
 					error = "XML processing error. %s" % e.message
 					logging.warning(error)
 					template_values['error'] = error
+
+					query = CHPIncident.gql("WHERE updated > :1", datetime.utcnow() - timedelta(minutes=10))
+					for incident in query:
+						incident.put()
 				else:
 					for chpCenter in chpState:
 						for chpDispatch in chpCenter:
