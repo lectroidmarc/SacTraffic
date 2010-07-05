@@ -166,7 +166,7 @@ def deCopIfy(text):
 
 
 def touchActiveIncidents():
-	# This is call in an error state. Roll through any incidents updated
+	# This is called in an error state. Roll through any incidents updated
 	# in the last update (i.e.: "active" incidents or ones updated < 10
 	# minutes ago) and "touch" them so they stay active.
 	query = CHPIncident.gql("WHERE updated > :1", datetime.utcnow() - timedelta(minutes=10))
