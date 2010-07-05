@@ -31,9 +31,6 @@ handlers:
 - url: /atom
   script: handlers/atom.py
 
-- url: /rss
-  script: handlers/rss.py
-
 - url: /update
   script: handlers/update.py
   login: admin
