@@ -59,14 +59,14 @@ class AtomHandler(webapp.RequestHandler):
 
 		for incident in incident_query:
 			details = pickle.loads(incident.LogDetails)
-			description = incident.Location + ", " + incident.Area + "<ul>"
+			description = "<ul>"
 			for detail in details['details']:
 				description += "<li>" + detail['DetailTime'] + ": " + detail['IncidentDetail'] + "</li>"
 			description += "</ul>"
 
 			entry = ElementTree.SubElement (feed, 'entry')
 
-			ElementTree.SubElement(entry, 'title').text = incident.LogType
+			ElementTree.SubElement(entry, 'title').text = "%s. %s, %s" % (incident.LogType, incident.Location, incident.Area)
 			ElementTree.SubElement(entry, 'id').text = 'tag:traffic.lectroid.net,2010-06-24:' + incident.LogID
 			ElementTree.SubElement(entry, 'content', {'type': 'html'}).text = description
 			ElementTree.SubElement(entry, 'published').text = incident.LogTime.strftime("%Y-%m-%dT%H:%M:%SZ")
