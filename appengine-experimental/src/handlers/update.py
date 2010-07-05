@@ -25,12 +25,7 @@ class UpdateHandler(webapp.RequestHandler):
 			logging.warning(error)
 			template_values['error'] = error
 
-			# Since this is an error state, roll through any incidents updated
-			# in the last update (i.e.: "active" incidents or ones updated < 6
-			# minutes ago) and "touch" them so they stay active.
-			query = CHPIncident.gql("WHERE updated > :1", datetime.utcnow() - timedelta(minutes=10))
-			for incident in query:
-				incident.put()
+			touchActiveIncidents()
 		else:
 			if result.status_code == 200:
 				incident_list = []
@@ -42,9 +37,7 @@ class UpdateHandler(webapp.RequestHandler):
 					logging.warning(error)
 					template_values['error'] = error
 
-					query = CHPIncident.gql("WHERE updated > :1", datetime.utcnow() - timedelta(minutes=10))
-					for incident in query:
-						incident.put()
+					touchActiveIncidents()
 				else:
 					for chpCenter in chpState:
 						for chpDispatch in chpCenter:
@@ -164,11 +157,21 @@ coplingo = [
 	{ 'regex': re.compile(r'\bSR51\b', re.I), 'str': "CAP CITY FWY" }
 ]
 
+
 def deCopIfy(text):
 	for lingo in coplingo:
 		text = re.sub(lingo['regex'], lingo['str'], text)
 
 	return text[0].upper() + text[1:]
+
+
+def touchActiveIncidents():
+	# This is call in an error state. Roll through any incidents updated
+	# in the last update (i.e.: "active" incidents or ones updated < 10
+	# minutes ago) and "touch" them so they stay active.
+	query = CHPIncident.gql("WHERE updated > :1", datetime.utcnow() - timedelta(minutes=10))
+	for incident in query:
+		incident.put()
 
 
 application = webapp.WSGIApplication([('/update', UpdateHandler)],
