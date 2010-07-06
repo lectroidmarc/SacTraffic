@@ -47,16 +47,17 @@ class UpdateHandler(webapp.RequestHandler):
 
 		self.response.out.write(template.render("../templates/update.html", template_values))
 
-		def post(self):
-			data = self.request.body
-			local_sig = hmac.new("planet10", data, hashlib.sha1).hexdigest()
+	def post(self):
+		data = self.request.body
+		local_sig = hmac.new("planet10", data, hashlib.sha1).hexdigest()
 
-			if self.request.headers.has_key('X-Signature') and local_sig == self.request.headers['X-Signature']:
-				# Yay, a match...
-				process_chp_xml(pickle.loads(chp_etree))
-			else:
-				# Boo, hiss, no match
-				self.response.set_status(401)
+		if self.request.headers.has_key('X-Signature') and local_sig == self.request.headers['X-Signature']:
+			# Yay, a match...
+			process_chp_xml(pickle.loads(data))
+			self.response.set_status(204)
+		else:
+			# Boo, hiss, no match
+			self.response.set_status(401)
 
 
 def process_chp_xml(chpState):
