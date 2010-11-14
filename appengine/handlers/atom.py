@@ -16,18 +16,18 @@ class AtomHandler(webapp.RequestHandler):
 		dispatch = self.request.get("dispatch")
 		area = self.request.get("area")
 
-		incident_query = CHPIncident.all()
-		incident_query.order('-LogTime')
+		incidents = CHPIncident.all()
+		incidents.order('-LogTime')
 		if center != "":
-			incident_query.filter('CenterID =', center)
+			incidents.filter('CenterID =', center)
 		if dispatch != "":
-			incident_query.filter('DispatchID =', dispatch)
+			incidents.filter('DispatchID =', dispatch)
 		if area != "":
-			incident_query.filter('Area =', area)
+			incidents.filter('Area =', area)
 
 		last_mod = datetime.datetime.utcnow()
 		if incidents.count(1) > 0:
-			last_mod = max(incident_query, key=lambda incident: incident.modified).modified
+			last_mod = max(incidents, key=lambda incident: incident.modified).modified
 			if conditional_http.isNotModified(self, last_mod):
 				return
 
@@ -60,7 +60,7 @@ class AtomHandler(webapp.RequestHandler):
 			'rel': 'hub'
 		})
 
-		for incident in incident_query:
+		for incident in incidents:
 			details = pickle.loads(incident.LogDetails)
 			description = "<ul>"
 			for detail in details['details']:
