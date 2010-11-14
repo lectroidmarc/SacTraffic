@@ -1,0 +1,33 @@
+#
+
+python_preamble:
+- import: google.appengine.ext.bulkload.transform
+- import: google.appengine.ext.db
+- import: re
+- import: base64
+
+transformers:
+- kind: Camera
+  connector: csv
+  connector_options:
+    columns: from_header
+  property_map:
+    - property: __key__
+      external_name: id
+
+    - property: name
+      external_name: name
+
+    - property: url
+      external_name: url
+
+    - property: geolocation
+      external_name: geo
+
+    - property: width
+      external_name: width
+      import_transform: int
+
+    - property: height
+      external_name: height
+      import_transform: int

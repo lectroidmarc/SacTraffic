@@ -1,0 +1,77 @@
+import datetime
+import pickle
+import time
+
+from google.appengine.ext import webapp
+from google.appengine.ext.webapp import util
+from django.utils import simplejson as json
+
+from models import CHPIncident
+from utils import conditional_http
+
+
+class JsonHandler(webapp.RequestHandler):
+	def get(self):
+		center = self.request.get("center")
+		dispatch = self.request.get("dispatch")
+		area = self.request.get("area")
+		callback = self.request.get("callback")
+
+		incidents = CHPIncident.all()
+		incidents.order('-LogTime')
+		if center != "":
+			incidents.filter('CenterID =', center)
+		if dispatch != "":
+			incidents.filter('DispatchID =', dispatch)
+		if area != "":
+			incidents.filter('Area =', area)
+
+		last_mod = datetime.datetime.utcnow()	# XXX should this be None?
+		if incidents.count(1) > 0:
+			last_mod = max(incidents, key=lambda incident: incident.modified).modified
+			if conditional_http.isNotModified(self, last_mod):
+				return
+
+		output_list = []
+		for incident in incidents:
+			incident_dict = {
+				'Area': incident.Area,
+				'ID': incident.LogID,
+				'Location': incident.Location,
+				'LogDetails': pickle.loads(incident.LogDetails),
+				'LogTime': incident.LogTime.strftime("%m/%d/%Y %H:%M:%S GMT"),
+				'LogTimeEpoch': time.mktime(incident.LogTime.timetuple()),
+				'LogType': incident.LogType,
+				'TBXY': incident.TBXY,
+				'ThomasBrothers': incident.ThomasBrothers,
+				'status': incident.status
+			}
+
+			if incident.geolocation is not None:
+				incident_dict['geolocation'] = {
+					'lat': incident.geolocation.lat,
+					'lon': incident.geolocation.lon
+				}
+
+			output_list.append(incident_dict)
+
+		self.response.headers["Content-Type"] = "application/json"
+		conditional_http.setConditionalHeaders(self, last_mod)
+
+		if callback != "":
+			self.response.out.write("%s(" % callback)
+
+		self.response.out.write(json.dumps(output_list, sort_keys=True))
+
+		if callback != "":
+			self.response.out.write(")")
+
+
+application = webapp.WSGIApplication([('/json', JsonHandler)],
+									 debug=True)
+
+def main():
+	util.run_wsgi_app(application)
+
+if __name__ == '__main__':
+	main()
