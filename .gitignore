@@ -14,5 +14,6 @@ htdocs/y_key_*.html
 htdocs/*.min.css
 htdocs/javascript/*.min.js
 
+index.yaml
 bulkloader-log-*
 bulkloader-progress-*
