@@ -57,7 +57,7 @@ function init_incident (id) {
 			trafficmap = new TrafficMap("map");
 		}
 
-		jQuery.getJSON("/json?center=STCC&dispatch=STCC", function (incidents) {
+		jQuery.getJSON("/json?dispatch=STCC", function (incidents) {
 			var incident_exists = TrafficList.show_incident(incidents, id);
 
 			if (typeof trafficmap != "undefined") {
@@ -67,7 +67,7 @@ function init_incident (id) {
 
 			if (incident_exists) {
 				setInterval(function () {
-					jQuery.getJSON("/json?center=STCC&dispatch=STCC", function (incidents) {
+					jQuery.getJSON("/json?dispatch=STCC", function (incidents) {
 						TrafficList.show_incident(incidents, id);
 					});
 				}, 10000);
@@ -81,7 +81,7 @@ window['init_incident'] = init_incident;	// Closure-style export: http://code.go
  * Fetches the incident JSON and processes it accordingly.
  */
 function get_incidents (map) {
-	jQuery.getJSON("/json?center=STCC&dispatch=STCC", function (incidents) {
+	jQuery.getJSON("/json?dispatch=STCC", function (incidents) {
 		TrafficList.show_incidents(incidents);
 
 		if (typeof map != "undefined") { map.update(incidents); }
