@@ -1,5 +1,6 @@
 import datetime
 import pickle
+import re
 import time
 from xml.etree import ElementTree
 
@@ -15,6 +16,7 @@ class AtomHandler(webapp.RequestHandler):
 		center = self.request.get("center")
 		dispatch = self.request.get("dispatch")
 		area = self.request.get("area")
+		roads = self.request.get("roads")
 
 		incidents = CHPIncident.all()
 		incidents.order('-LogTime')
@@ -61,6 +63,11 @@ class AtomHandler(webapp.RequestHandler):
 		})
 
 		for incident in incidents:
+			if roads != "":
+				road_match = re.match(roads.replace(",", "|"), incident.Location, flags=re.I)
+				if road_match is None:
+					continue
+
 			details = pickle.loads(incident.LogDetails)
 			description = "<ul>"
 			for detail in details['details']:

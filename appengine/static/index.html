@@ -79,13 +79,13 @@
 
 		<div id="freewayfeeds">
 			<h2>Incident RSS feeds by street or freeway</h2>
-			<form action="rss.php" method="get">
+			<form action="atom" method="get">
 				<ul>
-					<li><a href="/rss.php?f=I5"><img src="/images/feed-icon-14x14.png" height="14" width="14" alt="*"/> I-5</a></li>
-					<li><a href="/rss.php?f=I80"><img src="/images/feed-icon-14x14.png" height="14" width="14" alt="*"/> I-80</a></li>
-					<li><a href="/rss.php?f=US50"><img src="/images/feed-icon-14x14.png" height="14" width="14" alt="*"/> US-50</a></li>
-					<li><a href="/rss.php?f=SR99"><img src="/images/feed-icon-14x14.png" height="14" width="14" alt="*"/> SR-99</a> (Highway 99)</li>
-					<li><img src="/images/feed-icon-14x14.png" height="14" width="14" alt="*"/> <input name="f"/> <i>(include your own comma separated list of roads)</i></li>
+					<li><a href="/atom?dispatch=STCC&amp;roads=I5"><img src="/images/feed-icon-14x14.png" height="14" width="14" alt="*"/> I-5</a></li>
+					<li><a href="/atom?dispatch=STCC&amp;roads=I80"><img src="/images/feed-icon-14x14.png" height="14" width="14" alt="*"/> I-80</a></li>
+					<li><a href="/atom?dispatch=STCC&amp;roads=US50"><img src="/images/feed-icon-14x14.png" height="14" width="14" alt="*"/> US-50</a></li>
+					<li><a href="/atom?dispatch=STCC&amp;roads=SR99"><img src="/images/feed-icon-14x14.png" height="14" width="14" alt="*"/> SR-99</a> (Highway 99)</li>
+					<li><img src="/images/feed-icon-14x14.png" height="14" width="14" alt="*"/> <input name="roads"/> <i>(include your own comma separated list of roads)</i></li>
 				</ul>
 			</form>
 		</div>
