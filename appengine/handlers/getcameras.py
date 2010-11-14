@@ -1,17 +1,35 @@
+
+import datetime
+
 from google.appengine.api import memcache
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from django.utils import simplejson as json
 
 from models import Camera
+from utils import conditional_http
 
 
 class CameraHandler(webapp.RequestHandler):
 	def get(self):
-		#XXX Bah, needs 304 stuff.  Needs updated in DS, stupid bulkloader
-		json_data = memcache.get("camera_json")
+		# Try the 304 stuff from memcache
+		last_mod = memcache.get("cameras-last_mod")
+		if conditional_http.isNotModified(self, last_mod):
+			return
+
+		# Try the JSON from memcache
+		json_data = memcache.get("cameras-json")
 		if json_data is None:
+			# Hit the DS
 			cameras = Camera.all()
+
+			last_mod = datetime.datetime.utcnow()
+			if cameras.count(1) > 0:
+				# Get the last_mod date from the DS data, save it and try the 304 stuff again.
+				last_mod = max(cameras, key=lambda camera: camera.updated).updated
+				memcache.set("cameras-last_mod", last_mod, 300)
+				if conditional_http.isNotModified(self, last_mod):
+					return
 
 			output_list = []
 			for camera in cameras:
@@ -31,9 +49,10 @@ class CameraHandler(webapp.RequestHandler):
 				output_list.append(camera_dict)
 
 			json_data = json.dumps(output_list, sort_keys=True)
-			memcache.set("camera_json", json_data, 3600)
+			memcache.set("camera_json", json_data, 300)
 
 		self.response.headers["Content-Type"] = "application/json"
+		conditional_http.setConditionalHeaders(self, last_mod)
 		self.response.out.write(json_data)
 
 
