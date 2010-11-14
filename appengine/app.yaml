@@ -39,13 +39,23 @@ handlers:
 
 # Static handlers
 
+- url: /images
+  static_dir: static/images
+  expiration: "365d"
+
+- url: /(.*\.(png|ico|txt|xsl))
+  static_files: static/\1
+  upload: static/(.*\.(png|ico|txt|xsl))
+  expiration: "365d"
+
+- url: /(.*\.(html|css|js))
+  static_files: static/\1
+  upload: static/(.*\.(html|css|js))
+
 - url: /
   static_files: static/index.html
   upload: static/index.html
 
-- url: /(.*)
-  static_files: static/\1
-  upload: static/(.*)
 
 builtins:
 - remote_api: on
