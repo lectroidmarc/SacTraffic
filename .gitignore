@@ -13,3 +13,6 @@ htdocs/google*.html
 htdocs/y_key_*.html
 htdocs/*.min.css
 htdocs/javascript/*.min.js
+
+bulkloader-log-*
+bulkloader-progress-*
