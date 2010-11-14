@@ -5,6 +5,7 @@ python_preamble:
 - import: google.appengine.ext.db
 - import: re
 - import: base64
+- import: bulkloader_helpers
 
 transformers:
 - kind: Camera
@@ -31,3 +32,7 @@ transformers:
     - property: height
       external_name: height
       import_transform: int
+
+    - property: updated
+      external_name: date
+      import_transform: bulkloader_helpers.now
