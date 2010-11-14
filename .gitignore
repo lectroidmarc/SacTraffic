@@ -17,3 +17,4 @@ htdocs/javascript/*.min.js
 index.yaml
 bulkloader-log-*
 bulkloader-progress-*
+*.pyc
