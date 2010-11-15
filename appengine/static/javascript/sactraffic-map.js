@@ -105,47 +105,6 @@ function TrafficMap (elementId) {
 }
 
 /**
- * Loads live cam data from an XML file.
- * @param {String} cam_url The url of the camera xml file.
- */
-TrafficMap.prototype.load_live_cams = function (cam_url) {
-	var self = this;
-
-	jQuery.ajax({
-		url: cam_url,
-		dataType: "json",
-		success: function (cameras) {
-			var camera_icon = new google.maps.MarkerImage("/images/camera_icon.gif",
-				new google.maps.Size(24, 24),
-				new google.maps.Point(0,0),
-				new google.maps.Point(12, 12));
-
-			for (var x = 0; x < cameras.length; x++) {
-				var camera = cameras[x];
-				var marker = new google.maps.Marker({
-					position: new google.maps.LatLng(camera.location.lat, camera.location.lon),
-					icon: camera_icon,
-					title: camera.name
-				});
-
-				google.maps.event.addListener(marker, 'click', function() {
-					var ie_safe_name = camera.name.replace(/ /g, "_").replace(/-/g, "_");
-					var window_width = parseInt(camera.size.width) + 60;
-					var window_height = parseInt(camera.size.height) + 170;
-
-					window.open("/showcamera?id="+camera.id, ie_safe_name, "width="+window_width+",height="+window_height);
-				});
-
-				self.live_cams.push(marker);
-			}
-
-			// Show the live cams by default
-			self.show_live_cams();
-		}
-	});
-};
-
-/**
  * Update incident data.
  * @param {Incidents} incidents The incidents object fetched via AJAX.
  */
@@ -187,9 +146,44 @@ TrafficMap.prototype.show_incident = function (incidents, incident_id) {
  * Shows the live cams.
  */
 TrafficMap.prototype.show_live_cams = function () {
-	for (var x = 0; x < this.live_cams.length; x++) {
-		var cam_marker = this.live_cams[x];
-		cam_marker.setMap(this.gmap);
+	if (this.live_cams.length == 0) {
+		var self = this;
+
+		jQuery.ajax({
+			url: "/getcameras",
+			dataType: "json",
+			success: function (cameras) {
+				var camera_icon = new google.maps.MarkerImage("/images/camera_icon.gif",
+					new google.maps.Size(24, 24),
+					new google.maps.Point(0,0),
+					new google.maps.Point(12, 12));
+
+				for (var x = 0; x < cameras.length; x++) {
+					var camera = cameras[x];
+					var marker = new google.maps.Marker({
+						position: new google.maps.LatLng(camera.location.lat, camera.location.lon),
+						icon: camera_icon,
+						title: camera.name,
+						map: self.gmap
+					});
+
+					google.maps.event.addListener(marker, 'click', function() {
+						var ie_safe_name = camera.name.replace(/ /g, "_").replace(/-/g, "_");
+						var window_width = parseInt(camera.size.width) + 60;
+						var window_height = parseInt(camera.size.height) + 170;
+
+						window.open("/showcamera?id="+camera.id, ie_safe_name, "width="+window_width+",height="+window_height);
+					});
+
+					self.live_cams.push(marker);
+				}
+			}
+		});
+	} else {
+		for (var x = 0; x < this.live_cams.length; x++) {
+			var cam_marker = this.live_cams[x];
+			cam_marker.setMap(this.gmap);
+		}
 	}
 };
 

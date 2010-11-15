@@ -13,7 +13,7 @@ function init_index () {
 	jQuery(document).ready(function() {
 		if (screen.width > 480) {
 			trafficmap = new TrafficMap("map");
-			trafficmap.load_live_cams("/getcameras");
+			trafficmap.show_live_cams();
 			//trafficmap.show_gtraffic();
 
 			jQuery("span.traffic").click(function () {
