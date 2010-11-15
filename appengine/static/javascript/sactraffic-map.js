@@ -10,9 +10,28 @@
  * @param {String} elementId An ID to load the map into.
  */
 function TrafficMap (elementId) {
-	var self = this;
+	this.center = new google.maps.LatLng(38.56, -121.40);
+	this.live_cams = [];
+	this.traffic_overlay = null;
+	this.marker_list = {};
 
-	var map_style = [
+	// Set up the map icons
+	this.default_icon = new google.maps.MarkerImage('/images/incident.png',
+		new google.maps.Size(18, 18),
+		new google.maps.Point(0,0),
+		new google.maps.Point(9,9));
+
+	this.accident_icon = new google.maps.MarkerImage('/images/accident.png',
+		new google.maps.Size(18, 18),
+		new google.maps.Point(0,0),
+		new google.maps.Point(9,9));
+
+	this.default_icon_shadow = new google.maps.MarkerImage('/images/traffic_incident_shadow.png',
+		new google.maps.Size(23, 23),
+		new google.maps.Point(0,0),
+		new google.maps.Point(9,9));
+
+	var sactrafficMapStyle = [
 		{
 			featureType: 'road',
 			elementType: 'geometry',
@@ -60,12 +79,7 @@ function TrafficMap (elementId) {
 			]
 		}
 	];
-	var sactrafficMapType = new google.maps.StyledMapType(map_style, {name: "SacTraffic"});
-
-	this.center = new google.maps.LatLng(38.56, -121.40);
-	this.live_cams = [];
-	this.traffic_overlay = null;
-	this.marker_list = {};
+	var sactrafficMapType = new google.maps.StyledMapType(sactrafficMapStyle, {name: "SacTraffic"});
 
 	var mapOptions = {
 		zoom: 11,
@@ -82,23 +96,8 @@ function TrafficMap (elementId) {
 	this.gmap.mapTypes.set('sactraffic', sactrafficMapType);
 	this.gmap.setMapTypeId('sactraffic');
 
-	// Set up the map icons
-	this.default_icon = new google.maps.MarkerImage('/images/incident.png',
-		new google.maps.Size(18, 18),
-		new google.maps.Point(0,0),
-		new google.maps.Point(9,9));
-
-	this.accident_icon = new google.maps.MarkerImage('/images/accident.png',
-		new google.maps.Size(18, 18),
-		new google.maps.Point(0,0),
-		new google.maps.Point(9,9));
-
-	this.default_icon_shadow = new google.maps.MarkerImage('/images/traffic_incident_shadow.png',
-		new google.maps.Size(23, 23),
-		new google.maps.Point(0,0),
-		new google.maps.Point(9,9));
-
 	// Save the map's center after a user drag...
+	var self = this;
 	google.maps.event.addListener(this.gmap, "dragend", function() {
 		self.center = self.gmap.getCenter();
 	});
