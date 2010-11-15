@@ -117,11 +117,11 @@ TrafficMap.prototype.show_incident = function (incidents, incident_id) {
 	for (var x = 0; x < incidents.length; x++) {
 		var incident = incidents[x];
 		if (incident.ID == incident_id) {
-			var marker = this.make_marker(incident);
-			if (marker) {
-				this.gmap.addOverlay(marker);
-				this.center = marker.getLatLng();
-				this.gmap.setCenter(this.center , 13);
+			if (incident.geolocation) {
+				var marker = this.make_marker(incident);
+				this.center = marker.getPosition();
+				this.recenter();
+				this.gmap.setZoom(13);
 			}
 			break;
 		}

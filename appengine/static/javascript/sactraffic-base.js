@@ -61,7 +61,6 @@ function init_incident (id) {
 			var incident_exists = TrafficList.show_incident(incidents, id);
 
 			if (typeof trafficmap != "undefined") {
-				trafficmap.gmap.zoomIn();
 				trafficmap.show_incident(incidents, id);
 			}
 
