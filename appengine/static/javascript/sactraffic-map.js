@@ -68,11 +68,14 @@ function TrafficMap (elementId) {
 	this.marker_list = {};
 
 	var mapOptions = {
-		zoom: 10,
+		zoom: 11,
 		center: this.center,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		streetViewControl: false,
-		mapTypeControl: false
+		mapTypeControl: false,
+		navigationControlOptions: {
+			style: google.maps.NavigationControlStyle.SMALL
+		}
 	};
 
 	this.gmap = new google.maps.Map(document.getElementById(elementId), mapOptions);
