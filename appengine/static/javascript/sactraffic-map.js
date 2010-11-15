@@ -12,24 +12,41 @@
 function TrafficMap (elementId) {
 	var self = this;
 
-	this.center = new GLatLng(38.56, -121.40);
+	this.center = new google.maps.LatLng(38.56, -121.40);
 	this.live_cams = [];
 	this.traffic_overlay = null;
 	this.marker_list = {};
 
-	this.gmap = new GMap2(document.getElementById(elementId));
-	this.gmap.setCenter(this.center, 10);
-	this.gmap.addControl(new GSmallMapControl());
+	var mapOptions = {
+		zoom: 10,
+		center: this.center,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		streetViewControl: false,
+		mapTypeControl: false
+	};
+
+	this.gmap = new google.maps.Map(document.getElementById(elementId), mapOptions);
+
+	// Set up the map icons
+	this.default_icon = new google.maps.MarkerImage('/images/incident.png',
+		new google.maps.Size(18, 18),
+		new google.maps.Point(0,0),
+		new google.maps.Point(9,9));
+
+	this.accident_icon = new google.maps.MarkerImage('/images/accident.png',
+		new google.maps.Size(18, 18),
+		new google.maps.Point(0,0),
+		new google.maps.Point(9,9));
+
+	this.default_icon_shadow = new google.maps.MarkerImage('/images/traffic_incident_shadow.png',
+		new google.maps.Size(23, 23),
+		new google.maps.Point(0,0),
+		new google.maps.Point(9,9));
 
 	// Save the map's center after a user drag...
-	GEvent.addListener(this.gmap, "dragend", function() {
+	google.maps.event.addListener(this.gmap, "dragend", function() {
 		self.center = self.gmap.getCenter();
 	});
-
-	// Set this up per:
-	// http://code.google.com/apis/maps/documentation/index.html#Memory_Leaks
-	// Note: .unload() broken in IE7
-	//jQuery(window).unload( function () { GUnload(); } );
 }
 
 /**
@@ -43,35 +60,32 @@ TrafficMap.prototype.load_live_cams = function (cam_url) {
 		url: cam_url,
 		dataType: "json",
 		success: function (cameras) {
-			var camera_icon = new GIcon();
-			camera_icon.image = "/images/camera_icon.gif";
-			camera_icon.iconSize = new GSize(24, 24);
-			camera_icon.iconAnchor = new GPoint(12, 12);
-			camera_icon.infoWindowAnchor = new GPoint(12, 1);
+			var camera_icon = new google.maps.MarkerImage("/images/camera_icon.gif",
+				new google.maps.Size(24, 24),
+				new google.maps.Point(0,0),
+				new google.maps.Point(12, 12));
 
 			for (var x = 0; x < cameras.length; x++) {
-				var marker = make_marker(cameras[x]);
+				var camera = cameras[x];
+				var marker = new google.maps.Marker({
+					position: new google.maps.LatLng(camera.location.lat, camera.location.lon),
+					icon: camera_icon,
+					title: camera.name
+				});
+
+				google.maps.event.addListener(marker, 'click', function() {
+					var ie_safe_name = camera.name.replace(/ /g, "_").replace(/-/g, "_");
+					var window_width = parseInt(camera.size.width) + 60;
+					var window_height = parseInt(camera.size.height) + 170;
+
+					window.open("/showcamera?id="+camera.id, ie_safe_name, "width="+window_width+",height="+window_height);
+				});
 
 				self.live_cams.push(marker);
 			}
 
 			// Show the live cams by default
 			self.show_live_cams();
-
-			// Closure needed to make marker GEvents work right
-			function make_marker (camera) {
-				var marker = new GMarker(new GPoint(camera.location.lon, camera.location.lat), { title:camera.name, icon:camera_icon });
-
-				GEvent.addListener(marker, "click", function() {
-					var ie_safe_name = camera.name.replace(/ /g, "_").replace(/-/g, "_");
-					var window_width = parseInt(camera.size.width) + 60;
-					var window_height = parseInt(camera.size.height) + 170;
-
-					window.open("../showcamera?id="+camera.id, ie_safe_name, "width="+window_width+",height="+window_height);
-				});
-
-				return marker;
-			}
 		}
 	});
 };
@@ -87,12 +101,9 @@ TrafficMap.prototype.update = function (incidents) {
 	for (var x = 0; x < incidents.length; x++) {
 		var incident = incidents[x];
 
-		if (incident.status != "inactive") {
+		if (incident.status != "inactive" && incident.geolocation && incident.LogType != "Media Information") {
 			var marker = this.make_marker(incident);
-			if (marker) {
-				this.marker_list[incident.ID] = marker;
-				this.gmap.addOverlay(marker);
-			}
+			this.marker_list[incident.ID] = marker;
 		}
 	}
 };
@@ -122,7 +133,8 @@ TrafficMap.prototype.show_incident = function (incidents, incident_id) {
  */
 TrafficMap.prototype.show_live_cams = function () {
 	for (var x = 0; x < this.live_cams.length; x++) {
-		this.gmap.addOverlay(this.live_cams[x]);
+		var cam_marker = this.live_cams[x];
+		cam_marker.setMap(this.gmap);
 	}
 };
 
@@ -131,7 +143,8 @@ TrafficMap.prototype.show_live_cams = function () {
  */
 TrafficMap.prototype.hide_live_cams = function () {
 	for (var x = 0; x < this.live_cams.length; x++) {
-		this.gmap.removeOverlay(this.live_cams[x]);
+		var cam_marker = this.live_cams[x];
+		cam_marker.setMap(null);
 	}
 };
 
@@ -139,8 +152,9 @@ TrafficMap.prototype.hide_live_cams = function () {
  * Shows Google traffic info.
  */
 TrafficMap.prototype.show_gtraffic = function () {
-	this.traffic_overlay = new GTrafficOverlay({incidents:true});
-	this.gmap.addOverlay(this.traffic_overlay);
+	if (!this.traffic_overlay)
+		this.traffic_overlay = new google.maps.TrafficLayer();
+	this.traffic_overlay.setMap(this.gmap);
 };
 
 /**
@@ -148,7 +162,7 @@ TrafficMap.prototype.show_gtraffic = function () {
  */
 TrafficMap.prototype.hide_gtraffic = function () {
 	if (this.traffic_overlay)
-		this.gmap.removeOverlay(this.traffic_overlay);
+		this.traffic_overlay.setMap(null);
 };
 
 /**
@@ -157,7 +171,7 @@ TrafficMap.prototype.hide_gtraffic = function () {
  */
 TrafficMap.prototype.center_on_id = function (incident_id) {
 	if (this.marker_list[incident_id]) {
-		this.gmap.panTo(this.marker_list[incident_id].getLatLng());
+		this.gmap.panTo(this.marker_list[incident_id].getPosition());
 	}
 };
 
@@ -173,7 +187,8 @@ TrafficMap.prototype.recenter = function () {
  */
 TrafficMap.prototype.hide_incidents = function () {
 	for (var id in this.marker_list) {
-		this.gmap.removeOverlay(this.marker_list[id]);
+		var marker = this.marker_list[id];
+		marker.setMap(null);
 	}
 };
 
@@ -183,42 +198,32 @@ TrafficMap.prototype.hide_incidents = function () {
  * @returns {GMarker}
  */
 TrafficMap.prototype.make_marker = function (incident) {
-	if (incident.geolocation && incident.LogType != "Media Information") {
-		// Default icon...
-		var incident_icon = new GIcon(G_DEFAULT_ICON);
-		incident_icon.image = "/images/incident.png";
-		incident_icon.shadow = "/images/traffic_incident_shadow.png";
-		incident_icon.iconSize = new GSize(18, 18);
-		incident_icon.shadowSize = new GSize(23, 23);
-		incident_icon.iconAnchor = new GPoint(9, 9);
-		incident_icon.infoWindowAnchor = new GPoint(8, 3);
+	var self = this;
+	var icon = this.default_icon;
 
-		var point = incident.geolocation;
-		var latlng = new GLatLng(point.lat, point.lon);
-
-		if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType)) {
-			// Hazard icon...
-			// Note: placeholder, we don't actually have a hazard icon
-		} else if (/Collision|Fatality|Hit \& Run/.test(incident.LogType)) {
-			// Collision icon...
-			incident_icon.image = "/images/accident.png";
-		}
-
-		var marker = new GMarker(latlng, {
-			icon: incident_icon,
-			zIndexProcess: function () {
-				// Put the CHP incidents *under* everything else because everything
-				// else can be turned off to get it out of the way.
-				return GOverlay.getZIndex(latlng.lat()) * 2;
-			}
-		});
-
-		GEvent.addListener(marker, "click", function() {
-			marker.openInfoWindowHtml(
-				'<div class="marker"><div class="logtype">' + incident.LogType + '</div><div class="location">' + incident.Location + '</div><div class="logtime">' + incident.LogTime + '</div></div>'
-			);
-		});
-
-		return marker;
+	if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType)) {
+		// Hazard icon...
+		// Note: placeholder, we don't actually have a hazard icon
+	} else if (/Collision|Fatality|Hit \& Run/.test(incident.LogType)) {
+		// Collision icon...
+		icon = this.accident_icon;
 	}
+
+	var marker = new google.maps.Marker({
+		position: new google.maps.LatLng(incident.geolocation.lat, incident.geolocation.lon),
+		icon: icon,
+		shadow: this.default_icon_shadow,
+		title: incident.LogType,
+		map: this.gmap
+	});
+
+	var infowindow = new google.maps.InfoWindow({
+		content: '<div class="marker"><div class="logtype">' + incident.LogType + '</div><div class="location">' + incident.Location + '</div><div class="logtime">' + incident.LogTime + '</div></div>'
+	});
+
+	google.maps.event.addListener(marker, 'click', function() {
+		infowindow.open(self.gmap, marker);
+	});
+
+	return marker;
 };
