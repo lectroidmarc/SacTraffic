@@ -14,7 +14,7 @@ function init_index () {
 		if (screen.width > 480) {
 			trafficmap = new TrafficMap("map");
 			trafficmap.load_live_cams("/getcameras");
-			trafficmap.show_gtraffic();
+			//trafficmap.show_gtraffic();
 
 			jQuery("span.traffic").click(function () {
 				jQuery("input.traffic").click();
