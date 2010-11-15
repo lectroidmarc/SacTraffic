@@ -200,8 +200,7 @@ TrafficMap.prototype.hide_live_cams = function () {
  * Shows Google traffic info.
  */
 TrafficMap.prototype.show_gtraffic = function () {
-	if (!this.traffic_overlay)
-		this.traffic_overlay = new google.maps.TrafficLayer();
+	this.traffic_overlay = new google.maps.TrafficLayer();
 	this.traffic_overlay.setMap(this.gmap);
 };
 
