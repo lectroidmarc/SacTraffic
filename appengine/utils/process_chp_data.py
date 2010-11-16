@@ -2,6 +2,7 @@
 import logging
 import pickle
 import re
+import time
 from datetime import datetime, timedelta
 
 from google.appengine.ext import db
@@ -28,13 +29,16 @@ def process_chp_center(chpCenter):
 			continue
 
 		for chpLog in chpDispatch:
-			incident = CHPIncident.get_by_key_name(chpLog.attrib['ID'])
+			log_time = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific())
+			key_name = "%s.%s.%s.%d" % (chpCenter.attrib['ID'], chpDispatch.attrib['ID'], chpLog.attrib['ID'], time.mktime(log_time.timetuple()))
+
+			incident = CHPIncident.get_by_key_name(key_name)
 			if incident is None:
-				incident = CHPIncident(key_name = chpLog.attrib['ID'],
+				incident = CHPIncident(key_name = key_name,
 					CenterID = chpCenter.attrib['ID'],
 					DispatchID = chpDispatch.attrib['ID'],
 					LogID = chpLog.attrib['ID'],
-					LogTime = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific()),
+					LogTime = log_time,
 					Area = chpLog.find('Area').text.strip('"'),
 					ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"'),
 					TBXY = chpLog.find('TBXY').text.strip('"'),
