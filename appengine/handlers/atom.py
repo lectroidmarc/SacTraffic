@@ -14,7 +14,7 @@ from utils import conditional_http
 class AtomHandler(webapp.RequestHandler):
 	def get(self):
 		center = self.request.get("center")
-		dispatch = self.request.get("dispatch")
+		dispatch = self.request.get("dispatch", default_value="STCC")
 		area = self.request.get("area")
 		roads = self.request.get("roads")
 
