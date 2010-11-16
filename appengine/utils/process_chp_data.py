@@ -90,7 +90,9 @@ def process_chp_center(chpCenter):
 				psh_pings.append('http://www.sactraffic.org/atom?center=%s' % incident.CenterID)
 				psh_pings.append('http://www.sactraffic.org/atom?dispatch=%s' % incident.DispatchID)
 				psh_pings.append('http://www.sactraffic.org/atom?area=%s' % incident.Area)
-				psh_pings.append('http://www.sactraffic.org/atom')
+				# Note: 'dispatch' defaults to STCC so ping accordingly
+				if incident.DispatchID == "STCC":
+					psh_pings.append('http://www.sactraffic.org/atom')
 
 			# Save this incident
 			incident_list.append(incident)
