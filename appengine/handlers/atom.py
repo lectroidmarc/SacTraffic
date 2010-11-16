@@ -69,18 +69,22 @@ class AtomHandler(webapp.RequestHandler):
 					continue
 
 			details = pickle.loads(incident.LogDetails)
-			description = "<ul>"
+			description = "%s, %s<ul>" % (incident.Location, incident.Area)
 			for detail in details['details']:
 				description += "<li>" + detail['DetailTime'] + ": " + detail['IncidentDetail'] + "</li>"
 			description += "</ul>"
 
 			entry = ElementTree.SubElement (feed, 'entry')
 
-			ElementTree.SubElement(entry, 'title').text = "%s. %s, %s" % (incident.LogType, incident.Location, incident.Area)
+			ElementTree.SubElement(entry, 'title').text = incident.LogType
 			ElementTree.SubElement(entry, 'id').text = 'tag:traffic.lectroid.net,2010-06-24:' + incident.LogID
 			ElementTree.SubElement(entry, 'content', {'type': 'html'}).text = description
 			ElementTree.SubElement(entry, 'published').text = incident.LogTime.strftime("%Y-%m-%dT%H:%M:%SZ")
 			ElementTree.SubElement(entry, 'updated').text = incident.modified.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+			ElementTree.SubElement(entry, 'link', {
+				'href': "/incident?id=%s" % incident.LogID
+			})
 
 			if incident.geolocation is not None:
 				ElementTree.SubElement(entry, 'georss:point').text = str(incident.geolocation.lat) + " " + str(incident.geolocation.lon)
