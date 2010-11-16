@@ -7,7 +7,7 @@ from google.appengine.ext.webapp import util
 from django.utils import simplejson as json
 
 from models import CHPIncident
-from utils import conditional_http
+from utils import conditional_http, tzinfo
 
 
 class JsonHandler(webapp.RequestHandler):
@@ -32,6 +32,8 @@ class JsonHandler(webapp.RequestHandler):
 			if conditional_http.isNotModified(self, last_mod):
 				return
 
+		pacific_tz = tzinfo.Pacific()
+
 		output_list = []
 		for incident in incidents:
 			incident_dict = {
@@ -39,7 +41,7 @@ class JsonHandler(webapp.RequestHandler):
 				'ID': incident.LogID,
 				'Location': incident.Location,
 				'LogDetails': pickle.loads(incident.LogDetails),
-				'LogTime': incident.LogTime.strftime("%m/%d/%Y %H:%M:%S GMT"),
+				'LogTime': (incident.LogTime + pacific_tz.utcoffset(incident.LogTime)).strftime("%m/%d/%Y %I:%M:%S %p"),
 				'LogTimeEpoch': time.mktime(incident.LogTime.timetuple()),
 				'LogType': incident.LogType,
 				'TBXY': incident.TBXY,
