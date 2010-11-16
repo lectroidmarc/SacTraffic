@@ -35,13 +35,20 @@ def process_chp_center(chpCenter):
 					DispatchID = chpDispatch.attrib['ID'],
 					LogID = chpLog.attrib['ID'],
 					LogTime = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific()),
-					Location = deCopIfy(chpLog.find('Location').text.strip('"')),
 					Area = chpLog.find('Area').text.strip('"'),
 					ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"'),
 					TBXY = chpLog.find('TBXY').text.strip('"'),
 					geolocation = geoConvertTBXY(chpCenter.attrib['ID'], chpLog.find('TBXY').text.strip('"')),
 					modified = datetime.utcnow()
 					)
+
+			#
+			# Yes, the Location can change...
+			#
+			location = deCopIfy(chpLog.find('Location').text.strip('"'))
+			if incident.Location != location:
+				incident.Location = location
+				incident.modified = datetime.utcnow()
 
 			#
 			# LogType/LogTypeID
