@@ -69,6 +69,7 @@ def process_chp_center(chpCenter):
 				incident.LogTypeID != existing_incident.LogTypeID or \
 				incident.LogDetails != existing_incident.LogDetails:
 
+				# Have changed, update the modified date
 				incident.modified = datetime.utcnow()
 
 				# Send PSH pings
@@ -78,6 +79,9 @@ def process_chp_center(chpCenter):
 				# Note: 'dispatch' defaults to STCC so ping accordingly
 				if incident.DispatchID == "STCC":
 					psh_pings.append('http://www.sactraffic.org/atom')
+			else:
+				# No change, set the new date to the old date
+				incident.modified = existing_incident.modified
 
 			# Save this incident
 			incident_list.append(incident)
