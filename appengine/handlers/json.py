@@ -38,7 +38,7 @@ class JsonHandler(webapp.RequestHandler):
 		for incident in incidents:
 			incident_dict = {
 				'Area': incident.Area,
-				'ID': incident.LogID,
+				'ID': incident.key().name(),
 				'Location': incident.Location,
 				'LogDetails': pickle.loads(incident.LogDetails),
 				'LogTime': (incident.LogTime + pacific_tz.utcoffset(incident.LogTime)).strftime("%m/%d/%Y %I:%M:%S %p"),
