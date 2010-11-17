@@ -42,16 +42,17 @@ class UpdateHandler(webapp.RequestHandler):
 				logging.warning(error)
 				template_values['error'] = error
 
+				touchActiveIncidents()
+
 		self.response.out.write(template.render("../templates/update.html", template_values))
 
 
 def touchActiveIncidents():
-	# This is called in an error state. Roll through any incidents updated
-	# in the last update (i.e.: "active" incidents or ones updated < 10
-	# minutes ago) and "touch" them so they stay active.
-	query = CHPIncident.gql("WHERE updated > :1", datetime.utcnow() - timedelta(minutes=10))
-	for incident in query:
-		incident.put()
+	# This is called in an error state.  Roll through and "touch" any active
+	# incidents (i.e.: any incidents updated < 15 minutes ago) so they stay
+	# active.
+	active_incidents = CHPIncident.gql("WHERE updated > :1", datetime.utcnow() - timedelta(minutes=15))
+	db.put(active_incidents)
 
 
 application = webapp.WSGIApplication([('/update', UpdateHandler)],
