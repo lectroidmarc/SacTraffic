@@ -31,47 +31,23 @@ def process_chp_center(chpCenter):
 		for chpLog in chpDispatch:
 			log_time = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific())
 			key_name = "%s.%s.%s.%d" % (chpCenter.attrib['ID'], chpDispatch.attrib['ID'], chpLog.attrib['ID'], time.mktime(log_time.timetuple()))
-
-			incident = CHPIncident.get_by_key_name(key_name)
-			if incident is None:
-				incident = CHPIncident(key_name = key_name,
-					CenterID = chpCenter.attrib['ID'],
-					DispatchID = chpDispatch.attrib['ID'],
-					LogID = chpLog.attrib['ID'],
-					LogTime = log_time,
-					Area = chpLog.find('Area').text.strip('"'),
-					ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"'),
-					TBXY = chpLog.find('TBXY').text.strip('"'),
-					geolocation = geoConvertTBXY(chpCenter.attrib['ID'], chpLog.find('TBXY').text.strip('"')),
-					modified = datetime.utcnow()
-					)
-
-			#
-			# Yes, the Location can change...
-			#
-			location = deCopIfy(chpLog.find('Location').text.strip('"'))
-			if incident.Location != location:
-				incident.Location = location
-				incident.modified = datetime.utcnow()
-
-			#
-			# LogType/LogTypeID
-			#
-			# I *think* the LogType/LogTypeID can change as
-			# the situation evolves.
-			#
-			# (ex: 'Traffic Collision - No Details' could
-			# become 'Possible Fatality')
-			#
 			logtype = chpLog.find('LogType').text.strip('"').partition(" - ")
-			if incident.LogTypeID != logtype[0]:
-				incident.LogTypeID = logtype[0]
-				incident.LogType = logtype[2]
-				incident.modified = datetime.utcnow()
 
-			#
+			incident = CHPIncident(key_name = key_name,
+				CenterID = chpCenter.attrib['ID'],
+				DispatchID = chpDispatch.attrib['ID'],
+				LogID = chpLog.attrib['ID'],
+				LogTime = log_time,
+				LogType = logtype[2],
+				LogTypeID = logtype[0],
+				Location = deCopIfy(chpLog.find('Location').text.strip('"')),
+				Area = chpLog.find('Area').text.strip('"'),
+				ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"'),
+				TBXY = chpLog.find('TBXY').text.strip('"'),
+				geolocation = geoConvertTBXY(chpCenter.attrib['ID'], chpLog.find('TBXY').text.strip('"'))
+				)
+
 			# Special handling for the LogDetails
-			#
 			LogDetails = {
 				'details': [],
 				'units': []
@@ -84,13 +60,18 @@ def process_chp_center(chpCenter):
 				}
 				LogDetails[element.tag].append(detail_dict)
 
-			pickledLogDetails = pickle.dumps(LogDetails)
+			incident.LogDetails = pickle.dumps(LogDetails)
 
-			if incident.LogDetails != pickledLogDetails:
-				# This data has been updated
-				incident.LogDetails = pickledLogDetails
+			# See if the incident has changed
+			existing_incident = CHPIncident.get_by_key_name(key_name)
+			if existing_incident is None or \
+				incident.Location != existing_incident.Location or \
+				incident.LogTypeID != existing_incident.LogTypeID or \
+				incident.LogDetails != existing_incident.LogDetails:
+
 				incident.modified = datetime.utcnow()
 
+				# Send PSH pings
 				psh_pings.append('http://www.sactraffic.org/atom?center=%s' % incident.CenterID)
 				psh_pings.append('http://www.sactraffic.org/atom?dispatch=%s' % incident.DispatchID)
 				psh_pings.append('http://www.sactraffic.org/atom?area=%s' % incident.Area)
