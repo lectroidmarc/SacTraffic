@@ -15,7 +15,7 @@ class SitemapHandler(webapp.RequestHandler):
 
 		last_mod = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
 		if incidents.count(1) > 0:
-			last_mod = max(incidents, key=lambda incident: incident.modified).modified.strftime("%Y-%m-%dT%H:%M:%SZ")
+			last_mod = max(incidents, key=lambda incident: incident.updated).updated.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 		cameras = Camera.all(keys_only=True)
 

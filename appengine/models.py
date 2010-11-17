@@ -16,13 +16,7 @@ class CHPIncident(db.Model):
 	TBXY = db.StringProperty()
 	LogDetails = db.BlobProperty()
 	geolocation = db.GeoPtProperty()
-	
-	# The following need some explanation. Every incident in a feed is put()ed
-	# as feed is processed, irrespective of any changes.  This updates
-	# 'updated' while 'modified' is updated *only if the data has actually
-	# changed.*
 	updated = db.DateTimeProperty(auto_now=True)
-	modified = db.DateTimeProperty()
 
 	@property
 	def status(self):

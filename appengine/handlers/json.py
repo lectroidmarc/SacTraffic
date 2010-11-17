@@ -28,7 +28,7 @@ class JsonHandler(webapp.RequestHandler):
 
 		last_mod = datetime.datetime.utcnow()	# XXX should this be None?
 		if incidents.count(1) > 0:
-			last_mod = max(incidents, key=lambda incident: incident.modified).modified
+			last_mod = max(incidents, key=lambda incident: incident.updated).updated
 			if conditional_http.isNotModified(self, last_mod):
 				return
 

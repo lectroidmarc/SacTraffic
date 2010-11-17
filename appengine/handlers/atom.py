@@ -29,7 +29,7 @@ class AtomHandler(webapp.RequestHandler):
 
 		last_mod = datetime.datetime.utcnow()
 		if incidents.count(1) > 0:
-			last_mod = max(incidents, key=lambda incident: incident.modified).modified
+			last_mod = max(incidents, key=lambda incident: incident.updated).updated
 			if conditional_http.isNotModified(self, last_mod):
 				return
 
@@ -80,7 +80,7 @@ class AtomHandler(webapp.RequestHandler):
 			ElementTree.SubElement(entry, 'id').text = 'tag:traffic.lectroid.net,2010-06-24:' + incident.LogID
 			ElementTree.SubElement(entry, 'content', {'type': 'html'}).text = description
 			ElementTree.SubElement(entry, 'published').text = incident.LogTime.strftime("%Y-%m-%dT%H:%M:%SZ")
-			ElementTree.SubElement(entry, 'updated').text = incident.modified.strftime("%Y-%m-%dT%H:%M:%SZ")
+			ElementTree.SubElement(entry, 'updated').text = incident.updated.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 			ElementTree.SubElement(entry, 'link', {
 				'href': "/incident?id=%s" % incident.key().name()

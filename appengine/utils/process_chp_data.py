@@ -62,26 +62,15 @@ def process_chp_center(chpCenter):
 
 			incident.LogDetails = pickle.dumps(LogDetails)
 
-			# See if the incident has changed
-			existing_incident = CHPIncident.get_by_key_name(key_name)
-			if existing_incident is None or \
-				incident.Location != existing_incident.Location or \
-				incident.LogTypeID != existing_incident.LogTypeID or \
-				incident.LogDetails != existing_incident.LogDetails:
-
-				# Have changed, update the modified date
-				incident.modified = datetime.utcnow()
-
-				# Send PSH pings
-				psh_pings.append('http://www.sactraffic.org/atom?center=%s' % incident.CenterID)
-				psh_pings.append('http://www.sactraffic.org/atom?dispatch=%s' % incident.DispatchID)
-				psh_pings.append('http://www.sactraffic.org/atom?area=%s' % incident.Area)
-				# Note: 'dispatch' defaults to STCC so ping accordingly
-				if incident.DispatchID == "STCC":
-					psh_pings.append('http://www.sactraffic.org/atom')
-			else:
-				# No change, set the new date to the old date
-				incident.modified = existing_incident.modified
+			# Set up the PSH pings.  Note, we are NOT checking for actual
+			# changes in the data, we are just assuming that the existance of
+			# an incident in the CHP feed declares it as "updated" so we ping.
+			psh_pings.append('http://www.sactraffic.org/atom?center=%s' % incident.CenterID)
+			psh_pings.append('http://www.sactraffic.org/atom?dispatch=%s' % incident.DispatchID)
+			psh_pings.append('http://www.sactraffic.org/atom?area=%s' % incident.Area)
+			# Note: 'dispatch' defaults to STCC so ping accordingly
+			if incident.DispatchID == "STCC":
+				psh_pings.append('http://www.sactraffic.org/atom')
 
 			# Save this incident
 			incident_list.append(incident)

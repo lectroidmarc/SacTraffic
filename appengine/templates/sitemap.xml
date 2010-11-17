@@ -15,7 +15,7 @@
 {% for incident in incidents %}
 	<url>
 		<loc>/incident?id={{ incident.key.name }}</loc>
-		<lastmod>{{ incident.modified|date:"Y-m-d\TH:i:s\Z" }}</lastmod>
+		<lastmod>{{ incident.updated|date:"Y-m-d\TH:i:s\Z" }}</lastmod>
 		<priority>0.4</priority>
 	</url>
 {% endfor %}
