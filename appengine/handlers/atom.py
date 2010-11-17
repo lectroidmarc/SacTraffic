@@ -83,7 +83,7 @@ class AtomHandler(webapp.RequestHandler):
 			ElementTree.SubElement(entry, 'updated').text = incident.modified.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 			ElementTree.SubElement(entry, 'link', {
-				'href': "/incident?id=%s" % incident.LogID
+				'href': "/incident?id=%s" % incident.key().name()
 			})
 
 			if incident.geolocation is not None:
