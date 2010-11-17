@@ -16,7 +16,6 @@ class CHPIncident(db.Model):
 	TBXY = db.StringProperty()
 	LogDetails = db.BlobProperty()
 	geolocation = db.GeoPtProperty()
-	created = db.DateTimeProperty(auto_now_add=True)
 	
 	# The following need some explanation. Every incident in a feed is put()ed
 	# as feed is processed, irrespective of any changes.  This updates
@@ -27,7 +26,7 @@ class CHPIncident(db.Model):
 
 	@property
 	def status(self):
-		if self.created > datetime.utcnow() - timedelta(minutes=5):
+		if self.LogTime > datetime.utcnow() - timedelta(minutes=5):
 			# less than 5 min old == new
 			return 'new'
 		elif self.updated < datetime.utcnow() - timedelta(minutes=15):
