@@ -136,7 +136,10 @@ TrafficMap.prototype.show_live_cams = function () {
 					new google.maps.Point(12, 12));
 
 				for (var x = 0; x < cameras.length; x++) {
-					var camera = cameras[x];
+					self.live_cams.push(make_camera_marker(cameras[x]));
+				}
+
+				function make_camera_marker (camera) {
 					var marker = new google.maps.Marker({
 						position: new google.maps.LatLng(camera.location.lat, camera.location.lon),
 						icon: camera_icon,
@@ -152,8 +155,9 @@ TrafficMap.prototype.show_live_cams = function () {
 						window.open("/showcamera?id="+camera.id, ie_safe_name, "width="+window_width+",height="+window_height);
 					});
 
-					self.live_cams.push(marker);
+					return marker;
 				}
+
 			}
 		});
 	} else {
