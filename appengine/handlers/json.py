@@ -12,25 +12,34 @@ from utils import conditional_http, tzinfo
 
 class JsonHandler(webapp.RequestHandler):
 	def get(self):
+		id = self.request.get("id")
 		center = self.request.get("center")
 		dispatch = self.request.get("dispatch")
 		area = self.request.get("area")
 		callback = self.request.get("callback")
 
-		incidents = CHPIncident.all()
-		incidents.order('-LogTime')
-		if center != "":
-			incidents.filter('CenterID =', center)
-		if dispatch != "":
-			incidents.filter('DispatchID =', dispatch)
-		if area != "":
-			incidents.filter('Area =', area)
-
 		last_mod = datetime.datetime.utcnow()	# XXX should this be None?
-		if incidents.count(1) > 0:
-			last_mod = max(incidents, key=lambda incident: incident.updated).updated
+
+		if id == "":
+			incidents = CHPIncident.all()
+			incidents.order('-LogTime')
+			if center != "":
+				incidents.filter('CenterID =', center)
+			if dispatch != "":
+				incidents.filter('DispatchID =', dispatch)
+			if area != "":
+				incidents.filter('Area =', area)
+
+			if incidents.count(1) > 0:
+				last_mod = max(incidents, key=lambda incident: incident.updated).updated
+				if conditional_http.isNotModified(self, last_mod):
+					return
+		else:
+			incident = CHPIncident.get_by_key_name(id)
+			last_mod = incident.updated
 			if conditional_http.isNotModified(self, last_mod):
 				return
+			incidents = [incident]
 
 		pacific_tz = tzinfo.Pacific()
 
