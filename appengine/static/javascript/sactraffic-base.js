@@ -66,6 +66,11 @@ window['init_incident'] = init_incident;	// Closure-style export: http://code.go
  * Fetches single-incident JSON and processes it accordingly.
  */
 function get_incident (map, id) {
+	if (id == "") {
+		TrafficList.show_incident([], null);
+		if (typeof map != "undefined") { map.show_incident(incidents, id); }
+	}
+
 	jQuery.getJSON("/json?id=" + id, function (incidents) {
 		TrafficList.show_incident(incidents, id);
 
