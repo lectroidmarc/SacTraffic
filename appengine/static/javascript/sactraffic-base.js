@@ -57,24 +57,25 @@ function init_incident (id) {
 			trafficmap = new TrafficMap("map");
 		}
 
-		jQuery.getJSON("/json?dispatch=STCC", function (incidents) {
-			var incident_exists = TrafficList.show_incident(incidents, id);
-
-			if (typeof trafficmap != "undefined") {
-				trafficmap.show_incident(incidents, id);
-			}
-
-			if (incident_exists) {
-				setInterval(function () {
-					jQuery.getJSON("/json?dispatch=STCC", function (incidents) {
-						TrafficList.show_incident(incidents, id);
-					});
-				}, 10000);
-			}
-		});
+		get_incident(trafficmap, id);
 	});
 }
 window['init_incident'] = init_incident;	// Closure-style export: http://code.google.com/closure/compiler/docs/api-tutorial3.html#export
+
+/**
+ * Fetches single-incident JSON and processes it accordingly.
+ */
+function get_incident (map, id) {
+	jQuery.getJSON("/json?id=" + id, function (incidents) {
+		TrafficList.show_incident(incidents, id);
+
+		if (typeof map != "undefined") { map.show_incident(incidents, id); }
+
+		if (incidents.length > 0 && incidents[0].status != "inactive") {
+			setTimeout(get_incident, 10000, map, id);
+		}
+	});
+}
 
 /**
  * Fetches the incident JSON and processes it accordingly.
