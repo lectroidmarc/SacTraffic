@@ -144,7 +144,6 @@ var TrafficList = function () {
 		 */
 		show_incident: function (incidents, id) {
 			var has_incident = false;
-			var is_active = false;
 
 			jQuery('#incidents_above').empty();
 			jQuery('#incidents_below').empty();
@@ -153,22 +152,13 @@ var TrafficList = function () {
 				if (incident.ID == id) {
 					display_incident(incident).appendTo('#incidents_above');
 					jQuery('#incidents_above .details').show();
-
-					has_incident = true;
-					is_active = (incident.status != "inactive") ? true : false;
-
-					return false;
 				}
 			});
 
-			if (!has_incident) {
+			if (incidents.length == 0) {
 				jQuery('#incidents_above').append(
 					jQuery("<li/>").addClass('noincident').html("The incident you requested does not exist or is no longer active.")
 				);
-
-				return false;
-			} else {
-				return (is_active) ? true : false;
 			}
 		}
 	};
