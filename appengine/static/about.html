@@ -45,49 +45,59 @@
 
 		<h2>What can I see here?</h2>
 
-		<p>First we display local incidents and their details then we map them using <a href="http://maps.google.com">Google Maps</a>.	We try to use the location information included in the incident but if it's not their, we'll geocode it manually.</p>
+		<p>First we display local incidents and their details then we map them using <a href="http://code.google.com/apis/maps/documentation/javascript/">Google Maps API</a>.  We location information included in the incident and geocode using our own magic algorithms.</p>
 		<p>Area-wide advisories and media alerts will also be displayed "banner-style" across the top of the site.</p>
 		<p>Then we add Google's support for traffic condition overlays so you can see at-a-glance area traffic conditions.</p>
-		<p>We also provide an <a href="/rss.php">RSS feed of all the active incidents</a> that is customizable to show specific streets or even a set of streets.  You can customize it to, say, your commute streets and get updates of traffic incidents along your commute while at work.</p>
-		<p>But wait, there's more!	There's a <a href="http://twitter.com/sactraffic">Twitter</a> feed as well.  You can get updates virtually live as they come in.  Using the Twitter '<a href="http://twitter.com/blog/2007/09/tracking-twitter.html">track</a>' feature you can get traffic updates for the street or freeway of your choice as well.</p>
-		<p>We also have live video from both <a href="http://video.dot.ca.gov/">Cal Trans</a> and the <a href="http://www.traffic.saccounty.net/projects/TOC/TrafCam.asp">Department of Transportation</a> too.	Now you can <strong>see</strong> traffic too.</p>
+		<p>We also provide an <a href="/atom">ATOM feed of all the active incidents</a> that is customizable to show specific streets or even a set of streets.  You can customize it to, say, your commute streets and get updates of traffic incidents along your commute while at work.</p>
+		<p>But wait, there's more!	There's a <a href="http://twitter.com/sactraffic">Twitter</a> feed as well.  You can get updates virtually live as they come in.</p>
+		<p>We also have live video from both <a href="http://video.dot.ca.gov/">Cal Trans</a> and the <a href="http://www.traffic.saccounty.net/projects/TOC/TrafCam.asp">Sacramento County Department of Transportation</a> too.	Now you can <strong>see</strong> traffic too.</p>
 
 		<h2>Can I build on your work?</h2>
 
-		<p>Of course!  The <a href="http://json.org/">JSON</a> data for every CHP Dispatch in California is located here: <a href="http://www.sactraffic.org/json/">http://www.sactraffic.org/json/</a>. The filename is based on the CHP "center" and "dispatch" so <a href="http://www.sactraffic.org/json/STCC-STCC.json">http://www.sactraffic.org/json/STCC-STCC.json</a> would be the data for the Sacramento area.</p>
+		<p>Of course!  There's <a href="http://json.org/">JSON</a> data for every CHP Dispatch in California available by Center, Dispatch or Area.  So, for example, "STCC" is the Sacramento Center code (as well as the dispatch code) so <code>http:/www.sactraffic.org/json?center=STCC</code> will get you all the Sacramento Valley incidents (covering Sacramento, Chico and Stockton dispatches), and <code>http:/www.sactraffic.org/json?dispatch=STCC</code> will get you just the Sacramento Dispatch incidents (what this site uses) and you can go further, all the way down to the <a href="http://cad.chp.ca.gov/htm/body_phone.htm">area offices</a> so, say, Placerville-only incidents would be <code>http:/www.sactraffic.org/json?area=Placerville</code>.</p>
+
+		<p>See how that works?  Secret tip, those parameters also work for the ATOM feed.</p>
+
 		<p>The JSON format looks like:</p>
 		<code class="codeblock">[
     {
-        Area: "North Sacramento"
-        ID: "0787D1101"
-        Location: "MADISON AV at HACKBERRY LN"
-        LogDetails: {
-            details: [
+        "Area": "North Sacramento",
+         "ID": "STCC.STCC.0347D1118.1290067888",
+         "Location": "SAN MARQUE CIR at WALNUT AV",
+         "LogDetails": 
+         {
+            "details": 
+            [
                 {
-                    DetailTime: "9:18AM"
-                    IncidentDetail: "BLU FORD EXP VS SIL TOYT SD"
+                    "DetailTime": " 8:11AM",
+                     "IncidentDetail": "VEH VS FENCE \/ AND TRASH CANS AND LAWN"
                 }
             ],
-            units: [
+            "units": 
+            [
                 {
-                    DetailTime: "\" 9:23AM\""
-                    IncidentDetail: "\"CHP Unit Enroute\""
+                    "DetailTime": " 8:13AM",
+                     "IncidentDetail": "CHP Unit Enroute"
                 }
-            ],
-        }
-        LogTime: "11/1/2009 9:18:48 AM"
-        LogTimeEpoch: "1257095928"
-        LogType: "Collision - Non Injury"
-        LogTypeId: "1182"
-        Status: "active",
-        TBXY: "6752401:2003123"
-        ThomasBrothers: "259 7C"
+            ]
+         },
+         "LogTime": "11\/18\/2010 08:11:28 AM",
+         "LogTimeEpoch": 1290096688.0,
+         "LogType": "Hit & Run - No Injuries",
+         "TBXY": "6748562:1981160",
+         "ThomasBrothers": "299 1A",
+         "geolocation": 
+         {
+            "lat": 38.6003784,
+            "lon": -121.346033
+         },
+         "status": "active"
     }
 ]</code>
-		<p>I also have a <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP</a> hook set up through <a href="http://www.sactraffic.org/jsonp.php">http://www.sactraffic.org/jsonp.php</a>.	 Simply pass a <code>callback</code> and a <code>dispatch</code> argument and go nuts.</p>
+		<p>I also have a <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP</a> hook set up using a "callback" parameter. Simply pass <code>callback</code> along with any center/dispatch/area arguments and go nuts.</p>
 		<p>Here's a <a href="http://jquery.com">jQuery</a> example:</p>
 
-		<code class="codeblock">$.getJSON("http://www.sactraffic.org/jsonp.php?dispatch=STCC-STCC&amp;callback=?",
+		<code class="codeblock">$.getJSON("http://www.sactraffic.org/json?dispatch=STCC&amp;callback=?",
     function(data){
         // do stuff...
     });
