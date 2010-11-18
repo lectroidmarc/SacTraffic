@@ -20,6 +20,7 @@ class SitemapHandler(webapp.RequestHandler):
 		cameras = Camera.all(keys_only=True)
 
 		template_values = {
+			'http_host': self.request.environ['HTTP_HOST'],
 			'last_mod': last_mod,
 			'incidents': incidents,
 			'cameras': cameras

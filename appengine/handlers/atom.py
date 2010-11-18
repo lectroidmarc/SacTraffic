@@ -45,7 +45,7 @@ class AtomHandler(webapp.RequestHandler):
 		ElementTree.SubElement(feed, 'updated').text = last_mod.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 		# self link...
-		self_href = "http://traffic.lectroid.net/atom"
+		self_href = "http://%s/atom" % self.request.environ['HTTP_HOST']
 		query_string = "?" + self.request.environ['QUERY_STRING']
 		if query_string != "?":
 			self_href += query_string
@@ -83,7 +83,7 @@ class AtomHandler(webapp.RequestHandler):
 			ElementTree.SubElement(entry, 'updated').text = incident.updated.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 			ElementTree.SubElement(entry, 'link', {
-				'href': "/incident?id=%s" % incident.key().name()
+				'href': "http://%s/incident?id=%s" % (self.request.environ['HTTP_HOST'], incident.key().name())
 			})
 
 			if incident.geolocation is not None:
