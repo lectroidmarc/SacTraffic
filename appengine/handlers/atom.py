@@ -57,10 +57,12 @@ class AtomHandler(webapp.RequestHandler):
 		})
 
 		# pubsubhubbub link...
-		ElementTree.SubElement(feed, 'link', {
-			'href': 'http://pubsubhubbub.appspot.com',
-			'rel': 'hub'
-		})
+		# don't show for roads search feeds, since we don't ping for those
+		if roads == "":
+			ElementTree.SubElement(feed, 'link', {
+				'href': 'http://pubsubhubbub.appspot.com',
+				'rel': 'hub'
+			})
 
 		for incident in incidents:
 			if roads != "":
