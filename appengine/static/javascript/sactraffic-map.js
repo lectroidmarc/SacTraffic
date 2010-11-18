@@ -33,49 +33,27 @@ function TrafficMap (elementId) {
 
 	var sactrafficMapStyle = [
 		{
-			featureType: 'road',
-			elementType: 'geometry',
-			stylers: [{'visibility': 'simplified'}]
-		},
-		{
-			featureType: 'road.arterial',
+			featureType: "landscape",
+			elementType: "all",
 			stylers: [
-				{hue: 149},
-				{saturation: -78},
-				{lightness: 0}
+				{ lightness: 100 }
 			]
 		},
 		{
-			featureType: 'road.highway',
+			featureType: "road.highway",
+			elementType: "all",
 			stylers: [
-				{hue: -31},
-				{saturation: -40},
-				{lightness: 2.8}
+				{ hue: "#ff0000" }
 			]
 		},
 		{
-			featureType: 'poi',
-			elementType: 'label',
-			stylers: [{'visibility': 'off'}]
-		},
-		{
-			featureType: 'landscape',
+			featureType: "road.arterial",
+			elementType: "geometry",
 			stylers: [
-				{hue: 163},
-				{saturation: -26},
-				{lightness: -1.1}
-			]
-		},
-		{
-			featureType: 'transit',
-			stylers: [{'visibility': 'off'}]
-		},
-		{
-			featureType: 'water',
-			stylers: [
-				{hue: 3},
-				{saturation: -24.24},
-				{lightness: -38.57}
+				{ hue: "#ff0000" },
+				{ saturation: -100 },
+				{ lightness: -20 },
+				{ visibility: "simplified" }
 			]
 		}
 	];
