@@ -25,6 +25,12 @@ handlers:
 - url: /sitemap
   script: handlers/sitemap.py
 
+- url: /rss.php
+  script: handlers/redirect.py
+
+- url: /json/STCC-STCC.json
+  script: handlers/redirect.py
+
 - url: /update
   script: handlers/update.py
   login: admin
