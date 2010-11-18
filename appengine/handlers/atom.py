@@ -66,7 +66,7 @@ class AtomHandler(webapp.RequestHandler):
 
 		for incident in incidents:
 			if roads != "":
-				road_match = re.match(roads.replace(",", "|"), incident.Location, flags=re.I)
+				road_match = re.search(roads.replace(",", "|"), incident.Location, flags=re.I)
 				if road_match is None:
 					continue
 
