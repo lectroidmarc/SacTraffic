@@ -35,11 +35,13 @@ class JsonHandler(webapp.RequestHandler):
 				if conditional_http.isNotModified(self, last_mod):
 					return
 		else:
+			incidents = []
 			incident = CHPIncident.get_by_key_name(id)
-			last_mod = incident.updated
-			if conditional_http.isNotModified(self, last_mod):
-				return
-			incidents = [incident]
+			if incident is not None:
+				last_mod = incident.updated
+				if conditional_http.isNotModified(self, last_mod):
+					return
+				incidents.append(incident)
 
 		pacific_tz = tzinfo.Pacific()
 
