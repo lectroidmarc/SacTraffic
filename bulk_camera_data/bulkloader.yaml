@@ -33,6 +33,10 @@ transformers:
       external_name: height
       import_transform: int
 
+    - property: is_online
+      external_name: online
+      import_transform: transform.regexp_bool('y')
+
     - property: updated
       external_name: date
       import_transform: bulkloader_helpers.now
