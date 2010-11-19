@@ -1,49 +1,71 @@
-id,name,url,geo,width,height
+id,name,url,geo,width,height,online
 
-1,I-5 at 6th,http://video.dot.ca.gov/asx/d3-6th-i5.asx,"38.551924,-121.511406",600,440
-2,I-5 at 25th,http://video.dot.ca.gov/asx/d3-25th-i5.asx,"38.534168,-121.516943",600,440
-3,I-5 at 43rd,http://video.dot.ca.gov/asx/d3-43rd-i5.asx,"38.516071,-121.522092",600,440
-4,I-5 at El Camino,http://video.dot.ca.gov/asx/d3-w_el_camino-i5.asx,"38.614791,-121.512651",600,440
-5,I-5 at Florin,http://video.dot.ca.gov/asx/d3-florin-i5.asx,"38.495518,-121.516685",600,440
-6,I-5 at Gloria,http://video.dot.ca.gov/asx/d3-gloria-i5.asx,"38.509322,-121.522007",600,440
-7,I-5 at I-80,http://video.dot.ca.gov/asx/d3-sanjuan-i5.asx,"38.627801,-121.518445",600,440
-8,I-5 at P St,http://video.dot.ca.gov/asx/d3-pst-i5.asx,"38.576755,-121.507844",600,440
-9,I-5 at Pocket,http://video.dot.ca.gov/asx/d3-pocket-i5.asx,"38.481275,-121.510763",600,440
-10,I-5 at Richards,http://video.dot.ca.gov/asx/d3-richards-i5.asx,"38.596883,-121.504068",600,440
-11,I-5 at Seamas,http://video.dot.ca.gov/asx/d3-seamas-i5.asx,"38.525674,-121.521234",600,440
-12,I-5 at Sutterville,http://video.dot.ca.gov/asx/d3-sutterville-i5.asx,"38.540646,-121.510934",600,440
-13,I-5 at Vallejo Way,http://video.dot.ca.gov/asx/d3-vallejo-i5.asx,"38.558518,-121.51357",600,440
+1,I-5 at 6th,http://video.dot.ca.gov/asx/d3-6th-i5.asx,"38.551924,-121.511406",600,440,y
+2,I-5 at 25th,http://video.dot.ca.gov/asx/d3-25th-i5.asx,"38.534168,-121.516943",600,440,y
+3,I-5 at 43rd,http://video.dot.ca.gov/asx/d3-43rd-i5.asx,"38.516071,-121.522092",600,440,y
+43,I-5 at Broadway,http://video.dot.ca.gov/asx/d3-Broadway-I5.asx,"38.566958,-121.512523",600,440,y
+4,I-5 at El Camino,http://video.dot.ca.gov/asx/d3-w_el_camino-i5.asx,"38.614791,-121.512651",600,440,y
+5,I-5 at Florin,http://video.dot.ca.gov/asx/d3-florin-i5.asx,"38.495518,-121.516685",600,440,y
+6,I-5 at Gloria,http://video.dot.ca.gov/asx/d3-gloria-i5.asx,"38.509322,-121.522007",600,440,y
+44,I-5 at US-50,http://video.dot.ca.gov/asx/d3-Jct50-I5.asx,"38.568837,-121.512179",600,440,y
+7,I-5 at I-80,http://video.dot.ca.gov/asx/d3-sanjuan-i5.asx,"38.627801,-121.518445",600,440,y
+8,I-5 at P St,http://video.dot.ca.gov/asx/d3-pst-i5.asx,"38.576755,-121.507844",600,440,y
+9,I-5 at Pocket,http://video.dot.ca.gov/asx/d3-pocket-i5.asx,"38.481275,-121.510763",600,440,y
+10,I-5 at Richards,http://video.dot.ca.gov/asx/d3-richards-i5.asx,"38.596883,-121.504068",600,440,y
+11,I-5 at Seamas,http://video.dot.ca.gov/asx/d3-seamas-i5.asx,"38.525674,-121.521234",600,440,y
+12,I-5 at Sutterville,http://video.dot.ca.gov/asx/d3-sutterville-i5.asx,"38.540646,-121.510934",600,440,y
+13,I-5 at Vallejo Way,http://video.dot.ca.gov/asx/d3-vallejo-i5.asx,"38.558518,-121.51357",600,440,y
 
-14,US-50 at 39th,http://video.dot.ca.gov/asx/d3-39th-50.asx,"38.560448,-121.458234",600,440
-15,US-50 at 51st,http://video.dot.ca.gov/asx/d3-51st-50.asx,"38.556690,-121.444716",600,440
-16,US-50 at 65th,http://video.dot.ca.gov/asx/d3-65th-50.asx,"38.550447,-121.427936",600,440
-17,US-50 at Bradshaw,http://video.dot.ca.gov/asx/50-bradshaw.asx,"38.565884,-121.336784",600,440
-18,US-50 at Harbor,http://video.dot.ca.gov/asx/50-harbor.asx,"38.575011,-121.548871",600,440
-19,US-50 at Hazel,http://video.dot.ca.gov/asx/d3-hazel-50.asx,"38.630818,-121.217136",600,440
-20,US-50 at Jefferson,http://video.dot.ca.gov/asx/d3-jefferson-50.asx,"38.577225,-121.525354",600,440
-21,US-50 at Mather,http://video.dot.ca.gov/asx/d3-mather-50.asx,"38.578366,-121.308117",600,440
-22,US-50 at Mayhew,http://video.dot.ca.gov/asx/d3-mayhew-50.asx,"38.561925,-121.349401",600,440
-23,US-50 at Sunrise,http://video.dot.ca.gov/asx/d3-sunrise-50.asx,"38.608956,-121.271038",600,440
-24,US-50 at Zinfandel,http://video.dot.ca.gov/asx/d3-zinfandel-50.asx,"38.590912,-121.287603",600,440
+45,US-50 at 4th,http://video.dot.ca.gov/asx/d3-4th-50.asx,"38.567613,-121.507759",600,440,y
+46,US-50 at 28th,http://video.dot.ca.gov/asx/d3-28th-50.asx,"38.558636,-121.475830",600,440,y
+14,US-50 at 39th,http://video.dot.ca.gov/asx/d3-39th-50.asx,"38.560448,-121.458234",600,440,y
+15,US-50 at 51st,http://video.dot.ca.gov/asx/d3-51st-50.asx,"38.556690,-121.444716",600,440,y
+16,US-50 at 65th,http://video.dot.ca.gov/asx/d3-65th-50.asx,"38.550447,-121.427936",600,440,y
+17,US-50 at Bradshaw,http://video.dot.ca.gov/asx/50-bradshaw.asx,"38.565884,-121.336784",600,440,y
+18,US-50 at Harbor,http://video.dot.ca.gov/asx/50-harbor.asx,"38.575011,-121.548871",600,440,y
+19,US-50 at Hazel,http://video.dot.ca.gov/asx/d3-hazel-50.asx,"38.630818,-121.217136",600,440,y
+47,US-50 at Howe,http://video.dot.ca.gov/asx/d3-howe-50.asx,"38.553737,-121.409354",600,440,y
+20,US-50 at Jefferson,http://video.dot.ca.gov/asx/d3-jefferson-50.asx,"38.577225,-121.525354",600,440,y
+21,US-50 at Mather,http://video.dot.ca.gov/asx/d3-mather-50.asx,"38.578366,-121.308117",600,440,y
+22,US-50 at Mayhew,http://video.dot.ca.gov/asx/d3-mayhew-50.asx,"38.561925,-121.349401",600,440,y
+48,US-50 at Spring,http://video.dot.ca.gov/asx/d3-Spring-50.asx,"38,-121",600,440,n
+23,US-50 at Sunrise,http://video.dot.ca.gov/asx/d3-sunrise-50.asx,"38.608956,-121.271038",600,440,y
+49,US-50 at Watt,http://video.dot.ca.gov/asx/d3-watt-50.asx,"38.558703,-121.379528",600,440,y
+24,US-50 at Zinfandel,http://video.dot.ca.gov/asx/d3-zinfandel-50.asx,"38.590912,-121.287603",600,440,y
 
-25,I-80 at Antelope,http://video.dot.ca.gov/asx/d3-antelope-80.asx,"38.707348,-121.309662",600,440
-26,I-80 at Chiles,http://video.dot.ca.gov/asx/d3-chiles-80.asx,"38.551924,-121.511406",600,440
-27,I-80 at Darling,http://video.dot.ca.gov/asx/d3-darling-80.asx,"38.551924,-121.511406",600,440
-28,I-80 at Douglas,http://video.dot.ca.gov/asx/d3-douglas-80.asx,"38.743975,-121.270952",600,440
-29,I-80 at Foothill,http://video.dot.ca.gov/asx/d3-foothill-80.asx,"38.675392,-121.344594",600,440
-30,I-80 at Northgate,http://video.dot.ca.gov/asx/d3-northgate-80.asx,"38.640607,-121.477718",600,440
-31,I-80 at Norwood,http://video.dot.ca.gov/asx/d3-norwood-80.asx,"38.641377,-121.456947",600,440
-32,I-80 at the Split,http://video.dot.ca.gov/asx/d3-split-80.asx,"38.645031,-121.378326",600,440
-33,I-80 at Truxel,http://video.dot.ca.gov/asx/d3-truxel-80.asx,"38.633634,-121.500720",600,440
-34,I-80 at West Capital,http://video.dot.ca.gov/asx/d3-west-capitol-80.asx,"38.574205,-121.577711",600,440
+50,US65 at Pleasant Grove,http://video.dot.ca.gov/asx/d3-PleasantGrv-65.asx,"38.786405,-121.284170",600,440,y
 
-35,US-99 at Mack Rd,http://video.dot.ca.gov/asx/d3-mack-99.asx,"38.474019,-121.422958",600,440
+25,I-80 at Antelope,http://video.dot.ca.gov/asx/d3-antelope-80.asx,"38.707348,-121.309662",600,440,y
+26,I-80 at Chiles,http://video.dot.ca.gov/asx/d3-chiles-80.asx,"38.551924,-121.511406",600,440,y
+27,I-80 at Darling,http://video.dot.ca.gov/asx/d3-darling-80.asx,"38.551924,-121.511406",600,440,y
+28,I-80 at Douglas,http://video.dot.ca.gov/asx/d3-douglas-80.asx,"38.743975,-121.270952",600,440,y
+29,I-80 at Foothill,http://video.dot.ca.gov/asx/d3-foothill-80.asx,"38.675392,-121.344594",600,440,y
+51,I-80 at Greenback,http://video.dot.ca.gov/asx/d3-Greenback-80.asx,"38.682762,-121.336698",600,440,y
+30,I-80 at Northgate,http://video.dot.ca.gov/asx/d3-northgate-80.asx,"38.640607,-121.477718",600,440,y
+31,I-80 at Norwood,http://video.dot.ca.gov/asx/d3-norwood-80.asx,"38.641377,-121.456947",600,440,y
+32,I-80 at the Split,http://video.dot.ca.gov/asx/d3-split-80.asx,"38.645031,-121.378326",600,440,y
+33,I-80 at Truxel,http://video.dot.ca.gov/asx/d3-truxel-80.asx,"38.633634,-121.500720",600,440,y
+52,I-80 at Watt,http://video.dot.ca.gov/asx/d3-Watt-80.asx,"38.645031,-121.383304",600,440,y
+34,I-80 at West Capital,http://video.dot.ca.gov/asx/d3-west-capitol-80.asx,"38.574205,-121.577711",600,440,y
 
-36,SR-51 at E Street,http://video.dot.ca.gov/asx/d3-est-51.asx,"38.578802,-121.464972",600,440
+53,US-99 at 47th,http://video.dot.ca.gov/asx/d3-47th-99.asx,"38.510430,-121.460037",600,440,y
+54,US-99 at Florin,http://video.dot.ca.gov/asx/d3-Florin-99.asx,"38.496123,-121.446046",600,440,y
+55,US-99 at Fruitridge,http://video.dot.ca.gov/asx/d3-Fruitridge-99.asx,"38.524868,-121.467676",600,440,y
+56,US-99 at Grantline,http://video.dot.ca.gov/asx/d3-Grantline-99.asx,"38.376384,-121.362190",600,440,y
+35,US-99 at Mack Rd,http://video.dot.ca.gov/asx/d3-mack-99.asx,"38.474019,-121.422958",600,440,y
 
-37,Madison and Auburn,http://madison-auburn.saccounty.net,"38.660950,-121.346769",320,240
-38,Sunrise and Gold Country,http://sunrise-goldcountry.saccounty.net,"38.627980,-121.265929",320,240
-39,Sunrise and Madison,http://sunrise-madisoneast.saccounty.net,"38.663840,-121.271999",320,240
-40,Sunrise and Zinfandel,http://sunrise-zinfandel.saccounty.net,"38.615520,-121.269169",320,240
-41,Watt and Auburn,http://watt-auburn.saccounty.net,"38.637150,-121.382939",320,240
-42,Watt and Fair Oaks,http://watt-fairoaks.saccounty.net,"38.574060,-121.383029",320,240
+57,Cap City at Cal Expo,http://video.dot.ca.gov/asx/d3-Exposition-51.asx,"38.596614,-121.443557",600,440,y
+36,Cap City at E St,http://video.dot.ca.gov/asx/d3-est-51.asx,"38.578802,-121.464972",600,440,y
+58,Cap City at El Camino,http://video.dot.ca.gov/asx/d3-El-Camino-51.asx,"38.611102,-121.426734",600,440,y
+59,Cap City at Elvas,http://video.dot.ca.gov/asx/d3-Elvas-51.asx,"38.585478,-121.450853",600,440,y
+60,Cap City at Fulton,http://video.dot.ca.gov/asx/d3-Fulton-51.asx,"38.630684,-121.401586",600,440,y
+61,Cap City at Marconi,http://video.dot.ca.gov/asx/d3-Marconi-51.asx,"38.620022,-121.419782",600,440,y
+62,Cap City at T St,http://video.dot.ca.gov/asx/d3-Tst-51.asx,"38.562260,-121.472010",600,440,y
+63,Cap City at Watt,http://video.dot.ca.gov/asx/d3-Watt-51.asx,"38.639668,-121.383218",600,440,y
+
+38,Sunrise and Gold Country,http://sunrise-goldcountry.saccounty.net,"38.627980,-121.265929",320,240,y
+39,Sunrise and Coloma,http://sunrise-madisoneast.saccounty.net,"38.618211,-121.268291",320,240,y
+40,Sunrise and Zinfandel,http://sunrise-zinfandel.saccounty.net,"38.615520,-121.269169",320,240,y
+41,Watt and Auburn,http://watt-auburn.saccounty.net,"38.637150,-121.382939",320,240,y
+37,Watt and Marconi,http://madison-auburn.saccounty.net,"38.617742,-121.383047",320,240,y
+42,Watt and Fair Oaks,http://watt-fairoaks.saccounty.net,"38.574060,-121.383029",320,240,y
