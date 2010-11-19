@@ -33,6 +33,7 @@ class UpdateHelperHandler(webapp.RequestHandler):
 
 		if self.request.headers.has_key('X-Signature') and local_sig == self.request.headers['X-Signature']:
 			# Yay, a match...
+			logging.info("Procesing CHP data.")
 			process_chp_xml(pickle.loads(zlib.decompress(data)))
 		else:
 			# Boo, hiss, no match
