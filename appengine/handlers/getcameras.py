@@ -49,7 +49,7 @@ class CameraHandler(webapp.RequestHandler):
 				output_list.append(camera_dict)
 
 			json_data = json.dumps(output_list, sort_keys=True)
-			memcache.set("camera_json", json_data, 300)
+			memcache.set("cameras-json", json_data, 300)
 
 		self.response.headers["Content-Type"] = "application/json"
 		conditional_http.setConditionalHeaders(self, last_mod)
