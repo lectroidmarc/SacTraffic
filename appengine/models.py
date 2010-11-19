@@ -1,9 +1,12 @@
+""" Model classes for SacTraffic. """
+
 from datetime import datetime, timedelta
 
 from google.appengine.ext import db
 
 
 class CHPIncident(db.Model):
+	""" Represents a CHP Incident. """
 	CenterID = db.StringProperty(required=True)
 	DispatchID = db.StringProperty(required=True)
 	LogID = db.StringProperty(required=True)
@@ -29,7 +32,9 @@ class CHPIncident(db.Model):
 		else:
 			return 'active'
 
+
 class Camera(db.Model):
+	""" Represents a live camera. """
 	name = db.StringProperty()
 	url = db.LinkProperty()
 	geolocation = db.GeoPtProperty()
