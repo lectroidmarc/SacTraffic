@@ -60,5 +60,6 @@ class Camera(db.Model):
 	geolocation = db.GeoPtProperty()
 	width = db.IntegerProperty()
 	height = db.IntegerProperty()
+	is_online = db.BooleanProperty()
 	updated = db.DateTimeProperty(auto_now=True)
 

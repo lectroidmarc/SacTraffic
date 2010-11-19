@@ -22,6 +22,7 @@ class CameraHandler(webapp.RequestHandler):
 		if json_data is None:
 			# Hit the DS
 			cameras = Camera.all()
+			cameras.filter('is_online', True)
 
 			last_mod = datetime.datetime.utcnow()
 			if cameras.count(1) > 0:
