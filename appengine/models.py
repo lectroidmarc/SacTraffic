@@ -27,9 +27,15 @@ class CHPIncident(db.Model):
 			# less than 5 min old == new
 			return 'new'
 		elif self.updated < datetime.utcnow() - timedelta(minutes=15):
-			# not updated in the last update == inactive
+			# not updated in the last 15 min == inactive
+			# 15 min assumes 3 misses on a 5 min cron cycle.
+			#
+			# What I want here is 'not updated w/in 15 min of the last
+			# successful update == inactive' but not sure how to get at
+			# 'last successful update'
 			return 'inactive'
 		else:
+			# what's left... active
 			return 'active'
 
 
