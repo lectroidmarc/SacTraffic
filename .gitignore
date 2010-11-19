@@ -18,3 +18,4 @@ index.yaml
 bulkloader-log-*
 bulkloader-progress-*
 *.pyc
+keys.py

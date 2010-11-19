@@ -31,6 +31,9 @@ handlers:
 - url: /json/STCC-STCC.json
   script: handlers/redirect.py
 
+- url: /update-helper
+  script: handlers/update-helper.py
+
 - url: /update
   script: handlers/update.py
   login: admin
