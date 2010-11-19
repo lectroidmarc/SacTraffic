@@ -1,3 +1,6 @@
-# CA DOT: http://video.dot.ca.gov/
+Camera List and bulk loader for SacTraffic
+----
+Camera data from:
 
-# Sac DOT: http://www.traffic.saccounty.net/projects/toc/trafcam.asp
+* CA DOT: http://video.dot.ca.gov/
+* Sac DOT: http://www.msa2.saccounty.net/transportation/Pages/TrafficVideo.aspx
