@@ -12,7 +12,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from django.utils import simplejson as json
 
-from models import CHPIncident
+from models import CHPData, CHPIncident
 from utils.process_chp_data import process_chp_xml
 # Note that the keys.py file is NOT included in public scm
 from keys import UPLOAD_KEY
@@ -34,7 +34,10 @@ class UpdateHelperHandler(webapp.RequestHandler):
 		if self.request.headers.has_key('X-Signature') and local_sig == self.request.headers['X-Signature']:
 			# Yay, a match...
 			logging.info("Procesing CHP data.")
-			process_chp_xml(pickle.loads(zlib.decompress(data)))
+			pickled_chp_etree = zlib.decompress(data)
+			CHPData(key_name="chp_data", data=pickled_chp_etree).put()
+			chp_etree = pickle.loads(pickled_chp_etree)
+			process_chp_xml(chp_etree)
 		else:
 			# Boo, hiss, no match
 			self.response.set_status(401)
