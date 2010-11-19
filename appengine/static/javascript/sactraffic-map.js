@@ -43,7 +43,8 @@ function TrafficMap (elementId) {
 			featureType: "road.highway",
 			elementType: "all",
 			stylers: [
-				{ hue: "#ff0000" }
+				{ hue: "#ff0000" },
+				{ saturation: -25 }
 			]
 		},
 		{
