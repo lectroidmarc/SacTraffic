@@ -19,3 +19,4 @@ bulkloader-log-*
 bulkloader-progress-*
 *.pyc
 keys.py
+appengine/static/javascript/*.min.js
