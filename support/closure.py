@@ -30,6 +30,7 @@ parser.add_option("-o", action="store", type="string", dest="output_file",
 params = [
 	('compilation_level', 'SIMPLE_OPTIMIZATIONS'),
 	('output_format', 'json'),
+	('output_info', 'statistics'),
 	('output_info', 'compiled_code'),
 	('output_info', 'warnings'),
 	('output_info', 'errors')
@@ -52,6 +53,9 @@ if 'errors' in data:
 elif 'warnings' in data:
 	for warning in data['warnings']:
 		sys.stderr.write("%s: %s, %s\n" % (warning['lineno'], warning['type'], warning['warning']))
+
+print "Original size: %d" % data['statistics']['originalSize']
+print "Compressed size: %d" % data['statistics']['compressedSize']
 
 f = open(options.output_file, "w")
 f.write(data['compiledCode'])
