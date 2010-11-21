@@ -101,7 +101,7 @@ var TrafficList = function () {
 			jQuery('<li/>').append(
 				jQuery('<span/>').addClass('detailtime').html(detail.DetailTime)
 			).append(
-				jQuery('<span/>').addClass('incidentdetail').html(detail.IncidentDetail.replace(/(\*.+?\*)/, '<span class="alert">$1</span>'))
+				jQuery('<span/>').addClass('incidentdetail').html(detail.IncidentDetail.replace(/(\*+.+?\*+)/, '<span class="alert">$1</span>'))
 			).appendTo(details_ul);
 		});
 

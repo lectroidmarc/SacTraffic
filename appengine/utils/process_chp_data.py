@@ -56,7 +56,7 @@ def process_chp_center(chpCenter):
 			for element in logdetails_element:
 				detail_dict = {
 					'DetailTime': element.find('DetailTime').text.strip('"'),
-					'IncidentDetail': element.find('IncidentDetail').text.strip('"')
+					'IncidentDetail': element.find('IncidentDetail').text.strip('"^')
 				}
 				LogDetails[element.tag].append(detail_dict)
 

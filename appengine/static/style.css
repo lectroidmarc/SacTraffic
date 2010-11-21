@@ -94,6 +94,7 @@ div#content {
 
 #mediainfo span.alert {
 	font-weight: bold;
+	margin-right: 5px;
 }
 /* End Header */
 
