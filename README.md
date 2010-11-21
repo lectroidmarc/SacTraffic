@@ -1,30 +1,24 @@
-Code for [SacTraffic.org](http://www.sactraffic.org)
+Code for [sacraffic.org][sactraffic]
 =====
 
-What is sactraffic.org
------
+##What is SacTraffic.org
 
-Sactraffic.org is a site I put together to show area traffic incidents powered primarily from an XML feed of state-wide traffic incidents from the California Highway Patrol.
+SacTraffic.org is a site I put together to show area traffic incidents powered primarily from an XML feed of state-wide traffic incidents from the California Highway Patrol.
 
-Mix in some Twitter updates and you have [sactraffic.org](www.sactraffic.org).
+Mix in some live video feeds and Twitter updates and you have [sactraffic.org][sactraffic].
 
-What you need to set this stuff up.
------
+##What you need to set this stuff up.
 
-`perl` is the primary language used. The following Perl modules are needed as well.
+SacTraffic.org runs on [Google App Engine](http://code.google.com/appengine/) and is written in Python so at a minimum you'll need the App Engine SDK to run your own traffic site based on SacTraffic.
 
-* `Compress::Zlib` (optional, for creating pre-gziped versions of the JSON files).
-* `DateTime::Format::Strptime`
-* `JSON::Any`
-* `LWP::UserAgent`
-* `Net::Twitter::Lite` (optional, for Twittering)
-* `XML::Simple`
+### A note about JavaScript compression
 
-`php` is also used in the web space for some of the dynamic pages.  `Zend_Json::decode` is used for decoding the JSON files because my provider doesn't have php 5.2 yet.
-
-JavaScript and CSS compression
------
-
-JavaScript compression is done via a wrapper script that uses the [Google Closure](http://code.google.com/closure/) web service.  CSS compression is done via [YUI Compressor](http://developer.yahoo.com/yui/compressor/).  Both of these scripts are in the `/support` directory.
+JavaScript compression is done via a simple wrapper script that uses the [Google Closure](http://code.google.com/closure/) web service.  This script is located in the `/support` directory.
 
 Running `make` at the root level of the project will build the compressed files.
+
+### Legacy LAMP version
+
+The older Apache/Perl version of the SacTraffic.org code is available in the `lecacy-lamp-version` branch.
+
+[sactraffic]: http://www.sactraffic.org "SacTraffic.org"

@@ -1,3 +1,0 @@
-User-Agent: *
-Disallow: /json/
-Sitemap: http://www.sactraffic.org/sitemap.php
