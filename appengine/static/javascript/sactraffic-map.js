@@ -51,10 +51,16 @@ function TrafficMap (elementId) {
 			featureType: "road.arterial",
 			elementType: "geometry",
 			stylers: [
-				{ hue: "#ff0000" },
 				{ saturation: -100 },
-				{ lightness: -20 },
 				{ visibility: "simplified" }
+			]
+		},
+		{
+			featureType: "road.arterial",
+			elementType: "labels",
+			stylers: [
+				{ saturation: -100 },
+				{ lightness: 10 }
 			]
 		}
 	];
