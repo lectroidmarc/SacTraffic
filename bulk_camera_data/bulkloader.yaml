@@ -1,0 +1,42 @@
+#
+
+python_preamble:
+- import: google.appengine.ext.bulkload.transform
+- import: google.appengine.ext.db
+- import: re
+- import: base64
+- import: bulkloader_helpers
+
+transformers:
+- kind: Camera
+  connector: csv
+  connector_options:
+    columns: from_header
+  property_map:
+    - property: __key__
+      external_name: id
+
+    - property: name
+      external_name: name
+
+    - property: url
+      external_name: url
+
+    - property: geolocation
+      external_name: geo
+
+    - property: width
+      external_name: width
+      import_transform: int
+
+    - property: height
+      external_name: height
+      import_transform: int
+
+    - property: is_online
+      external_name: online
+      import_transform: transform.regexp_bool('y')
+
+    - property: updated
+      external_name: date
+      import_transform: bulkloader_helpers.now

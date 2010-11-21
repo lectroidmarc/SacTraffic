@@ -1,0 +1,70 @@
+application: lectroid-sactraffic
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+
+# Dynamic handlers
+
+- url: /json
+  script: handlers/json.py
+
+- url: /atom
+  script: handlers/atom.py
+
+- url: /getcameras
+  script: handlers/getcameras.py
+
+- url: /incident
+  script: handlers/incident.py
+
+- url: /showcamera
+  script: handlers/showcamera.py
+
+- url: /sitemap
+  script: handlers/sitemap.py
+
+- url: /rss.php
+  script: handlers/redirect.py
+
+- url: /json/STCC-STCC.json
+  script: handlers/redirect.py
+
+- url: /update-helper
+  script: handlers/update-helper.py
+
+- url: /update
+  script: handlers/update.py
+  login: admin
+
+- url: /purge
+  script: handlers/purge.py
+  login: admin
+
+- url: /_ah/queue/deferred
+  script: $PYTHON_LIB/google/appengine/ext/deferred/handler.py
+  login: admin
+
+# Static handlers
+
+- url: /images
+  static_dir: static/images
+  expiration: "365d"
+
+- url: /(.*\.(png|ico|txt|xsl))
+  static_files: static/\1
+  upload: static/(.*\.(png|ico|txt|xsl))
+  expiration: "365d"
+
+- url: /(.*\.(html|css|js))
+  static_files: static/\1
+  upload: static/(.*\.(html|css|js))
+
+- url: /
+  static_files: static/index.html
+  upload: static/index.html
+
+
+builtins:
+- remote_api: on

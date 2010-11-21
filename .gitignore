@@ -13,3 +13,10 @@ htdocs/google*.html
 htdocs/y_key_*.html
 htdocs/*.min.css
 htdocs/javascript/*.min.js
+
+index.yaml
+bulkloader-log-*
+bulkloader-progress-*
+*.pyc
+keys.py
+appengine/static/javascript/*.min.js

@@ -6,7 +6,7 @@ What is sactraffic.org
 
 Sactraffic.org is a site I put together to show area traffic incidents powered primarily from an XML feed of state-wide traffic incidents from the California Highway Patrol.
 
-Mix in some Twitter updates and you have sactraffic.org.
+Mix in some Twitter updates and you have [sactraffic.org](www.sactraffic.org).
 
 What you need to set this stuff up.
 -----
