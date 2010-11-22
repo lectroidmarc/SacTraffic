@@ -65,12 +65,12 @@ def process_chp_center(chpCenter):
 			# Set up the PSH pings.  Note, we are NOT checking for actual
 			# changes in the data, we are just assuming that the existance of
 			# an incident in the CHP feed declares it as "updated" so we ping.
-			psh_pings.append('http://www.sactraffic.org/atom?center=%s' % incident.CenterID)
-			psh_pings.append('http://www.sactraffic.org/atom?dispatch=%s' % incident.DispatchID)
-			psh_pings.append('http://www.sactraffic.org/atom?area=%s' % incident.Area)
+			psh_pings.append('http://lectroid-sactraffic.appspot.com/atom?center=%s' % incident.CenterID)
+			psh_pings.append('http://lectroid-sactraffic.appspot.com/atom?dispatch=%s' % incident.DispatchID)
+			psh_pings.append('http://lectroid-sactraffic.appspot.com/atom?area=%s' % incident.Area)
 			# Note: 'dispatch' defaults to STCC so ping accordingly
 			if incident.DispatchID == "STCC":
-				psh_pings.append('http://www.sactraffic.org/atom')
+				psh_pings.append('http://lectroid-sactraffic.appspot.com/atom')
 
 			# Save this incident
 			incident_list.append(incident)
@@ -79,8 +79,8 @@ def process_chp_center(chpCenter):
 	db.put(incident_list)
 
 	# Ping the PSH hub
-	#if len(set(psh_pings)):
-	#	deferred.defer(publish, 'http://pubsubhubbub.appspot.com', set(psh_pings))
+	if len(set(psh_pings)):
+		deferred.defer(publish, 'http://pubsubhubbub.appspot.com', set(psh_pings))
 
 	logging.info("Processed %d incidents in %s." % (len(incident_list), chpCenter.attrib['ID']))
 
