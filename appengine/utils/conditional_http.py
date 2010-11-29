@@ -2,8 +2,6 @@
 
 import hashlib
 
-from models import CHPIncident
-
 
 def isNotModified(webapp, last_mod_date):
 	"""Test if the right conditional http headers exist and match accordingly.
