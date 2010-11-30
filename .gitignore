@@ -1,4 +1,3 @@
-index.yaml
 bulkloader-log-*
 bulkloader-progress-*
 *.pyc
