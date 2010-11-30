@@ -70,16 +70,17 @@ class AtomHandler(webapp.RequestHandler):
 				if road_match is None:
 					continue
 
+			title = "%s: %s, %s" % (incident.LogType, incident.Location, incident.Area)
 			details = pickle.loads(incident.LogDetails)
-			description = "%s, %s<ul>" % (incident.Location, incident.Area)
+			description = "<ul>"
 			for detail in details['details']:
 				description += "<li>" + detail['DetailTime'] + ": " + detail['IncidentDetail'] + "</li>"
 			description += "</ul>"
 
 			entry = ElementTree.SubElement (feed, 'entry')
 
-			ElementTree.SubElement(entry, 'title').text = incident.LogType
-			ElementTree.SubElement(entry, 'id').text = 'tag:traffic.lectroid.net,2010-06-24:' + incident.LogID
+			ElementTree.SubElement(entry, 'title').text = title
+			ElementTree.SubElement(entry, 'id').text = 'tag:traffic.lectroid.net,2010-11-30:' + incident.LogID
 			ElementTree.SubElement(entry, 'content', {'type': 'html'}).text = description
 			ElementTree.SubElement(entry, 'published').text = incident.LogTime.strftime("%Y-%m-%dT%H:%M:%SZ")
 			ElementTree.SubElement(entry, 'updated').text = incident.updated.strftime("%Y-%m-%dT%H:%M:%SZ")
