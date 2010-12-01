@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-"""Script used to update the CHP data from a remote system, specifically one without a 10 timeout."""
+"""Script used to update the CHP data from a remote system, specifically one without a 10 second timeout."""
 
 import hashlib
 import hmac
@@ -18,6 +18,9 @@ parser.add_option("-d", "--domain", action="store", type="string", dest="upload_
 	help="The domain to upload to. (defaults to lectroid-sactraffic.appspot.com)")
 parser.add_option("-k", "--key", action="store", type="string", dest="key",
 	help="The key to sign this data with. (required)")
+parser.add_option("-t", "--time", action="store", type="int", dest="time_delay",
+	default=10,
+	help="The time, in minutes, to wait before we step in and help. (defaults to 10 minutes)")
 (options, args) = parser.parse_args()
 
 # Seriously, we need a key...
@@ -31,7 +34,7 @@ f = urllib2.urlopen(upload_url)
 info = json.loads(f.read())
 minutes = (time.time() - info['last_update']) / 60
 
-if minutes > 10:
+if minutes > options.time_delay:
 	print "Last native update was over %d minutes ago, helping..." % minutes
 
 	print "  fetching the CHP data..."
