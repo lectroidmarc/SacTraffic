@@ -65,12 +65,12 @@ def process_chp_center(chpCenter):
 			# Set up the PSH pings.  Note, we are NOT checking for actual
 			# changes in the data, we are just assuming that the existance of
 			# an incident in the CHP feed declares it as "updated" so we ping.
-			psh_pings.append('http://lectroid-sactraffic.appspot.com/atom?center=%s' % incident.CenterID)
-			psh_pings.append('http://lectroid-sactraffic.appspot.com/atom?dispatch=%s' % incident.DispatchID)
-			psh_pings.append('http://lectroid-sactraffic.appspot.com/atom?area=%s' % incident.Area)
+			psh_pings.append('http://www.sactraffic.org/atom?center=%s' % incident.CenterID)
+			psh_pings.append('http://www.sactraffic.org/atom?dispatch=%s' % incident.DispatchID)
+			psh_pings.append('http://www.sactraffic.org/atom?area=%s' % incident.Area)
 			# Note: 'dispatch' defaults to STCC so ping accordingly
 			if incident.DispatchID == "STCC":
-				psh_pings.append('http://lectroid-sactraffic.appspot.com/atom')
+				psh_pings.append('http://www.sactraffic.org/atom')
 
 			# Save this incident
 			incident_list.append(incident)
