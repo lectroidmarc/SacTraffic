@@ -7,7 +7,7 @@ from models import CHPIncident
 
 class IncidentHandler(webapp.RequestHandler):
 	def get(self):
-		incident = CHPIncident.get_by_key_name(self.request.get("id"))
+		incident = CHPIncident.get_by_key_name(self.request.get("id", default_value='none'))
 		if incident is not None:
 			template_values = {
 				'incident': incident

@@ -17,10 +17,16 @@ class RedirectJSONHandler(webapp.RequestHandler):
 	def get(self):
 		self.redirect("/json?dispatch=STCC", permanent=True)
 
+class RedirectIncidentHandler(webapp.RequestHandler):
+	def get(self):
+		self.redirect("/incident?id=%s" % self.request.get("id"), permanent=True)
+
 
 application = webapp.WSGIApplication([
 									('/rss.php', RedirectRSSHandler),
 									('/json/STCC-STCC.json', RedirectJSONHandler),
+									('/incident.html', RedirectIncidentHandler),
+									('/incident.php', RedirectIncidentHandler),
 									],
 										 debug=True)
 

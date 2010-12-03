@@ -25,6 +25,12 @@ handlers:
 - url: /sitemap
   script: handlers/sitemap.py
 
+- url: /incident.php
+  script: handlers/redirect.py
+
+- url: /incident.html
+  script: handlers/redirect.py
+
 - url: /rss.php
   script: handlers/redirect.py
 
