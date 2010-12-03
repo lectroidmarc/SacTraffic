@@ -67,7 +67,7 @@ def process_chp_center(chpCenter):
 			# an incident in the CHP feed declares it as "updated" so we ping.
 			psh_pings.append('http://www.sactraffic.org/atom?center=%s' % incident.CenterID)
 			psh_pings.append('http://www.sactraffic.org/atom?dispatch=%s' % incident.DispatchID)
-			psh_pings.append('http://www.sactraffic.org/atom?area=%s' % incident.Area)
+			psh_pings.append('http://www.sactraffic.org/atom?area=%s' % incident.Area.replace(' ', '%20'))
 			# Note: 'dispatch' defaults to STCC so ping accordingly
 			if incident.DispatchID == "STCC":
 				psh_pings.append('http://www.sactraffic.org/atom')
