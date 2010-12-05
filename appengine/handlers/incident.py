@@ -17,6 +17,11 @@ class IncidentHandler(webapp.RequestHandler):
 
 		self.response.out.write(template.render("../templates/incident.html", template_values))
 
+	def head(self):
+		# App Engine disallows setting of Content-Length, but at the same time
+		# won't send a body in response to HEAD requests, so just call get().
+		self.get()
+
 
 application = webapp.WSGIApplication([('/incident', IncidentHandler)],
 										 debug=True)
