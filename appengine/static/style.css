@@ -140,12 +140,13 @@ div#content {
 	background-color: #ebebeb;
 }
 
-.incidents li img {
-	padding-right: 4px;
+.incidents .marker {
+	background-image: url('/images/map_markers.png');
 	float: left;
-	margin-bottom: 1px;
+	height: 18px;
+	margin: 0 4px 1px 0;
+	width: 18px;
 }
-
 .incidents li div.logtype {
 	margin-top: 3px;
 	font-weight: bold;

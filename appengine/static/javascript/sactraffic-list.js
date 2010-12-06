@@ -62,20 +62,19 @@ var TrafficList = function () {
 
 		if (point) {
 			// Default icon...
-			var incident_icon = "/images/incident.png";
+			var incident_icon_pos = "-18px 0px";
 
 			if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType)) {
 				// Hazard icon...
 				// Note: placeholder, we don't actually have a hazard icon
 			} else if (/Collision|Fatality|Hit \& Run/.test(incident.LogType)) {
 				// Collision icon...
-				incident_icon = "/images/accident.png";
+				incident_icon_pos = "0px 0px";
 			}
 
-			jQuery('<img/>')
-				.attr('src', incident_icon)
-				.attr('height', '18')
-				.attr('width', '18')
+			jQuery('<div/>')
+				.addClass('marker')
+				.css('background-position', incident_icon_pos)
 				.prependTo(incident_li);
 
 			// Add the geo microfoemat

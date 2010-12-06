@@ -16,20 +16,20 @@ function TrafficMap (elementId) {
 	this.marker_list = {};
 
 	// Set up the map icons
-	this.default_icon = new google.maps.MarkerImage('/images/incident.png',
+	this.default_icon = new google.maps.MarkerImage('/images/map_markers.png',
 		new google.maps.Size(18, 18),
-		new google.maps.Point(0,0),
-		new google.maps.Point(9,9));
+		new google.maps.Point(18, 0),
+		new google.maps.Point(9, 9));
 
-	this.accident_icon = new google.maps.MarkerImage('/images/accident.png',
+	this.accident_icon = new google.maps.MarkerImage('/images/map_markers.png',
 		new google.maps.Size(18, 18),
-		new google.maps.Point(0,0),
-		new google.maps.Point(9,9));
+		new google.maps.Point(0, 0),
+		new google.maps.Point(9, 9));
 
-	this.default_icon_shadow = new google.maps.MarkerImage('/images/traffic_incident_shadow.png',
+	this.default_icon_shadow = new google.maps.MarkerImage('/images/map_markers.png',
 		new google.maps.Size(23, 23),
-		new google.maps.Point(0,0),
-		new google.maps.Point(9,9));
+		new google.maps.Point(60, 0),
+		new google.maps.Point(9, 9));
 
 	var sactrafficMapStyle = [
 		{
@@ -137,9 +137,9 @@ TrafficMap.prototype.show_live_cams = function () {
 			url: "/getcameras",
 			dataType: "json",
 			success: function (cameras) {
-				var camera_icon = new google.maps.MarkerImage("/images/camera_icon.gif",
+				var camera_icon = new google.maps.MarkerImage("/images/map_markers.png",
 					new google.maps.Size(24, 24),
-					new google.maps.Point(0,0),
+					new google.maps.Point(36, 0),
 					new google.maps.Point(12, 12));
 
 				for (var x = 0; x < cameras.length; x++) {
