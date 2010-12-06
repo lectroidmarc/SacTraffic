@@ -58,9 +58,17 @@ handlers:
   static_dir: static/images
   expiration: "365d"
 
-- url: /(.*\.(png|ico|txt|xsl))
+- url: /apple-touch-icon.png
+  static_files: static/images/sactraffic.png
+  upload: static/images/sactraffic.png
+
+- url: /favicon.ico
+  static_files: static/images/favicon.ico
+  upload: static/images/favicon.ico
+
+- url: /(.*\.(txt|xsl))
   static_files: static/\1
-  upload: static/(.*\.(png|ico|txt|xsl))
+  upload: static/(.*\.(txt|xsl))
   expiration: "365d"
 
 - url: /(.*\.(html|css|js))
