@@ -96,7 +96,7 @@ TrafficMap.prototype.update = function (incidents) {
 	this.hide_incidents();
 	this.marker_list = {};
 
-	for (var x = 0; x < incidents.length; x++) {
+	for (var x = 0, xl = incidents.length; x < xl; x++) {
 		var incident = incidents[x];
 
 		if (incident.status != "inactive" && incident.geolocation && incident.LogType != "Media Information") {
@@ -112,7 +112,7 @@ TrafficMap.prototype.update = function (incidents) {
  * @param {String} incident_id The incident ID to show.
  */
 TrafficMap.prototype.show_incident = function (incidents, incident_id) {
-	for (var x = 0; x < incidents.length; x++) {
+	for (var x = 0, xl = incidents.length; x < xl; x++) {
 		var incident = incidents[x];
 		if (incident.ID == incident_id) {
 			if (incident.geolocation) {
@@ -142,7 +142,7 @@ TrafficMap.prototype.show_live_cams = function () {
 					new google.maps.Point(36, 0),
 					new google.maps.Point(12, 12));
 
-				for (var x = 0; x < cameras.length; x++) {
+				for (var x = 0, xl = cameras.length; x < xl; x++) {
 					self.live_cams.push(make_camera_marker(cameras[x]));
 				}
 
@@ -168,7 +168,7 @@ TrafficMap.prototype.show_live_cams = function () {
 			}
 		});
 	} else {
-		for (var x = 0; x < this.live_cams.length; x++) {
+		for (var x = 0, xl = this.live_cams.length; x < xl; x++) {
 			var cam_marker = this.live_cams[x];
 			cam_marker.setMap(this.gmap);
 		}
@@ -179,7 +179,7 @@ TrafficMap.prototype.show_live_cams = function () {
  * Hides the live cams.
  */
 TrafficMap.prototype.hide_live_cams = function () {
-	for (var x = 0; x < this.live_cams.length; x++) {
+	for (var x = 0, xl = this.live_cams.length; x < xl; x++) {
 		var cam_marker = this.live_cams[x];
 		cam_marker.setMap(null);
 	}
