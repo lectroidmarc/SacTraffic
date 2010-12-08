@@ -75,9 +75,9 @@ handlers:
   static_files: static/images/favicon.ico
   upload: static/images/favicon.ico
 
-- url: /(.*\.(txt|xsl))
-  static_files: static/\1
-  upload: static/(.*\.(txt|xsl))
+- url: /robots.txt
+  static_files: static/robots.txt
+  upload: static/robots.txt
 
 - url: /(.*\.html)
   static_files: static/\1
