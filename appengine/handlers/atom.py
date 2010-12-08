@@ -38,7 +38,13 @@ class AtomHandler(webapp.RequestHandler):
 			'xmlns:georss': 'http://www.georss.org/georss'
 		})
 
-		ElementTree.SubElement(feed, 'title').text = 'Traffic'
+		title = "CHP Traffic Incidents"
+		if dispatch == "STCC":
+			title = "SacTraffic: Sacramento Area Traffic Incidents"
+		if roads != "":
+			title = "%s (%s)" % (title, roads)
+
+		ElementTree.SubElement(feed, 'title').text = title
 		ElementTree.SubElement(feed, 'subtitle').text = 'Traffic incidents from the CHP'
 		ElementTree.SubElement(ElementTree.SubElement(feed, 'author'), 'name').text = 'The California Highway Patrol'
 		ElementTree.SubElement(feed, 'id').text = 'tag:traffic.lectroid.net,2010-06-24:100'
