@@ -6,38 +6,28 @@ api_version: 1
 default_expiration: "365d"
 
 handlers:
+- url: /
+  static_files: static/index.html
+  upload: static/index.html
+  expiration: "10m"
 
-# Dynamic handlers
-
-- url: /json
-  script: handlers/json.py
+- url: /incident
+  script: handlers/incident.py
 
 - url: /atom
   script: handlers/atom.py
 
+- url: /json
+  script: handlers/json.py
+
 - url: /getcameras
   script: handlers/getcameras.py
-
-- url: /incident
-  script: handlers/incident.py
 
 - url: /showcamera
   script: handlers/showcamera.py
 
 - url: /sitemap
   script: handlers/sitemap.py
-
-- url: /incident.php
-  script: handlers/redirect.py
-
-- url: /incident.html
-  script: handlers/redirect.py
-
-- url: /rss.php
-  script: handlers/redirect.py
-
-- url: /json/STCC-STCC.json
-  script: handlers/redirect.py
 
 - url: /update-helper
   script: handlers/update-helper.py
@@ -50,12 +40,7 @@ handlers:
   script: handlers/purge.py
   login: admin
 
-- url: /_ah/queue/deferred
-  script: $PYTHON_LIB/google/appengine/ext/deferred/handler.py
-  login: admin
-
-# Static handlers
-
+# Static stuff
 - url: /images
   static_dir: static/images
 
@@ -66,6 +51,11 @@ handlers:
 - url: /javascript
   static_dir: static/javascript
   expiration: "10m"
+
+- url: /about.html
+  static_files: static/about.html
+  upload: static/about.html
+  expiration: "1m"
 
 - url: /apple-touch-icon.png
   static_files: static/images/sactraffic.png
@@ -79,15 +69,23 @@ handlers:
   static_files: static/robots.txt
   upload: static/robots.txt
 
-- url: /(.*\.html)
-  static_files: static/\1
-  upload: static/(.*\.html)
-  expiration: "10m"
+# Redirections
+- url: /incident.php
+  script: handlers/redirect.py
 
-- url: /
-  static_files: static/index.html
-  upload: static/index.html
+- url: /incident.html
+  script: handlers/redirect.py
 
+- url: /rss.php
+  script: handlers/redirect.py
+
+- url: /json/STCC-STCC.json
+  script: handlers/redirect.py
+
+# Magic App Engine handers
+- url: /_ah/queue/deferred
+  script: $PYTHON_LIB/google/appengine/ext/deferred/handler.py
+  login: admin
 
 builtins:
 - remote_api: on
