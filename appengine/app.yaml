@@ -3,6 +3,8 @@ version: 1
 runtime: python
 api_version: 1
 
+default_expiration: "365d"
+
 handlers:
 
 # Dynamic handlers
@@ -56,7 +58,14 @@ handlers:
 
 - url: /images
   static_dir: static/images
-  expiration: "365d"
+
+- url: /stylesheets
+  static_dir: static/stylesheets
+  expiration: "10m"
+
+- url: /javascript
+  static_dir: static/javascript
+  expiration: "10m"
 
 - url: /apple-touch-icon.png
   static_files: static/images/sactraffic.png
@@ -69,11 +78,11 @@ handlers:
 - url: /(.*\.(txt|xsl))
   static_files: static/\1
   upload: static/(.*\.(txt|xsl))
-  expiration: "365d"
 
-- url: /(.*\.(html|css|js))
+- url: /(.*\.html)
   static_files: static/\1
-  upload: static/(.*\.(html|css|js))
+  upload: static/(.*\.html)
+  expiration: "10m"
 
 - url: /
   static_files: static/index.html
