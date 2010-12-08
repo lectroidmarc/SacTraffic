@@ -136,10 +136,6 @@ div#content {
 	border-left: 3px solid #666;
 }
 
-.incidents li:hover {
-	background-color: #ebebeb;
-}
-
 .incidents .marker {
 	background-image: url('/images/map_markers.png');
 	float: left;
@@ -201,10 +197,6 @@ div#content {
 	border: 0;
 	height: 30px;
 	text-align: center;
-}
-
-.incidents li.loading:hover {
-	background: #f3f3f3;
 }
 
 .incidents li.loading img {
