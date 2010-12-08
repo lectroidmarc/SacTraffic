@@ -144,27 +144,27 @@ div#content {
 	width: 18px;
 }
 
-.incidents li div.logtype {
+.incidents div.logtype {
 	margin-top: 3px;
 	font-weight: bold;
 }
 
-.incidents li div.location {
+.incidents div.location {
 	font-size: 9pt;
 	clear: left;
 }
 
-.incidents li div.logtime {
+.incidents div.logtime {
 	font-size: 8pt;
 	color: gray;
 	font-style: italic;
 }
 
-.incidents li span.dtstart {
+.incidents span.dtstart {
 	display: none;
 }
 
-.incidents li div.geo {
+.incidents div.geo {
 	display: none;
 }
 
@@ -172,34 +172,34 @@ div#content {
 .incidents .button:active { padding: 5px 7px 4px !important; }
 .incidents .showmap.button { display: none; }
 
-.incidents ul.details {
+.details {
 	padding-left: 20px;
 	display: none;
 }
 
-.incidents ul.details li {
+.details li {
 	font-size: 8pt;
 	list-style: disc;
-	padding-top: 7px;
+	padding-top: 5px;
 }
 
-.incidents ul.details .incidentdetail,
-#mediainfo .incidentdetail{
+.details .incidentdetail,
+#mediainfo .incidentdetail {
 	padding-left: 1em;
 }
 
-.incidents li.noincident {
+.incidents .noincident {
 	font-weight: bold;
 }
 
-.incidents li.loading {
+.incidents .loading {
 	background: #ffffff;
 	border: 0;
 	height: 30px;
 	text-align: center;
 }
 
-.incidents li.loading img {
+.incidents .loading img {
 	float: none;
 	height: 19px;
 	width: 220px;
@@ -221,12 +221,12 @@ div#content {
 	border: 1px solid #666;
 }
 
-div.marker div.logtype {
+div.marker .logtype {
 	margin-top: 3px;
 	font-weight: bold;
 }
 
-div.marker div.logtime {
+div.marker .logtime {
 	margin-top: 3px;
 	font-size: 8pt;
 	color: gray;
