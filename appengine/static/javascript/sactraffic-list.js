@@ -18,48 +18,18 @@ var TrafficList = function () {
 		var incident_date = new Date(incident.LogTimeEpoch * 1000);
 
 		var point = (incident.geolocation) ? incident.geolocation : null;
-		var show_speed = (incident.LogDetails.details.length > 1) ? "slow" : "fast";
-		var detail_message = (incident.LogDetails.details.length > 0) ? 'Click for incident details (' + incident.LogDetails.details.length + ')' : '';
 		var details = display_details(incident.LogDetails.details);
 
-		var incident_li = jQuery('<li/>').attr('id', incident.ID).attr('title', detail_message).addClass('vevent').append(
-			jQuery('<div/>').addClass('logtype summary').html(incident.LogType)
-		).append(
-			jQuery('<div/>').addClass('location').html(incident.Location + "<br/>" + incident.Area).append(
-				jQuery('<button/>').html('Show on map').click(
-					function () {
-						if (point) {
-							jQuery(this).parent().click();
-							location = "http://maps.google.com/maps?q=" + point.lat + "," + point.lon;
-						}
-					}
-				)
-			)
-		).append(
-			jQuery('<div/>').addClass('logtime').html(incident.LogTime).append(
-				jQuery('<span/>').addClass('dtstart').html(incident_date.getISO8601())
-			)
-		).append(
-			details
-		).hover(
+		var incident_li = jQuery('<li/>').attr('id', incident.ID).addClass('vevent').hover(
 			function () {
 				if (typeof trafficmap != "undefined") { trafficmap.center_on_id(incident.ID); }
 			},
 			function () {
 				if (typeof trafficmap != "undefined") { trafficmap.recenter(); }
 			}
-		).click(function () {
-			if (incident.LogDetails.details.length > 0) {
-				details.toggle(show_speed);
-				showing_details[incident.ID] = (showing_details[incident.ID]) ? false : true;
-			}
-		});
+		);
 
-		// Display the details block if it was being displayed before...
-		if (showing_details[incident.ID]) {
-			details.css('display', 'block');
-		}
-
+		// The marker icon
 		if (point) {
 			// Default icon...
 			var incident_icon_pos = "-18px 0px";
@@ -72,17 +42,50 @@ var TrafficList = function () {
 				incident_icon_pos = "0px 0px";
 			}
 
-			jQuery('<div/>')
-				.addClass('marker')
-				.css('background-position', incident_icon_pos)
-				.prependTo(incident_li);
+			jQuery('<div/>').addClass('marker').css('background-position', incident_icon_pos).appendTo(incident_li);
+		}
 
-			// Add the geo microfoemat
+		// Summary...
+		jQuery('<div/>').addClass('logtype summary').html(incident.LogType).appendTo(incident_li);
+
+		// Location
+		jQuery('<div/>').addClass('location').html(incident.Location + "<br/>" + incident.Area).appendTo(incident_li);
+
+		// Time
+		jQuery('<div/>').addClass('logtime').html(incident.LogTime).append(
+			jQuery('<span/>').addClass('dtstart').html(incident_date.getISO8601())
+		).appendTo(incident_li);
+
+		// Add the geo microfoemat
+		if (point) {
 			jQuery('<div/>').addClass('geo').append(
 				jQuery('<span/>').addClass('latitude').html(point.lat)
 			).append(
 				jQuery('<span/>').addClass('longitude').html(point.lon)
 			).appendTo(incident_li);
+		}
+
+		// Add the 'show details' button...
+		var detail_num = incident.LogDetails.details.length;
+		if (detail_num > 0) {
+			var detail_message = (detail_num == 1) ? 'show ' + detail_num + ' detail' : 'show ' + detail_num + ' details';
+			jQuery('<div/>').html(detail_message).addClass('awesome detail button').click(function () {
+				details.slideToggle();
+				showing_details[incident.ID] = (showing_details[incident.ID]) ? false : true;
+			}).appendTo(incident_li);
+		}
+
+		// Add the 'show on map' button
+		if (point) {
+			jQuery('<a/>').attr('href', "http://maps.google.com/maps?q=" + point.lat + "," + point.lon).html('show on map').addClass('awesome showmap button').appendTo(incident_li);
+		}
+
+		// Finally, the details
+		details.appendTo(incident_li);
+
+		// Display the details block if it was being displayed before...
+		if (showing_details[incident.ID]) {
+			details.css('display', 'block');
 		}
 
 		return incident_li;
