@@ -70,6 +70,10 @@ class AtomHandler(webapp.RequestHandler):
 				'rel': 'hub'
 			})
 
+		# logo & icon
+		ElementTree.SubElement(feed, 'logo').text = "http://%s/images/sactraffic.png" % self.request.environ['HTTP_HOST']
+		ElementTree.SubElement(feed, 'icon').text = "http://%s/favicon.ico" % self.request.environ['HTTP_HOST']
+
 		for incident in incidents:
 			if roads != "":
 				road_match = re.search(roads.replace(",", "|"), incident.Location, flags=re.I)
