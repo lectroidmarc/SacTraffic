@@ -154,6 +154,7 @@ var TrafficList = function () {
 				if (incident.ID == id) {
 					display_incident(incident).appendTo('#incidents_above');
 					jQuery('#incidents_above .details').show();
+					jQuery('.awesome.detail.button').hide();
 				}
 			});
 
