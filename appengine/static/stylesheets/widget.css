@@ -1,0 +1,83 @@
+/*
+ * Default widget styles for the SacTraffic widget.
+ */
+#sactraffic_widget {
+	background-color: #165279;
+	border-radius: 5px;
+	font-family: sans-serif;
+	font-size: 10px;
+	padding: 5px 0;
+	-moz-border-radius: 5px;
+}
+
+#sactraffic_widget > div {
+	background-color: white;
+	border-radius: 5px;
+	padding: 5px 4px 4px 4px;
+	margin: 0 5px;
+	-moz-border-radius: 5px;
+}
+
+#sactraffic_widget ul {
+	background-color: white;
+	border-radius: 5px;
+	list-style-type: none;
+	margin: 5px;
+	padding: 2px 4px;
+	-moz-border-radius: 5px;
+}
+
+#sactraffic_widget li {
+	margin: 5px 0;
+}
+
+#sactraffic_widget a {
+	text-decoration: none;
+}
+#sactraffic_widget a:hover {
+	text-decoration: underline;
+}
+
+#sactraffic_widget .head {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#sactraffic_widget .time {
+	color: #999;
+	margin-left: .5em;
+}
+
+#sactraffic_widget .foot {
+	font-size: 12px;
+	font-style: italic;
+	text-align: right;
+	text-transform: lowercase;
+}
+
+/**
+ * @section themes
+ */
+#sactraffic_widget.lectroid {
+	background-color: #444;
+	color: #ccc;
+}
+
+#sactraffic_widget.lectroid a {
+	color: #FF5A00;
+}
+
+#sactraffic_widget.lectroid a:hover {
+	text-decoration: underline;
+}
+#sactraffic_widget.lectroid > div {
+	background-color: black;
+}
+
+#sactraffic_widget.lectroid ul {
+	background-color: black;
+}
+
+#sactraffic_widget.lectroid li {
+	padding: 0 !important;
+}

@@ -7,7 +7,10 @@
 YUICOMP = java -jar support/yuicompressor-2.4.2.jar
 CLOSURE = support/closure.py
 
-FILES = appengine/static/javascript/sactraffic.min.js appengine/static/stylesheets/sactraffic.min.css
+FILES = appengine/static/javascript/sactraffic.min.js \
+	appengine/static/stylesheets/sactraffic.min.css \
+	appengine/static/javascript/sactraffic-widget.min.js \
+	appengine/static/stylesheets/widget.min.css
 
 JS = appengine/static/javascript/sactraffic-base.js \
 	appengine/static/javascript/sactraffic-list.js \
@@ -27,7 +30,7 @@ appengine/static/stylesheets/sactraffic.min.css: ${CSS}
 	${YUICOMP} -o $@ $^ && perl -pi -e "s/screen and\(max/screen and \(max/" $@
 
 .js.min.js:
-	${YUICOMP} -o $@ $<
+	${CLOSURE} -o $@ $<
 
 .css.min.css:
 	${YUICOMP} -o $@ $< && perl -pi -e "s/screen and\(max/screen and \(max/" $@
