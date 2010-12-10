@@ -65,6 +65,7 @@
 
 #sactraffic_widget.lectroid a {
 	color: #FF5A00;
+	line-height: normal;
 }
 
 #sactraffic_widget.lectroid a:hover {
@@ -80,4 +81,8 @@
 
 #sactraffic_widget.lectroid li {
 	padding: 0 !important;
+}
+
+#sactraffic_widget.lectroid li.last {
+	background: none;
 }

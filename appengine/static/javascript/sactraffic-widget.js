@@ -108,6 +108,11 @@ SacTraffic.updateWidget = function(data) {
 		var template = '<a href="http://www.sactraffic.org/incident?id={ID}">{LogType}, {Location}</a><span class="time">{time}</span>';
 
 		li.innerHTML = template.supplant({time: date.toLocaleTimeString(), ID: incident.ID, LogType: incident.LogType, Location: incident.Location});
+
+		// tag the last li in the ul in case we want to style it
+		if (x == xl - 1 || x == SacTraffic.showNum - 1)
+			li.className = "last";
+
 		ul.appendChild(li);
 	}
 }
