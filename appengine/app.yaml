@@ -87,5 +87,8 @@ handlers:
   script: $PYTHON_LIB/google/appengine/ext/deferred/handler.py
   login: admin
 
+- url: /_ah/warmup
+  script: handlers/warmup.py
+
 builtins:
 - remote_api: on
