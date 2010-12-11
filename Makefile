@@ -27,7 +27,7 @@ appengine/static/javascript/sactraffic.min.js: ${JS}
 	${CLOSURE} -o $@ $^
 
 appengine/static/stylesheets/sactraffic.min.css: ${CSS}
-	${YUICOMP} -o $@ $^ && perl -pi -e "s/screen and\(max/screen and \(max/" $@
+	cat $^ | ${YUICOMP} -o $@ --type css && perl -pi -e "s/screen and\(max/screen and \(max/" $@
 
 .js.min.js:
 	${CLOSURE} -o $@ $<
