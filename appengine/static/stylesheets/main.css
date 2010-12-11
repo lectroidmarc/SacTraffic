@@ -83,13 +83,16 @@ div#content {
 }
 
 #mediainfo ul {
-	padding: 10px 10px 5px 10px;
+	display: block;
 	margin: 0;
+	padding: 5px;
 }
 
 #mediainfo li {
+	font-size: 10pt;
 	list-style: none;
-	margin-bottom: 5px;
+	margin: 5px;
+	padding: 0;
 }
 
 #mediainfo span.alert {
@@ -183,8 +186,7 @@ div#content {
 	padding-top: 5px;
 }
 
-.details .incidentdetail,
-#mediainfo .incidentdetail {
+.details .incidentdetail {
 	padding-left: 1em;
 }
 
