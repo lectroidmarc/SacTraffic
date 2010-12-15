@@ -8,6 +8,10 @@ document.write('<div id="sactraffic_widget"><div class="head">Sacramento Traffic
 
 /* Template substitution (source: Doug Crockford) */
 if (typeof String.prototype.supplant !== 'function') {
+	/**
+	 * Template substitution.
+	 * @param {Object} o An object of keys to replace.
+	 */
 	String.prototype.supplant = function (o) {
 		return this.replace(/{([^{}]*)}/g, function (a, b) {
 			var r = o[b];
@@ -16,8 +20,35 @@ if (typeof String.prototype.supplant !== 'function') {
 	};
 }
 
-/** @namespace Namespace for the SacTraffic Widget */
+/**
+ * Extention of the Date class to support a Twittereque "ago" time.
+ */
+Date.prototype.ago = function () {
+	var now = new Date();
+	var seconds_ago = (now.getTime() - this.getTime()) / 1000;
+
+	var template = "over {time} day{s} ago";
+	var time = Math.floor(seconds_ago / 86400);
+	var s = (time == 1) ? "" : "s";
+
+	if (seconds_ago < 60) {
+		return "less than a minute ago";
+	} else if (seconds_ago < 3600) {
+		template = "{time} minute{s} ago";
+		time = Math.round(seconds_ago / 60);
+		s = (time == 1) ? "" : "s";
+	} else if (seconds_ago < 86400) {
+		template = "over {time} hour{s} ago";
+		time = Math.floor(seconds_ago / 3600);
+		s = (time == 1) ? "" : "s";
+		if (time == 1) time = "an";
+	}
+
+	return template.supplant({time: time.toString(), s: s});
+};
+
 if (typeof SacTraffic === 'undefined') {
+	/** @namespace Namespace for the SacTraffic Widget */
 	var SacTraffic = { };
 }
 
@@ -102,12 +133,12 @@ SacTraffic.updateWidget = function(data) {
 
 	for (var x = 0, xl = data.length; x < xl && x < SacTraffic.showNum; x++) {
 		var incident = data[x];
-		var date = new Date(incident.LogTimeEpoch * 1000);
+		var logtime = new Date(incident.LogTimeEpoch * 1000);
 		var li = doc.createElement('li');
 
-		var template = '<a href="http://www.sactraffic.org/incident?id={ID}">{LogType}, {Location}</a><span class="time">{time}</span>';
+		var template = '<a href="http://www.sactraffic.org/incident?id={ID}">{LogType}, {Location}</a> <span class="time">{time}</span>';
 
-		li.innerHTML = template.supplant({time: date.toLocaleTimeString(), ID: incident.ID, LogType: incident.LogType, Location: incident.Location});
+		li.innerHTML = template.supplant({time: logtime.ago(), ID: incident.ID, LogType: incident.LogType, Location: incident.Location});
 
 		// tag the last li in the ul in case we want to style it
 		if (x == xl - 1 || x == SacTraffic.showNum - 1)
