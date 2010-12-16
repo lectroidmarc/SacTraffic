@@ -4,7 +4,7 @@
  */
 
 // Set up the DOM structure we later modify.
-document.write('<div id="sactraffic_widget"><div class="head">Sacramento Traffic Incidents</div><ul></ul><div class="foot">From: <a href="http://www.sactraffic.org">http://www.sactraffic.org</a></div></div>');
+document.write('<div id="sactraffic_widget" style="display:none"><div class="head">Sacramento Traffic Incidents</div><ul></ul><div class="foot">From: <a href="http://www.sactraffic.org">http://www.sactraffic.org</a></div></div>');
 
 /* Template substitution (source: Doug Crockford) */
 if (typeof String.prototype.supplant !== 'function') {
@@ -132,6 +132,10 @@ SacTraffic.updateWidget = function(data) {
 	var widget = doc.getElementById('sactraffic_widget');
 	var ul = widget.getElementsByTagName('ul')[0];
 
+	// Make the widget visible
+	widget.style.display = "block";
+
+	// Remove any existing incidents
 	while (ul.hasChildNodes()) {ul.removeChild(ul.firstChild);}
 
 	for (var x = 0, xl = data.length; x < xl && x < SacTraffic.showNum; x++) {
