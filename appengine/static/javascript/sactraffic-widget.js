@@ -157,8 +157,8 @@ SacTraffic.updateWidget = function(data) {
  * second refresh.
  */
 SacTraffic.updateTrafficData = function (with_refresh) {
-	if (typeof(with_timeout) == "undefined")
-		with_timeout = true;
+	if (typeof(with_refresh) == "undefined")
+		with_refresh = true;
 
 	SacTraffic.addScriptNode('http://www.sactraffic.org/json?dispatch=STCC&callback=SacTraffic.updateWidget', function () {
 		var doc = document;
