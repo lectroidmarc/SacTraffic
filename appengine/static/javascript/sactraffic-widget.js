@@ -167,7 +167,7 @@ SacTraffic.updateTrafficData = function (with_refresh) {
 			oldScriptNode.parentNode.removeChild(oldScriptNode);
 
 		if (with_refresh)
-			setTimeout(SacTraffic.updateTrafficData, 60000);
+			setTimeout(SacTraffic.updateTrafficData, 60000, true);
 	});
 };
 
