@@ -1,5 +1,5 @@
 /*
- * Default widget styles for the SacTraffic widget.
+ * Blue theme style for the SacTraffic widget.
  */
 #sactraffic_widget {
 	background-color: #165279;
@@ -52,36 +52,4 @@
 	font-style: italic;
 	text-align: right;
 	text-transform: lowercase;
-}
-
-/**
- * @section themes
- */
-#sactraffic_widget.lectroid {
-	background-color: #444;
-	color: #ccc;
-}
-
-#sactraffic_widget.lectroid a {
-	color: #FF5A00;
-	line-height: normal;
-}
-
-#sactraffic_widget.lectroid a:hover {
-	text-decoration: underline;
-}
-#sactraffic_widget.lectroid > div {
-	background-color: black;
-}
-
-#sactraffic_widget.lectroid ul {
-	background-color: black;
-}
-
-#sactraffic_widget.lectroid li {
-	padding: 0 !important;
-}
-
-#sactraffic_widget.lectroid li.last {
-	background: none;
 }
