@@ -85,12 +85,15 @@ SacTraffic.addScriptNode = function(url, cbfunc) {
 /**
  * Add CSS link node to pull in external stylesheet.
  * @param {String} url Stylesheet source.
+ * @param {String} [id] An ID to set on the style code.
  */
-SacTraffic.addStyleNode = function(url) {
+SacTraffic.addStyleNode = function(url, id) {
 	var doc = document;
 	var stylenode = doc.createElement('link');
 	stylenode.setAttribute('rel', 'stylesheet');
 	stylenode.setAttribute('href', url);
+	if (typeof(id) != "undefined")
+		stylenode.setAttribute('id', id);
 	doc.getElementsByTagName('head')[0].appendChild(stylenode);
 };
 
@@ -150,8 +153,10 @@ SacTraffic.updateWidget = function(data) {
 
 /**
  * Updates the CHP data from SacTraffic.org.
+ * @param {Boolean} [with_refresh=true] A boolean to set or disable a 60
+ * second refresh.
  */
-SacTraffic.updateTrafficData = function (with_timeout) {
+SacTraffic.updateTrafficData = function (with_refresh) {
 	if (typeof(with_timeout) == "undefined")
 		with_timeout = true;
 
@@ -161,10 +166,30 @@ SacTraffic.updateTrafficData = function (with_timeout) {
 		if (oldScriptNode)
 			oldScriptNode.parentNode.removeChild(oldScriptNode);
 
-		if (with_timeout)
+		if (with_refresh)
 			setTimeout(SacTraffic.updateTrafficData, 60000);
 	});
 };
+
+/**
+ * Sets the theme.
+ * @param {String} [theme] The theme name to set for the widget.  Note: no
+ * theme or a theme of 'none' will causes no CSS to be loaded.
+ */
+SacTraffic.setTheme = function (theme) {
+	var style_id = 'sactraffic_widget_style';
+
+	var doc = document;
+	var widget_style = doc.getElementById(style_id);
+	if (widget_style)
+		widget_style.parentNode.removeChild(widget_style);
+
+	if (typeof(theme) != "undefined" && theme != "none") {
+		var style_url = 'http://www.sactraffic.org/stylesheets/widget-{theme}.min.css';
+
+		SacTraffic.addStyleNode(style_url.supplant({theme: theme}), style_id);
+	}
+}
 
 /**
  * Display the widget.
@@ -172,13 +197,12 @@ SacTraffic.updateTrafficData = function (with_timeout) {
 SacTraffic.init = function () {
 	var params = SacTraffic.getScriptTagArgs();
 
-	if (params['style'] != 'none') {
-		SacTraffic.addStyleNode('http://www.sactraffic.org/stylesheets/widget.min.css');
-
-		if (params['style']) {
-			var doc = document;
-			doc.getElementById('sactraffic_widget').className = params['style'];
-		}
+	if (params['style']) {
+		if (params['style'] != 'none')
+			SacTraffic.setTheme(params['style']);
+	} else {
+		// Set the default theme
+		SacTraffic.setTheme('blue');
 	}
 
 	if (params['num'])

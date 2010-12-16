@@ -74,9 +74,9 @@
 
 		<p>We have themes:</p>
 		<ul>
-			<li><input type="radio" name="theme" value="default" checked="checked"/> Default - the cool blue default theme of SacTraffic.org.</li>
-			<li><input type="radio" name="theme" value="lectroid"/> Lectroid - Black and Orange like my favorite site.</li>
-			<li><input type="radio" name="theme" value="none"/> None - You don't need no stinking theme, you got the CSS covered.</li>
+			<li><input type="radio" name="theme" value="blue" checked="checked"/> <strong>Blue</strong> - the cool blue default theme of SacTraffic.org.</li>
+			<li><input type="radio" name="theme" value="lectroid"/> <strong>Lectroid</strong> - Black and Orange like my favorite site.</li>
+			<li><input type="radio" name="theme" value="none"/> <strong>None</strong> - You don't need no stinking theme, you got the CSS covered.</li>
 		</ul>
 
 		<h2>Ack too many (too few?) incidents</h2>
@@ -115,23 +115,19 @@
 	google.load("jquery", "1");
 </script>
 <script>
-	var theme = "default";
-	var count = 10;
+	var theme = "blue";
+	var count = "10";
 
 	jQuery(document).ready(function(){
 		jQuery('input[name="theme"]').click(function(){
 			theme = jQuery(this).val();
 			jQuery('.copycode').html(make_url_str());
 			
-			if (theme == "default" || theme == "none") {
-				jQuery('#sactraffic_widget').removeClass('lectroid');
-			} else {
-				jQuery('#sactraffic_widget').addClass(theme);
-			}
+			SacTraffic.setTheme(theme);
 		});
 
 		jQuery('select').change(function() {
-			count = Number(jQuery(this).val());
+			count = jQuery(this).val();
 			jQuery('.copycode').html(make_url_str());
 
 			SacTraffic.showNum = count;
@@ -142,9 +138,9 @@
 	function make_url_str () {
 		var params = {};
 		
-		if (theme && theme != "default")
+		if (theme && theme != "blue")
 			params['style'] = theme;
-		if (count && count != 10)
+		if (count && count != "10")
 			params['num'] = count;
 
 		var query_str = jQuery.param(params);
