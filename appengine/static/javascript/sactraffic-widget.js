@@ -151,14 +151,18 @@ SacTraffic.updateWidget = function(data) {
 /**
  * Updates the CHP data from SacTraffic.org.
  */
-SacTraffic.updateTrafficData = function () {
+SacTraffic.updateTrafficData = function (with_timeout) {
+	if (typeof(with_timeout) == "undefined")
+		with_timeout = true;
+
 	SacTraffic.addScriptNode('http://www.sactraffic.org/json?dispatch=STCC&callback=SacTraffic.updateWidget', function () {
 		var doc = document;
 		var oldScriptNode = doc.getElementById('sactraffic_widget').getElementsByTagName('script')[0];
 		if (oldScriptNode)
 			oldScriptNode.parentNode.removeChild(oldScriptNode);
 
-		setTimeout(SacTraffic.updateTrafficData, 60000);
+		if (with_timeout)
+			setTimeout(SacTraffic.updateTrafficData, 60000);
 	});
 };
 

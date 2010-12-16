@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Sac Traffic dot Org Widgets</title>
+<meta name="description" content="Sacramento area traffic alerts from the California Highway Patrol."/>
+<meta name="keywords" content="accidents, news, CHP, California Highway Patrol, cars, driving, freeway"/>
+<link rel="shortcut icon" href="/images/sactraffic.png" />
+
+<link rel="stylesheet" href="/stylesheets/sactraffic.min.css" />
+
+<link rel="alternate" type="application/atom+xml" title="Sac Traffic Atom Feed" href="/atom" />
+
+<meta name="viewport" content="width = 370" />
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-4894819-1']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+
+<style>
+	.demowidget { width: 320px; margin: 0 auto; }
+	.copycode { background: #ffff99; border: 1px solid silver; font-family: monospace; font-size: 12px; font-weight: bold; margin:15px; padding: 10px 5px; text-align: center; }
+	ul { list-style-type: none; }
+</style>
+</head>
+
+<body>
+<div id="top_banner" class="ad leaderboard">
+	<script type="text/javascript"><!--
+		google_ad_client = "pub-0887871162421804";
+		if (screen.width <= 480) {
+			var banner = document.getElementById("top_banner");
+			banner.className = 'ad halfbanner';
+
+			/* Mobile Leaderboard */
+			google_ad_slot = "1236279869";
+			google_ad_width = 234;
+			google_ad_height = 60;
+		} else {
+			/* Leaderboard */
+			google_ad_slot = "3264684355";
+			google_ad_width = 728;
+			google_ad_height = 90;
+		}
+		//-->
+	</script>
+	<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+</div>
+
+<div id="content">
+	<div>
+		<h1>SacTraffic Widget</h1>
+
+		<p>Want a widget of SacTraffic.org incidents for your site?  One like this:</p>
+
+		<div class="demowidget">
+			<script src="http://www.sactraffic.org/javascript/sactraffic-widget.min.js"></script>
+		</div>
+
+		<p>Simple, just add the following to your site, right where you want it:</p>
+
+		<blockquote class="copycode">
+			&lt;script src="http://www.sactraffic.org/javascript/sactraffic-widget.min.js"&gt;&lt;/script&gt;
+		</blockquote>
+
+		<h2>Is it ugly?  So customize it</h2>
+
+		<p>We have themes:</p>
+		<ul>
+			<li><input type="radio" name="theme" value="default" checked="checked"/> Default - the cool blue default theme of SacTraffic.org.</li>
+			<li><input type="radio" name="theme" value="lectroid"/> Lectroid - Black and Orange like my favorite site.</li>
+			<li><input type="radio" name="theme" value="none"/> None - You don't need no stinking theme, you got the CSS covered.</li>
+		</ul>
+
+		<h2>Ack too many (too few?) incidents</h2>
+
+		<p>Yeah, there's an opt for that: <select name="num">
+			<option>1</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+			<option>6</option>
+			<option>7</option>
+			<option>8</option>
+			<option>9</option>
+			<option selected="selected">10</option>
+			<option>11</option>
+			<option>12</option>
+			<option>13</option>
+			<option>14</option>
+			<option>15</option>
+			<option>16</option>
+			<option>17</option>
+			<option>18</option>
+			<option>19</option>
+			<option>20</option>
+		</select></p>
+	</div>
+
+	<div id="footer">
+
+	</div>
+</div> <!-- #content -->
+
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+	google.load("jquery", "1");
+</script>
+<script>
+	var theme = "default";
+	var count = 10;
+
+	jQuery(document).ready(function(){
+		jQuery('input[name="theme"]').click(function(){
+			theme = jQuery(this).val();
+			jQuery('.copycode').html(make_url_str());
+			
+			if (theme == "default" || theme == "none") {
+				jQuery('#sactraffic_widget').removeClass('lectroid');
+			} else {
+				jQuery('#sactraffic_widget').addClass(theme);
+			}
+		});
+
+		jQuery('select').change(function() {
+			count = Number(jQuery(this).val());
+			jQuery('.copycode').html(make_url_str());
+
+			SacTraffic.showNum = count;
+			SacTraffic.updateTrafficData(false);
+		});
+	});
+
+	function make_url_str () {
+		var params = {};
+		
+		if (theme && theme != "default")
+			params['style'] = theme;
+		if (count && count != 10)
+			params['num'] = count;
+
+		var query_str = jQuery.param(params);
+		var qmark = (query_str != "") ? "?" : "";
+
+		return '&lt;script src="http://www.sactraffic.org/javascript/sactraffic-widget.min.js' + qmark + query_str + '"&gt;&lt;/script&gt;';
+	}
+</script>
+
+<script type="text/javascript" src="http://media.sacbee.com/static/sacconnect/sacconnect-min.js"></script>
+</body>
+</html>
+<!--
+vim: ts=4
+-->

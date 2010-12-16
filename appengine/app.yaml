@@ -57,6 +57,11 @@ handlers:
   upload: static/about.html
   expiration: "1m"
 
+- url: /widget.html
+  static_files: static/widget.html
+  upload: static/widget.html
+  expiration: "1m"
+
 - url: /apple-touch-icon.png
   static_files: static/images/sactraffic.png
   upload: static/images/sactraffic.png
