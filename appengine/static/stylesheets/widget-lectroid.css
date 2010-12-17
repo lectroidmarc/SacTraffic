@@ -39,6 +39,7 @@
 
 #sactraffic_widget a {
 	color: #FF5A00 !important;
+	line-height: normal !important;
 	text-decoration: none;
 }
 #sactraffic_widget a:hover {
@@ -52,6 +53,7 @@
 
 #sactraffic_widget .time {
 	color: #999;
+	display: block;
 }
 
 #sactraffic_widget .foot {
