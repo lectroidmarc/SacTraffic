@@ -84,8 +84,8 @@ class AtomHandler(webapp.RequestHandler):
 			details = pickle.loads(incident.LogDetails)
 			description = "<ul>"
 			for detail in details['details']:
-				description += "<li>" + detail['DetailTime'] + ": " + detail['IncidentDetail'] + "</li>"
-			description += "</ul>"
+				description = "%s<li>%s: %s</li>" % (description, detail['DetailTime'], detail['IncidentDetail'])
+			description = "%s</ul>" % description
 
 			static_map_url = ""
 			if incident.geolocation is not None:
