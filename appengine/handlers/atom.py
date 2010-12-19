@@ -87,6 +87,11 @@ class AtomHandler(webapp.RequestHandler):
 				description += "<li>" + detail['DetailTime'] + ": " + detail['IncidentDetail'] + "</li>"
 			description += "</ul>"
 
+			static_map_url = ""
+			if incident.geolocation is not None:
+				static_map_url = "http://maps.google.com/maps/api/staticmap?size=200x200&markers=color:0x165279|%f,%f&zoom=12&maptype=roadmap&sensor=false&style=feature:landscape|lightness:100&style=feature:road.highway|element:geometry|hue:0xff0000|saturation:-25&style=feature:landscape|lightness:100&style=feature:road.arterial|element:geometry|saturation:-100|visibility:simplified&style=feature:road.arterial|element:labels|saturation:-100|lightness:10" % (incident.geolocation.lat, incident.geolocation.lon)
+				description = '%s<img src="%s" width="200" height="200" border="1"/>' % (description, static_map_url)
+
 			entry = ElementTree.SubElement (feed, 'entry')
 
 			ElementTree.SubElement(entry, 'title').text = title
@@ -100,6 +105,7 @@ class AtomHandler(webapp.RequestHandler):
 			})
 
 			if incident.geolocation is not None:
+				ElementTree.SubElement(entry, 'link', {'rel': 'enclosure', 'type': 'image/png', 'href': static_map_url})
 				ElementTree.SubElement(entry, 'georss:point').text = str(incident.geolocation.lat) + " " + str(incident.geolocation.lon)
 
 
