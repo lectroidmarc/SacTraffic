@@ -235,14 +235,7 @@ div.marker .logtime {
 	font-style: italic;
 }
 
-#mapopts {
-	margin-top: 0;
-}
-
-#mapopts .traffic,
-#mapopts .live_cams {
-	display: none;
-}
+#map .button { background-color: #165279 !important; font-size: 11px !important; margin: 0 5px; width: 90px }
 
 #sitenews ul {
 	list-style: none;

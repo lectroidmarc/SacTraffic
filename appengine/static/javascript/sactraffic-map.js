@@ -86,6 +86,57 @@ function TrafficMap (elementId) {
 	google.maps.event.addListener(this.gmap, "dragend", function() {
 		self.center = self.gmap.getCenter();
 	});
+
+	this.gmap.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.make_traffic_button());
+	this.gmap.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.make_camera_button());
+}
+
+/**
+ * Makes a show/hide traffic button to enable/disable the traffic overlay
+ * on the map.
+ * @returns {DOMelement}
+ */
+TrafficMap.prototype.make_traffic_button = function () {
+	var self = this;
+	var div = document.createElement('div');
+	div.style.paddingBottom = "2px";
+	div.style.paddingTop = "2px";
+
+	jQuery('<div/>').html("Show Traffic").click(function () {
+		if (jQuery(this).html() == "Hide Traffic") {
+			self.hide_gtraffic();
+			jQuery(this).html("Show Traffic");
+		} else {
+			self.show_gtraffic();
+			jQuery(this).html("Hide Traffic");
+		}
+	}).addClass('awesome button').appendTo(div);
+
+	return div;
+}
+
+/**
+ * Makes a show/hide camera button to enable/disable the live camera markers
+ * on the map.
+ * @returns {DOMelement}
+ */
+TrafficMap.prototype.make_camera_button = function () {
+	var self = this;
+	var div = document.createElement('div');
+	div.style.paddingBottom = "2px";
+	div.style.paddingTop = "2px";
+
+	jQuery('<div/>').html("Hide Cameras").click(function () {
+		if (jQuery(this).html() == "Hide Cameras") {
+			self.hide_live_cams();
+			jQuery(this).html("Show Cameras");
+		} else {
+			self.show_live_cams();
+			jQuery(this).html("Hide Cameras");
+		}
+	}).addClass('awesome button').appendTo(div);
+
+	return div;
 }
 
 /**
