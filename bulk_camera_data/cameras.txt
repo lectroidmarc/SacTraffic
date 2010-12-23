@@ -28,7 +28,7 @@ id,name,url,geo,width,height,online
 20,US-50 at Jefferson,http://video.dot.ca.gov/asx/d3-jefferson-50.asx,"38.577225,-121.525354",600,440,y
 21,US-50 at Mather,http://video.dot.ca.gov/asx/d3-mather-50.asx,"38.578366,-121.308117",600,440,y
 22,US-50 at Mayhew,http://video.dot.ca.gov/asx/d3-mayhew-50.asx,"38.561925,-121.349401",600,440,y
-48,US-50 at Spring,http://video.dot.ca.gov/asx/d3-Spring-50.asx,"38,-121",600,440,n
+48,US-50 at Spring,http://video.dot.ca.gov/asx/d3-Spring-50.asx,"38.728209,-120.805621",600,440,y
 23,US-50 at Sunrise,http://video.dot.ca.gov/asx/d3-sunrise-50.asx,"38.608956,-121.271038",600,440,y
 49,US-50 at Watt,http://video.dot.ca.gov/asx/d3-watt-50.asx,"38.558703,-121.379528",600,440,y
 24,US-50 at Zinfandel,http://video.dot.ca.gov/asx/d3-zinfandel-50.asx,"38.590912,-121.287603",600,440,y
