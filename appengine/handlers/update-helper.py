@@ -33,9 +33,8 @@ class UpdateHelperHandler(webapp.RequestHandler):
 
 		if self.request.headers.has_key('X-Signature') and local_sig == self.request.headers['X-Signature']:
 			# Yay, a match...
-			pickled_chp_etree = zlib.decompress(data)
-			CHPData(key_name="chp_data", data=pickled_chp_etree).put()
-			chp_etree = pickle.loads(pickled_chp_etree)
+			CHPData(key_name="chp_data", data=data).put()
+			chp_etree = pickle.loads(zlib.decompress(data))
 			process_chp_xml(chp_etree)
 		else:
 			# Boo, hiss, no match

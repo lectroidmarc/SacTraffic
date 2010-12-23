@@ -1,5 +1,6 @@
 import logging
 import pickle
+import zlib
 from datetime import datetime, timedelta
 from xml.etree import ElementTree
 
@@ -27,12 +28,12 @@ class UpdateHandler(webapp.RequestHandler):
 			if result.status_code == 200:
 				try:
 					chp_etree = ElementTree.XML(result.content)
-				except ElementTree.ExpatError, e:
+				except ElementTree.ParseError, e:
 					error = "XML processing error. %s" % e.message
 					logging.warning(error)
 					template_values['error'] = error
 				else:
-					CHPData(key_name="chp_data", data=pickle.dumps(chp_etree)).put()
+					CHPData(key_name="chp_data", data=zlib.compress(pickle.dumps(chp_etree))).put()
 					process_chp_xml(chp_etree)
 			else:
 				error = "CHP server returned " + str(result.status_code) + " status."

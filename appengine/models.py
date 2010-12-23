@@ -7,7 +7,7 @@ from google.appengine.api import memcache
 
 class CHPData(db.Model):
 	"""Holds the last successful CHP data fetch."""
-	data = db.TextProperty(required=True)
+	data = db.BlobProperty(required=True)
 	updated = db.DateTimeProperty(auto_now=True)
 
 	def put(self):
