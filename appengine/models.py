@@ -30,6 +30,7 @@ class CHPIncident(db.Model):
 	TBXY = db.StringProperty()
 	LogDetails = db.BlobProperty()
 	geolocation = db.GeoPtProperty()
+	city = db.StringProperty()
 	updated = db.DateTimeProperty(auto_now=True)
 
 	@property
