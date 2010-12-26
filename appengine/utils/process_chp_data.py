@@ -10,12 +10,13 @@ from google.appengine.ext import deferred
 
 from models import CHPIncident
 from utils.tzinfo import Pacific
+from utils.reverse_geocode import load_city
 from thirdparty.pubsubhubbub_publish import *
 
 
 def process_chp_xml(chpState):
 	for chpCenter in chpState:
-		deferred.defer(process_chp_center, chpCenter);
+		deferred.defer(process_chp_center, chpCenter, _queue="chpProcessQueue");
 
 
 def process_chp_center(chpCenter):
@@ -33,19 +34,21 @@ def process_chp_center(chpCenter):
 			key_name = "%s.%s.%s.%d" % (chpCenter.attrib['ID'], chpDispatch.attrib['ID'], chpLog.attrib['ID'], time.mktime(log_time.timetuple()))
 			logtype = chpLog.find('LogType').text.strip('"').partition(" - ")
 
-			incident = CHPIncident(key_name = key_name,
-				CenterID = chpCenter.attrib['ID'],
-				DispatchID = chpDispatch.attrib['ID'],
-				LogID = chpLog.attrib['ID'],
-				LogTime = log_time,
-				LogType = logtype[2],
-				LogTypeID = logtype[0],
-				Location = deCopIfy(chpLog.find('Location').text.strip('"')),
-				Area = chpLog.find('Area').text.strip('"'),
-				ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"'),
-				TBXY = chpLog.find('TBXY').text.strip('"'),
-				geolocation = geoConvertTBXY(chpCenter.attrib['ID'], chpLog.find('TBXY').text.strip('"'))
-				)
+			incident = CHPIncident.get_by_key_name(key_name)
+			if incident is None:
+				incident = CHPIncident(key_name = key_name,
+					CenterID = chpCenter.attrib['ID'],
+					DispatchID = chpDispatch.attrib['ID'],
+					LogID = chpLog.attrib['ID'])
+
+			incident.LogTime = log_time
+			incident.LogType = logtype[2]
+			incident.LogTypeID = logtype[0]
+			incident.Location = deCopIfy(chpLog.find('Location').text.strip('"'))
+			incident.Area = chpLog.find('Area').text.strip('"')
+			incident.ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"')
+			incident.TBXY = chpLog.find('TBXY').text.strip('"')
+			incident.geolocation = geoConvertTBXY(incident.CenterID, incident.TBXY)
 
 			# Special handling for the LogDetails
 			LogDetails = {
@@ -59,7 +62,6 @@ def process_chp_center(chpCenter):
 					'IncidentDetail': element.find('IncidentDetail').text.strip('"^')
 				}
 				LogDetails[element.tag].append(detail_dict)
-
 			incident.LogDetails = pickle.dumps(LogDetails)
 
 			# Set up the PSH pings.  Note, we are NOT checking for actual
@@ -80,7 +82,12 @@ def process_chp_center(chpCenter):
 
 	# Ping the PSH hub
 	if len(set(psh_pings)):
-		deferred.defer(publish, 'http://pubsubhubbub.appspot.com', set(psh_pings))
+		deferred.defer(publish, 'http://pubsubhubbub.appspot.com', set(psh_pings), _queue="pshPingQueue")
+
+	# Reverse geocode the incidents if we haven't already
+	for incident in incident_list:
+		if incident.city is None and incident.geolocation is not None:
+			deferred.defer(load_city, incident.key(), _queue="reverseGeocodeQueue")
 
 	logging.info("Processed %d incidents in %s." % (len(incident_list), chpCenter.attrib['ID']))
 
