@@ -18,6 +18,8 @@ class AtomHandler(webapp.RequestHandler):
 		area = self.request.get("area")
 		roads = self.request.get("roads")
 
+		last_mod = datetime.datetime.utcnow()
+
 		incidents = CHPIncident.all()
 		incidents.order('-LogTime')
 		if center != "":
@@ -27,7 +29,6 @@ class AtomHandler(webapp.RequestHandler):
 		if area != "":
 			incidents.filter('Area =', area)
 
-		last_mod = datetime.datetime.utcnow()
 		if incidents.count(1) > 0:
 			last_mod = max(incidents, key=lambda incident: incident.updated).updated
 			if conditional_http.isNotModified(self, last_mod):
