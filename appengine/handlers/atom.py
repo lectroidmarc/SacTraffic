@@ -80,7 +80,10 @@ class AtomHandler(webapp.RequestHandler):
 				if road_match is None:
 					continue
 
-			title = "%s: %s, %s" % (incident.LogType, incident.Location, incident.Area)
+			city = incident.city
+			if city is None:
+				city = incident.Area
+			title = "%s: %s, %s" % (incident.LogType, incident.Location, city)
 			details = pickle.loads(incident.LogDetails)
 			description = "<ul>"
 			for detail in details['details']:
