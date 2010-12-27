@@ -66,6 +66,9 @@ class JsonHandler(webapp.RequestHandler):
 					'lon': incident.geolocation.lon
 				}
 
+			if incident.city is not None:
+				incident_dict['city'] = incident.city
+
 			output_list.append(incident_dict)
 
 		self.response.headers["Content-Type"] = "application/json"
