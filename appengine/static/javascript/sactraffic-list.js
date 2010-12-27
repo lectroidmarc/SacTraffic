@@ -49,7 +49,8 @@ var TrafficList = function () {
 		jQuery('<div/>').addClass('logtype summary').html(incident.LogType).appendTo(incident_li);
 
 		// Location
-		jQuery('<div/>').addClass('location').html(incident.Location + "<br/>" + incident.Area).appendTo(incident_li);
+		var city = (incident.city) ? incident.city : incident.Area;
+		jQuery('<div/>').addClass('location').html(incident.Location + "<br/>" + city).appendTo(incident_li);
 
 		// Time
 		jQuery('<div/>').addClass('logtime').html(incident.LogTime).append(
