@@ -20,6 +20,12 @@ indexes:
 
 - kind: CHPIncident
   properties:
+  - name: city
+  - name: LogTime
+    direction: desc
+
+- kind: CHPIncident
+  properties:
   - name: Area
   - name: DispatchID
   - name: LogTime

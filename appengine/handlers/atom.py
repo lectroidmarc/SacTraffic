@@ -16,6 +16,7 @@ class AtomHandler(webapp.RequestHandler):
 		center = self.request.get("center")
 		dispatch = self.request.get("dispatch", default_value="STCC")
 		area = self.request.get("area")
+		city = self.request.get("city")
 		roads = self.request.get("roads")
 
 		last_mod = datetime.datetime.utcnow()
@@ -28,6 +29,8 @@ class AtomHandler(webapp.RequestHandler):
 			incidents.filter('DispatchID =', dispatch)
 		if area != "":
 			incidents.filter('Area =', area)
+		if city != "":
+			incidents.filter('city =', city)
 
 		if incidents.count(1) > 0:
 			last_mod = max(incidents, key=lambda incident: incident.updated).updated

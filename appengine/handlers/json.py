@@ -16,6 +16,7 @@ class JsonHandler(webapp.RequestHandler):
 		center = self.request.get("center")
 		dispatch = self.request.get("dispatch")
 		area = self.request.get("area")
+		city = self.request.get("city")
 		callback = self.request.get("callback")
 
 		last_mod = datetime.datetime.utcnow()	# XXX should this be None?
@@ -29,6 +30,8 @@ class JsonHandler(webapp.RequestHandler):
 				incidents.filter('DispatchID =', dispatch)
 			if area != "":
 				incidents.filter('Area =', area)
+			if city != "":
+				incidents.filter('city =', city)
 
 			if incidents.count(1) > 0:
 				last_mod = max(incidents, key=lambda incident: incident.updated).updated
