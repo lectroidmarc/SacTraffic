@@ -66,9 +66,13 @@
 
 		<h2>Can I build on your work?</h2>
 
-		<p>Of course!  There's <a href="http://json.org/">JSON</a> data for every CHP Dispatch in California available by Center, Dispatch or Area.  So, for example, "STCC" is the Sacramento Center code (as well as the dispatch code) so <code>http:/www.sactraffic.org/json?center=STCC</code> will get you all the Sacramento Valley incidents (covering Sacramento, Chico and Stockton dispatches), and <code>http:/www.sactraffic.org/json?dispatch=STCC</code> will get you just the Sacramento Dispatch incidents (what this site uses) and you can go further, all the way down to the <a href="http://cad.chp.ca.gov/htm/body_phone.htm">area offices</a> so, say, Placerville-only incidents would be <code>http:/www.sactraffic.org/json?area=Placerville</code>.</p>
+		<p>Of course!  There's <a href="http://json.org/">JSON</a> data for every CHP Dispatch in California available by CHP <strong>Center</strong>, <strong>Dispatch</strong> or <strong>Area</strong> and also, recently, by <strong>city</strong>.</p>
 
-		<p>See how that works?  Secret tip, those parameters also work for the ATOM feed.</p>
+		<p>So, for example, "STCC" is the Sacramento Center code (as well as the dispatch code) so <code>http://www.sactraffic.org/json?center=STCC</code> will get you all the Sacramento Valley incidents (covering Sacramento, Chico and Stockton dispatches), and <code>http:/www.sactraffic.org/json?dispatch=STCC</code> will get you just the Sacramento Dispatch incidents (what this site uses) and you can go further, all the way down to the <a href="http://cad.chp.ca.gov/htm/body_phone.htm">area offices</a> so, say, Placerville office incidents would be <code>http:/www.sactraffic.org/json?area=Placerville</code>.</p>
+
+		<p>City level support was recently added as well.  This is even more granular than the CHP Area level.  Guess what <code>http://www.sactraffic.org/json?city=Isleton</code> will get you?</p>
+
+		<p>See how that works?  Secret tip: these same parameters also work for the ATOM feed.</p>
 
 		<p>The JSON format looks like:</p>
 		<code class="codeblock">[
