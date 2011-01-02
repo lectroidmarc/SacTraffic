@@ -3,14 +3,17 @@ from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 
 from models import CHPIncident
+from utils import tzinfo
 
 
 class IncidentHandler(webapp.RequestHandler):
 	def get(self):
+		pacific_tz = tzinfo.Pacific()
 		incident = CHPIncident.get_by_key_name(self.request.get("id", default_value='none'))
 		if incident is not None:
 			template_values = {
-				'incident': incident
+				'incident': incident,
+				'localLogTime': (incident.LogTime + pacific_tz.utcoffset(incident.LogTime))
 			}
 		else:
 			template_values = {}

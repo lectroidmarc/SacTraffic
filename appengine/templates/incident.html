@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Sacramento Area Traffic Alert{% if incident %}: {{ incident.LogType }}{% else%}: Expired or Missing Incident{% endif %}</title>
-<meta name="description" content="Sacramento area traffic alerts from the California Highway Patrol."/>
+<title>Sacramento Area Traffic Alert{% if incident %}: {{ localLogTime|date:"N jS\, P" }}, {{ incident.LogType }}{% else%}: Expired or Missing Incident{% endif %}</title>
+<meta name="description" content="{{ incident.LogType }}, a Sacramento Area traffic alert from the California Highway Patrol."/>
 <meta name="keywords" content="accidents, news, CHP, California Highway Patrol, cars, driving, freeway"/>
 <link rel="shortcut icon" href="/images/sactraffic.png" />
 
