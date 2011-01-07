@@ -11,6 +11,7 @@ import zlib
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from django.utils import simplejson as json
+from google.appengine.runtime.apiproxy_errors import CapabilityDisabledError
 
 from models import CHPData, CHPIncident
 from utils.process_chp_data import process_chp_xml
@@ -33,9 +34,13 @@ class UpdateHelperHandler(webapp.RequestHandler):
 
 		if self.request.headers.has_key('X-Signature') and local_sig == self.request.headers['X-Signature']:
 			# Yay, a match...
-			CHPData(key_name="chp_data", data=data).put()
-			chp_etree = pickle.loads(zlib.decompress(data))
-			process_chp_xml(chp_etree)
+			try:
+				CHPData(key_name="chp_data", data=data).put()
+			except CapabilityDisabledError:
+				logging.warning("Google datastore in read-only mode, not processing CHP data.")
+			else:
+				chp_etree = pickle.loads(zlib.decompress(data))
+				process_chp_xml(chp_etree)
 		else:
 			# Boo, hiss, no match
 			logging.warning("Request signature mismatch.")

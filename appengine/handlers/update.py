@@ -9,6 +9,7 @@ from google.appengine.ext.webapp import util
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
 from google.appengine.ext.webapp import template
+from google.appengine.runtime.apiproxy_errors import CapabilityDisabledError
 
 from models import CHPData, CHPIncident
 from utils.process_chp_data import process_chp_xml
@@ -33,8 +34,14 @@ class UpdateHandler(webapp.RequestHandler):
 					logging.warning(error)
 					template_values['error'] = error
 				else:
-					CHPData(key_name="chp_data", data=zlib.compress(pickle.dumps(chp_etree))).put()
-					process_chp_xml(chp_etree)
+					try:
+						CHPData(key_name="chp_data", data=zlib.compress(pickle.dumps(chp_etree))).put()
+					except CapabilityDisabledError:
+						error = "Google datastore in read-only mode, not processing CHP data."
+						logging.warning(error)
+						template_values['error'] = error
+					else:
+						process_chp_xml(chp_etree)
 			else:
 				error = "CHP server returned " + str(result.status_code) + " status."
 				logging.warning(error)
