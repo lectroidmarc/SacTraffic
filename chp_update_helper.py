@@ -30,7 +30,10 @@ if not options.key:
 upload_url = "http://%s/update-helper" % options.upload_domain
 
 # First, see if we need to do anything
-f = urllib2.urlopen(upload_url)
+try:
+	f = urllib2.urlopen(upload_url)
+except urllib2.HTTPError:
+	sys.exit("App Engine returned a HTTPError on GET.")
 info = json.loads(f.read())
 minutes = (time.time() - info['last_update']) / 60
 
@@ -38,7 +41,10 @@ if minutes > options.time_delay:
 	print "Last native update was over %d minutes ago, helping..." % minutes
 
 	print "  fetching the CHP data..."
-	f = urllib2.urlopen("http://media.chp.ca.gov/sa_xml/sa.xml")
+	try:
+		f = urllib2.urlopen("http://media.chp.ca.gov/sa_xml/sa.xml")
+	except urllib2.HTTPError:
+		sys.exit("The CHP site returned a HTTPError.")
 	chp_data = f.read()
 
 	print "  parsing the XML"
