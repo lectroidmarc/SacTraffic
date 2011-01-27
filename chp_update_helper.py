@@ -6,6 +6,7 @@ import hashlib
 import hmac
 import json
 import pickle
+import sys
 import time
 import urllib2
 import zlib
@@ -33,7 +34,7 @@ upload_url = "http://%s/update-helper" % options.upload_domain
 try:
 	f = urllib2.urlopen(upload_url)
 except urllib2.HTTPError:
-	sys.exit("App Engine returned a HTTPError on GET.")
+	sys.exit("App Engine returned a HTTPError on initial check.")
 info = json.loads(f.read())
 minutes = (time.time() - info['last_update']) / 60
 
