@@ -66,8 +66,10 @@ if minutes > options.time_delay:
 		'X-Signature': signature
 	}
 	request = urllib2.Request(upload_url, zdata, headers);
-	upload = urllib2.urlopen(request)
-
+	try:
+		upload = urllib2.urlopen(request)
+	except urllib2.HTTPError, e:
+		sys.exit("App Engine returned a '%d' on data upload." % e.code)
 	print "Done."
 else:
 	print "Last update was %.2f minutes ago, no need to help." % minutes
