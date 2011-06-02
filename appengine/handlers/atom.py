@@ -14,7 +14,7 @@ from utils import conditional_http
 class AtomHandler(webapp.RequestHandler):
 	def get(self):
 		center = self.request.get("center")
-		dispatch = self.request.get("dispatch", default_value="STCC")
+		dispatch = self.request.get("dispatch", default_value="SACC")
 		area = self.request.get("area")
 		city = self.request.get("city")
 		roads = self.request.get("roads")
@@ -43,7 +43,7 @@ class AtomHandler(webapp.RequestHandler):
 		})
 
 		title = "CHP Traffic Incidents"
-		if dispatch == "STCC":
+		if dispatch == "SACC":
 			title = "SacTraffic: Sacramento Area Traffic Incidents"
 		if roads != "":
 			title = "%s (%s)" % (title, roads)

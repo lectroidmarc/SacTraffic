@@ -86,7 +86,7 @@ function get_incident (map, id) {
  * Fetches the incident JSON and processes it accordingly.
  */
 function get_incidents (map) {
-	jQuery.getJSON("/json?dispatch=STCC", function (incidents) {
+	jQuery.getJSON("/json?dispatch=SACC", function (incidents) {
 		TrafficList.show_incidents(incidents);
 
 		if (typeof map != "undefined") { map.update(incidents); }

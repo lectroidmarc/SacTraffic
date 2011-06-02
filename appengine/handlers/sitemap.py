@@ -11,7 +11,7 @@ from models import Camera, CHPIncident
 class SitemapHandler(webapp.RequestHandler):
 	def get(self):
 		incidents = CHPIncident.all()
-		incidents.filter('DispatchID', 'STCC')
+		incidents.filter('DispatchID', 'SACC')
 
 		last_mod = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
 		if incidents.count(1) > 0:

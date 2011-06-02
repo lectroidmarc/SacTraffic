@@ -164,7 +164,7 @@ SacTraffic.updateTrafficData = function (with_refresh) {
 	if (typeof(with_refresh) == "undefined")
 		with_refresh = true;
 
-	SacTraffic.addScriptNode('http://www.sactraffic.org/json?dispatch=STCC&callback=SacTraffic.updateWidget', function () {
+	SacTraffic.addScriptNode('http://www.sactraffic.org/json?dispatch=SACC&callback=SacTraffic.updateWidget', function () {
 		var doc = document;
 		var oldScriptNode = doc.getElementById('sactraffic_widget').getElementsByTagName('script')[0];
 		if (oldScriptNode)

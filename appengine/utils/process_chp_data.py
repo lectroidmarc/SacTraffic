@@ -30,9 +30,13 @@ def process_chp_center(chpCenter):
 			continue
 
 		for chpLog in chpDispatch:
-			log_time = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific())
+			try:
+				log_time = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific())
+			except ValueError:
+				log_time = datetime.strptime(chpLog.find('LogTime').text, '"%b %d %Y %I:%M%p"').replace(tzinfo=Pacific())
+
 			key_name = "%s.%s.%s.%d" % (chpCenter.attrib['ID'], chpDispatch.attrib['ID'], chpLog.attrib['ID'], time.mktime(log_time.timetuple()))
-			logtype = chpLog.find('LogType').text.strip('"').partition(" - ")
+			logtype = chpLog.find('LogType').text.strip('"').partition("-")
 
 			incident = CHPIncident.get_by_key_name(key_name)
 			if incident is None:
@@ -42,13 +46,21 @@ def process_chp_center(chpCenter):
 					LogID = chpLog.attrib['ID'])
 
 			incident.LogTime = log_time
-			incident.LogType = logtype[2]
+			incident.LogType = deCopIfy(logtype[2]).replace("-", " - ")
 			incident.LogTypeID = logtype[0]
 			incident.Location = deCopIfy(chpLog.find('Location').text.strip('"'))
 			incident.Area = chpLog.find('Area').text.strip('"')
 			incident.ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"')
-			incident.TBXY = chpLog.find('TBXY').text.strip('"')
-			incident.geolocation = geoConvertTBXY(incident.CenterID, incident.TBXY)
+
+			try:
+				latlon = chpLog.find('LATLON').text.strip('"').partition(":")
+				incident.geolocation = db.GeoPt(
+					lat = float(latlon[0]) / 1000000,
+					lon = float(latlon[2]) / 1000000 * -1
+				)
+			except AttributeError:
+				incident.TBXY = chpLog.find('TBXY').text.strip('"')
+				incident.geolocation = geoConvertTBXY(incident.CenterID, incident.TBXY)
 
 			# Special handling for the LogDetails
 			LogDetails = {
@@ -57,11 +69,15 @@ def process_chp_center(chpCenter):
 			}
 			logdetails_element = chpLog.find('LogDetails')
 			for element in logdetails_element:
-				detail_dict = {
-					'DetailTime': element.find('DetailTime').text.strip('"'),
-					'IncidentDetail': element.find('IncidentDetail').text.strip('"^')
-				}
-				LogDetails[element.tag].append(detail_dict)
+				try:
+					detail_dict = {
+						'DetailTime': element.find('DetailTime').text.strip('"'),
+						'IncidentDetail': element.find('IncidentDetail').text.strip('"^')
+					}
+					LogDetails[element.tag].append(detail_dict)
+				except AttributeError:
+					pass
+
 			incident.LogDetails = pickle.dumps(LogDetails)
 
 			# Set up the PSH pings.  Note, we are NOT checking for actual
@@ -70,8 +86,8 @@ def process_chp_center(chpCenter):
 			psh_pings.append('http://www.sactraffic.org/atom?center=%s' % incident.CenterID)
 			psh_pings.append('http://www.sactraffic.org/atom?dispatch=%s' % incident.DispatchID)
 			psh_pings.append('http://www.sactraffic.org/atom?area=%s' % incident.Area.replace(' ', '%20'))
-			# Note: 'dispatch' defaults to STCC so ping accordingly
-			if incident.DispatchID == "STCC":
+			# Note: 'dispatch' defaults to SACC so ping accordingly
+			if incident.DispatchID == "SACC":
 				psh_pings.append('http://www.sactraffic.org/atom')
 
 			# Save this incident
@@ -112,7 +128,14 @@ coplingo = [
 	{ 'regex': re.compile(r'\bON\b', re.I), 'str': "on" },
 	{ 'regex': re.compile(r'\bTO\b', re.I), 'str': "to" },
 
-	{ 'regex': re.compile(r'\bSR51\b', re.I), 'str': "CAP CITY FWY" }
+	{ 'regex': re.compile(r'\bSR51\b', re.I), 'str': "CAP CITY FWY" },
+
+	{ 'regex': re.compile(r' \/ ', re.I), 'str': " at " },
+	{ 'regex': re.compile(r'\bTrfc\b', re.I), 'str': "Traffic" },
+	{ 'regex': re.compile(r'\bInj\b', re.I), 'str': "Injury" },
+	{ 'regex': re.compile(r'\bEnrt\b', re.I), 'str': "Enroute" },
+	{ 'regex': re.compile(r'\bVeh\b', re.I), 'str': "Vehicle" },
+	{ 'regex': re.compile(r'\bUnkn\b', re.I), 'str': "Unknown" }
 ]
 
 
