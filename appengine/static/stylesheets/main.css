@@ -213,6 +213,7 @@ div#content {
  * @section Right Column
  */
 #rightcol {
+	overflow: hidden;
 }
 
 #map {
