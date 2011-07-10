@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="utf-8" />
 <title>Sac Traffic dot Org Widgets</title>
 <meta name="description" content="Sacramento area traffic alerts from the California Highway Patrol."/>
 <meta name="keywords" content="accidents, news, CHP, California Highway Patrol, cars, driving, freeway"/>
@@ -10,7 +11,7 @@
 
 <link rel="alternate" type="application/atom+xml" title="Sac Traffic Atom Feed" href="/atom" />
 
-<meta name="viewport" content="width = 370" />
+<meta name="viewport" content="width = 390" />
 
 <script type="text/javascript">
 	var _gaq = _gaq || [];
@@ -122,7 +123,7 @@
 		jQuery('input[name="theme"]').click(function(){
 			theme = jQuery(this).val();
 			jQuery('.copycode').html(make_url_str());
-			
+
 			SacTraffic.setTheme(theme);
 		});
 
@@ -137,7 +138,7 @@
 
 	function make_url_str () {
 		var params = {};
-		
+
 		if (theme && theme != "blue")
 			params['style'] = theme;
 		if (count && count != "10")

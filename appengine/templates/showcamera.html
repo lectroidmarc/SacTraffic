@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="utf-8" />
 <title>Live Traffic Camera: {{ camera.name }}</title>
 <meta name="description" content="Live video feed at {{ camera.name }} of Sacramento traffic conditions."/>
 <meta name="keywords" content="accidents, news, CHP, California Highway Patrol, cars, driving, freeway, video, live"/>
@@ -35,7 +36,7 @@
 	</script>
 	<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 </div>
-{% else %} 
+{% else %}
 <div id="top_banner" class="ad halfbanner">
 	<script type="text/javascript"><!--
 		google_ad_client = "pub-0887871162421804";
@@ -60,10 +61,10 @@
 			standby="Loading..."
 			width="{{ camera.width }}"
 			height="{{ camera.height }}">
-	
+
 			<param name="FileName" value="{{ camera.url }}"/>
 			<param name="ShowControls" value="false"/>
-	
+
 			<embed
 				type="application/x-mplayer2"
 				src="{{ camera.url }}"
