@@ -315,7 +315,7 @@ div.marker .logtime {
  */
 @media only screen and (max-device-width: 480px) {
 	body {
-		width: 370px;
+		width: 390px;
 	}
 
 	code.codeblock {
