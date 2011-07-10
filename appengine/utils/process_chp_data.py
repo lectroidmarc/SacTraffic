@@ -22,7 +22,7 @@ def process_chp_xml(chpState):
 def process_chp_center(chpCenter):
 	incident_list = []
 	psh_pings = []
-	
+
 	for chpDispatch in chpCenter:
 		# For some reason, sometimes the Dispatch ID is blank
 		# so skip these.
@@ -135,7 +135,9 @@ coplingo = [
 	{ 'regex': re.compile(r'\bInj\b', re.I), 'str': "Injury" },
 	{ 'regex': re.compile(r'\bEnrt\b', re.I), 'str': "Enroute" },
 	{ 'regex': re.compile(r'\bVeh\b', re.I), 'str': "Vehicle" },
-	{ 'regex': re.compile(r'\bUnkn\b', re.I), 'str': "Unknown" }
+	{ 'regex': re.compile(r'\bUnkn\b', re.I), 'str': "Unknown" },
+
+	{ 'regex': re.compile(r'\b1141\b', re.I), 'str': "Ambulance" }
 ]
 
 
