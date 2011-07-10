@@ -1,0 +1,20 @@
+{
+	"name": "SacTraffic",
+	"description": "Live CHP traffic alerts in the Sacramento area",
+	"version": "0.9",
+	"app": {
+		"urls": [
+			"http://www.sactraffic.org/"
+		],
+		"launch": {
+			"web_url": "http://www.sactraffic.org/"
+		}
+	},
+	"icons": {
+		"128": "icon_128.png"
+	},
+	"permissions": [
+		"geolocation",
+		"notifications"
+	]
+}

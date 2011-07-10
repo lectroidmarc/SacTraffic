@@ -11,7 +11,8 @@ FILES = appengine/static/javascript/sactraffic.min.js \
 	appengine/static/stylesheets/sactraffic.min.css \
 	appengine/static/javascript/sactraffic-widget.min.js \
 	appengine/static/stylesheets/widget-blue.min.css \
-	appengine/static/stylesheets/widget-lectroid.min.css
+	appengine/static/stylesheets/widget-lectroid.min.css \
+	chrome/sactraffic.zip
 
 JS = appengine/static/javascript/sactraffic-base.js \
 	appengine/static/javascript/sactraffic-list.js \
@@ -29,6 +30,10 @@ appengine/static/javascript/sactraffic.min.js: ${JS}
 
 appengine/static/stylesheets/sactraffic.min.css: ${CSS}
 	cat $^ | ${YUICOMP} -o $@ --type css && perl -pi -e "s/screen and\(max/screen and \(max/" $@
+
+chrome/sactraffic.zip:
+	cd chrome && zip -r sactraffic.zip hosted_app -x *.DS_Store
+
 
 .js.min.js:
 	${CLOSURE} -o $@ $<
