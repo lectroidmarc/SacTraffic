@@ -11,7 +11,7 @@
 		}
 	},
 	"icons": {
-		"128": "icon_128.png"
+		"128": "sactraffic-icon-128.png"
 	},
 	"permissions": [
 		"geolocation",
