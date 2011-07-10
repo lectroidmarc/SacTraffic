@@ -3,6 +3,7 @@
 #
 
 .SUFFIXES: .js .min.js .css .min.css
+.PHONY: chrome clean
 
 YUICOMP = java -jar support/yuicompressor-2.4.2.jar
 CLOSURE = support/closure.py
@@ -11,8 +12,7 @@ FILES = appengine/static/javascript/sactraffic.min.js \
 	appengine/static/stylesheets/sactraffic.min.css \
 	appengine/static/javascript/sactraffic-widget.min.js \
 	appengine/static/stylesheets/widget-blue.min.css \
-	appengine/static/stylesheets/widget-lectroid.min.css \
-	chrome/sactraffic.zip
+	appengine/static/stylesheets/widget-lectroid.min.css
 
 JS = appengine/static/javascript/sactraffic-base.js \
 	appengine/static/javascript/sactraffic-list.js \
@@ -31,8 +31,8 @@ appengine/static/javascript/sactraffic.min.js: ${JS}
 appengine/static/stylesheets/sactraffic.min.css: ${CSS}
 	cat $^ | ${YUICOMP} -o $@ --type css && perl -pi -e "s/screen and\(max/screen and \(max/" $@
 
-chrome/sactraffic.zip:
-	cd chrome && zip -r sactraffic.zip hosted_app -x *.DS_Store
+chrome:
+	$(MAKE) -C chrome
 
 
 .js.min.js:
@@ -44,3 +44,4 @@ chrome/sactraffic.zip:
 
 clean:
 	rm -f ${FILES}
+	$(MAKE) -C chrome clean
