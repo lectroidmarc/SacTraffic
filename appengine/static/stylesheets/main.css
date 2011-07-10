@@ -4,7 +4,6 @@
 
 body {
 	margin: 0;
-	width: 900px;
 	background-color: #165279;
 }
 
@@ -107,7 +106,7 @@ div#content {
  */
 #leftcol {
 	float: left;
-	width: 330px;
+	width: 350px;
 	margin-right: 10px;
 	margin-bottom: 10px;
 	height: 650px;
@@ -129,7 +128,7 @@ div#content {
 }
 
 .incidents > li {
-	margin-bottom: 10px;
+	margin-bottom: 7px;
 	list-style: none;
 	background: #f3f3f3;
 	padding: 4px 3px 3px 4px;
@@ -213,13 +212,10 @@ div#content {
  * @section Right Column
  */
 #rightcol {
-	float: right;
-	width: 500px;
 }
 
 #map {
-	height: 450px;
-	width: 498px;
+	height: 500px;
 	border: 1px solid #666;
 }
 
