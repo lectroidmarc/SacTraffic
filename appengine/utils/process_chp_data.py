@@ -142,6 +142,9 @@ coplingo = [
 
 
 def deCopIfy(text):
+	if text == "":
+		return text
+
 	for lingo in coplingo:
 		text = re.sub(lingo['regex'], lingo['str'], text)
 
