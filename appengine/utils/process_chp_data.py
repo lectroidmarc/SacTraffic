@@ -72,7 +72,7 @@ def process_chp_center(chpCenter):
 				try:
 					detail_dict = {
 						'DetailTime': element.find('DetailTime').text.strip('"'),
-						'IncidentDetail': element.find('IncidentDetail').text.strip('"^')
+						'IncidentDetail': deCopIfy(element.find('IncidentDetail').text.strip('"^')).capitalize()
 					}
 					LogDetails[element.tag].append(detail_dict)
 				except AttributeError:
@@ -136,8 +136,16 @@ coplingo = [
 	{ 'regex': re.compile(r'\bEnrt\b', re.I), 'str': "Enroute" },
 	{ 'regex': re.compile(r'\bVeh\b', re.I), 'str': "Vehicle" },
 	{ 'regex': re.compile(r'\bUnkn\b', re.I), 'str': "Unknown" },
+	{ 'regex': re.compile(r'\bUnk\b', re.I), 'str': "Unknown" },
 
-	{ 'regex': re.compile(r'\b1141\b', re.I), 'str': "Ambulance" }
+	{ 'regex': re.compile(r'\b1141\b', re.I), 'str': "Ambulance" },
+
+	{ 'regex': re.compile(r'\bRP\b', re.I), 'str': "reporting party" },
+	{ 'regex': re.compile(r'\bTC\b', re.I), 'str': "collision" },
+	{ 'regex': re.compile(r'\bRHS\b', re.I), 'str': "right hand side" },
+	{ 'regex': re.compile(r'\bLHS\b', re.I), 'str': "left hand side" },
+
+	{ 'regex': re.compile(r'^\[\d+\] ', re.I), 'str': "" }
 ]
 
 
