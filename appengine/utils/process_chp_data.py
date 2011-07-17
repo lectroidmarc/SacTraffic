@@ -109,6 +109,7 @@ def process_chp_center(chpCenter):
 
 
 # Use app cahing and regex compiling
+# List of translations available at: http://www.freqofnature.com/frequencies/ca/chpcodes.html
 coplingo = [
 	{ 'regex': re.compile(r'\bJNO\b', re.I), 'str': "just north of" },
 	{ 'regex': re.compile(r'\bJSO\b', re.I), 'str': "just south of" },
