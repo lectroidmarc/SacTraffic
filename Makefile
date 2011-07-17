@@ -3,7 +3,7 @@
 #
 
 .SUFFIXES: .js .min.js .css .min.css
-.PHONY: chrome clean
+.PHONY: clean
 
 YUICOMP = java -jar support/yuicompressor-2.4.2.jar
 CLOSURE = support/closure.py
@@ -31,9 +31,6 @@ appengine/static/javascript/sactraffic.min.js: ${JS}
 appengine/static/stylesheets/sactraffic.min.css: ${CSS}
 	cat $^ | ${YUICOMP} -o $@ --type css && perl -pi -e "s/screen and\(max/screen and \(max/" $@
 
-chrome:
-	$(MAKE) -C chrome
-
 
 .js.min.js:
 	${CLOSURE} -o $@ $<
@@ -44,4 +41,3 @@ chrome:
 
 clean:
 	rm -f ${FILES}
-	$(MAKE) -C chrome clean

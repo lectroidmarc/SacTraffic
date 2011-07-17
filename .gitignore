@@ -2,9 +2,10 @@
 bulkloader-log-*
 bulkloader-progress-*
 *.pyc
+*.zip
+*.crx
+*.pem
 keys.py
 appengine/static/javascript/*.min.js
 appengine/static/stylesheets/*.min.css
-chrome/*.zip
-chrome/*.crx
-chrome/*.pem
+chrome
