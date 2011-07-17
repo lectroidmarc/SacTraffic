@@ -6,3 +6,5 @@ keys.py
 appengine/static/javascript/*.min.js
 appengine/static/stylesheets/*.min.css
 chrome/*.zip
+chrome/*.crx
+chrome/*.pem
