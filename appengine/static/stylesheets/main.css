@@ -231,7 +231,6 @@ code.codeblock {
 #map {
 	height: 500px;
 	border: 1px solid #e4e4e4;
-	border-radius: 10px;
 }
 
 div.marker .logtype {
