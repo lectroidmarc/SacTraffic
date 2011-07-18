@@ -5,7 +5,6 @@
 body {
 	margin: 0;
 	min-width: 900px;
-	background-color: #165279;
 }
 
 a {
@@ -42,7 +41,7 @@ h1 img {
 h2 {
 	font-size: 120%;
 	border-bottom: 1px solid #ccc;
-	margin-bottom: 10px;
+	margin: 5px 0 10px 0;
 }
 
 p.info {
@@ -59,22 +58,23 @@ code.codeblock {
 	font-size: 9pt;
 }
 
-div#content {
+#content {
+	color: #333;
 	font-family: arial, verdana, sans-serif;
 	font-size: 10pt;
-	margin: 0 20px 20px 20px;
-	padding: 10px 10px 16px 10px;
-	background-color: white;
-	color: #333;
-
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
 }
 
 
 /**
  * @section Header
  */
+#header {
+	background: #f1f1f1;
+	border-bottom: 1px solid #e4e4e4;
+	margin-bottom: 10px;
+	padding: 10px;
+}
+
 #mediainfo {
 	border: 1px solid red;
 	background-color: #fee;
@@ -107,36 +107,38 @@ div#content {
  */
 #leftcol {
 	float: left;
-	width: 350px;
-	margin-right: 10px;
-	margin-bottom: 10px;
+	width: 450px;
+	margin: 0 0 10px 10px;
 	height: 650px;
 	overflow: auto;
+
+
 }
 
 #incidents_above {
-	border-bottom: 1px solid #aaa;
+	border-top-left-radius: 10px;
 }
 
 #incidents_below {
-	border-top: 1px solid #aaa;
-	padding-top: 10px;
+	border-bottom: 1px solid #e4e4e4;
+	border-bottom-left-radius: 10px;
 }
 
 .incidents {
-	margin: 0 3px 0 0;
+	margin: 0;
 	padding: 0;
 }
 
 .incidents > li {
-	margin-bottom: 7px;
 	list-style: none;
 	background: #f3f3f3;
-	padding: 4px 3px 3px 4px;
-	border-top: 1px solid #999;
-	border-right: 1px solid #999;
-	border-bottom: 1px solid #999;
-	border-left: 3px solid #666;
+	padding: 5px 7px;
+	border-top: 1px solid #e4e4e4;
+	line-height: 130%;
+}
+
+.incidents > li:hover {
+	background: #e4e4e4;
 }
 
 .incidents .marker {
@@ -213,12 +215,15 @@ div#content {
  * @section Right Column
  */
 #rightcol {
+	margin: 0 10px 0 0;
 	overflow: hidden;
+	min-height: 650px;
 }
 
 #map {
 	height: 500px;
-	border: 1px solid #666;
+	border: 1px solid #e4e4e4;
+	border-radius: 10px;
 }
 
 div.marker .logtype {
@@ -242,6 +247,13 @@ div.marker .logtime {
 	padding-right: 10px;
 }
 
+#freewayfeeds {
+	background: #f3f3f3;
+	margin: 10px 0;
+	-webkit-border-radius: 7px;
+	padding: 0 5px 5px 5px;
+}
+
 #freewayfeeds input {
 	height: 12px;
 	width: 110px;
@@ -251,7 +263,7 @@ div.marker .logtime {
 
 #freewayfeeds ul {
 	list-style: none;
-	margin-left: 0;
+	margin: 0;
 	padding-left: 0;
 }
 /* End Right Column */
@@ -265,6 +277,7 @@ div.marker .logtime {
 	border-top: 1px solid #ccc;
 	font-size: 8pt;
 	color: #ccc;
+	margin: 0 10px;
 }
 
 #footer span {
@@ -283,6 +296,7 @@ div.marker .logtime {
 .ad {
 	/*border: 1px solid black;*/
 	margin: 10px auto;
+	display: none;
 }
 
 .leaderboard {
