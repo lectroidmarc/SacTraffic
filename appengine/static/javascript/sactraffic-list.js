@@ -22,12 +22,16 @@ var TrafficList = function () {
 
 		var incident_li = jQuery('<li/>').attr('id', incident.ID).addClass('incident').addClass('vevent').hover(
 			function () {
-				if (typeof trafficmap != "undefined") { trafficmap.center_on_id(incident.ID); }
+				jQuery(this).find('.more').show();
 			},
 			function () {
-				if (typeof trafficmap != "undefined") { trafficmap.recenter(); }
+				jQuery(this).find('.more').hide();
 			}
 		);
+
+		jQuery('<div/>').addClass('more').html(">>").click(function() {
+			if (typeof trafficmap != "undefined") { trafficmap.center_on_id(incident.ID); }
+		}).appendTo(incident_li);
 
 		// The marker icon
 		if (point) {
