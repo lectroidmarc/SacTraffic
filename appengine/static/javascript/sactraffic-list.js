@@ -29,9 +29,24 @@ var TrafficList = function () {
 			}
 		);
 
-		jQuery('<div/>').addClass('more').html(">>").click(function() {
-			if (typeof trafficmap != "undefined") { trafficmap.center_on_id(incident.ID); }
-		}).appendTo(incident_li);
+		// More button
+		jQuery('<div/>').addClass('more').html(">>").toggle(
+			function() {
+				if (typeof trafficmap != "undefined") {
+					trafficmap.center_on_id(incident.ID);
+					jQuery('#detailbox').empty().append(jQuery(this).parent().find('.details').clone());
+					jQuery('#detailbox').slideDown();
+					jQuery(this).html('<<');
+				}
+			},
+			function() {
+				if (typeof trafficmap != "undefined") {
+					trafficmap.recenter();
+					jQuery('#detailbox').slideUp();
+					jQuery(this).html('>>');
+				}
+			}
+		).appendTo(incident_li);
 
 		// The marker icon
 		if (point) {

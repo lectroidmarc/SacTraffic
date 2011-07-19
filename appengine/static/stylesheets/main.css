@@ -198,12 +198,12 @@ code.codeblock {
 .incidents .button:active { padding: 5px 7px 4px !important; }
 .incidents .showmap.button { display: none; }
 
-.details {
+.incidents .details {
 	padding-left: 20px;
 	display: none;
 }
 
-.details li {
+.incidents .details li {
 	font-size: 8pt;
 	list-style: disc;
 	padding-top: 5px;
@@ -241,9 +241,33 @@ code.codeblock {
 	min-height: 650px;
 }
 
+#detailbox {
+	background: white;
+	border: 3px ridge #e4e4e4;
+	display: none;
+	height: 486px;
+	left: 461px;
+	padding: 5px;
+	position: absolute;
+	top: 115px;
+	width: 300px;
+	z-index: 1;
+}
+
+#detailbox .details {
+	list-style: none;
+	padding: 0;
+	margin: 5px;
+}
+
+#detailbox .details li {
+	margin-bottom: 5px;
+}
+
 #map {
 	height: 500px;
 	border: 1px solid #e4e4e4;
+	border-top-right-radius: 10px;
 }
 
 div.marker .logtype {
