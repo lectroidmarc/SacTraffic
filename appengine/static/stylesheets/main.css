@@ -145,6 +145,19 @@ code.codeblock {
 	line-height: 130%;
 }
 
+.incidents .more {
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	display: none;
+	height: 18px;
+	width: 17px;
+	float: right;
+}
+
+.incidents .more:hover {
+	border: 1px solid black;
+}
+
 .incidents > li:hover {
 	background: #e4e4e4;
 }
