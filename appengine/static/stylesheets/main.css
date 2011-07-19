@@ -243,14 +243,16 @@ code.codeblock {
 
 #detailbox {
 	background: white;
-	border: 3px ridge #e4e4e4;
+	border-top: 1px solid #e4e4e4;
+	border-bottom: 1px solid #e4e4e4;
 	display: none;
-	height: 486px;
-	left: 461px;
+	float: left;
+	height: 490px;
+	left: 0;
 	padding: 5px;
-	position: absolute;
-	top: 115px;
-	width: 300px;
+	position: relative;
+	top: 0;
+	width: 0;
 	z-index: 1;
 }
 

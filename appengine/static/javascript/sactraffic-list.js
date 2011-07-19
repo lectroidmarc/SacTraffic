@@ -33,17 +33,21 @@ var TrafficList = function () {
 		jQuery('<div/>').addClass('more').html(">>").toggle(
 			function() {
 				if (typeof trafficmap != "undefined") {
-					trafficmap.center_on_id(incident.ID);
 					jQuery('#detailbox').empty().append(jQuery(this).parent().find('.details').clone());
-					jQuery('#detailbox').slideDown();
+					jQuery('#detailbox').show().animate({
+						width: '250px'
+					}, 'fast');
 					jQuery(this).html('<<');
+					//trafficmap.center_on_id(incident.ID);
 				}
 			},
 			function() {
 				if (typeof trafficmap != "undefined") {
-					trafficmap.recenter();
-					jQuery('#detailbox').slideUp();
+					jQuery('#detailbox').animate({
+						width: '0'
+					}, 'fast', function () { jQuery('#detailbox').hide(); });
 					jQuery(this).html('>>');
+					//trafficmap.recenter();
 				}
 			}
 		).appendTo(incident_li);
