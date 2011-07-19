@@ -20,7 +20,7 @@ var TrafficList = function () {
 		var point = (incident.geolocation) ? incident.geolocation : null;
 		var details = display_details(incident.LogDetails.details);
 
-		var incident_li = jQuery('<li/>').attr('id', incident.ID).addClass('vevent').hover(
+		var incident_li = jQuery('<li/>').attr('id', incident.ID).addClass('incident').addClass('vevent').hover(
 			function () {
 				if (typeof trafficmap != "undefined") { trafficmap.center_on_id(incident.ID); }
 			},
