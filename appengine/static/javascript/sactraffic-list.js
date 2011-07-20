@@ -30,27 +30,27 @@ var TrafficList = function () {
 		);
 
 		// More button
-		jQuery('<div/>').addClass('more').html(">>").toggle(
-			function() {
-				if (typeof trafficmap != "undefined") {
-					jQuery('#detailbox').empty().append(jQuery(this).parent().find('.details').clone());
-					jQuery('#detailbox').show().animate({
-						width: '35%'
-					}, 'fast');
-					jQuery(this).html('<<');
-					//trafficmap.center_on_id(incident.ID);
-				}
-			},
-			function() {
-				if (typeof trafficmap != "undefined") {
-					jQuery('#detailbox').animate({
-						width: '0'
-					}, 'fast', function () { jQuery('#detailbox').hide(); });
-					jQuery(this).html('>>');
-					//trafficmap.recenter();
-				}
+		jQuery('<div/>').addClass('more').html(">>").click(function () {
+			if (jQuery(this).hasClass('opened')) {
+				// Close the detailbox
+				jQuery('#detailbox').animate({
+					width: '0'
+				}, 'fast', function () {
+					jQuery('#detailbox').hide().empty();
+				});
+				jQuery(this).removeClass('opened').html('>>');
+			} else {
+				// Close other opened detailboxs, note: needs more effect
+				jQuery('.opened').removeClass('opened').html('>>');
+
+				// Open the detailbox
+				jQuery('#detailbox').empty().append(jQuery(this).parent().find('.details').clone());
+				jQuery('#detailbox').show().animate({
+					width: '35%'
+				}, 'fast');
+				jQuery(this).addClass('opened').html('<<');
 			}
-		).appendTo(incident_li);
+		}).appendTo(incident_li);
 
 		// The marker icon
 		if (point) {
