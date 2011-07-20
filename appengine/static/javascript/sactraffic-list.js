@@ -35,7 +35,7 @@ var TrafficList = function () {
 				if (typeof trafficmap != "undefined") {
 					jQuery('#detailbox').empty().append(jQuery(this).parent().find('.details').clone());
 					jQuery('#detailbox').show().animate({
-						width: '250px'
+						width: '35%'
 					}, 'fast');
 					jQuery(this).html('<<');
 					//trafficmap.center_on_id(incident.ID);

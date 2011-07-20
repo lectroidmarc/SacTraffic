@@ -253,6 +253,7 @@ code.codeblock {
 	float: left;
 	height: 470px;
 	left: -7px;	/* to make the shadow look like a drawer */
+	min-width: 220px;
 	padding: 5px 5px 5px 12px;
 	position: absolute;
 	top: 10px;
