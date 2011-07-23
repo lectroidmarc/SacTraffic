@@ -27,7 +27,7 @@ Incident.prototype.makeListItem = function (element) {
 		}
 	});
 
-	var li = jQuery('<li/>').attr('id', this.ID).addClass('incident').append(more_button).hover(
+	var li = jQuery('<li/>').attr('id', this.ID).addClass('incident').addClass('vevent').append(more_button).hover(
 		function () {
 			more_button.show();
 		},
@@ -126,8 +126,8 @@ IncidentList.prototype.makeList = function (element) {
 
 			count++;
 			if (count < ad_position && x == this.length - 1 || count == ad_position) {
-				jQuery('<li/>').appendTo(ul).append(
-					jQuery('<div/>').attr('id', 'inline_ad').addClass('ad halfbanner')
+				jQuery('<li/>').attr('id', 'inline_ad').appendTo(ul).append(
+					jQuery('<div/>').addClass('ad halfbanner')
 				);
 			}
 		}
@@ -228,7 +228,7 @@ function get_incident (map, id) {
 function get_incidents (map) {
 	jQuery.getJSON("/json?dispatch=SACC", function (data) {
 		var incidents = new IncidentList(data);
-		incidents.makeList(jQuery('#incidents_container'));
+		incidents.makeList(jQuery('#leftcol'));
 
 		if (typeof map != "undefined") { map.update(incidents); }
 
