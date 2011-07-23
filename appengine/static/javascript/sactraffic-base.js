@@ -121,6 +121,8 @@ IncidentList.prototype.makeList = function (element) {
 	for (var x = 0; x < this.length; x++) {
 		var incident = this.getIncident(x);
 
+		// TODO: Media info?
+
 		if (incident.status !== 'inactive') {
 			incident.makeListItem(ul);
 
