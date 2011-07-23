@@ -262,6 +262,13 @@ code.codeblock {
 	z-index: 1;
 }
 
+#detailbox .header {
+	background: #eee;
+	border-top-right-radius: 10px;
+	height: 25px;
+	margin: -5px -5px 10px;
+}
+
 #detailbox .details {
 	list-style: none;
 	padding: 0;
