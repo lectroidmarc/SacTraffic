@@ -115,37 +115,46 @@ code.codeblock {
 	border-bottom-left-radius: 10px;
 }
 
-#incidents_above {
+#leftcol .loading {
+	background: #ffffff;
+	border: 0;
+	height: 30px;
+	text-align: center;
 }
 
-#incidents_above > li {
-	border-bottom: 1px solid #e4e4e4;
+#leftcol .loading img {
+	float: none;
+	height: 19px;
+	width: 220px;
 }
 
-#incidents_below {
-}
-
-#incidents_below > li.last {
-	border-bottom-left-radius: 10px;
-}
-
-#incidents_below > li {
-	border-top: 1px solid #e4e4e4;
-}
-
-.incidents {
+#leftcol .incidents {
 	margin: 0;
 	padding: 0;
 }
 
-.incidents > li {
+#leftcol .incident {
+	border-bottom: 1px solid #e4e4e4;
 	background: #f3f3f3;
 	list-style: none;
 	padding: 5px 7px;
 	line-height: 130%;
 }
 
-.incidents .more {
+#leftcol .incident:hover {
+	background: #e4e4e4;
+}
+
+#leftcol .incident:nth-child(4) {
+	border-bottom: 0;
+}
+
+#leftcol .incident:last-child {
+	border-bottom: 0;
+	border-bottom-left-radius: 10px;
+}
+
+#leftcol .incident .more {
 	border: 1px solid #ccc;
 	border-radius: 10px;
 	display: none;
@@ -154,15 +163,11 @@ code.codeblock {
 	float: right;
 }
 
-.incidents .more:hover {
+#leftcol .incident .more:hover {
 	border: 1px solid black;
 }
 
-.incidents > li:hover {
-	background: #e4e4e4;
-}
-
-.incidents .marker {
+#leftcol .incident .marker {
 	background-image: url('/images/map_markers.png');
 	float: left;
 	height: 18px;
@@ -170,64 +175,25 @@ code.codeblock {
 	width: 18px;
 }
 
-.incidents div.logtype {
+#leftcol .incident .logtype {
 	margin-top: 3px;
 	font-weight: bold;
 }
 
-.incidents div.location {
+#leftcol .incident .location {
 	font-size: 9pt;
 	clear: left;
 }
 
-.incidents div.logtime {
+#leftcol .incident .logtime {
 	font-size: 8pt;
 	color: gray;
 	font-style: italic;
 }
 
-.incidents span.dtstart {
+#leftcol .incident .dtstart,
+#leftcol .incident .geo {
 	display: none;
-}
-
-.incidents div.geo {
-	display: none;
-}
-
-.incidents .button { background-color: #165279 !important; float: right; font-size: 10px !important; margin-left: 3px; padding: 4px 7px 5px !important; top: -20px; width: 80px; }
-.incidents .button:active { padding: 5px 7px 4px !important; }
-.incidents .showmap.button { display: none; }
-
-.incidents .details {
-	padding-left: 20px;
-	display: none;
-}
-
-.incidents .details li {
-	font-size: 8pt;
-	list-style: disc;
-	padding-top: 5px;
-}
-
-.details .incidentdetail {
-	padding-left: 1em;
-}
-
-.incidents .noincident {
-	font-weight: bold;
-}
-
-.incidents .loading {
-	background: #ffffff;
-	border: 0;
-	height: 30px;
-	text-align: center;
-}
-
-.incidents .loading img {
-	float: none;
-	height: 19px;
-	width: 220px;
 }
 /* End Left Column */
 
