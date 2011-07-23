@@ -148,7 +148,7 @@ TrafficMap.prototype.update = function (incidents) {
 	this.marker_list = {};
 
 	for (var x = 0, xl = incidents.length; x < xl; x++) {
-		var incident = incidents[x];
+		var incident = incidents.getIncident(x);
 
 		if (incident.status != "inactive" && incident.geolocation && incident.LogType != "Media Information") {
 			var marker = this.make_marker(incident);

@@ -3,6 +3,146 @@
  * @requires jQuery
  */
 
+
+function Incident (data) {
+	for (var key in data) {
+		this[key] = data[key];
+	}
+}
+
+Incident.prototype.makeListItem = function (element) {
+	var self = this;
+	var incident_date = new Date(this.LogTimeEpoch * 1000);
+	var point = (this.geolocation) ? this.geolocation : null;
+
+	var more_button = jQuery('<div/>').addClass('more').html(">>").click(function () {
+		if (jQuery(this).hasClass('opened')) {
+			jQuery(this).removeClass('opened').html('>>');
+			self.hideDetailBox(jQuery('#detailbox'));
+		} else {
+			// Close other opened detailboxs, note: needs more effect
+			jQuery('.opened').removeClass('opened').html('>>');
+			jQuery(this).addClass('opened').html('<<');
+			self.showDetailBox(jQuery('#detailbox'));
+		}
+	});
+
+	var li = jQuery('<li/>').attr('id', this.ID).addClass('incident').append(more_button).hover(
+		function () {
+			more_button.show();
+		},
+		function () {
+			more_button.hide();
+		}
+	).appendTo(element);
+
+	// The marker icon
+	// Default icon...
+	var incident_icon_pos = "-18px 0px";
+
+	if (/Traffic Hazard|Disabled Vehicle/.test(this.LogType)) {
+		// Hazard icon...
+		// Note: placeholder, we don't actually have a hazard icon
+	} else if (/Collision|Fatality|Hit \& Run/.test(this.LogType)) {
+		// Collision icon...
+		incident_icon_pos = "0px 0px";
+	}
+
+	jQuery('<div/>').addClass('marker').css('background-position', incident_icon_pos).appendTo(li);
+
+	// Summary...
+	jQuery('<div/>').addClass('logtype summary').html(this.LogType).appendTo(li);
+
+	// Location
+	var city = (this.city) ? this.city : this.Area;
+	jQuery('<div/>').addClass('location').html(this.Location + "<br/>" + city).appendTo(li);
+
+	// Time
+	jQuery('<div/>').addClass('logtime').html(this.LogTime).append(
+		jQuery('<span/>').addClass('dtstart').html(incident_date.getISO8601())
+	).appendTo(li);
+
+	// Add the geo microfoemat
+	if (point) {
+		jQuery('<div/>').addClass('geo').append(
+			jQuery('<span/>').addClass('latitude').html(point.lat)
+		).append(
+			jQuery('<span/>').addClass('longitude').html(point.lon)
+		).appendTo(li);
+	}
+}
+
+Incident.prototype.showDetailBox = function (element) {
+	var content = jQuery(element.children('.content')[0]);
+	content.empty();
+
+	jQuery('<div/>').html(this.LogType).appendTo(content);
+	var ul = jQuery('<ul/>').addClass('details').appendTo(content);
+	for (var x = 0; x < this.LogDetails.details.length; x++) {
+		var detail = this.LogDetails.details[x];
+
+		jQuery('<li/>').addClass('detail').html(detail.DetailTime.replace(/.*\d\d\d\d\s+/, '') + ": " + detail.IncidentDetail).appendTo(ul);
+	}
+
+	element.show().animate({
+		width: '35%'
+	}, 'fast');
+}
+
+Incident.prototype.hideDetailBox = function (element) {
+	element.animate({
+		width: '0'
+	}, 'fast', function () {
+		element.hide();
+	});
+}
+
+
+function IncidentList (data) {
+	this.length = data.length;
+	this.incidents = [];
+	this.index = {};
+
+	for (var x = 0; x < data.length; x++) {
+		var incident = new Incident(data[x]);
+
+		this.incidents.push(incident);
+		this.index[incident.ID] = x;
+	}
+}
+
+IncidentList.prototype.makeList = function (element) {
+	var ad_position = 4;
+	var count = 0;
+
+	element.empty();
+	var ul = jQuery('<ul/>').addClass('incidents').appendTo(element);
+
+	for (var x = 0; x < this.length; x++) {
+		var incident = this.getIncident(x);
+
+		if (incident.status !== 'inactive') {
+			incident.makeListItem(ul);
+
+			count++;
+			if (count < ad_position && x == this.length - 1 || count == ad_position) {
+				jQuery('<li/>').appendTo(ul).append(
+					jQuery('<div/>').attr('id', 'inline_ad').addClass('ad halfbanner')
+				);
+			}
+		}
+	}
+}
+
+IncidentList.prototype.getIncident = function(index) {
+	return this.incidents[index];
+}
+
+IncidentList.prototype.getIncidentById = function(id) {
+	return this.incidents[this.index[id]];
+}
+
+
 /** Global variable for the traffic map.  Allows other elements to interact with it if it's defined. */
 var trafficmap;
 
@@ -86,8 +226,9 @@ function get_incident (map, id) {
  * Fetches the incident JSON and processes it accordingly.
  */
 function get_incidents (map) {
-	jQuery.getJSON("/json?dispatch=SACC", function (incidents) {
-		TrafficList.show_incidents(incidents);
+	jQuery.getJSON("/json?dispatch=SACC", function (data) {
+		var incidents = new IncidentList(data);
+		incidents.makeList(jQuery('#incidents_container'));
 
 		if (typeof map != "undefined") { map.update(incidents); }
 
