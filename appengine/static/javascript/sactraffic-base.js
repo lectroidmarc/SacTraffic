@@ -34,24 +34,29 @@ Incident.prototype.makeListItem = function (element) {
 	var incident_date = new Date(this.LogTimeEpoch * 1000);
 	var point = (this.geolocation) ? this.geolocation : null;
 
-	var more_button = jQuery('<div/>').addClass('more').html(">>").click(function () {
+	var moreButton = jQuery('<div/>').addClass('more').click(function () {
 		if (jQuery(this).hasClass('opened')) {
-			jQuery(this).removeClass('opened').html('>>');
 			self.hideDetailBox();
 		} else {
 			// "Close" any opened detailbox buttons
-			jQuery('.opened').removeClass('opened').html('>>');
-			jQuery(this).addClass('opened').html('<<');
+			jQuery('.opened').removeClass('opened');
+			jQuery(this).addClass('opened');
 			self.showDetailBox();
 		}
+	}).mousedown(function () {
+		jQuery(this).addClass('mousedown');
+	}).mouseup(function () {
+		jQuery(this).removeClass('mousedown');
 	});
 
-	var li = jQuery('<li/>').attr('id', this.ID).addClass('incident').addClass('vevent').append(more_button).hover(
+	var li = jQuery('<li/>').attr('id', this.ID).addClass('incident').addClass('vevent').append(moreButton).hover(
 		function () {
-			more_button.show();
+			moreButton.show();
 		},
 		function () {
-			more_button.hide();
+			//if (!moreButton.hasClass('opened')) {
+				moreButton.hide();
+			//}
 		}
 	).appendTo(element);
 
@@ -125,7 +130,7 @@ Incident.prototype.hideDetailBox = function () {
 	}, 'fast', function () {
 		detailBox.hide();
 		// "Close" any opened detailbox buttons
-		jQuery('.opened').removeClass('opened').html('>>');
+		jQuery('.opened').removeClass('opened');
 	});
 }
 

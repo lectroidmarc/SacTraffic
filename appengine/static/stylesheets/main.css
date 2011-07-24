@@ -155,16 +155,32 @@ code.codeblock {
 }
 
 #leftcol .incident .more {
-	border: 1px solid #ccc;
-	border-radius: 10px;
+	background-image: url('/images/more_sprites.png');
+	background-position: -6px -3px;
 	display: none;
 	height: 18px;
 	width: 17px;
 	float: right;
 }
 
+#leftcol .incident .more.opened {
+	background-position: -38px -3px;
+}
+
 #leftcol .incident .more:hover {
-	border: 1px solid black;
+	background-position: -6px -35px;
+}
+
+#leftcol .incident .more.mousedown:hover {
+	background-position: -6px -67px;
+}
+
+#leftcol .incident .more.opened:hover {
+	background-position: -38px -35px;
+}
+
+#leftcol .incident .more.opened.mousedown:hover {
+	background-position: -38px -67px;
 }
 
 #leftcol .incident .marker {
