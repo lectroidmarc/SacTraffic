@@ -39,7 +39,7 @@ Incident.prototype.makeListItem = function (element) {
 			jQuery(this).removeClass('opened').html('>>');
 			self.hideDetailBox(jQuery('#detailbox'));
 		} else {
-			// Close other opened detailboxs, note: needs more effect
+			// "Close" any opened detailbox buttons
 			jQuery('.opened').removeClass('opened').html('>>');
 			jQuery(this).addClass('opened').html('<<');
 			self.showDetailBox(jQuery('#detailbox'));
@@ -88,14 +88,22 @@ Incident.prototype.showDetailBox = function (element) {
 	var content = jQuery(element.children('.content')[0]);
 	content.empty();
 
-	jQuery('<div/>').html(this.LogType).appendTo(content);
+	jQuery('<div/>').addClass('logtype').html(this.LogType).appendTo(content);
+	var city = (this.city) ? this.city : this.Area;
+	jQuery('<div/>').addClass('location').html(this.Location + "<br/>" + city).appendTo(content);
+
 	var ul = jQuery('<ul/>').addClass('details').appendTo(content);
 	for (var x = 0; x < this.LogDetails.details.length; x++) {
 		var detail = this.LogDetails.details[x];
 
-		jQuery('<li/>').addClass('detail').html(detail.DetailTime.replace(/.*\d\d\d\d\s+/, '') + ": " + detail.IncidentDetail).appendTo(ul);
+		var li = jQuery('<li/>').addClass('detail').appendTo(ul);
+		jQuery('<span/>').addClass('detailtime').html(detail.DetailTime.replace(/.*\d\d\d\d\s+/, '') + ": ").appendTo(li);
+		jQuery('<span/>').addClass('incidentdetail').html(detail.IncidentDetail).appendTo(li);
 	}
 
+	if (this.LogDetails.details.length == 0) {
+		jQuery('<div/>').html('No details.').appendTo(content);
+	}
 	element.show().animate({
 		width: '35%'
 	}, 'fast');
@@ -110,6 +118,8 @@ Incident.prototype.hideDetailBox = function (element) {
 		width: '0'
 	}, 'fast', function () {
 		element.hide();
+		// "Close" any opened detailbox buttons
+		jQuery('.opened').removeClass('opened').html('>>');
 	});
 }
 
