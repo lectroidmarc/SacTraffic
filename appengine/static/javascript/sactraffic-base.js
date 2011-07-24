@@ -4,12 +4,20 @@
  */
 
 
-function Incident (data) {
+/**
+ * Represents a CHP Incident.
+ * @constructor
+ */
+var Incident = function (data) {
 	for (var key in data) {
 		this[key] = data[key];
 	}
 }
 
+/**
+ * Makes a standard list item for display.
+ * @param {String|jQuery} element An element (a selector, element, HTML string, or jQuery object) to append the listItem to.
+ */
 Incident.prototype.makeListItem = function (element) {
 	var self = this;
 	var incident_date = new Date(this.LogTimeEpoch * 1000);
@@ -72,6 +80,10 @@ Incident.prototype.makeListItem = function (element) {
 	}
 }
 
+/**
+ * Shows a "detail box" populated with the incident's details.
+ * @param {String|jQuery} element An element (a selector, element, HTML string, or jQuery object) to use as a detail box.
+ */
 Incident.prototype.showDetailBox = function (element) {
 	var content = jQuery(element.children('.content')[0]);
 	content.empty();
@@ -89,6 +101,10 @@ Incident.prototype.showDetailBox = function (element) {
 	}, 'fast');
 }
 
+/**
+ * Hides a "detail box" populated with the incident's details.
+ * @param {String|jQuery} element An element (a selector, element, HTML string, or jQuery object) to use as a detail box.
+ */
 Incident.prototype.hideDetailBox = function (element) {
 	element.animate({
 		width: '0'
@@ -97,20 +113,45 @@ Incident.prototype.hideDetailBox = function (element) {
 	});
 }
 
-
-function IncidentList (data) {
+/**
+ * Represents a set of CHP Incidents.
+ * @constructor
+ */
+var IncidentList = function (data) {
+	/** The number of Incidents in the list. */
 	this.length = data.length;
-	this.incidents = [];
-	this.index = {};
+	this._incidents = [];
+	this._index = {};
 
 	for (var x = 0; x < data.length; x++) {
 		var incident = new Incident(data[x]);
 
-		this.incidents.push(incident);
-		this.index[incident.ID] = x;
+		this._incidents.push(incident);
+		this._index[incident.ID] = x;
 	}
 }
 
+/**
+ * Gets an Incident by it's index number.
+ * @param {Number} index The Incident's index in the IncidentList.
+ */
+IncidentList.prototype.getIncident = function(index) {
+	return this._incidents[index];
+}
+
+/**
+ * Gets an Incident by it's CHP ID.
+ * @param {String} id The Incident's CHP ID.
+ */
+IncidentList.prototype.getIncidentById = function(id) {
+	return this._incidents[this._index[id]];
+}
+
+
+/**
+ * Makes a standard unordered list for the display of Incidents.
+ * @param {String|jQuery} element An element (a selector, element, HTML string, or jQuery object) to append the unordered list to.
+ */
 IncidentList.prototype.makeList = function (element) {
 	var ad_position = 4;
 	var count = 0;
@@ -122,6 +163,8 @@ IncidentList.prototype.makeList = function (element) {
 		var incident = this.getIncident(x);
 
 		// TODO: Media info?
+		// getMap() and setMap()
+		// getMarker()
 
 		if (incident.status !== 'inactive') {
 			incident.makeListItem(ul);
@@ -135,15 +178,6 @@ IncidentList.prototype.makeList = function (element) {
 		}
 	}
 }
-
-IncidentList.prototype.getIncident = function(index) {
-	return this.incidents[index];
-}
-
-IncidentList.prototype.getIncidentById = function(id) {
-	return this.incidents[this.index[id]];
-}
-
 
 /** Global variable for the traffic map.  Allows other elements to interact with it if it's defined. */
 var trafficmap;
