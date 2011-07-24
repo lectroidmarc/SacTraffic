@@ -5,8 +5,19 @@
 
 
 /**
- * Represents a CHP Incident.
- * @constructor
+ * Creats an Incident from CHP Incident data.
+ * @class Represents a CHP Incident.
+ * @param {Object} data A CHP Incident.
+ * @property {String} Area
+ * @property {String} ID
+ * @property {String} Location
+ * @property {Object} LogDetails
+ * @property {String} LogTime
+ * @property {Number} LogTimeEpoch
+ * @property {String} LogType
+ * @property {String} city
+ * @property {Object} geolocation
+ * @property {String} status
  */
 var Incident = function (data) {
 	for (var key in data) {
@@ -114,11 +125,12 @@ Incident.prototype.hideDetailBox = function (element) {
 }
 
 /**
- * Represents a set of CHP Incidents.
- * @constructor
+ * Creates a list of CHP Incidents from CHP Incident data.
+ * @class Represents a set of CHP Incidents.
+ * @param {Array} data An array of CHP Incidents from SacTraffic.org.
+ * @property {Number} length The number of Incidents in the list.
  */
 var IncidentList = function (data) {
-	/** The number of Incidents in the list. */
 	this.length = data.length;
 	this._incidents = [];
 	this._index = {};
@@ -146,7 +158,6 @@ IncidentList.prototype.getIncident = function(index) {
 IncidentList.prototype.getIncidentById = function(id) {
 	return this._incidents[this._index[id]];
 }
-
 
 /**
  * Makes a standard unordered list for the display of Incidents.
