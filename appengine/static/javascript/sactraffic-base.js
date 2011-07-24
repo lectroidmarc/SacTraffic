@@ -37,12 +37,12 @@ Incident.prototype.makeListItem = function (element) {
 	var more_button = jQuery('<div/>').addClass('more').html(">>").click(function () {
 		if (jQuery(this).hasClass('opened')) {
 			jQuery(this).removeClass('opened').html('>>');
-			self.hideDetailBox(jQuery('#detailbox'));
+			self.hideDetailBox();
 		} else {
 			// "Close" any opened detailbox buttons
 			jQuery('.opened').removeClass('opened').html('>>');
 			jQuery(this).addClass('opened').html('<<');
-			self.showDetailBox(jQuery('#detailbox'));
+			self.showDetailBox();
 		}
 	});
 
@@ -82,11 +82,13 @@ Incident.prototype.makeListItem = function (element) {
 
 /**
  * Shows a "detail box" populated with the incident's details.
- * @param {String|jQuery} element An element (a selector, element, HTML string, or jQuery object) to use as a detail box.
  */
-Incident.prototype.showDetailBox = function (element) {
-	var content = jQuery(element.children('.content')[0]);
-	content.empty();
+Incident.prototype.showDetailBox = function () {
+	var detailBox = jQuery('#detailbox');
+	var content = jQuery('#detailbox .content').empty();
+
+	// Will eventually be the close box
+	jQuery('#detailbox .header').click(this.hideDetailBox);
 
 	jQuery('<div/>').addClass('logtype').html(this.LogType).appendTo(content);
 	var city = (this.city) ? this.city : this.Area;
@@ -104,20 +106,24 @@ Incident.prototype.showDetailBox = function (element) {
 	if (this.LogDetails.details.length == 0) {
 		jQuery('<div/>').html('No details.').appendTo(content);
 	}
-	element.show().animate({
-		width: '35%'
+
+	detailBox.show().animate({
+		width: '40%',
+		'min-width': '220px'
 	}, 'fast');
 }
 
 /**
  * Hides a "detail box" populated with the incident's details.
- * @param {String|jQuery} element An element (a selector, element, HTML string, or jQuery object) to use as a detail box.
  */
-Incident.prototype.hideDetailBox = function (element) {
-	element.animate({
-		width: '0'
+Incident.prototype.hideDetailBox = function () {
+	var detailBox = jQuery('#detailbox');
+
+	detailBox.animate({
+		width: '0',
+		'min-width': '0'
 	}, 'fast', function () {
-		element.hide();
+		detailBox.hide();
 		// "Close" any opened detailbox buttons
 		jQuery('.opened').removeClass('opened').html('>>');
 	});
