@@ -107,7 +107,7 @@ code.codeblock {
  */
 #leftcol {
 	float: left;
-	width: 450px;
+	width: 400px;
 	margin: 0 0 10px 10px;
 	height: 650px;
 	overflow: auto;
@@ -235,14 +235,25 @@ code.codeblock {
 	margin: -5px -5px 10px;
 }
 
-#detailbox .details {
-	list-style: none;
-	padding: 0;
-	margin: 5px;
+#detailbox .logtype {
+	font-weight: bold;
 }
 
-#detailbox .details li {
-	margin-bottom: 5px;
+#detailbox .details {
+	border-top: 1px solid #ddd;
+	font-size: 8pt;
+	list-style: none;
+	padding: 0;
+	margin-top: 10px;
+	padding-top: 10px;
+}
+
+#detailbox .detail {
+	line-height: 150%;
+}
+
+#detailbox .detailtime {
+	font-weight: bold;
 }
 
 #map {
