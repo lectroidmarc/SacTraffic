@@ -56,18 +56,7 @@ Incident.prototype.makeListItem = function (element) {
 	).appendTo(element);
 
 	// The marker icon
-	// Default icon...
-	var incident_icon_pos = "-18px 0px";
-
-	if (/Traffic Hazard|Disabled Vehicle/.test(this.LogType)) {
-		// Hazard icon...
-		// Note: placeholder, we don't actually have a hazard icon
-	} else if (/Collision|Fatality|Hit \& Run/.test(this.LogType)) {
-		// Collision icon...
-		incident_icon_pos = "0px 0px";
-	}
-
-	jQuery('<div/>').addClass('marker').css('background-position', incident_icon_pos).appendTo(li);
+	jQuery('<div/>').addClass('marker').css('background-position', this.getIcon().cssPosition).appendTo(li);
 
 	// Summary...
 	jQuery('<div/>').addClass('logtype summary').html(this.LogType).appendTo(li);
@@ -125,6 +114,37 @@ Incident.prototype.hideDetailBox = function (element) {
 }
 
 /**
+ * Returns icon information based on the Incident type.
+ * @returns {Object}
+ */
+Incident.prototype.getIcon = function () {
+	var name;
+	var cssPosition;
+
+	if (/Traffic Hazard|Disabled Vehicle/.test(this.LogType)) {
+		name = "Hazard";
+		cssPosition = "-18px 0px";
+	} else if (/Collision|Fatality|Hit \& Run/.test(this.LogType)) {
+		name = "Collision";
+		cssPosition = "0px 0px";
+	} else if (/Fire/.test(this.LogType)) {
+		name = "Fire";
+		cssPosition = "-18px 0px";
+	} else if (/Ped/.test(this.LogType)) {
+		name = "Pedestrian";
+		cssPosition = "-18px 0px";
+	} else {
+		name = "Hazard";
+		cssPosition = "-18px 0px";
+	}
+
+	return {
+		name: name,
+		cssPosition: cssPosition
+	};
+}
+
+/**
  * Creates a list of CHP Incidents from CHP Incident data.
  * @class Represents a set of CHP Incidents.
  * @param {Array} data An array of CHP Incidents from SacTraffic.org.
@@ -146,6 +166,7 @@ var IncidentList = function (data) {
 /**
  * Gets an Incident by it's index number.
  * @param {Number} index The Incident's index in the IncidentList.
+ * @returns {Incident}
  */
 IncidentList.prototype.getIncident = function(index) {
 	return this._incidents[index];
@@ -154,6 +175,7 @@ IncidentList.prototype.getIncident = function(index) {
 /**
  * Gets an Incident by it's CHP ID.
  * @param {String} id The Incident's CHP ID.
+ * @returns {Incident}
  */
 IncidentList.prototype.getIncidentById = function(id) {
 	return this._incidents[this._index[id]];
@@ -175,7 +197,6 @@ IncidentList.prototype.makeList = function (element) {
 
 		// TODO: Media info?
 		// getMap() and setMap()
-		// getMarker()
 
 		if (incident.status !== 'inactive') {
 			incident.makeListItem(ul);
