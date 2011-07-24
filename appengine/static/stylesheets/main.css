@@ -251,6 +251,18 @@ code.codeblock {
 	margin: -5px -5px 10px;
 }
 
+#detailbox .closebox {
+	height: 13px;
+	width: 13px;
+	border: 1px solid #ccc;
+	float: right;
+	margin: 5px 8px 0 0;
+}
+
+#detailbox .closebox:hover {
+	background: #ddd;
+}
+
 #detailbox .logtype {
 	font-weight: bold;
 }

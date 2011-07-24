@@ -93,7 +93,7 @@ Incident.prototype.showDetailBox = function () {
 	var content = jQuery('#detailbox .content').empty();
 
 	// Will eventually be the close box
-	jQuery('#detailbox .header').click(this.hideDetailBox);
+	jQuery('#detailbox .closebox').click(this.hideDetailBox);
 
 	jQuery('<div/>').addClass('logtype').html(this.LogType).appendTo(content);
 	var city = (this.city) ? this.city : this.Area;
