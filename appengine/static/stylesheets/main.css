@@ -106,13 +106,14 @@ code.codeblock {
  * @section Left Column
  */
 #leftcol {
-	float: left;
-	width: 400px;
-	margin: 0 0 10px 10px;
-	height: 650px;
-	overflow: auto;
+	border-right: 1px solid #e4e4e4;
 	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
+	float: left;
+	height: 650px;
+	margin: 0 0 10px 10px;
+	overflow: auto;
+	width: 400px;
 }
 
 #leftcol .loading {
@@ -245,15 +246,15 @@ code.codeblock {
 }
 
 #detailbox .header {
-	background: #eee;
+	background: #e4e4e4;
 	border-top-right-radius: 10px;
 	height: 25px;
 	margin: -5px -5px 10px;
 }
 
 #detailbox .closebox {
-	height: 13px;
-	width: 13px;
+	height: 12px;
+	width: 12px;
 	border: 1px solid #ccc;
 	float: right;
 	margin: 5px 8px 0 0;
@@ -286,7 +287,13 @@ code.codeblock {
 
 #map {
 	height: 500px;
-	border: 1px solid #e4e4e4;
+	border-top: 1px solid #e4e4e4;
+	border-right: 1px solid #e4e4e4;
+	border-bottom: 1px solid #e4e4e4;
+	border-top-right-radius: 10px;
+}
+
+#map div {
 	border-top-right-radius: 10px;
 }
 
@@ -312,10 +319,10 @@ div.marker .logtime {
 }
 
 #freewayfeeds {
-	background: #f3f3f3;
-	padding: 1px 6px 8px 6px;
-
 	border-bottom-right-radius: 10px;
+	background: #f3f3f3;
+	height: 139px;
+	padding: 1px 6px 8px 6px;
 }
 
 #freewayfeeds input {
