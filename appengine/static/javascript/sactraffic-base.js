@@ -9,7 +9,7 @@ var trafficmap;
 /**
  * Setup code for the index page.
  */
-function init_index () {
+function init_index (id) {
 	jQuery(document).ready(function() {
 		if (screen.width > 480) {
 			trafficmap = new TrafficMap("map");
@@ -19,57 +19,27 @@ function init_index () {
 			TrafficNews.show("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
 		}
 
-		get_incidents(trafficmap);
-	});
-}
-window['init_index'] = init_index;	// Closure-style export: http://code.google.com/closure/compiler/docs/api-tutorial3.html#export
-
-/**
- * Setup code for the single incident page.
- */
-function init_incident (id) {
-	jQuery(document).ready(function() {
-		if (screen.width > 480) {
-			trafficmap = new TrafficMap("map");
-		}
-
-		get_incident(trafficmap, id);
-	});
-}
-window['init_incident'] = init_incident;	// Closure-style export: http://code.google.com/closure/compiler/docs/api-tutorial3.html#export
-
-/**
- * Fetches single-incident JSON and processes it accordingly.
- */
-function get_incident (map, id) {
-	if (id == "") {
-		TrafficList.show_incident([], null);
-		if (typeof map != "undefined") { map.show_incident(incidents, id); }
-	}
-
-	jQuery.getJSON("/json?id=" + id, function (data) {
-		var incidents = new IncidentList(data);
-		incidents.makeList(jQuery('#leftcol'));
-
-		if (typeof map != "undefined") { map.show_incident(incidents, id); }
-
-		if (incidents.length > 0 && incidents.getIncident(0).status != "inactive") {
-			setTimeout(get_incident, 10000, map, id);
-		}
+		get_incidents(id);
 	});
 }
 
 /**
  * Fetches the incident JSON and processes it accordingly.
  */
-function get_incidents (map) {
-	jQuery.getJSON("/json?dispatch=SACC", function (data) {
+function get_incidents (id) {
+	var incidentId = (typeof (id) !== 'undefined') ? id : "";
+
+	jQuery.getJSON("/json?dispatch=SACC&id=" + incidentId, function (data) {
 		var incidents = new IncidentList(data);
 		incidents.makeList(jQuery('#leftcol'));
 
-		if (typeof map != "undefined") { map.update(incidents); }
+		if (typeof trafficmap !== 'undefined') {
+			trafficmap.update(incidents);
+		}
 
-		setTimeout(get_incidents, 60000, map);
+		if (incidents.length > 1 || incidents.getIncident(0).status != 'inactive') {
+			setTimeout(get_incidents, 60000, id);
+		}
 	});
 }
 
