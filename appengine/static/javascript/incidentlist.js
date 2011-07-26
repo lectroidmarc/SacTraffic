@@ -58,14 +58,14 @@ IncidentList.prototype.makeList = function (element) {
 		// getMap() and setMap()
 
 		if (incident.status !== 'inactive') {
-			incident.makeListItem(ul);
-
 			count++;
-			if (count < ad_position && x == this.length - 1 || count == ad_position) {
-				jQuery('<li/>').attr('id', 'inline_ad').appendTo(ul).append(
-					jQuery('<div/>').addClass('ad halfbanner')
-				);
-			}
+			incident.makeListItem(ul);
+		}
+
+		if (count < ad_position && x == this.length - 1 || count == ad_position) {
+			jQuery('<li/>').attr('id', 'inline_ad').appendTo(ul).append(
+				jQuery('<div/>').addClass('ad halfbanner')
+			);
 		}
 	}
 }
