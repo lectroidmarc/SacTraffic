@@ -90,9 +90,16 @@ Incident.prototype.makeListItem = function (element) {
 Incident.prototype.showDetailBox = function () {
 	var detailBox = jQuery('#detailbox');
 	var content = jQuery('#detailbox .content').empty();
+	var geolocation = this.geolocation;
 
-	// Will eventually be the close box
+	// Close box
 	jQuery('#detailbox .closebox').unbind('click').click(this.hideDetailBox);
+	// Show on Map button
+	jQuery('#detailbox .showonmap').unbind('click').click(function () {
+		if (trafficmap) {
+			trafficmap.centerOnGeo(geolocation.lat, geolocation.lon);
+		}
+	});
 
 	jQuery('<div/>').addClass('logtype').html(this.LogType).appendTo(content);
 	var city = (this.city) ? this.city : this.Area;

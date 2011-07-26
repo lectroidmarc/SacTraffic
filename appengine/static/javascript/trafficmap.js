@@ -269,6 +269,10 @@ TrafficMap.prototype.recenter = function () {
 	this.gmap.panTo(this.center);
 };
 
+TrafficMap.prototype.centerOnGeo = function (lat, lon) {
+	this.gmap.panTo(new google.maps.LatLng(lat, lon));
+};
+
 /**
  * Hides the CHP incidents.
  */
