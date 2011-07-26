@@ -1,5 +1,5 @@
 /**
- * @fileoverview Encapsulates the TrafficMap class.
+ * @fileoverview Contains code defining the TrafficMap class.
  * @requires Google Maps API
  * @requires jQuery
  */
