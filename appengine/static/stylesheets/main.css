@@ -321,8 +321,8 @@ div.marker .logtime {
 #freewayfeeds {
 	border-bottom-right-radius: 10px;
 	background: #f3f3f3;
-	height: 139px;
-	padding: 1px 6px 8px 6px;
+	height: 141px;
+	padding: 2px 10px 5px 10px;
 }
 
 #freewayfeeds input {
