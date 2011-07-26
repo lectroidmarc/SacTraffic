@@ -15,9 +15,10 @@ FILES = appengine/static/javascript/sactraffic.min.js \
 	appengine/static/stylesheets/widget-lectroid.min.css
 
 JS = appengine/static/javascript/sactraffic-base.js \
-	appengine/static/javascript/sactraffic-list.js \
-	appengine/static/javascript/sactraffic-map.js \
-	appengine/static/javascript/sactraffic-news.js
+	appengine/static/javascript/incident.js \
+	appengine/static/javascript/incidentlist.js \
+	appengine/static/javascript/trafficmap.js \
+	appengine/static/javascript/trafficnews.js
 
 CSS = appengine/static/stylesheets/main.css \
 	appengine/static/stylesheets/awesome.css
