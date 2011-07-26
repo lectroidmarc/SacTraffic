@@ -47,12 +47,13 @@ function get_incident (map, id) {
 		if (typeof map != "undefined") { map.show_incident(incidents, id); }
 	}
 
-	jQuery.getJSON("/json?id=" + id, function (incidents) {
-		TrafficList.show_incident(incidents, id);
+	jQuery.getJSON("/json?id=" + id, function (data) {
+		var incidents = new IncidentList(data);
+		incidents.makeList(jQuery('#leftcol'));
 
 		if (typeof map != "undefined") { map.show_incident(incidents, id); }
 
-		if (incidents.length > 0 && incidents[0].status != "inactive") {
+		if (incidents.length > 0 && incidents.getIncident(0).status != "inactive") {
 			setTimeout(get_incident, 10000, map, id);
 		}
 	});
