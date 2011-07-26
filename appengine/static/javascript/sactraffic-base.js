@@ -10,17 +10,15 @@ var trafficmap;
  * Setup code for the index page.
  */
 function init_index (id) {
-	jQuery(document).ready(function() {
-		if (screen.width > 480) {
-			trafficmap = new TrafficMap("map");
-			trafficmap.show_live_cams();
-			//trafficmap.show_gtraffic();
+	if (screen.width > 480) {
+		trafficmap = new TrafficMap("map");
+		trafficmap.show_live_cams();
+		//trafficmap.show_gtraffic();
 
-			TrafficNews.show("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
-		}
+		//TrafficNews.show("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
+	}
 
-		get_incidents(id);
-	});
+	get_incidents(id);
 }
 
 /**
