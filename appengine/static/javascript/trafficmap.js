@@ -110,7 +110,7 @@ TrafficMap.prototype.make_traffic_button = function () {
 			self.show_gtraffic();
 			jQuery(this).html("Hide Traffic");
 		}
-	}).addClass('awesome button').appendTo(div);
+	}).addClass('awesome blue').appendTo(div);
 
 	return div;
 }
@@ -134,7 +134,7 @@ TrafficMap.prototype.make_camera_button = function () {
 			self.show_live_cams();
 			jQuery(this).html("Hide Cameras");
 		}
-	}).addClass('awesome button').appendTo(div);
+	}).addClass('awesome blue').appendTo(div);
 
 	return div;
 }

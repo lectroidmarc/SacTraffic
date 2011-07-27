@@ -58,6 +58,13 @@ code.codeblock {
 	font-size: 9pt;
 }
 
+.awesome.blue {
+	background-color: #165279 !important;
+	font-size: 11px !important;
+	margin: 0 5px;
+	width: 90px;
+}
+
 #content {
 	color: #333;
 	font-family: arial, verdana, sans-serif;
@@ -246,7 +253,7 @@ code.codeblock {
 }
 
 #detailbox .header {
-	background: #e4e4e4;
+	background: #e6e6e6;
 	border-top-right-radius: 10px;
 	height: 25px;
 	margin: -5px -5px 10px;
@@ -261,7 +268,7 @@ code.codeblock {
 }
 
 #detailbox .closebox:hover {
-	background: #ddd;
+	background: #d0d0d0;
 }
 
 #detailbox .logtype {
@@ -271,6 +278,7 @@ code.codeblock {
 #detailbox .details {
 	border-top: 1px solid #ddd;
 	font-size: 8pt;
+	height: 330px;
 	list-style: none;
 	padding: 0;
 	margin-top: 10px;
@@ -283,6 +291,10 @@ code.codeblock {
 
 #detailbox .detailtime {
 	font-weight: bold;
+}
+
+#detailbox .footer {
+	text-align: center;
 }
 
 #map {
@@ -308,8 +320,6 @@ div.marker .logtime {
 	color: gray;
 	font-style: italic;
 }
-
-#map .button { background-color: #165279 !important; font-size: 11px !important; margin: 0 5px; width: 90px }
 
 #sitenews ul {
 	list-style: none;
