@@ -30,15 +30,15 @@
 </head>
 
 <body onload="init_index()">
+<div id="header">
+	<h1>Live CHP traffic alerts in the Sacramento area</h1>
+
+	<p class="info">Sacramento area traffic alerts and incidents as reported by the California Highway Patrol. <span class="additional">Includes live reports of accidents and collisions of all types, road hazards and closures as well as media updates issued for CHP "sigalerts".</span></p>
+
+	<div id="mediainfo"></div>
+</div>
+
 <div id="content">
-	<div id="header">
-		<h1>Live CHP traffic alerts in the Sacramento area</h1>
-
-		<p class="info">Sacramento area traffic alerts and incidents as reported by the California Highway Patrol. <span class="additional">Includes live reports of accidents and collisions of all types, road hazards and closures as well as media updates issued for CHP "sigalerts".</span></p>
-
-		<div id="mediainfo"></div>
-	</div>
-
 	<div id="leftcol">
 		<div class="loading">
 			Loading...<br/><img src="/images/loading.gif" alt="loading"/>
@@ -55,6 +55,7 @@
 				<div class="showonmap awesome blue">Show on Map</div>
 			</div>
 		</div>
+
 		<div id="map"></div>
 
 		<div id="sitenews" style="display:none">
@@ -75,11 +76,11 @@
 			</form>
 		</div>
 	</div>
+</div>
 
-	<div id="footer">
-		<span><a href="/about.html">About this site</a></span>
-	</div>
-</div> <!-- #content -->
+<div id="footer">
+	<span><a href="/about.html">About this site</a></span>
+</div>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
