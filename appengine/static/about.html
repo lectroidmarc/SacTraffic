@@ -27,115 +27,90 @@
 </head>
 
 <body>
-<div id="top_banner" class="ad leaderboard">
-	<script type="text/javascript"><!--
-		google_ad_client = "pub-0887871162421804";
-		if (screen.width <= 480) {
-			var banner = document.getElementById("top_banner");
-			banner.className = 'ad halfbanner';
-
-			/* Mobile Leaderboard */
-			google_ad_slot = "1236279869";
-			google_ad_width = 234;
-			google_ad_height = 60;
-		} else {
-			/* Leaderboard */
-			google_ad_slot = "3264684355";
-			google_ad_width = 728;
-			google_ad_height = 90;
-		}
-		//-->
-	</script>
-	<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+<div id="header">
 </div>
 
 <div id="content">
-	<div>
-		<h1>What is this site?</h1>
+	<h1>What is this site?</h1>
 
-		<p>This site is just a little experiment in Web 2.0 mashups.  Starting with an XML feed of state-wide traffic incidents from the <a href="http://www.chp.ca.gov/">California Highway Patrol</a> at <a href="http://media.chp.ca.gov/sa_xml/sa.xml">http://media.chp.ca.gov/sa_xml/sa.xml</a> we pull out local incidents and build on them.</p>
-		<p>Hopfully the result is something useful.</p>
+	<p>This site is just a little experiment in Web 2.0 mashups.  Starting with an XML feed of state-wide traffic incidents from the <a href="http://www.chp.ca.gov/">California Highway Patrol</a> at <a href="http://media.chp.ca.gov/sa_xml/sa.xml">http://media.chp.ca.gov/sa_xml/sa.xml</a> we pull out local incidents and build on them.</p>
+	<p>Hopfully the result is something useful.</p>
 
-		<h2>What can I see here?</h2>
+	<h2>What can I see here?</h2>
 
-		<p>First we display local incidents and their details then we map them using <a href="http://code.google.com/apis/maps/documentation/javascript/">Google Maps API</a>.  We location information included in the incident and geocode using our own magic algorithms.</p>
-		<p>Area-wide advisories and media alerts will also be displayed "banner-style" across the top of the site.</p>
-		<p>Then we add Google's support for traffic condition overlays so you can see at-a-glance area traffic conditions.</p>
-		<p>We also provide an <a href="/atom">ATOM feed of all the active incidents</a> that is customizable to show specific streets or even a set of streets.  You can customize it to, say, your commute streets and get updates of traffic incidents along your commute while at work.</p>
-		<p>But wait, there's more!	There's a <a href="http://twitter.com/sactraffic">Twitter</a> feed as well.  You can get updates virtually live as they come in.</p>
-		<p>We also have live video from both <a href="http://video.dot.ca.gov/">Cal Trans</a> and the <a href="http://www.traffic.saccounty.net/projects/TOC/TrafCam.asp">Sacramento County Department of Transportation</a> too.	Now you can <strong>see</strong> traffic too.</p>
+	<p>First we display local incidents and their details then we map them using <a href="http://code.google.com/apis/maps/documentation/javascript/">Google Maps API</a>.  We location information included in the incident and geocode using our own magic algorithms.</p>
+	<p>Area-wide advisories and media alerts will also be displayed "banner-style" across the top of the site.</p>
+	<p>Then we add Google's support for traffic condition overlays so you can see at-a-glance area traffic conditions.</p>
+	<p>We also provide an <a href="/atom">ATOM feed of all the active incidents</a> that is customizable to show specific streets or even a set of streets.  You can customize it to, say, your commute streets and get updates of traffic incidents along your commute while at work.</p>
+	<p>But wait, there's more!	There's a <a href="http://twitter.com/sactraffic">Twitter</a> feed as well.  You can get updates virtually live as they come in.</p>
+	<p>We also have live video from both <a href="http://video.dot.ca.gov/">Cal Trans</a> and the <a href="http://www.traffic.saccounty.net/projects/TOC/TrafCam.asp">Sacramento County Department of Transportation</a> too.	Now you can <strong>see</strong> traffic too.</p>
 
-		<h2>Can I build on your work?</h2>
+	<h2>Can I build on your work?</h2>
 
-		<p>Of course!  There's <a href="http://json.org/">JSON</a> data for every CHP Dispatch in California available by CHP <strong>Center</strong>, <strong>Dispatch</strong> or <strong>Area</strong> and also, recently, by <strong>city</strong>.</p>
+	<p>Of course!  There's <a href="http://json.org/">JSON</a> data for every CHP Dispatch in California available by CHP <strong>Center</strong>, <strong>Dispatch</strong> or <strong>Area</strong> and also, recently, by <strong>city</strong>.</p>
+	<p>So, for example, "STCC" is the Sacramento Center code (as well as the dispatch code) so <code>http://www.sactraffic.org/json?center=STCC</code> will get you all the Sacramento Valley incidents (covering Sacramento, Chico and Stockton dispatches), and <code>http:/www.sactraffic.org/json?dispatch=STCC</code> will get you just the Sacramento Dispatch incidents (what this site uses) and you can go further, all the way down to the <a href="http://cad.chp.ca.gov/htm/body_phone.htm">area offices</a> so, say, Placerville office incidents would be <code>http:/www.sactraffic.org/json?area=Placerville</code>.</p>
+	<p>City level support was recently added as well.  This is even more granular than the CHP Area level.  Guess what <code>http://www.sactraffic.org/json?city=Isleton</code> will get you?</p>
+	<p>See how that works?  Secret tip: these same parameters also work for the ATOM feed.</p>
+	<p>The JSON format looks like:</p>
 
-		<p>So, for example, "STCC" is the Sacramento Center code (as well as the dispatch code) so <code>http://www.sactraffic.org/json?center=STCC</code> will get you all the Sacramento Valley incidents (covering Sacramento, Chico and Stockton dispatches), and <code>http:/www.sactraffic.org/json?dispatch=STCC</code> will get you just the Sacramento Dispatch incidents (what this site uses) and you can go further, all the way down to the <a href="http://cad.chp.ca.gov/htm/body_phone.htm">area offices</a> so, say, Placerville office incidents would be <code>http:/www.sactraffic.org/json?area=Placerville</code>.</p>
+	<div class="codeblock">[
+  {
+    "Area": "North Sacramento",
+    "ID": "STCC.STCC.0347D1118.1290067888",
+    "Location": "SAN MARQUE CIR at WALNUT AV",
+    "LogDetails":
+      {
+        "details":
+          [
+            {
+              "DetailTime": " 8:11AM",
+              "IncidentDetail": "VEH VS FENCE \/ AND TRASH CANS AND LAWN"
+            }
+          ],
+        "units":
+          [
+            {
+              "DetailTime": " 8:13AM",
+              "IncidentDetail": "CHP Unit Enroute"
+            }
+          ]
+      },
+    "LogTime": "11\/18\/2010 08:11:28 AM",
+    "LogTimeEpoch": 1290096688.0,
+    "LogType": "Hit & Run - No Injuries",
+    "TBXY": "6748562:1981160",
+    "ThomasBrothers": "299 1A",
+    "geolocation":
+      {
+        "lat": 38.6003784,
+        "lon": -121.346033
+      },
+    "status": "active"
+  }
+]</div>
 
-		<p>City level support was recently added as well.  This is even more granular than the CHP Area level.  Guess what <code>http://www.sactraffic.org/json?city=Isleton</code> will get you?</p>
+	<p>I also have a <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP</a> hook set up using a "callback" parameter. Simply pass <code>callback</code> along with any center/dispatch/area arguments and go nuts.</p>
+	<p>Here's a <a href="http://jquery.com">jQuery</a> example:</p>
 
-		<p>See how that works?  Secret tip: these same parameters also work for the ATOM feed.</p>
+	<div class="codeblock">$.getJSON("http://www.sactraffic.org/json?dispatch=STCC&amp;callback=?",
+  function(data){
+    // do stuff...
+  });
+});</div>
 
-		<p>The JSON format looks like:</p>
-		<code class="codeblock">[
-    {
-        "Area": "North Sacramento",
-         "ID": "STCC.STCC.0347D1118.1290067888",
-         "Location": "SAN MARQUE CIR at WALNUT AV",
-         "LogDetails":
-         {
-            "details":
-            [
-                {
-                    "DetailTime": " 8:11AM",
-                     "IncidentDetail": "VEH VS FENCE \/ AND TRASH CANS AND LAWN"
-                }
-            ],
-            "units":
-            [
-                {
-                    "DetailTime": " 8:13AM",
-                     "IncidentDetail": "CHP Unit Enroute"
-                }
-            ]
-         },
-         "LogTime": "11\/18\/2010 08:11:28 AM",
-         "LogTimeEpoch": 1290096688.0,
-         "LogType": "Hit & Run - No Injuries",
-         "TBXY": "6748562:1981160",
-         "ThomasBrothers": "299 1A",
-         "geolocation":
-         {
-            "lat": 38.6003784,
-            "lon": -121.346033
-         },
-         "status": "active"
-    }
-]</code>
-		<p>I also have a <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP</a> hook set up using a "callback" parameter. Simply pass <code>callback</code> along with any center/dispatch/area arguments and go nuts.</p>
-		<p>Here's a <a href="http://jquery.com">jQuery</a> example:</p>
+	<p>Feel free to use them as you see fit.  If you do, let me know if you come up with something cool.</p>
 
-		<code class="codeblock">$.getJSON("http://www.sactraffic.org/json?dispatch=STCC&amp;callback=?",
-    function(data){
-        // do stuff...
-    });
-});</code>
+	<h2>You can be reached where?</h2>
 
-		<p>Feel free to use them as you see fit.  If you do, let me know if you come up with something cool.</p>
+	<p>My email address is "sactraffic" at this domain.</p>
 
-		<h2>You can be reached where?</h2>
+	<h2>What's next?</h2>
 
-		<p>My email address is "sactraffic" at this domain.</p>
-
-		<h2>What's next?</h2>
-
-		<p>I dunno.	 Perhaps an alert setup for CHP "sigalerts"?  More cameras?	 I'd like to get real graphic icons for the various incident types to display on the map.</p>
-
-	</div>
-
-	<div id="footer">
-
-	</div>
+	<p>I dunno.	 Perhaps an alert setup for CHP "sigalerts"?  More cameras?	 I'd like to get real graphic icons for the various incident types to display on the map.</p>
 </div> <!-- #content -->
+
+<div id="footer">
+</div>
 
 <script type="text/javascript" src="http://media.sacbee.com/static/sacconnect/sacconnect-min.js"></script>
 </body>

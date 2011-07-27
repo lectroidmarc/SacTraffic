@@ -51,14 +51,16 @@ p.info {
 	font-style: italic;
 }
 
-code.codeblock {
-	white-space: pre;
-	display: block;
-	padding: 4px;
-	margin: 0 40px 0 20px;
-	border: 1px solid #aaa;
+.codeblock {
 	background: #f3f3f3;
+	border: 1px solid #aaa;
+	border-radius: 5px;
+	font-family: monospace;
 	font-size: 9pt;
+	margin-left: 40px;
+	padding: 5px;
+	white-space: pre;
+	width: 80%;
 }
 
 .awesome.blue {
