@@ -68,6 +68,18 @@ code.codeblock {
 	width: 90px;
 }
 
+.marker .logtype {
+	margin-top: 3px;
+	font-weight: bold;
+}
+
+.marker .logtime {
+	margin-top: 3px;
+	font-size: 8pt;
+	color: gray;
+	font-style: italic;
+}
+
 /**
  * @section Header
  */
@@ -229,6 +241,8 @@ code.codeblock {
  * @section Right Column
  */
 #rightcol {
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
 	min-height: 650px;
 	overflow: hidden;
 	position: relative;
@@ -307,22 +321,6 @@ code.codeblock {
 	border-right: 1px solid #e4e4e4;
 	border-bottom: 1px solid #e4e4e4;
 	border-top-right-radius: 10px;
-}
-
-#map div {
-	border-top-right-radius: 10px;
-}
-
-div.marker .logtype {
-	margin-top: 3px;
-	font-weight: bold;
-}
-
-div.marker .logtime {
-	margin-top: 3px;
-	font-size: 8pt;
-	color: gray;
-	font-style: italic;
 }
 
 #sitenews ul {
