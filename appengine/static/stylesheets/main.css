@@ -47,8 +47,14 @@ h2 {
 	margin: 5px 0 10px 0;
 }
 
-p.info {
-	font-style: italic;
+/**
+ * @section General class styles
+ */
+.awesome.blue {
+	background-color: #165279 !important;
+	font-size: 11px !important;
+	margin: 0 5px;
+	width: 90px;
 }
 
 .codeblock {
@@ -63,11 +69,8 @@ p.info {
 	width: 80%;
 }
 
-.awesome.blue {
-	background-color: #165279 !important;
-	font-size: 11px !important;
-	margin: 0 5px;
-	width: 90px;
+.info {
+	font-style: italic;
 }
 
 .marker .logtype {
@@ -362,7 +365,7 @@ p.info {
 	border-top: 1px solid #ccc;
 	font-size: 8pt;
 	color: #ccc;
-	margin: 0 10px;
+	margin: 0 10px 20px;
 }
 
 #footer span {
