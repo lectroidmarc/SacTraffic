@@ -208,7 +208,7 @@ TrafficMap.prototype.show_live_cams = function () {
 					google.maps.event.addListener(marker, 'click', function() {
 						var ie_safe_name = camera.name.replace(/ /g, "_").replace(/-/g, "_");
 						var window_width = parseInt(camera.size.width) + 60;
-						var window_height = parseInt(camera.size.height) + 170;
+						var window_height = parseInt(camera.size.height) + 100;
 
 						window.open("/showcamera?id="+camera.id, ie_safe_name, "width="+window_width+",height="+window_height);
 					});

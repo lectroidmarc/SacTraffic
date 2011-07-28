@@ -173,10 +173,6 @@ h2 {
 	background: #e4e4e4;
 }
 
-#leftcol .incident:nth-child(4) {
-	border-bottom: 0;
-}
-
 #leftcol .incident:last-child {
 	border-bottom: 0;
 	border-bottom-left-radius: 10px;
@@ -376,6 +372,14 @@ h2 {
 	color: gray;
 }
 /* End Footer */
+
+
+/**
+ * @section Other
+ */
+#video_canvas {
+	margin: 0 auto;
+}
 
 
 /**
