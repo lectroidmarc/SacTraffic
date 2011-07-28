@@ -382,9 +382,7 @@ h2 {
  * @section Ads
  */
 .ad {
-	/*border: 1px solid black;*/
 	margin: 10px auto;
-	display: none;
 }
 
 .leaderboard {
@@ -398,14 +396,8 @@ h2 {
 }
 
 .halfbanner {
-	/*
 	width: 234px;
 	height: 60px;
-	*/
-	width: 336px;
-	height: 280px;
-	display: block;
-	border: 1px solid black;
 }
 
 .largerec {
