@@ -45,9 +45,6 @@ IncidentList.prototype.getIncidentById = function(id) {
  * @param {String|jQuery} element An element (a selector, element, HTML string, or jQuery object) to append the unordered list to.
  */
 IncidentList.prototype.makeList = function (element) {
-	var ad_position = 4;
-	var count = 0;
-
 	element.empty();
 	var ul = jQuery('<ul/>').addClass('incidents').appendTo(element);
 
@@ -55,17 +52,9 @@ IncidentList.prototype.makeList = function (element) {
 		var incident = this.getIncident(x);
 
 		// TODO: Media info?
-		// getMap() and setMap()
 
 		if (incident.status !== 'inactive') {
-			count++;
 			incident.makeListItem(ul);
-		}
-
-		if (count < ad_position && x == this.length - 1 || count == ad_position) {
-			jQuery('<li/>').attr('id', 'inline_ad').appendTo(ul).append(
-				jQuery('<div/>').addClass('ad halfbanner')
-			);
 		}
 	}
 }
