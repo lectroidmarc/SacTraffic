@@ -29,7 +29,7 @@ function get_incidents (id) {
 
 	jQuery.getJSON("/json?dispatch=SACC&id=" + incidentId, function (data) {
 		var incidents = new IncidentList(data);
-		incidents.makeList(jQuery('#leftcol'));
+		incidents.makeList(jQuery('#incidentlist'));
 
 		if (typeof trafficmap !== 'undefined') {
 			trafficmap.update(incidents);
