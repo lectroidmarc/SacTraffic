@@ -115,7 +115,7 @@ Incident.prototype.showDetailBox = function () {
 	}
 
 	if (this.LogDetails.details.length == 0) {
-		jQuery('<div/>').html('No details.').appendTo(content);
+		jQuery('<div/>').addClass('details').html('No details.').replaceAll(ul);
 	}
 
 	detailBox.show().animate({

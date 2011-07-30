@@ -295,10 +295,10 @@ h2 {
 #detailbox .details {
 	border-top: 1px solid #ddd;
 	font-size: 8pt;
-	height: 330px;
+	height: 340px;
 	list-style: none;
 	padding: 0;
-	margin-top: 10px;
+	margin: 10px 0 0 0;
 	padding-top: 10px;
 }
 
