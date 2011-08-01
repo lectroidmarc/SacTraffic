@@ -1,4 +1,9 @@
 /**
+ * @fileoverview Contains code defining the IncidentList class.
+ * @requires jQuery
+ */
+
+/**
  * Creates a list of CHP Incidents from CHP Incident data.
  * @class Represents a set of CHP Incidents.
  * @param {Array} data An array of CHP Incidents from SacTraffic.org.
@@ -16,11 +21,6 @@ var IncidentList = function (data) {
 		this._index[incident.ID] = x;
 	}
 }
-
-/**
- * @fileoverview Contains code defining the IncidentList class.
- * @requires jQuery
- */
 
 /**
  * Gets an Incident by it's index number.
