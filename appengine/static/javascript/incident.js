@@ -82,7 +82,7 @@ Incident.prototype.makeListItem = function (element) {
 			jQuery('<span/>').addClass('longitude').html(point.lon)
 		).appendTo(li);
 	}
-}
+};
 
 /**
  * Shows a "detail box" populated with the incident's details.
@@ -114,7 +114,7 @@ Incident.prototype.showDetailBox = function () {
 		jQuery('<span/>').addClass('incidentdetail').html(detail.IncidentDetail).appendTo(li);
 	}
 
-	if (this.LogDetails.details.length == 0) {
+	if (this.LogDetails.details.length === 0) {
 		jQuery('<div/>').addClass('details').html('No details.').replaceAll(ul);
 	}
 
@@ -122,7 +122,7 @@ Incident.prototype.showDetailBox = function () {
 		width: '40%',
 		'min-width': '220px'
 	}, 'fast');
-}
+};
 
 /**
  * Hides a "detail box" populated with the incident's details.
@@ -138,7 +138,7 @@ Incident.prototype.hideDetailBox = function () {
 		// "Close" any opened detailbox buttons
 		jQuery('.opened').removeClass('opened');
 	});
-}
+};
 
 /**
  * Returns icon information based on the Incident type.
@@ -169,4 +169,4 @@ Incident.prototype.getIcon = function () {
 		name: name,
 		cssPosition: cssPosition
 	};
-}
+};

@@ -113,7 +113,7 @@ TrafficMap.prototype.make_traffic_button = function () {
 	}).addClass('awesome blue').appendTo(div);
 
 	return div;
-}
+};
 
 /**
  * Makes a show/hide camera button to enable/disable the live camera markers
@@ -137,7 +137,7 @@ TrafficMap.prototype.make_camera_button = function () {
 	}).addClass('awesome blue').appendTo(div);
 
 	return div;
-}
+};
 
 /**
  * Update incident data.
@@ -181,7 +181,7 @@ TrafficMap.prototype.show_incident = function (incidents, incident_id) {
  * Shows the live cams.
  */
 TrafficMap.prototype.show_live_cams = function () {
-	if (this.live_cams.length == 0) {
+	if (this.live_cams.length === 0) {
 		var self = this;
 
 		jQuery.ajax({
