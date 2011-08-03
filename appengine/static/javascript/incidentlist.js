@@ -20,7 +20,7 @@ var IncidentList = function (data) {
 		this._incidents.push(incident);
 		this._index[incident.ID] = x;
 	}
-}
+};
 
 /**
  * Gets an Incident by it's index number.
@@ -29,7 +29,7 @@ var IncidentList = function (data) {
  */
 IncidentList.prototype.getIncident = function(index) {
 	return this._incidents[index];
-}
+};
 
 /**
  * Gets an Incident by it's CHP ID.
@@ -38,7 +38,7 @@ IncidentList.prototype.getIncident = function(index) {
  */
 IncidentList.prototype.getIncidentById = function(id) {
 	return this._incidents[this._index[id]];
-}
+};
 
 /**
  * Makes a standard unordered list for the display of Incidents.
@@ -57,4 +57,4 @@ IncidentList.prototype.makeList = function (element) {
 			incident.makeListItem(ul);
 		}
 	}
-}
+};
