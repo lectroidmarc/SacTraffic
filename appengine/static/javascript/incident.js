@@ -33,31 +33,20 @@ Incident.prototype.makeListItem = function (element) {
 	var incident_date = new Date(this.LogTimeEpoch * 1000);
 	var point = (this.geolocation) ? this.geolocation : null;
 
-	var moreButton = jQuery('<div/>').addClass('more').click(function () {
+	var li = jQuery('<li/>').attr('id', this.ID).addClass('incident').addClass('vevent').appendTo(element);
+
+	this.moreButton = jQuery('<div/>').addClass('more').click(function () {
 		if (jQuery(this).hasClass('opened')) {
 			self.hideDetailBox();
 		} else {
-			// "Close" any opened detailbox buttons
-			jQuery('.opened').removeClass('opened');
-			jQuery(this).addClass('opened');
 			self.showDetailBox();
 		}
 	}).mousedown(function () {
 		jQuery(this).addClass('mousedown');
 	}).mouseup(function () {
 		jQuery(this).removeClass('mousedown');
-	});
+	}).appendTo(li);
 
-	var li = jQuery('<li/>').attr('id', this.ID).addClass('incident').addClass('vevent').append(moreButton).hover(
-		function () {
-			moreButton.show();
-		},
-		function () {
-			//if (!moreButton.hasClass('opened')) {
-				moreButton.hide();
-			//}
-		}
-	).appendTo(element);
 
 	// The marker icon
 	jQuery('<div/>').addClass('marker').css('background-position', this.getIcon().cssPosition).appendTo(li);
@@ -101,6 +90,7 @@ Incident.prototype.showDetailBox = function () {
 		}
 	});
 
+	jQuery('<div/>').addClass('incidentID').html(this.ID).appendTo(content);
 	jQuery('<div/>').addClass('logtype').html(this.LogType).appendTo(content);
 	var city = (this.city) ? this.city : this.Area;
 	jQuery('<div/>').addClass('location').html(this.Location + "<br/>" + city).appendTo(content);
@@ -117,6 +107,10 @@ Incident.prototype.showDetailBox = function () {
 	if (this.LogDetails.details.length === 0) {
 		jQuery('<div/>').addClass('details').html('No details.').replaceAll(ul);
 	}
+
+	// "Close" any opened detailbox buttons
+	jQuery('.opened').removeClass('opened');
+	this.moreButton.addClass('opened');
 
 	detailBox.show().animate({
 		width: '40%',
@@ -135,6 +129,7 @@ Incident.prototype.hideDetailBox = function () {
 		'min-width': '0'
 	}, 'fast', function () {
 		detailBox.hide();
+		jQuery('#detailbox .content').empty();
 		// "Close" any opened detailbox buttons
 		jQuery('.opened').removeClass('opened');
 	});

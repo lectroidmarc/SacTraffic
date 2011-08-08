@@ -31,6 +31,17 @@ function get_incidents (id) {
 		var incidents = new IncidentList(data);
 		incidents.makeList(jQuery('#incidentlist'));
 
+		// Handle the detail box if it's open
+		var detailboxId = jQuery('#detailbox .incidentID').html();
+		if (detailboxId) {
+			var detailBoxIncident = incidents.getIncidentById(detailboxId);
+			if (typeof(detailBoxIncident) === 'undefined') {
+				incidents.getIncident(0).hideDetailBox();
+			} else {
+				incidents.getIncidentById(detailboxId).showDetailBox();
+			}
+		}
+
 		if (typeof trafficmap !== 'undefined') {
 			trafficmap.update(incidents);
 		}

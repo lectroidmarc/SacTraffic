@@ -188,7 +188,13 @@ h2 {
 	float: right;
 }
 
+#leftcol .incident:hover .more
+{
+	display: block;
+}
+
 #leftcol .incident .more.opened {
+	display: block;
 	background-position: -38px -3px;
 }
 
@@ -287,6 +293,10 @@ h2 {
 
 #detailbox .closebox:hover {
 	background: #d0d0d0;
+}
+
+#detailbox .incidentID {
+	display: none;
 }
 
 #detailbox .logtype {
