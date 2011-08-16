@@ -72,7 +72,6 @@ function TrafficMap (elementId) {
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		streetViewControl: false,
 		mapTypeControl: false,
-		scrollwheel; false,
 		navigationControlOptions: {
 			style: google.maps.NavigationControlStyle.SMALL
 		}
