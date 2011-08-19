@@ -432,53 +432,33 @@ h2 {
  */
 @media only screen and (max-device-width: 480px) {
 	body {
-		width: 390px;
+		width: 420px;
 		min-width: 0;
 	}
 
-	code.codeblock {
-		font-size: 6pt;
-		overflow: auto;
+	#leftcol {
+		border-right: 0;
+		border-top-right-radius: 10px;
+		border-bottom-right-radius: 10px;
+		height: auto
+	}
+
+	#leftcol .incident:last-child {
+		border-bottom-right-radius: 10px;
+	}
+
+	.codeblock {
+		font-size: 5pt;
+		overflow: hidden;
 		margin-left: 0;
-		margin-right: 0;
-	}
-
-	#top_banner {
-		background: white;
-		padding: 0 5px;
-		-webkit-border-radius: 5px;
-	}
-
-	div#content {
-		font-size: 12pt;
-		margin: 10px;
-	}
-
-	span.additional {
-		display: none;
+		width: inherit;
 	}
 
 	#mediainfo {
 		margin: 10px;;
 	}
 
-	.incidents .showmap.button {
-		display: inline;
-	}
-
-	#incidents_above {
-		border-bottom: 1px solid #165279;
-	}
-
-	#incidents_below {
-		border-top: 1px solid #165279;
-	}
-
 	#rightcol {
 		display: none;
-	}
-
-	#leftcol {
-		height: auto
 	}
 }
