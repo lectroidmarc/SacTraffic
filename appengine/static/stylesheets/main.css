@@ -1,11 +1,9 @@
 /**
  * Sactraffic.org styles
  */
-@import url(http://fonts.googleapis.com/css?family=Varela);
-
 body {
 	color: #333;
-	font-family: 'Varela', verdana, sans-serif;
+	font-family: verdana, sans-serif;
 	font-size: 10pt;
 	margin: 0;
 	min-width: 900px;
