@@ -9,89 +9,46 @@ var trafficmap;
 /**
  * Setup code for the index page.
  */
-function init_index () {
-	jQuery(document).ready(function() {
-		if (screen.width > 480) {
-			trafficmap = new TrafficMap("map");
-			trafficmap.show_live_cams();
-			//trafficmap.show_gtraffic();
+function init_index (id) {
+	if (screen.width > 480) {
+		trafficmap = new TrafficMap("map");
+		trafficmap.show_live_cams();
+		//trafficmap.show_gtraffic();
 
-			jQuery("span.traffic").click(function () {
-				jQuery("input.traffic").click();
-			});
-			jQuery("input.traffic").click(function () {
-				if (jQuery("input.traffic").attr('checked')) {
-					trafficmap.show_gtraffic();
-				} else {
-					trafficmap.hide_gtraffic();
-				}
-			});
-			jQuery(".traffic").show();
-
-			jQuery("span.live_cams").click(function () {
-				jQuery("input.live_cams").click();
-			});
-			jQuery("input.live_cams").click(function () {
-				if (jQuery("input.live_cams").attr('checked')) {
-					trafficmap.show_live_cams();
-				} else {
-					trafficmap.hide_live_cams();
-				}
-			});
-			jQuery(".live_cams").show();
-
-			TrafficNews.show("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
-		}
-
-		get_incidents(trafficmap);
-	});
-}
-window['init_index'] = init_index;	// Closure-style export: http://code.google.com/closure/compiler/docs/api-tutorial3.html#export
-
-/**
- * Setup code for the single incident page.
- */
-function init_incident (id) {
-	jQuery(document).ready(function() {
-		if (screen.width > 480) {
-			trafficmap = new TrafficMap("map");
-		}
-
-		get_incident(trafficmap, id);
-	});
-}
-window['init_incident'] = init_incident;	// Closure-style export: http://code.google.com/closure/compiler/docs/api-tutorial3.html#export
-
-/**
- * Fetches single-incident JSON and processes it accordingly.
- */
-function get_incident (map, id) {
-	if (id == "") {
-		TrafficList.show_incident([], null);
-		if (typeof map != "undefined") { map.show_incident(incidents, id); }
+		//TrafficNews.show("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
 	}
 
-	jQuery.getJSON("/json?id=" + id, function (incidents) {
-		TrafficList.show_incident(incidents, id);
-
-		if (typeof map != "undefined") { map.show_incident(incidents, id); }
-
-		if (incidents.length > 0 && incidents[0].status != "inactive") {
-			setTimeout(get_incident, 10000, map, id);
-		}
-	});
+	get_incidents(id);
 }
 
 /**
  * Fetches the incident JSON and processes it accordingly.
  */
-function get_incidents (map) {
-	jQuery.getJSON("/json?dispatch=SACC", function (incidents) {
-		TrafficList.show_incidents(incidents);
+function get_incidents (id) {
+	var incidentId = (typeof (id) !== 'undefined') ? id : "";
 
-		if (typeof map != "undefined") { map.update(incidents); }
+	jQuery.getJSON("/json?dispatch=SACC&id=" + incidentId, function (data) {
+		var incidents = new IncidentList(data);
+		incidents.makeList(jQuery('#incidentlist'));
 
-		setTimeout(get_incidents, 60000, map);
+		// Handle the detail box if it's open
+		var detailboxId = jQuery('#detailbox .incidentID').html();
+		if (detailboxId) {
+			var detailBoxIncident = incidents.getIncidentById(detailboxId);
+			if (typeof(detailBoxIncident) === 'undefined') {
+				incidents.getIncident(0).hideDetailBox();
+			} else {
+				incidents.getIncidentById(detailboxId).showDetailBox();
+			}
+		}
+
+		if (typeof trafficmap !== 'undefined') {
+			trafficmap.update(incidents);
+		}
+
+		if (incidents.length > 1 || incidents.getIncident(0).status != 'inactive') {
+			setTimeout(get_incidents, 60000, id);
+		}
 	});
 }
 

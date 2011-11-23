@@ -1,11 +1,12 @@
 /**
  * Sactraffic.org styles
  */
-
 body {
+	color: #333;
+	font-family: verdana, sans-serif;
+	font-size: 10pt;
 	margin: 0;
 	min-width: 900px;
-	background-color: #165279;
 }
 
 a {
@@ -26,6 +27,7 @@ img {
 
 h1, h2, h3, h4, h5, h6 {
 	color: black;
+	font-weight: normal;
 }
 
 h1 {
@@ -42,39 +44,56 @@ h1 img {
 h2 {
 	font-size: 120%;
 	border-bottom: 1px solid #ccc;
-	margin-bottom: 10px;
+	margin: 5px 0 10px 0;
 }
 
-p.info {
+/**
+ * @section General class styles
+ */
+.awesome.blue {
+	background-color: #165279 !important;
+	font-size: 11px !important;
+	margin: 0 5px;
+	width: 90px;
+}
+
+.codeblock {
+	background: #f3f3f3;
+	border: 1px solid #aaa;
+	border-radius: 5px;
+	font-family: monospace;
+	font-size: 9pt;
+	margin-left: 40px;
+	padding: 5px;
+	white-space: pre;
+	width: 80%;
+}
+
+.info {
 	font-style: italic;
 }
 
-code.codeblock {
-	white-space: pre;
-	display: block;
-	padding: 4px;
-	margin: 0 40px 0 20px;
-	border: 1px solid #aaa;
-	background: #f3f3f3;
-	font-size: 9pt;
+.marker .logtype {
+	margin-top: 3px;
+	font-weight: bold;
 }
 
-div#content {
-	font-family: arial, verdana, sans-serif;
-	font-size: 10pt;
-	margin: 0 20px 20px 20px;
-	padding: 10px 10px 16px 10px;
-	background-color: white;
-	color: #333;
-
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+.marker .logtime {
+	margin-top: 3px;
+	font-size: 8pt;
+	color: gray;
+	font-style: italic;
 }
-
 
 /**
  * @section Header
  */
+#header {
+	background: #f1f1f1;
+	border-bottom: 1px solid #e4e4e4;
+	padding: 10px;
+}
+
 #mediainfo {
 	border: 1px solid red;
 	background-color: #fee;
@@ -103,43 +122,98 @@ div#content {
 
 
 /**
+ * @section Content
+ */
+#content {
+	padding: 10px;
+}
+/* End Content */
+
+
+/**
  * @section Left Column
  */
 #leftcol {
+	border-right: 1px solid #e4e4e4;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
 	float: left;
-	width: 350px;
-	margin-right: 10px;
-	margin-bottom: 10px;
 	height: 650px;
 	overflow: auto;
+	width: 400px;
 }
 
-#incidents_above {
-	border-bottom: 1px solid #aaa;
+#leftcol .loading {
+	background: #ffffff;
+	border: 0;
+	height: 30px;
+	text-align: center;
 }
 
-#incidents_below {
-	border-top: 1px solid #aaa;
-	padding-top: 10px;
+#leftcol .loading img {
+	float: none;
+	height: 19px;
+	width: 220px;
 }
 
-.incidents {
-	margin: 0 3px 0 0;
+#leftcol .incidents {
+	margin: 0;
 	padding: 0;
 }
 
-.incidents > li {
-	margin-bottom: 7px;
-	list-style: none;
+#leftcol .incident {
+	border-bottom: 1px solid #e4e4e4;
 	background: #f3f3f3;
-	padding: 4px 3px 3px 4px;
-	border-top: 1px solid #999;
-	border-right: 1px solid #999;
-	border-bottom: 1px solid #999;
-	border-left: 3px solid #666;
+	list-style: none;
+	padding: 5px 7px;
+	line-height: 130%;
 }
 
-.incidents .marker {
+#leftcol .incident:hover {
+	background: #e4e4e4;
+}
+
+#leftcol .incident:last-child {
+	border-bottom: 0;
+	border-bottom-left-radius: 10px;
+}
+
+#leftcol .incident .more {
+	background-image: url('/images/more_sprites.png');
+	background-position: -6px -3px;
+	display: none;
+	height: 18px;
+	width: 17px;
+	float: right;
+}
+
+#leftcol .incident:hover .more
+{
+	display: block;
+}
+
+#leftcol .incident .more.opened {
+	display: block;
+	background-position: -38px -3px;
+}
+
+#leftcol .incident .more:hover {
+	background-position: -6px -35px;
+}
+
+#leftcol .incident .more.mousedown:hover {
+	background-position: -6px -67px;
+}
+
+#leftcol .incident .more.opened:hover {
+	background-position: -38px -35px;
+}
+
+#leftcol .incident .more.opened.mousedown:hover {
+	background-position: -38px -67px;
+}
+
+#leftcol .incident .marker {
 	background-image: url('/images/map_markers.png');
 	float: left;
 	height: 18px;
@@ -147,64 +221,25 @@ div#content {
 	width: 18px;
 }
 
-.incidents div.logtype {
+#leftcol .incident .logtype {
 	margin-top: 3px;
 	font-weight: bold;
 }
 
-.incidents div.location {
+#leftcol .incident .location {
 	font-size: 9pt;
 	clear: left;
 }
 
-.incidents div.logtime {
+#leftcol .incident .logtime {
 	font-size: 8pt;
 	color: gray;
 	font-style: italic;
 }
 
-.incidents span.dtstart {
+#leftcol .incident .dtstart,
+#leftcol .incident .geo {
 	display: none;
-}
-
-.incidents div.geo {
-	display: none;
-}
-
-.incidents .button { background-color: #165279 !important; float: right; font-size: 10px !important; margin-left: 3px; padding: 4px 7px 5px !important; top: -20px; width: 80px; }
-.incidents .button:active { padding: 5px 7px 4px !important; }
-.incidents .showmap.button { display: none; }
-
-.details {
-	padding-left: 20px;
-	display: none;
-}
-
-.details li {
-	font-size: 8pt;
-	list-style: disc;
-	padding-top: 5px;
-}
-
-.details .incidentdetail {
-	padding-left: 1em;
-}
-
-.incidents .noincident {
-	font-weight: bold;
-}
-
-.incidents .loading {
-	background: #ffffff;
-	border: 0;
-	height: 30px;
-	text-align: center;
-}
-
-.incidents .loading img {
-	float: none;
-	height: 19px;
-	width: 220px;
 }
 /* End Left Column */
 
@@ -213,33 +248,104 @@ div#content {
  * @section Right Column
  */
 #rightcol {
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	min-height: 650px;
 	overflow: hidden;
+	position: relative;
+}
+
+#detailbox {
+	background: white;
+	border-bottom: 1px solid #e4e4e4;
+	border-bottom-right-radius: 10px;
+	border-top: 1px solid #e4e4e4;
+	border-top-right-radius: 10px;
+	box-shadow: 5px 5px 5px #888;
+	display: none;
+	float: left;
+	height: 470px;
+	left: -7px;	/* to make the shadow look like a drawer */
+	min-width: 220px;
+	overflow: auto;
+	padding: 5px 5px 5px 12px;
+	position: absolute;
+	top: 10px;
+	width: 0;
+	z-index: 1;
+}
+
+#detailbox .header {
+	background: #e6e6e6;
+	border-top-right-radius: 10px;
+	height: 25px;
+	margin: -5px -5px 10px;
+}
+
+#detailbox .closebox {
+	height: 12px;
+	width: 12px;
+	border: 1px solid #ccc;
+	float: right;
+	margin: 5px 8px 0 0;
+}
+
+#detailbox .closebox:hover {
+	background: #d0d0d0;
+}
+
+#detailbox .incidentID {
+	display: none;
+}
+
+#detailbox .logtype {
+	font-weight: bold;
+}
+
+#detailbox .details {
+	border-top: 1px solid #ddd;
+	font-size: 8pt;
+	height: 340px;
+	list-style: none;
+	padding: 0;
+	margin: 10px 0 0 0;
+	padding-top: 10px;
+}
+
+#detailbox .detail {
+	line-height: 150%;
+}
+
+#detailbox .detailtime {
+	font-weight: bold;
+}
+
+#detailbox .footer {
+	border-top: 1px solid #ddd;
+	padding-top: 7px;
+	text-align: center;
 }
 
 #map {
 	height: 500px;
-	border: 1px solid #666;
+	border-top: 1px solid #e4e4e4;
+	border-right: 1px solid #e4e4e4;
+	border-bottom: 1px solid #e4e4e4;
+	border-top-right-radius: 10px;
 }
-
-div.marker .logtype {
-	margin-top: 3px;
-	font-weight: bold;
-}
-
-div.marker .logtime {
-	margin-top: 3px;
-	font-size: 8pt;
-	color: gray;
-	font-style: italic;
-}
-
-#map .button { background-color: #165279 !important; font-size: 11px !important; margin: 0 5px; width: 90px }
 
 #sitenews ul {
 	list-style: none;
 	margin-left: 0;
 	padding-left: 0;
 	padding-right: 10px;
+}
+
+#freewayfeeds {
+	border-bottom-right-radius: 10px;
+	background: #f3f3f3;
+	height: 141px;
+	padding: 2px 10px 5px 10px;
 }
 
 #freewayfeeds input {
@@ -251,7 +357,7 @@ div.marker .logtime {
 
 #freewayfeeds ul {
 	list-style: none;
-	margin-left: 0;
+	margin: 0;
 	padding-left: 0;
 }
 /* End Right Column */
@@ -265,6 +371,7 @@ div.marker .logtime {
 	border-top: 1px solid #ccc;
 	font-size: 8pt;
 	color: #ccc;
+	margin: 0 10px 20px;
 }
 
 #footer span {
@@ -278,10 +385,17 @@ div.marker .logtime {
 
 
 /**
+ * @section Other
+ */
+#video_canvas {
+	margin: 0 auto;
+}
+
+
+/**
  * @section Ads
  */
 .ad {
-	/*border: 1px solid black;*/
 	margin: 10px auto;
 }
 
@@ -317,53 +431,33 @@ div.marker .logtime {
  */
 @media only screen and (max-device-width: 480px) {
 	body {
-		width: 390px;
+		width: 420px;
 		min-width: 0;
 	}
 
-	code.codeblock {
-		font-size: 6pt;
-		overflow: auto;
+	#leftcol {
+		border-right: 0;
+		border-top-right-radius: 10px;
+		border-bottom-right-radius: 10px;
+		height: auto
+	}
+
+	#leftcol .incident:last-child {
+		border-bottom-right-radius: 10px;
+	}
+
+	.codeblock {
+		font-size: 5pt;
+		overflow: hidden;
 		margin-left: 0;
-		margin-right: 0;
-	}
-
-	#top_banner {
-		background: white;
-		padding: 0 5px;
-		-webkit-border-radius: 5px;
-	}
-
-	div#content {
-		font-size: 12pt;
-		margin: 10px;
-	}
-
-	span.additional {
-		display: none;
+		width: inherit;
 	}
 
 	#mediainfo {
 		margin: 10px;;
 	}
 
-	.incidents .showmap.button {
-		display: inline;
-	}
-
-	#incidents_above {
-		border-bottom: 1px solid #165279;
-	}
-
-	#incidents_below {
-		border-top: 1px solid #165279;
-	}
-
 	#rightcol {
 		display: none;
-	}
-
-	#leftcol {
-		height: auto
 	}
 }

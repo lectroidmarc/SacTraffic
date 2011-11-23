@@ -1,5 +1,5 @@
 /**
- * @fileoverview Code to support dynamic headlines on sactraffic.org
+ * @fileoverview Contains code defining the TrafficNews namespace.
  * @requires Google Feed API
  * @requires jQuery
  */

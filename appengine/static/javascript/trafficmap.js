@@ -1,5 +1,5 @@
 /**
- * @fileoverview Encapsulates the TrafficMap class.
+ * @fileoverview Contains code defining the TrafficMap class.
  * @requires Google Maps API
  * @requires jQuery
  */
@@ -72,6 +72,7 @@ function TrafficMap (elementId) {
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		streetViewControl: false,
 		mapTypeControl: false,
+		scrollwheel: false,
 		navigationControlOptions: {
 			style: google.maps.NavigationControlStyle.SMALL
 		}
@@ -110,10 +111,10 @@ TrafficMap.prototype.make_traffic_button = function () {
 			self.show_gtraffic();
 			jQuery(this).html("Hide Traffic");
 		}
-	}).addClass('awesome button').appendTo(div);
+	}).addClass('awesome blue').appendTo(div);
 
 	return div;
-}
+};
 
 /**
  * Makes a show/hide camera button to enable/disable the live camera markers
@@ -134,10 +135,10 @@ TrafficMap.prototype.make_camera_button = function () {
 			self.show_live_cams();
 			jQuery(this).html("Hide Cameras");
 		}
-	}).addClass('awesome button').appendTo(div);
+	}).addClass('awesome blue').appendTo(div);
 
 	return div;
-}
+};
 
 /**
  * Update incident data.
@@ -148,7 +149,7 @@ TrafficMap.prototype.update = function (incidents) {
 	this.marker_list = {};
 
 	for (var x = 0, xl = incidents.length; x < xl; x++) {
-		var incident = incidents[x];
+		var incident = incidents.getIncident(x);
 
 		if (incident.status != "inactive" && incident.geolocation && incident.LogType != "Media Information") {
 			var marker = this.make_marker(incident);
@@ -181,7 +182,7 @@ TrafficMap.prototype.show_incident = function (incidents, incident_id) {
  * Shows the live cams.
  */
 TrafficMap.prototype.show_live_cams = function () {
-	if (this.live_cams.length == 0) {
+	if (this.live_cams.length === 0) {
 		var self = this;
 
 		jQuery.ajax({
@@ -208,7 +209,7 @@ TrafficMap.prototype.show_live_cams = function () {
 					google.maps.event.addListener(marker, 'click', function() {
 						var ie_safe_name = camera.name.replace(/ /g, "_").replace(/-/g, "_");
 						var window_width = parseInt(camera.size.width) + 60;
-						var window_height = parseInt(camera.size.height) + 170;
+						var window_height = parseInt(camera.size.height) + 100;
 
 						window.open("/showcamera?id="+camera.id, ie_safe_name, "width="+window_width+",height="+window_height);
 					});
@@ -267,6 +268,10 @@ TrafficMap.prototype.center_on_id = function (incident_id) {
  */
 TrafficMap.prototype.recenter = function () {
 	this.gmap.panTo(this.center);
+};
+
+TrafficMap.prototype.centerOnGeo = function (lat, lon) {
+	this.gmap.panTo(new google.maps.LatLng(lat, lon));
 };
 
 /**

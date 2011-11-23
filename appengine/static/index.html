@@ -12,7 +12,7 @@
 
 <link rel="alternate" type="application/atom+xml" title="Sac Traffic Atom Feed" href="/atom" />
 
-<meta name="viewport" content="width = 390" />
+<meta name = "viewport" content = "width = device-width">
 
 <script type="text/javascript">
 	var _gaq = _gaq || [];
@@ -27,57 +27,48 @@
 </script>
 </head>
 
-<body>
-<div id="top_banner" class="ad leaderboard">
-	<script type="text/javascript"><!--
-		google_ad_client = "pub-0887871162421804";
-		if (screen.width <= 480) {
-			var banner = document.getElementById("top_banner");
-			banner.className = 'ad halfbanner';
+<body onload="init_index()">
+<div id="header">
+	<h1>Live CHP traffic alerts in the Sacramento area</h1>
 
-			/* Mobile Leaderboard */
-			google_ad_slot = "1236279869";
-			google_ad_width = 234;
-			google_ad_height = 60;
-		} else {
-			/* Leaderboard */
-			google_ad_slot = "3264684355";
-			google_ad_width = 728;
-			google_ad_height = 90;
-		}
-		//-->
-	</script>
-	<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+	<p class="info">Sacramento area traffic alerts and incidents as reported by the California Highway Patrol. <span class="additional">Includes live reports of accidents and collisions of all types, road hazards and closures as well as media updates issued for CHP "sigalerts".</span></p>
+
+	<div id="mediainfo"></div>
 </div>
 
 <div id="content">
-	<div id="header">
-		<h1>Live CHP traffic alerts in the Sacramento area</h1>
-
-		<p class="info">Sacramento area traffic alerts and incidents as reported by the California Highway Patrol. <span class="additional">Includes live reports of accidents and collisions of all types, road hazards and closures as well as media updates issued for CHP "sigalerts".</span></p>
-
-		<div id="mediainfo"></div>
-	</div>
-
 	<div id="leftcol">
-		<ul id="incidents_above" class="incidents"><li class="loading">Loading...<br/><img src="/images/loading.gif" alt="loading"/></li></ul>
+		<div id="incidentlist">
+			<div class="loading">
+				Loading...<br/><img src="/images/loading.gif" alt="loading"/>
+			</div>
+		</div>
 
-		<div id="inline_ad" class="ad halfbanner">
-			<script type="text/javascript"><!--
-				google_ad_client = "pub-0887871162421804";
-				/* Half Banner */
-				google_ad_slot = "9377068793";
-				google_ad_width = 234;
-				google_ad_height = 60;
+		<div class="ad largerec">
+			<script type="text/javascript">
+				<!--
+				google_ad_client = "ca-pub-0887871162421804";
+				/* SacTraffic List Ad */
+				google_ad_slot = "6796723839";
+				google_ad_width = 336;
+				google_ad_height = 280;
 				//-->
 			</script>
 			<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 		</div>
-
-		<ul id="incidents_below" class="incidents"><li style="display:none"><!-- this space for rent --></li></ul>
 	</div>
 
 	<div id="rightcol">
+		<div id="detailbox">
+			<div class="header">
+				<div class="closebox"></div>
+			</div>
+			<div class="content"></div>
+			<div class="footer">
+				<div class="showonmap awesome blue">Show on Map</div>
+			</div>
+		</div>
+
 		<div id="map"></div>
 
 		<div id="sitenews" style="display:none">
@@ -98,26 +89,23 @@
 			</form>
 		</div>
 	</div>
+</div>
 
-	<div id="footer">
-		<span><a href="/about.html">About this site</a></span>
-	</div>
-</div> <!-- #content -->
+<div id="footer">
+	<span><a href="/about.html">About this site</a></span>
+</div>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 	google.load("jquery", "1");
 	if (screen.width > 480) {
-		google.load("maps", "3", {"other_params":"sensor=false"});
+		google.load("maps", "3", {"other_params":"key=AIzaSyCqAWhoCTR35Otz1QSkigXKlhLQWBw8vOQ&sensor=false"});
 		google.load("feeds", "1");
 	}
 </script>
 <script type="text/javascript" src="/javascript/sactraffic.min.js"></script>
-<script type="text/javascript">
-	init_index();
-</script>
 
-<script type="text/javascript" src="http://media.sacbee.com/static/sacconnect/sacconnect-min.js"></script>
+<!--<script type="text/javascript" src="http://media.sacbee.com/static/sacconnect/sacconnect-min.js"></script>-->
 </body>
 </html>
 <!--
