@@ -76,13 +76,9 @@ handlers:
 - url: /rss.php
   script: handlers/redirect.py
 
-# Magic App Engine handers
-- url: /_ah/queue/deferred
-  script: $PYTHON_LIB/google/appengine/ext/deferred/handler.py
-  login: admin
-
-- url: /_ah/warmup
-  script: handlers/warmup.py
-
 builtins:
+- deferred: on
 - remote_api: on
+
+inbound_services:
+- warmup
