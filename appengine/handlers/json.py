@@ -1,6 +1,5 @@
 import datetime
 import pickle
-import time
 
 from google.appengine.api import memcache
 from google.appengine.ext import webapp
@@ -8,7 +7,7 @@ from google.appengine.ext.webapp import util
 from django.utils import simplejson as json
 
 from models import CHPIncident
-from utils import conditional_http, tzinfo
+from utils import conditional_http
 
 
 class JsonHandler(webapp.RequestHandler):
@@ -62,8 +61,6 @@ class JsonHandler(webapp.RequestHandler):
 					return
 				incidents.append(incident)
 
-		pacific_tz = tzinfo.Pacific()
-
 		output_list = []
 		for incident in incidents:
 			incident_dict = {
@@ -71,8 +68,8 @@ class JsonHandler(webapp.RequestHandler):
 				'ID': incident.key().name(),
 				'Location': incident.Location,
 				'LogDetails': pickle.loads(incident.LogDetails),
-				'LogTime': (incident.LogTime + pacific_tz.utcoffset(incident.LogTime)).strftime("%m/%d/%Y %I:%M:%S %p"),
-				'LogTimeEpoch': time.mktime(incident.LogTime.timetuple()),
+				'LogTime': incident.logTimeLocal.strftime("%m/%d/%Y %I:%M:%S %p"),
+				'LogTimeEpoch': incident.logTimeEpoch,
 				'LogType': incident.LogType,
 				'TBXY': incident.TBXY,
 				'ThomasBrothers': incident.ThomasBrothers,

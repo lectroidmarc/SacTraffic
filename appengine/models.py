@@ -1,9 +1,13 @@
 """Model classes for SacTraffic."""
 
+import time
+
 from datetime import datetime, timedelta
 
 from google.appengine.ext import db
 from google.appengine.api import memcache
+
+from utils import tzinfo
 
 class CHPData(db.Model):
 	"""Holds the last successful CHP data fetch."""
@@ -32,6 +36,15 @@ class CHPIncident(db.Model):
 	geolocation = db.GeoPtProperty()
 	city = db.StringProperty()
 	updated = db.DateTimeProperty(auto_now=True)
+
+	@property
+	def logTimeEpoch(self):
+		return int(time.mktime(self.LogTime.timetuple()))
+
+	@property
+	def logTimeLocal(self):
+		pacific_tz = tzinfo.Pacific()
+		return (self.LogTime + pacific_tz.utcoffset(self.LogTime))
 
 	@property
 	def status(self):
