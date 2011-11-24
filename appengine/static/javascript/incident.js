@@ -114,7 +114,7 @@ Incident.prototype.showDetailBox = function () {
 
 	detailBox.show().animate({
 		width: '40%',
-		'min-width': '220px'
+		'min-width': '300px'
 	}, 'fast');
 };
 
