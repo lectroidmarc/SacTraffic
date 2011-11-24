@@ -2,6 +2,7 @@ import datetime
 import pickle
 import time
 
+from google.appengine.api import memcache
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from django.utils import simplejson as json
@@ -20,29 +21,41 @@ class JsonHandler(webapp.RequestHandler):
 		since = self.request.get("since")
 		callback = self.request.get("callback")
 
+		memcache_key = "json-%s-%s-%s-%s-%s-%s" % (id, center, dispatch, area, city, since)
+		memcache_expiry_time = 60
 		last_mod = datetime.datetime.utcnow()	# XXX should this be None?
 
 		if id == "":
-			incidents = CHPIncident.all()
-			incidents.order('-LogTime')
-			if center != "":
-				incidents.filter('CenterID =', center)
-			if dispatch != "":
-				incidents.filter('DispatchID =', dispatch)
-			if area != "":
-				incidents.filter('Area =', area)
-			if city != "":
-				incidents.filter('city =', city)
-			if since != "":
-				incidents.filter('LogTime >', datetime.datetime.fromtimestamp(float(since)))
+			incidents = memcache.get(memcache_key)
+			if incidents is None:
+				incidents = CHPIncident.all()
+				incidents.order('-LogTime')
+				if center != "":
+					incidents.filter('CenterID =', center)
+				if dispatch != "":
+					incidents.filter('DispatchID =', dispatch)
+				if area != "":
+					incidents.filter('Area =', area)
+				if city != "":
+					incidents.filter('city =', city)
+				if since != "":
+					incidents.filter('LogTime >', datetime.datetime.fromtimestamp(float(since)))
+
+				memcache.add(memcache_key, incidents, memcache_expiry_time)
 
 			if incidents.count(1) > 0:
 				last_mod = max(incidents, key=lambda incident: incident.updated).updated
 				if conditional_http.isNotModified(self, last_mod):
 					return
 		else:
+			# Handle single incident requests, slightly different approach
+			# We want to use get_by_key_name() instead of filtering.
 			incidents = []
-			incident = CHPIncident.get_by_key_name(id)
+			incident = memcache.get(memcache_key)
+			if incident is None:
+				incident = CHPIncident.get_by_key_name(id)
+				memcache.add(memcache_key, incident, memcache_expiry_time)
+
 			if incident is not None:
 				last_mod = incident.updated
 				if conditional_http.isNotModified(self, last_mod):

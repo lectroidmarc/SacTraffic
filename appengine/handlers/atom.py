@@ -4,6 +4,7 @@ import re
 import time
 from xml.etree import ElementTree
 
+from google.appengine.api import memcache
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 
@@ -19,18 +20,24 @@ class AtomHandler(webapp.RequestHandler):
 		city = self.request.get("city")
 		roads = self.request.get("roads")
 
+		memcache_key = "atom-%s-%s-%s-%s" % (center, dispatch, area, city)
+		memcache_expiry_time = 60
 		last_mod = datetime.datetime.utcnow()
 
-		incidents = CHPIncident.all()
-		incidents.order('-LogTime')
-		if center != "":
-			incidents.filter('CenterID =', center)
-		if dispatch != "":
-			incidents.filter('DispatchID =', dispatch)
-		if area != "":
-			incidents.filter('Area =', area)
-		if city != "":
-			incidents.filter('city =', city)
+		incidents = memcache.get(memcache_key)
+		if incidents is None:
+			incidents = CHPIncident.all()
+			incidents.order('-LogTime')
+			if center != "":
+				incidents.filter('CenterID =', center)
+			if dispatch != "":
+				incidents.filter('DispatchID =', dispatch)
+			if area != "":
+				incidents.filter('Area =', area)
+			if city != "":
+				incidents.filter('city =', city)
+
+			memcache.add(memcache_key, incidents, memcache_expiry_time)
 
 		if incidents.count(1) > 0:
 			last_mod = max(incidents, key=lambda incident: incident.updated).updated
