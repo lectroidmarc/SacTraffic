@@ -6,11 +6,6 @@ api_version: 1
 default_expiration: "365d"
 
 handlers:
-- url: /
-  static_files: static/index.html
-  upload: static/index.html
-  expiration: "10m"
-
 - url: /incident
   script: handlers/incident.py
 
@@ -40,10 +35,11 @@ handlers:
   script: handlers/purge.py
   login: admin
 
-# Static stuff
-- url: /images
-  static_dir: static/images
+# Redirections
+- url: /rss.php
+  script: handlers/redirect.py
 
+# Static stuff
 - url: /stylesheets
   static_dir: static/stylesheets
   expiration: "10m"
@@ -51,14 +47,6 @@ handlers:
 - url: /javascript
   static_dir: static/javascript
   expiration: "10m"
-
-- url: /about.html
-  static_files: static/about.html
-  upload: static/about.html
-
-- url: /widget.html
-  static_files: static/widget.html
-  upload: static/widget.html
 
 - url: /apple-touch-icon.png
   static_files: static/images/sactraffic.png
@@ -68,13 +56,14 @@ handlers:
   static_files: static/images/favicon.ico
   upload: static/images/favicon.ico
 
-- url: /robots.txt
-  static_files: static/robots.txt
-  upload: static/robots.txt
+- url: /
+  static_files: static/index.html
+  upload: static/index.html
+  expiration: "10m"
 
-# Redirections
-- url: /rss.php
-  script: handlers/redirect.py
+- url: /(.*)
+  static_files: static/\1
+  upload: static/(.*)
 
 builtins:
 - deferred: on
