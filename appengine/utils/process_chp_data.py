@@ -1,6 +1,6 @@
-
 import logging
 import pickle
+import os
 import re
 import time
 from datetime import datetime, timedelta
@@ -97,8 +97,9 @@ def process_chp_center(chpCenter):
 	db.put(incident_list)
 
 	# Ping the PSH hub
-	if len(set(psh_pings)):
-		deferred.defer(publish, 'http://pubsubhubbub.appspot.com', set(psh_pings), _queue="pshPingQueue")
+	if not os.environ['SERVER_SOFTWARE'].startswith('Development'):
+		if len(set(psh_pings)):
+			deferred.defer(publish, 'http://pubsubhubbub.appspot.com', set(psh_pings), _queue="pshPingQueue")
 
 	# Reverse geocode the incidents if we haven't already
 	for incident in incident_list:
