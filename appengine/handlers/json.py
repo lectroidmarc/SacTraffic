@@ -22,11 +22,11 @@ class JsonHandler(webapp.RequestHandler):
 
 		memcache_key = "json-%s-%s-%s-%s-%s-%s" % (id, center, dispatch, area, city, since)
 		memcache_expiry_time = 60
-		last_mod = datetime.datetime.utcnow()	# XXX should this be None?
+		last_mod = None
 
-		if id == "":
-			incidents = memcache.get(memcache_key)
-			if incidents is None:
+		incidents = memcache.get(memcache_key)
+		if incidents is None:
+			if id == "":
 				incidents = CHPIncident.all()
 				incidents.order('-LogTime')
 				if center != "":
@@ -39,27 +39,24 @@ class JsonHandler(webapp.RequestHandler):
 					incidents.filter('city =', city)
 				if since != "":
 					incidents.filter('LogTime >', datetime.datetime.fromtimestamp(float(since)))
-
-				memcache.add(memcache_key, incidents, memcache_expiry_time)
-
-			if incidents.count(1) > 0:
-				last_mod = max(incidents, key=lambda incident: incident.updated).updated
-				if conditional_http.isNotModified(self, last_mod):
-					return
-		else:
-			# Handle single incident requests, slightly different approach
-			# We want to use get_by_key_name() instead of filtering.
-			incidents = []
-			incident = memcache.get(memcache_key)
-			if incident is None:
+			else:
+				# Handle single incident requests, slightly different approach
+				# We want to use get_by_key_name() instead of filtering.
+				incidents = []
 				incident = CHPIncident.get_by_key_name(id)
-				memcache.add(memcache_key, incident, memcache_expiry_time)
+				if incident is not None:
+					incidents.append(incident)
 
-			if incident is not None:
-				last_mod = incident.updated
-				if conditional_http.isNotModified(self, last_mod):
-					return
-				incidents.append(incident)
+			memcache.add(memcache_key, incidents, memcache_expiry_time)
+
+		# Try to get a last_mod date for conditional HTTP headers from the
+		# incident data.  This will fail if incidents is empty.
+		try:
+			last_mod = max(incidents, key=lambda incident: incident.updated).updated
+			if conditional_http.isNotModified(self, last_mod):
+				return
+		except ValueError:
+			pass
 
 		output_list = []
 		for incident in incidents:
