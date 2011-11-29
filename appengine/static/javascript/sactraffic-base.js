@@ -46,7 +46,7 @@ function get_incidents (id) {
 			trafficmap.update(incidents);
 		}
 
-		if (incidents.length > 1 || incidents.getIncident(0).status != 'inactive') {
+		if (incidents.length > 0 && (incidents.length > 1 || incidents.getIncident(0).status != 'inactive')) {
 			setTimeout(get_incidents, 60000, id);
 		}
 	});
