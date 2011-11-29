@@ -41,7 +41,7 @@ var LocalStorage = {
       if (storedData && (storedData.expiry == null || now.getTime() <= storedData.expiry)) {
         return storedData.data;
       } else {
-        return null;  // data has expired or data doesn't exist
+        return null;    // data has expired or data doesn't exist
       }
     } else {
       return null;      // localStorage not supported
