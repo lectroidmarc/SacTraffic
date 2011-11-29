@@ -65,15 +65,3 @@ class CHPIncident(db.Model):
 
 		# what's left... active
 		return 'active'
-
-
-class Camera(db.Model):
-	"""Represents a live camera."""
-	name = db.StringProperty()
-	url = db.LinkProperty()
-	geolocation = db.GeoPtProperty()
-	width = db.IntegerProperty()
-	height = db.IntegerProperty()
-	is_online = db.BooleanProperty()
-	updated = db.DateTimeProperty(auto_now=True)
-

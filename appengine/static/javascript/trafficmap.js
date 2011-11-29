@@ -186,16 +186,36 @@ TrafficMap.prototype.show_live_cams = function () {
 		var self = this;
 
 		jQuery.ajax({
-			url: "/getcameras",
-			dataType: "json",
+			url: "/cameras.txt",
+			dataType: "text",
 			success: function (cameras) {
 				var camera_icon = new google.maps.MarkerImage("/images/map_markers.png",
 					new google.maps.Size(24, 24),
 					new google.maps.Point(36, 0),
 					new google.maps.Point(12, 12));
 
-				for (var x = 0, xl = cameras.length; x < xl; x++) {
-					self.live_cams.push(make_camera_marker(cameras[x]));
+				var rows = cameras.split(/\n/);
+				for (var x = 1, xl = rows.length; x < xl; x++) {
+					if (rows[x] === '' || rows[x].match(/^#/)) {
+						continue;
+					}
+
+					var fields = row.split(/,/);
+					var camera = {
+						id: fields[0],
+						name: fields[1],
+						url: fields[2],
+						location: {
+							lat: fields[3],
+							lon: fields[4]
+						},
+						size: {
+							width: fields[5],
+							height: fields[6]
+						}
+					};
+
+					self.live_cams.push(make_camera_marker(camera));
 				}
 
 				function make_camera_marker (camera) {

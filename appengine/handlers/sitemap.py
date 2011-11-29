@@ -5,7 +5,7 @@ from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
 
-from models import Camera, CHPIncident
+from models import CHPIncident
 
 
 class SitemapHandler(webapp.RequestHandler):
@@ -17,13 +17,10 @@ class SitemapHandler(webapp.RequestHandler):
 		if incidents.count(1) > 0:
 			last_mod = max(incidents, key=lambda incident: incident.updated).updated.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-		cameras = Camera.all(keys_only=True)
-
 		template_values = {
 			'http_host': self.request.environ['HTTP_HOST'],
 			'last_mod': last_mod,
-			'incidents': incidents,
-			'cameras': cameras
+			'incidents': incidents
 		}
 
 		self.response.headers["Content-Type"] = "text/xml"

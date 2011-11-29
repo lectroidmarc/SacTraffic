@@ -15,12 +15,6 @@ handlers:
 - url: /json
   script: handlers/json.py
 
-- url: /getcameras
-  script: handlers/getcameras.py
-
-- url: /showcamera
-  script: handlers/showcamera.py
-
 - url: /sitemap
   script: handlers/sitemap.py
 
@@ -67,7 +61,6 @@ handlers:
 
 builtins:
 - deferred: on
-- remote_api: on
 
 inbound_services:
 - warmup

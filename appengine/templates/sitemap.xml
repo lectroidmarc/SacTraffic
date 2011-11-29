@@ -19,10 +19,4 @@
 		<priority>0.4</priority>
 	</url>
 {% endfor %}
-{% for camera in cameras %}
-	<url>
-		<loc>http://{{ http_host }}/showcamera?id={{ camera.name }}</loc>
-		<priority>0.2</priority>
-	</url>
-{% endfor %}
 </urlset>
