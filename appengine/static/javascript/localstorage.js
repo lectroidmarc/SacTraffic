@@ -17,12 +17,11 @@ var LocalStorage = {
     if (LocalStorage.supportsLocalStorage()) {
       var now = new Date();
 
-      var storageObj = {
-        expiry: now.getTime() + seconds * 1000,
+      localStorage.setItem(key, JSON.stringify({
+        expiry: (typeof(seconds) === 'number') ? now.getTime() + seconds * 1000 : null,
         data: value
-      }
+      }));
 
-      localStorage.setItem(key, JSON.stringify(storageObj));
       return true;
     } else {
       return false;      // localStorage not supported
@@ -39,14 +38,10 @@ var LocalStorage = {
       var now = new Date();
       var storedData = JSON.parse(localStorage.getItem(key));
 
-      if (storedData) {
-        if (storedData.expiry == null || now.getTime() <= storedData.expiry) {
-          return storedData.data;
-        } else {
-          return null;  // data has expired
-        }
+      if (storedData && (storedData.expiry == null || now.getTime() <= storedData.expiry)) {
+        return storedData.data;
       } else {
-        return null;    // data doesn't exist
+        return null;  // data has expired or data doesn't exist
       }
     } else {
       return null;      // localStorage not supported
