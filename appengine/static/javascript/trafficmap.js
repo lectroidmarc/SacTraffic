@@ -203,16 +203,11 @@ TrafficMap.prototype.show_live_cams = function () {
 
 					var fields = rows[x].split(/,/);
 					var camera = {
-						id: fields[0],
-						name: fields[1],
-						url: fields[2],
+						name: fields[0],
+						url: fields[1],
 						location: {
-							lat: fields[3],
-							lon: fields[4]
-						},
-						size: {
-							width: fields[5],
-							height: fields[6]
+							lat: fields[2],
+							lon: fields[3]
 						}
 					};
 
