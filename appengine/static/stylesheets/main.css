@@ -85,6 +85,12 @@ h2 {
 	font-style: italic;
 }
 
+.camera_marker .name {
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+
 /**
  * @section Header
  */

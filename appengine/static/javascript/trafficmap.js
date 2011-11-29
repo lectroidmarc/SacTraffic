@@ -14,6 +14,7 @@ function TrafficMap (elementId) {
 	this.live_cams = [];
 	this.traffic_overlay = null;
 	this.marker_list = {};
+	this.cameraInfoWindow = new google.maps.InfoWindow();
 
 	// Set up the map icons
 	this.default_icon = new google.maps.MarkerImage('/images/map_markers.png',
@@ -200,7 +201,7 @@ TrafficMap.prototype.show_live_cams = function () {
 						continue;
 					}
 
-					var fields = row.split(/,/);
+					var fields = rows[x].split(/,/);
 					var camera = {
 						id: fields[0],
 						name: fields[1],
@@ -227,11 +228,8 @@ TrafficMap.prototype.show_live_cams = function () {
 					});
 
 					google.maps.event.addListener(marker, 'click', function() {
-						var ie_safe_name = camera.name.replace(/ /g, "_").replace(/-/g, "_");
-						var window_width = parseInt(camera.size.width) + 60;
-						var window_height = parseInt(camera.size.height) + 100;
-
-						window.open("/showcamera?id="+camera.id, ie_safe_name, "width="+window_width+",height="+window_height);
+						self.cameraInfoWindow.setContent('<div class="camera_marker"><div class="name">Video: ' + camera.name + '</div><a href="' + camera.url + '">' + camera.url + '</a></div>');
+						self.cameraInfoWindow.open(self.gmap, marker);
 					});
 
 					return marker;
