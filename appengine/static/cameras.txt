@@ -43,7 +43,7 @@ US-50 at Jefferson,http://video.dot.ca.gov/asx/d3-jefferson-50.asx,38.577225,-12
 US-50 at Mather,http://video.dot.ca.gov/asx/d3-mather-50.asx,38.578366,-121.308117
 US-50 at Mayhew,http://video.dot.ca.gov/asx/d3-mayhew-50.asx,38.561925,-121.349401
 US-50 at Scott 1,http://video.dot.ca.gov/asx/d3-scott1-50.asx,38.644751,-121.114913
-US-50 at Scott 2,http://video.dot.ca.gov/asx/d3-scott2-50.asx,38.640762,-121.114570
+US-50 at Scott 2,http://video.dot.ca.gov/asx/d3-scott2-50.asx,38.649075,-121.082426
 US-50 at Spring,http://video.dot.ca.gov/asx/d3-Spring-50.asx,38.728209,-120.805621
 US-50 at Sunrise,http://video.dot.ca.gov/asx/d3-sunrise-50.asx,38.608956,-121.271038
 US-50 at Watt,http://video.dot.ca.gov/asx/d3-watt-50.asx,38.558703,-121.379528
