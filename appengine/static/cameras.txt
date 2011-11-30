@@ -1,8 +1,8 @@
+name,url,latitude,longitude
+
 #
 # Live traffic cams from http://video.dot.ca.gov/
 #
-
-name,url,latitude,longitude
 
 # I-5
 #
