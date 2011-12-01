@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
-from google.appengine.ext.webapp import template
 from google.appengine.ext import db
 
 from models import CHPData, CHPIncident
@@ -13,14 +12,17 @@ from models import CHPData, CHPIncident
 
 class PurgeHandler(webapp.RequestHandler):
 	def get(self):
+		count = 0
 		chp_data = CHPData.get_by_key_name("chp_data")
 
-		query = CHPIncident.all(keys_only=True)
-		query.filter('updated <', chp_data.updated - timedelta(hours=6))
-		count = query.count()
-		db.delete(query)
+		if chp_data is not None:
+			query = CHPIncident.all(keys_only=True)
 
-		self.response.out.write(template.render("../templates/purge.html", { 'number': count }))
+			query.filter('updated <', chp_data.updated - timedelta(hours=6))
+			count = query.count()
+			db.delete(query)
+
+		self.response.out.write("Purged %d records." % count)
 
 
 application = webapp.WSGIApplication([('/purge', PurgeHandler)],
