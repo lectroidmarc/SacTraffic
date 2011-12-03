@@ -1,3 +1,8 @@
+"""JSON Handler.
+
+Returns CHP incident data in the JSON format.
+
+"""
 import pickle
 
 from google.appengine.ext import webapp

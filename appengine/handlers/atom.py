@@ -1,3 +1,8 @@
+"""ATOM Handler.
+
+Returns CHP incident data in the ATOM format.
+
+"""
 import pickle
 import re
 import time
