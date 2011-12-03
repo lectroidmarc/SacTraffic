@@ -10,9 +10,8 @@ from google.appengine.ext import db
 from google.appengine.ext import deferred
 
 from models import CHPIncident
-from utils.tzinfo import Pacific
-from utils.reverse_geocode import load_city
-from thirdparty.pubsubhubbub_publish import *
+from utils import tzinfo, reverse_geocode
+from thirdparty import pubsubhubbub_publish
 
 
 def process_chp_xml(chpState):
@@ -31,9 +30,9 @@ def process_chp_center(chpCenter):
 
 		for chpLog in chpDispatch:
 			try:
-				log_time = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=Pacific())
+				log_time = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=tzinfo.Pacific())
 			except ValueError:
-				log_time = datetime.strptime(chpLog.find('LogTime').text, '"%b %d %Y %I:%M%p"').replace(tzinfo=Pacific())
+				log_time = datetime.strptime(chpLog.find('LogTime').text, '"%b %d %Y %I:%M%p"').replace(tzinfo=tzinfo.Pacific())
 
 			key_name = "%s.%s.%s.%d" % (chpCenter.attrib['ID'], chpDispatch.attrib['ID'], chpLog.attrib['ID'], time.mktime(log_time.timetuple()))
 			logtype = chpLog.find('LogType').text.strip('"').partition("-")
@@ -98,14 +97,14 @@ def process_chp_center(chpCenter):
 	ping_set = set(psh_pings)
 	if not os.environ['SERVER_SOFTWARE'].startswith('Development'):
 		if len(ping_set):
-			deferred.defer(publish, 'http://pubsubhubbub.appspot.com', ping_set, _queue="pshPingQueue")
+			deferred.defer(pubsubhubbub_publish.publish, 'http://pubsubhubbub.appspot.com', ping_set, _queue="pshPingQueue")
 	else:
 		logging.info("Skipping PSH pings for %s on the development server. %s" % (incident.CenterID, ping_set))
 
 	# Reverse geocode the incidents if we haven't already
 	for incident in incident_list:
 		if incident.city is None and incident.geolocation is not None:
-			deferred.defer(load_city, incident.key(), _queue="reverseGeocodeQueue")
+			deferred.defer(reverse_geocode.load_city, incident.key(), _queue="reverseGeocodeQueue")
 
 	logging.info("Processed %d incidents in %s." % (len(incident_list), chpCenter.attrib['ID']))
 
