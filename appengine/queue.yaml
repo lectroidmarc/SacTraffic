@@ -1,7 +1,7 @@
 queue:
 - name: chpProcessQueue
   rate: 5/s
-  bucket_size: 11   # there are 11 CHP Centers that we can process
+  bucket_size: 12   # there are 12 CHP Centers that we can process
   retry_parameters:
     task_age_limit: 5m  # don't attempt past our poll time
 
