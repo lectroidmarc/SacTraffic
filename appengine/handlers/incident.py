@@ -12,10 +12,10 @@ class IncidentHandler(webapp.RequestHandler):
 			template_values = {
 				'incident': incident
 			}
+			self.response.out.write(template.render("../templates/incident.html", template_values))
 		else:
-			template_values = {}
+			self.error(404)
 
-		self.response.out.write(template.render("../templates/incident.html", template_values))
 
 	def head(self):
 		# App Engine disallows setting of Content-Length, but at the same time
