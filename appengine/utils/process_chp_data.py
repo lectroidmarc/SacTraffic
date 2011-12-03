@@ -16,7 +16,11 @@ from thirdparty import pubsubhubbub_publish
 
 def process_chp_xml(chpState):
 	for chpCenter in chpState:
-		deferred.defer(process_chp_center, chpCenter, _queue="chpProcessQueue");
+		deferred.defer(process_chp_center, chpCenter, _queue="chpProcessQueue")
+
+	# Ping for the whole ATOM feed.  We do it here because we only do it once.
+	if not os.environ['SERVER_SOFTWARE'].startswith('Development'):
+		deferred.defer(pubsubhubbub_publish.publish, 'http://pubsubhubbub.appspot.com', 'http://www.sactraffic.org/atom', _queue="pshPingQueue")
 
 def process_chp_center(chpCenter):
 	incident_list = []
@@ -85,7 +89,6 @@ def process_chp_center(chpCenter):
 			psh_pings.append('http://www.sactraffic.org/atom?center=%s' % urllib.quote(incident.CenterID))
 			psh_pings.append('http://www.sactraffic.org/atom?dispatch=%s' % urllib.quote(incident.DispatchID))
 			psh_pings.append('http://www.sactraffic.org/atom?area=%s' % urllib.quote(incident.Area))
-			psh_pings.append('http://www.sactraffic.org/atom')
 
 			# Save this incident
 			incident_list.append(incident)
@@ -96,8 +99,7 @@ def process_chp_center(chpCenter):
 	# Ping the PSH hub, use a set so we don't ping duplicates.
 	ping_set = set(psh_pings)
 	if not os.environ['SERVER_SOFTWARE'].startswith('Development'):
-		if len(ping_set):
-			deferred.defer(pubsubhubbub_publish.publish, 'http://pubsubhubbub.appspot.com', ping_set, _queue="pshPingQueue")
+		deferred.defer(pubsubhubbub_publish.publish, 'http://pubsubhubbub.appspot.com', ping_set, _queue="pshPingQueue")
 	else:
 		logging.info("Skipping PSH pings for %s on the development server. %s" % (incident.CenterID, ping_set))
 
@@ -149,7 +151,6 @@ coplingo = [
 	{ 'regex': re.compile(r'^\[\d+\] ', re.I), 'str': "" }
 ]
 
-
 def deCopIfy(text):
 	if text == "":
 		return text
@@ -158,7 +159,6 @@ def deCopIfy(text):
 		text = re.sub(lingo['regex'], lingo['str'], text)
 
 	return text[0].upper() + text[1:]
-
 
 def geoConvertTBXY(center, tbxy):
 	if tbxy != "":
