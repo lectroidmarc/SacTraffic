@@ -32,8 +32,10 @@ def load_city (incident_key):
 									logging.info("setting %s city to %s." % (incident.key().name(), component['long_name']))
 									incident.city = component['long_name']
 									incident.put()
-									break
-							break
+									return
+					logging.info("No city found for %s." % incident.key().name())
+					incident.city = ""	# set the city to "" so we don't keep trying to geocode it.
+					incident.put()
 				else:
 					logging.warning("Google replied with a %s status in the geocode JSON." % data['status'])
 			else:
