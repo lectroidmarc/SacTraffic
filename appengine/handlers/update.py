@@ -11,7 +11,7 @@ from google.appengine.ext import db
 from google.appengine.runtime.apiproxy_errors import CapabilityDisabledError
 
 from models import CHPData, CHPIncident
-from utils.process_chp_data import process_chp_xml
+from utils import process_chp_data
 
 
 class UpdateHandler(webapp.RequestHandler):
@@ -40,7 +40,7 @@ class UpdateHandler(webapp.RequestHandler):
 						logging.warning(error)
 						output_blurb = error
 					else:
-						process_chp_xml(chp_etree)
+						process_chp_data.process_chp_xml(chp_etree)
 			else:
 				error = "CHP server returned " + str(result.status_code) + " status."
 				logging.warning(error)
