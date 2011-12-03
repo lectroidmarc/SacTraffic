@@ -1,65 +1,23 @@
-import datetime
 import pickle
 
-from google.appengine.api import memcache
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from django.utils import simplejson as json
 
-from models import CHPIncident
-from utils import conditional_http
+from utils import incident_request
 
 
-class JsonHandler(webapp.RequestHandler):
+class JsonHandler(incident_request.RequestHandler):
 	def get(self):
-		id = self.request.get("id")
-		center = self.request.get("center")
-		dispatch = self.request.get("dispatch")
-		area = self.request.get("area")
-		city = self.request.get("city")
-		since = self.request.get("since")
-		callback = self.request.get("callback")
+		self.get_incidents()
 
-		memcache_key = "json-%s-%s-%s-%s-%s-%s" % (id, center, dispatch, area, city, since)
-		memcache_expiry_time = 60
-		last_mod = None
+		# 304 check
+		if self.is_not_modified():
+			return
 
-		incidents = memcache.get(memcache_key)
-		if incidents is None:
-			if id == "":
-				incidents = CHPIncident.all()
-				incidents.order('-LogTime')
-				if center != "":
-					incidents.filter('CenterID =', center)
-				if dispatch != "":
-					incidents.filter('DispatchID =', dispatch)
-				if area != "":
-					incidents.filter('Area =', area)
-				if city != "":
-					incidents.filter('city =', city)
-				if since != "":
-					incidents.filter('LogTime >', datetime.datetime.fromtimestamp(float(since)))
-			else:
-				# Handle single incident requests, slightly different approach
-				# We want to use get_by_key_name() instead of filtering.
-				incidents = []
-				incident = CHPIncident.get_by_key_name(id)
-				if incident is not None:
-					incidents.append(incident)
-
-			memcache.add(memcache_key, incidents, memcache_expiry_time)
-
-		# Try to get a last_mod date for conditional HTTP headers from the
-		# incident data.  This will fail if incidents is empty.
-		try:
-			last_mod = max(incidents, key=lambda incident: incident.updated).updated
-			if conditional_http.isNotModified(self, last_mod):
-				return
-		except ValueError:
-			pass
-
+		# Build a Python list we can convert to JSON
 		output_list = []
-		for incident in incidents:
+		for incident in self.incidents:
 			incident_dict = {
 				'Area': incident.Area,
 				'ID': incident.key().name(),
@@ -84,9 +42,11 @@ class JsonHandler(webapp.RequestHandler):
 
 			output_list.append(incident_dict)
 
+		# Output
 		self.response.headers["Content-Type"] = "application/json"
-		conditional_http.setConditionalHeaders(self, last_mod)
+		self.send_conditional_headers()
 
+		callback = self.request.get("callback")
 		if callback != "":
 			self.response.out.write("%s(" % callback)
 

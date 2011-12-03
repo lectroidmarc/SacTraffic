@@ -1,57 +1,32 @@
-import datetime
 import pickle
 import re
 import time
 from xml.etree import ElementTree
 
-from google.appengine.api import memcache
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 
-from models import CHPIncident
-from utils import conditional_http
+from utils import incident_request
 
 
-class AtomHandler(webapp.RequestHandler):
+class AtomHandler(incident_request.RequestHandler):
 	def get(self):
-		center = self.request.get("center")
-		dispatch = self.request.get("dispatch", default_value="SACC")
-		area = self.request.get("area")
-		city = self.request.get("city")
-		roads = self.request.get("roads")
+		self.get_incidents()
 
-		memcache_key = "atom-%s-%s-%s-%s" % (center, dispatch, area, city)
-		memcache_expiry_time = 60
-		last_mod = datetime.datetime.utcnow()
+		# 304 check
+		if self.is_not_modified():
+			return
 
-		incidents = memcache.get(memcache_key)
-		if incidents is None:
-			incidents = CHPIncident.all()
-			incidents.order('-LogTime')
-			if center != "":
-				incidents.filter('CenterID =', center)
-			if dispatch != "":
-				incidents.filter('DispatchID =', dispatch)
-			if area != "":
-				incidents.filter('Area =', area)
-			if city != "":
-				incidents.filter('city =', city)
-
-			memcache.add(memcache_key, incidents, memcache_expiry_time)
-
-		if incidents.count(1) > 0:
-			last_mod = max(incidents, key=lambda incident: incident.updated).updated
-			if conditional_http.isNotModified(self, last_mod):
-				return
-
+		# Build the ATOM XML
 		feed = ElementTree.Element('feed', {
 			'xmlns': 'http://www.w3.org/2005/Atom',
 			'xmlns:georss': 'http://www.georss.org/georss'
 		})
 
 		title = "CHP Traffic Incidents"
-		if dispatch == "SACC":
+		if self.request.get("dispatch") == "SACC":
 			title = "SacTraffic: Sacramento Area Traffic Incidents"
+		roads = self.request.get("roads")
 		if roads != "":
 			title = "%s (%s)" % (title, roads)
 
@@ -59,7 +34,7 @@ class AtomHandler(webapp.RequestHandler):
 		ElementTree.SubElement(feed, 'subtitle').text = 'Traffic incidents from the CHP'
 		ElementTree.SubElement(ElementTree.SubElement(feed, 'author'), 'name').text = 'The California Highway Patrol'
 		ElementTree.SubElement(feed, 'id').text = 'tag:traffic.lectroid.net,2010-06-24:100'
-		ElementTree.SubElement(feed, 'updated').text = last_mod.strftime("%Y-%m-%dT%H:%M:%SZ")
+		ElementTree.SubElement(feed, 'updated').text = self.incidents_last_mod.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 		# self link...
 		self_href = "http://%s/atom" % self.request.environ['HTTP_HOST']
@@ -85,7 +60,7 @@ class AtomHandler(webapp.RequestHandler):
 		ElementTree.SubElement(feed, 'logo').text = "http://%s/images/sactraffic.png" % self.request.environ['HTTP_HOST']
 		ElementTree.SubElement(feed, 'icon').text = "http://%s/favicon.ico" % self.request.environ['HTTP_HOST']
 
-		for incident in incidents:
+		for incident in self.incidents:
 			if roads != "":
 				road_match = re.search(roads.replace(",", "|"), incident.Location, flags=re.I)
 				if road_match is None:
@@ -122,15 +97,16 @@ class AtomHandler(webapp.RequestHandler):
 				ElementTree.SubElement(entry, 'link', {'rel': 'enclosure', 'type': 'image/png', 'href': static_map_url})
 				ElementTree.SubElement(entry, 'georss:point').text = str(incident.geolocation.lat) + " " + str(incident.geolocation.lon)
 
-
+		# Output
 		self.response.headers["Content-Type"] = "application/atom+xml"
-		conditional_http.setConditionalHeaders(self, last_mod)
+		self.send_conditional_headers()
+
 		self.response.out.write('<?xml version="1.0"?>')	# oh this can't be right!
 		self.response.out.write(ElementTree.tostring(feed))
 
 
 application = webapp.WSGIApplication([('/atom', AtomHandler)],
-										 debug=True)
+									 debug=True)
 
 def main():
 	util.run_wsgi_app(application)
