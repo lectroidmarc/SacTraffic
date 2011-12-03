@@ -3,6 +3,7 @@ import pickle
 import os
 import re
 import time
+import urllib
 from datetime import datetime, timedelta
 
 from google.appengine.ext import db
@@ -17,7 +18,6 @@ from thirdparty.pubsubhubbub_publish import *
 def process_chp_xml(chpState):
 	for chpCenter in chpState:
 		deferred.defer(process_chp_center, chpCenter, _queue="chpProcessQueue");
-
 
 def process_chp_center(chpCenter):
 	incident_list = []
@@ -83,12 +83,10 @@ def process_chp_center(chpCenter):
 			# Set up the PSH pings.  Note, we are NOT checking for actual
 			# changes in the data, we are just assuming that the existance of
 			# an incident in the CHP feed declares it as "updated" so we ping.
-			psh_pings.append('http://www.sactraffic.org/atom?center=%s' % incident.CenterID)
-			psh_pings.append('http://www.sactraffic.org/atom?dispatch=%s' % incident.DispatchID)
-			psh_pings.append('http://www.sactraffic.org/atom?area=%s' % incident.Area.replace(' ', '%20'))
-			# Note: 'dispatch' defaults to SACC so ping accordingly
-			if incident.DispatchID == "SACC":
-				psh_pings.append('http://www.sactraffic.org/atom')
+			psh_pings.append('http://www.sactraffic.org/atom?center=%s' % urllib.quote(incident.CenterID))
+			psh_pings.append('http://www.sactraffic.org/atom?dispatch=%s' % urllib.quote(incident.DispatchID))
+			psh_pings.append('http://www.sactraffic.org/atom?area=%s' % urllib.quote(incident.Area))
+			psh_pings.append('http://www.sactraffic.org/atom')
 
 			# Save this incident
 			incident_list.append(incident)
@@ -96,10 +94,13 @@ def process_chp_center(chpCenter):
 	# Store the incidents in a batch
 	db.put(incident_list)
 
-	# Ping the PSH hub
+	# Ping the PSH hub, use a set so we don't ping duplicates.
+	ping_set = set(psh_pings)
 	if not os.environ['SERVER_SOFTWARE'].startswith('Development'):
-		if len(set(psh_pings)):
-			deferred.defer(publish, 'http://pubsubhubbub.appspot.com', set(psh_pings), _queue="pshPingQueue")
+		if len(ping_set):
+			deferred.defer(publish, 'http://pubsubhubbub.appspot.com', ping_set, _queue="pshPingQueue")
+	else:
+		logging.info("Skipping PSH pings for %s on the development server. %s" % (incident.CenterID, ping_set))
 
 	# Reverse geocode the incidents if we haven't already
 	for incident in incident_list:
@@ -107,7 +108,6 @@ def process_chp_center(chpCenter):
 			deferred.defer(load_city, incident.key(), _queue="reverseGeocodeQueue")
 
 	logging.info("Processed %d incidents in %s." % (len(incident_list), chpCenter.attrib['ID']))
-
 
 # Use app cahing and regex compiling
 # List of translations available at: http://www.freqofnature.com/frequencies/ca/chpcodes.html
