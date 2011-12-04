@@ -1,4 +1,6 @@
-"""Model classes for SacTraffic."""
+"""Model classes for SacTraffic.
+
+"""
 
 import time
 
@@ -10,18 +12,37 @@ from google.appengine.api import memcache
 from utils import tzinfo
 
 class CHPData(db.Model):
-	"""Holds the last successful CHP data fetch."""
+	"""Holds the last successful CHP data fetch.
+
+	"""
 	data = db.BlobProperty(required=True)
 	updated = db.DateTimeProperty(auto_now=True)
 
 	def put(self):
-		"""Stick the updated date into memcache on put()."""
+		"""Stick the updated date into memcache on put().
+
+		"""
 		memcache.set("%s-updated" % self.key().id_or_name(), self.updated)
 		db.Model.put(self)
 
+	@classmethod
+	def last_updated(cls):
+		"""Gets the last updated date of the CHP Data.
+
+		"""
+		chp_data_last_updated = memcache.get("chp_data-updated")
+		if chp_data_last_updated is None:
+			chp_data = cls.get_by_key_name("chp_data")
+			memcache.add("chp_data-updated", chp_data.updated)
+			chp_data_last_updated = chp_data.updated
+
+		return chp_data_last_updated
+
 
 class CHPIncident(db.Model):
-	"""Represents a CHP Incident."""
+	"""Represents a CHP Incident.
+
+	"""
 	CenterID = db.StringProperty(required=True)
 	DispatchID = db.StringProperty(required=True)
 	LogID = db.StringProperty(required=True)
@@ -52,13 +73,7 @@ class CHPIncident(db.Model):
 			# less than 5 min old == new
 			return 'new'
 
-		chp_data_last_updated = memcache.get("chp_data-updated")
-		if chp_data_last_updated is None:
-			chp_data = CHPData.get_by_key_name("chp_data")
-			memcache.add("chp_data-updated", chp_data.updated)
-			chp_data_last_updated = chp_data.updated
-
-		if self.updated < chp_data_last_updated - timedelta(minutes=15):
+		if self.updated < CHPData.last_updated() - timedelta(minutes=15):
 			# not updated w/in 15 min of the last successful update == inactive
 			# 15 min assumes 3 misses on a 5 min cron cycle.
 			return 'inactive'

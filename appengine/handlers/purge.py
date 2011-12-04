@@ -1,6 +1,9 @@
-"""Purge function to delete any incidents that have not been updated in over
-6 hours from the last successful CHP data update."""
+"""Purge handler.
 
+Delete any incidents that have not been updated in over
+6 hours from the last successful CHP data update.
+
+"""
 from datetime import datetime, timedelta
 
 from google.appengine.ext import webapp
@@ -18,7 +21,7 @@ class PurgeHandler(webapp.RequestHandler):
 		if chp_data is not None:
 			query = CHPIncident.all(keys_only=True)
 
-			query.filter('updated <', chp_data.updated - timedelta(hours=6))
+			query.filter('updated <', CHPData.last_updated() - timedelta(hours=6))
 			count = query.count()
 			db.delete(query)
 
