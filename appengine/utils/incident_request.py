@@ -9,7 +9,7 @@ from google.appengine.api import memcache
 from google.appengine.ext import webapp
 
 from models import CHPIncident
-import logging
+
 
 class RequestHandler(webapp.RequestHandler):
 	incidents_last_mod = None
@@ -31,18 +31,20 @@ class RequestHandler(webapp.RequestHandler):
 		incidents = memcache.get(memcache_key)
 		if incidents is None:
 			if id == "":
-				incidents = CHPIncident.all()
-				incidents.order('-LogTime')
+				query = CHPIncident.all()
+				query.order('-LogTime')
 				if center != "":
-					incidents.filter('CenterID =', center)
+					query.filter('CenterID =', center)
 				if dispatch != "":
-					incidents.filter('DispatchID =', dispatch)
+					query.filter('DispatchID =', dispatch)
 				if area != "":
-					incidents.filter('Area =', area)
+					query.filter('Area =', area)
 				if city != "":
-					incidents.filter('city =', city)
+					query.filter('city =', city)
 				if since != "":
-					incidents.filter('LogTime >', datetime.fromtimestamp(float(since)))
+					query.filter('LogTime >', datetime.fromtimestamp(float(since)))
+
+				incidents = query.fetch(10000)
 			else:
 				# Handle single incident requests, slightly different approach
 				# We want to use get_by_key_name() instead of filtering.
@@ -51,14 +53,13 @@ class RequestHandler(webapp.RequestHandler):
 				if incident is not None:
 					incidents.append(incident)
 
-			memcache.add(memcache_key, incidents, memcache_expiry_time)
+			try:
+				memcache.add(memcache_key, incidents, memcache_expiry_time)
+			except ValueError:
+				pass
 
-		# Try to get a last_mod date for conditional HTTP headers from the
-		# incident data.  This will fail if incidents is empty.
-		try:
+		if len(incidents) > 0:
 			self.incidents_last_mod = max(incidents, key=lambda incident: incident.updated).updated
-		except ValueError:
-			pass
 
 		self.incidents = incidents
 
