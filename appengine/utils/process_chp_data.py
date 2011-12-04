@@ -89,6 +89,8 @@ def process_chp_center(chpCenter):
 			psh_pings.append('http://www.sactraffic.org/atom?center=%s' % urllib.quote(incident.CenterID))
 			psh_pings.append('http://www.sactraffic.org/atom?dispatch=%s' % urllib.quote(incident.DispatchID))
 			psh_pings.append('http://www.sactraffic.org/atom?area=%s' % urllib.quote(incident.Area))
+			if incident.city is not None and incident.city != "":
+				psh_pings.append('http://www.sactraffic.org/atom?city=%s' % urllib.quote(incident.city))
 
 			# Save this incident
 			incident_list.append(incident)
