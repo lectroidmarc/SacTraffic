@@ -18,9 +18,6 @@ handlers:
 - url: /sitemap
   script: handlers/sitemap.py
 
-- url: /update-helper
-  script: handlers/update-helper.py
-
 - url: /update
   script: handlers/update.py
   login: admin
