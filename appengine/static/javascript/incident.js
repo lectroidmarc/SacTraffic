@@ -59,7 +59,7 @@ Incident.prototype.makeListItem = function (element) {
 	jQuery('<div/>').addClass('location').html(this.Location + "<br/>" + city).appendTo(li);
 
 	// Time
-	jQuery('<div/>').addClass('logtime').html(this.LogTime).append(
+	jQuery('<div/>').addClass('logtime').html(incident_date.getPrettyDateTime()).append(
 		jQuery('<span/>').addClass('dtstart').html(incident_date.getISO8601())
 	).appendTo(li);
 
