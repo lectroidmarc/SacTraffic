@@ -1,3 +1,6 @@
+"""Functions for processing the CHP data.
+
+"""
 import logging
 import pickle
 import os
@@ -15,6 +18,9 @@ from thirdparty import pubsubhubbub_publish
 
 
 def process_chp_xml(chpState):
+	"""Process a whole CHP feed in ETree format.
+
+	"""
 	for chpCenter in chpState:
 		deferred.defer(process_chp_center, chpCenter, _queue="chpProcessQueue")
 
@@ -23,6 +29,9 @@ def process_chp_xml(chpState):
 		deferred.defer(pubsubhubbub_publish.publish, 'http://pubsubhubbub.appspot.com', 'http://www.sactraffic.org/atom', _queue="pshPingQueue")
 
 def process_chp_center(chpCenter):
+	"""Process a CHP Center.
+
+	"""
 	incident_list = []
 	psh_pings = []
 
@@ -33,6 +42,8 @@ def process_chp_center(chpCenter):
 			continue
 
 		for chpLog in chpDispatch:
+			# There are two different time formats in the CHP feed.  Try the
+			# "standard" format first, then fall back to the new SAHB format.
 			try:
 				log_time = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=tzinfo.Pacific())
 			except ValueError:
@@ -55,12 +66,15 @@ def process_chp_center(chpCenter):
 			incident.Area = chpLog.find('Area').text.strip('"')
 			incident.ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"')
 
+			# Like the LogTime above, there are now two location formats.
+			# This time we try the SAHB LATLON first, then fall back to TBXY.
 			try:
-				latlon = chpLog.find('LATLON').text.strip('"').partition(":")
-				incident.geolocation = db.GeoPt(
-					lat = float(latlon[0]) / 1000000,
-					lon = float(latlon[2]) / 1000000 * -1
-				)
+				latlon = chpLog.find('LATLON').text.strip('"')
+				if latlon != "0:0":
+					incident.geolocation = db.GeoPt(
+						lat = float(latlon.partition(":")[0]) / 1000000,
+						lon = float(latlon.partition(":")[2]) / 1000000 * -1
+					)
 			except AttributeError:
 				incident.TBXY = chpLog.find('TBXY').text.strip('"')
 				incident.geolocation = geoConvertTBXY(incident.CenterID, incident.TBXY)
@@ -154,6 +168,9 @@ coplingo = [
 ]
 
 def deCopIfy(text):
+	"""Translate police jargon to something in English.
+
+	"""
 	if text == "":
 		return text
 
@@ -163,6 +180,11 @@ def deCopIfy(text):
 	return text[0].upper() + text[1:]
 
 def geoConvertTBXY(center, tbxy):
+	"""Converts TBXY points to Lat/Long.
+
+	Mostly...
+
+	"""
 	if tbxy != "":
 		tbxy_parts = tbxy.partition(":")
 
