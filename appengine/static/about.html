@@ -28,29 +28,36 @@
 
 <body>
 <div id="header">
+	<h1>About this site</h1>
+	<p class="info">This site is just a little experiment in "web 2.0" mashups.  Starting with an XML feed of state-wide traffic incidents from the <a href="http://www.chp.ca.gov/">California Highway Patrol</a> at <a href="http://media.chp.ca.gov/sa_xml/sa.xml">http://media.chp.ca.gov/sa_xml/sa.xml</a> I pull out local incidents and build on them. Hopfully the result is something people find useful.</p>
 </div>
 
 <div id="content">
-	<h1>What is this site?</h1>
-
-	<p>This site is just a little experiment in Web 2.0 mashups.  Starting with an XML feed of state-wide traffic incidents from the <a href="http://www.chp.ca.gov/">California Highway Patrol</a> at <a href="http://media.chp.ca.gov/sa_xml/sa.xml">http://media.chp.ca.gov/sa_xml/sa.xml</a> we pull out local incidents and build on them.</p>
-	<p>Hopfully the result is something useful.</p>
-
 	<h2>What can I see here?</h2>
 
-	<p>First we display local incidents and their details then we map them using <a href="http://code.google.com/apis/maps/documentation/javascript/">Google Maps API</a>.  We location information included in the incident and geocode using our own magic algorithms.</p>
-	<p>Area-wide advisories and media alerts will also be displayed "banner-style" across the top of the site.</p>
-	<p>Then we add Google's support for traffic condition overlays so you can see at-a-glance area traffic conditions.</p>
-	<p>We also provide an <a href="/atom">ATOM feed of all the active incidents</a> that is customizable to show specific streets or even a set of streets.  You can customize it to, say, your commute streets and get updates of traffic incidents along your commute while at work.</p>
+	<p>First we display local incidents and their details then map them using <a href="http://code.google.com/apis/maps/documentation/javascript/">Google Maps API</a>.  We grab the location information included in the incident and geocode it using our own magic algorithms.</p>
+	<!--<p>Area-wide advisories and media alerts will also be displayed "banner-style" across the top of the site.</p>-->
+	<p>Then we add Google's traffic condition overlays so you can see at-a-glance area traffic conditions.</p>
 	<p>But wait, there's more!	There's a <a href="http://twitter.com/sactraffic">Twitter</a> feed as well.  You can get updates virtually live as they come in.</p>
-	<p>We also have live video from both <a href="http://video.dot.ca.gov/">Cal Trans</a> and the <a href="http://www.traffic.saccounty.net/projects/TOC/TrafCam.asp">Sacramento County Department of Transportation</a> too.	Now you can <strong>see</strong> traffic too.</p>
+	<p>And we have live video from <a href="http://video.dot.ca.gov/">Cal Trans</a> too.	Now you can <strong>see</strong> the traffic if that's what you want.</p>
 
 	<h2>Can I build on your work?</h2>
 
-	<p>Of course!  There's <a href="http://json.org/">JSON</a> data for every CHP Dispatch in California available by CHP <strong>Center</strong>, <strong>Dispatch</strong> or <strong>Area</strong> and also, recently, by <strong>city</strong>.</p>
-	<p>So, for example, "STCC" is the Sacramento Center code (as well as the dispatch code) so <code>http://www.sactraffic.org/json?center=STCC</code> will get you all the Sacramento Valley incidents (covering Sacramento, Chico and Stockton dispatches), and <code>http:/www.sactraffic.org/json?dispatch=STCC</code> will get you just the Sacramento Dispatch incidents (what this site uses) and you can go further, all the way down to the <a href="http://cad.chp.ca.gov/htm/body_phone.htm">area offices</a> so, say, Placerville office incidents would be <code>http:/www.sactraffic.org/json?area=Placerville</code>.</p>
-	<p>City level support was recently added as well.  This is even more granular than the CHP Area level.  Guess what <code>http://www.sactraffic.org/json?city=Isleton</code> will get you?</p>
-	<p>See how that works?  Secret tip: these same parameters also work for the ATOM feed.</p>
+	<p>Yes... and no<a href="#weasle">*</a>.  There are both <a href="http://json.org/">JSON</a> and <a href="http://tools.ietf.org/html/rfc4287">ATOM</a> feeds available for the entire state and they can be queried by the following:</p>
+	<ul>
+		<li><code>center</code> - The CHP Communication Center.  There are 12 of them...</li>
+		<li><code>dispatch</code> - The CHP Dispatch Center.</li>
+		<li><code>area</code> - The CHP office.  The breaks the Dispatch Centers down further into offices.  They're kindof vague location-wise, but they're there.</li>
+		<li><code>city</code> - If there is a valid location we'll reverse geocode it for something a little more granular than the CHP office.</li>
+		<li><code>since</code> - Shows only results since a certain time.  Takes an "epoch" timestamp.</li>
+		<li><code>roads</code> - [ATOM only].  Filters the results by a comma separated list of street names.</li>
+		<li><code>callback</code> - [JSON only].  A callback for a JSONP request.</li>
+	</ul>
+	<p>So, for example, "STCC" is the Sacramento Communication Center code so <code>http://www.sactraffic.org/json?center=STCC</code> will get you all the Sacramento Valley incidents (covering Sacramento, Chico and Stockton dispatches), and <code>http:/www.sactraffic.org/json?dispatch=STCC</code> will get you just the Sacramento Dispatch incidents (what this site uses) and you can go further, to the area offices so, North Sacramento office incidents would be <code>http:/www.sactraffic.org/json?area=North%20Sacramento</code>. Going further you can specify a city, like Folsom, which will get you <code>http:/www.sactraffic.org/json?city=Folsom</code> for the incidents actually in Folsom.</p>
+	<p>The JSON feeds are at <code>/json</code> and the ATOM feeds are available at <code>/atom</code>.  Also, if this is your thing, our ATOM feeds use <a href="http://code.google.com/p/pubsubhubbub/">PuSH</a> notifications for near instant updates.</p>
+	<p>The various CHP centers, dispatches and offices are listed here: <a href="http://www.chp.ca.gov/depts_divs_offs/dispatchcenters.html">http://www.chp.ca.gov/depts_divs_offs/dispatchcenters.html</a>.</p>
+	<p>Note: Only one of <code>center</code>, <code>dispatch</code>, <code>area</code> and <code>city</code> can be used at a time.  That's ok though, there's no sense in combining them as they're hierarchal.</p>
+	<p class="info">Note: In May 2011, the CHP data format for the Sacramento area changed a bit so the above text isn't exactly right as far as Sacramento Center, Dispatch and Area names go but the model is still valid.</p>
 	<p>The JSON format looks like:</p>
 
 	<div class="codeblock">[
@@ -75,8 +82,8 @@
             }
           ]
       },
-    "LogTime": "11\/18\/2010 08:11:28 AM",
-    "LogTimeEpoch": 1290096688.0,
+    "LogTime": "",                    <span style="color:red">Note: LogTime is not used for the time being. It will become the "epoch" date soon.</span>
+    "LogTimeEpoch": 1290096688,
     "LogType": "Hit & Run - No Injuries",
     "TBXY": "6748562:1981160",
     "ThomasBrothers": "299 1A",
@@ -89,7 +96,6 @@
   }
 ]</div>
 
-	<p>I also have a <a href="http://ajaxian.com/archives/jsonp-json-with-padding">JSONP</a> hook set up using a "callback" parameter. Simply pass <code>callback</code> along with any center/dispatch/area arguments and go nuts.</p>
 	<p>Here's a <a href="http://jquery.com">jQuery</a> example:</p>
 
 	<div class="codeblock">$.getJSON("http://www.sactraffic.org/json?dispatch=STCC&amp;callback=?",
@@ -98,7 +104,11 @@
   });
 });</div>
 
-	<p>Feel free to use them as you see fit.  If you do, let me know if you come up with something cool.</p>
+	<p>Finally, all the source code for SacTraffic.org is stored in <a href="https://github.com/lectroidmarc/SacTraffic">GitHub</a>.</p>
+
+	<h2><a name="weasle"/>Yeah, about that useage...</h2>
+
+	<p>This site runs on <a href="http://code.google.com/appengine/">Google App Engine</a> and they recently jacked up their pricing so that even little tiny sites (like this one) must pay something so in turn, since I do this for free, I have set a pretty low pricing cap.  So, please, feel free to use the ATOM and/or JSON feeds as you see fit, just if you do and you start seeing "<a href="http://www.google.com/support/forum/p/Google%20Apps/thread?tid=1133d47818d48400&hl=en">503 Over Quota</a>" errors, well, you might want to think about paying my hosting bills.</p>
 
 	<h2>You can be reached where?</h2>
 
