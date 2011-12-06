@@ -305,6 +305,7 @@ TrafficMap.prototype.hide_incidents = function () {
 TrafficMap.prototype.make_marker = function (incident) {
 	var self = this;
 	var icon = this.default_icon;
+	var incident_date = new Date(incident.LogTimeEpoch * 1000);
 
 	if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType)) {
 		// Hazard icon...
@@ -323,7 +324,7 @@ TrafficMap.prototype.make_marker = function (incident) {
 	});
 
 	var infowindow = new google.maps.InfoWindow({
-		content: '<div class="marker"><div class="logtype">' + incident.LogType + '</div><div class="location">' + incident.Location + '</div><div class="logtime">' + incident.LogTime + '</div></div>'
+		content: '<div class="marker"><div class="logtype">' + incident.LogType + '</div><div class="location">' + incident.Location + '</div><div class="logtime">' + incident_date.getPrettyDateTime() + '</div></div>'
 	});
 
 	google.maps.event.addListener(marker, 'click', function() {
