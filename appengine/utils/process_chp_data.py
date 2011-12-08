@@ -60,8 +60,8 @@ def process_chp_center(chpCenter):
 					LogID = chpLog.attrib['ID'])
 
 			incident.LogTime = log_time
-			incident.LogType = deCopIfy(logtype[2]).replace("-", " - ")
-			incident.LogTypeID = logtype[0]
+			incident.LogType = deCopIfy(logtype[2].strip())
+			incident.LogTypeID = logtype[0].strip()
 			incident.Location = deCopIfy(chpLog.find('Location').text.strip('"'))
 			incident.Area = chpLog.find('Area').text.strip('"')
 			incident.ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"')
@@ -163,6 +163,8 @@ coplingo = [
 	{ 'regex': re.compile(r'\bTC\b', re.I), 'str': "collision" },
 	{ 'regex': re.compile(r'\bRHS\b', re.I), 'str': "right hand side" },
 	{ 'regex': re.compile(r'\bLHS\b', re.I), 'str': "left hand side" },
+
+	{ 'regex': re.compile(r'\s*-\s*', re.I), 'str': " - " },
 
 	{ 'regex': re.compile(r'^\[\d+\] ', re.I), 'str': "" }
 ]
