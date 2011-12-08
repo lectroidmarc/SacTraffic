@@ -94,10 +94,6 @@ class AtomHandler(incident_request.RequestHandler):
 			ElementTree.SubElement(entry, 'published').text = incident.LogTime.strftime("%Y-%m-%dT%H:%M:%SZ")
 			ElementTree.SubElement(entry, 'updated').text = incident.updated.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-			ElementTree.SubElement(entry, 'link', {
-				'href': "http://%s/incident?id=%s" % (self.request.environ['HTTP_HOST'], incident.key().name())
-			})
-
 			if incident.geolocation is not None:
 				ElementTree.SubElement(entry, 'link', {'rel': 'enclosure', 'type': 'image/png', 'href': static_map_url})
 				ElementTree.SubElement(entry, 'georss:point').text = str(incident.geolocation.lat) + " " + str(incident.geolocation.lon)
