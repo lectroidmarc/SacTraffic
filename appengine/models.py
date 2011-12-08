@@ -33,8 +33,9 @@ class CHPData(db.Model):
 		chp_data_last_updated = memcache.get("chp_data-updated")
 		if chp_data_last_updated is None:
 			chp_data = cls.get_by_key_name("chp_data")
-			memcache.add("chp_data-updated", chp_data.updated)
-			chp_data_last_updated = chp_data.updated
+			if chp_data is not None:
+				memcache.add("chp_data-updated", chp_data.updated)
+				chp_data_last_updated = chp_data.updated
 
 		return chp_data_last_updated
 
