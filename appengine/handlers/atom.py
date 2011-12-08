@@ -102,6 +102,8 @@ class AtomHandler(incident_request.RequestHandler):
 				ElementTree.SubElement(entry, 'link', {'rel': 'enclosure', 'type': 'image/png', 'href': static_map_url})
 				ElementTree.SubElement(entry, 'georss:point').text = str(incident.geolocation.lat) + " " + str(incident.geolocation.lon)
 
+			ElementTree.SubElement(entry, 'category', {'term': incident.LogTypeID})
+
 		# Output
 		self.response.headers["Content-Type"] = "application/atom+xml"
 		self.send_conditional_headers()
