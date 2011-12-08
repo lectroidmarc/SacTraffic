@@ -6,9 +6,6 @@ api_version: 1
 default_expiration: "365d"
 
 handlers:
-- url: /incident
-  script: handlers/incident.py
-
 - url: /atom
   script: handlers/atom.py
 
