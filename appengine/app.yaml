@@ -15,9 +15,6 @@ handlers:
 - url: /json
   script: handlers/json.py
 
-- url: /sitemap
-  script: handlers/sitemap.py
-
 - url: /update
   script: handlers/update.py
   login: admin
