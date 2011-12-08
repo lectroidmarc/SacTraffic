@@ -6,6 +6,7 @@ Returns CHP incident data in the ATOM format.
 import pickle
 import re
 import time
+import urllib
 from xml.etree import ElementTree
 
 from google.appengine.ext import webapp
@@ -83,7 +84,18 @@ class AtomHandler(incident_request.RequestHandler):
 
 			static_map_url = ""
 			if incident.geolocation is not None:
-				static_map_url = "http://maps.google.com/maps/api/staticmap?size=200x200&markers=color:0x165279|%f,%f&zoom=12&maptype=roadmap&sensor=false&style=feature:landscape|lightness:100&style=feature:road.highway|element:geometry|hue:0xff0000|saturation:-25&style=feature:landscape|lightness:100&style=feature:road.arterial|element:geometry|saturation:-100|visibility:simplified&style=feature:road.arterial|element:labels|saturation:-100|lightness:10" % (incident.geolocation.lat, incident.geolocation.lon)
+				static_map_opts = urllib.urlencode({
+					"size": "200x200",
+					"markers": "color:0x165279|%f,%f" % (incident.geolocation.lat, incident.geolocation.lon),
+					"zoom": "12",
+					"maptype": "roadmap",
+					"sensor": "false",
+					"style": "feature:landscape|lightness:100",
+					"style": "feature:road.highway|element:geometry|hue:0xff0000|saturation:-25",
+					"style": "feature:road.arterial|element:geometry|saturation:-100|visibility:simplified",
+					"style": "feature:road.arterial|element:labels|saturation:-100|lightness:10"
+				})
+				static_map_url = "http://maps.google.com/maps/api/staticmap?%s" % static_map_opts
 				description = '%s<img src="%s" width="200" height="200" border="1"/>' % (description, static_map_url)
 
 			entry = ElementTree.SubElement (feed, 'entry')
