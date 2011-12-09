@@ -51,8 +51,6 @@ def process_chp_center(chpCenter):
 				log_time = datetime.strptime(chpLog.find('LogTime').text, '"%b %d %Y %I:%M%p"').replace(tzinfo=tzinfo.Pacific())
 
 			key_name = "%s.%s.%s.%d" % (chpCenter.attrib['ID'], chpDispatch.attrib['ID'], chpLog.attrib['ID'], time.mktime(log_time.timetuple()))
-			logtype = chpLog.find('LogType').text.strip('"').partition("-")
-
 			incident = CHPIncident.get_by_key_name(key_name)
 			if incident is None:
 				incident = CHPIncident(key_name = key_name,
@@ -61,8 +59,16 @@ def process_chp_center(chpCenter):
 					LogID = chpLog.attrib['ID'])
 
 			incident.LogTime = log_time
-			incident.LogType = deCopIfy(re.sub(dash_re, ' - ', logtype[2].strip()))
-			incident.LogTypeID = logtype[0].strip()
+
+			(logtypeid, dash, logtype) = chpLog.find('LogType').text.strip('"').partition("-")
+			if dash == '':
+				# If 'dash' is missing then the hyphen was missing, if so we
+				# use the whole thing as the LogType and forget the LogTypeID
+				incident.LogType = deCopIfy(re.sub(dash_re, ' - ', logtypeid.strip()))
+			else:
+				incident.LogType = deCopIfy(re.sub(dash_re, ' - ', logtype.strip()))
+				incident.LogTypeID = logtypeid.strip()
+
 			incident.Location = deCopIfy(chpLog.find('Location').text.strip('"'))
 			incident.Area = chpLog.find('Area').text.strip('"')
 			incident.ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"')
