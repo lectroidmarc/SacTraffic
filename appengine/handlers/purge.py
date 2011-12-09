@@ -1,7 +1,7 @@
 """Purge handler.
 
 Delete any incidents that have not been updated in over
-6 hours from the last successful CHP data update.
+an hour from the last successful CHP data update.
 
 """
 from datetime import datetime, timedelta
