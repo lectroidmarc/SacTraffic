@@ -34,6 +34,7 @@ def process_chp_center(chpCenter):
 	"""
 	incident_list = []
 	psh_pings = []
+	dash_re = re.compile(r'\s*-\s*')
 
 	for chpDispatch in chpCenter:
 		# For some reason, sometimes the Dispatch ID is blank
@@ -60,7 +61,7 @@ def process_chp_center(chpCenter):
 					LogID = chpLog.attrib['ID'])
 
 			incident.LogTime = log_time
-			incident.LogType = deCopIfy(logtype[2].strip())
+			incident.LogType = deCopIfy(re.sub(dash_re, ' - ', logtype[2].strip()))
 			incident.LogTypeID = logtype[0].strip()
 			incident.Location = deCopIfy(chpLog.find('Location').text.strip('"'))
 			incident.Area = chpLog.find('Area').text.strip('"')
