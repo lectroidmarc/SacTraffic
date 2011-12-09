@@ -26,10 +26,6 @@ handlers:
   script: handlers/purge.py
   login: admin
 
-# Redirections
-- url: /rss.php
-  script: handlers/redirect.py
-
 # Static stuff
 - url: /stylesheets
   static_dir: static/stylesheets
