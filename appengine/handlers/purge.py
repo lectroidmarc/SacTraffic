@@ -21,7 +21,7 @@ class PurgeHandler(webapp.RequestHandler):
 		if chp_data is not None:
 			query = CHPIncident.all(keys_only=True)
 
-			query.filter('updated <', CHPData.last_updated() - timedelta(hours=6))
+			query.filter('updated <', CHPData.last_updated() - timedelta(hours=1))
 			count = query.count()
 			db.delete(query)
 
