@@ -8,7 +8,7 @@ from datetime import datetime
 from google.appengine.api import memcache
 from google.appengine.ext import webapp
 
-from models import CHPIncident
+from models import CHPData, CHPIncident
 
 
 class RequestHandler(webapp.RequestHandler):
@@ -60,6 +60,8 @@ class RequestHandler(webapp.RequestHandler):
 
 		if len(incidents) > 0:
 			self.incidents_last_mod = max(incidents, key=lambda incident: incident.updated).updated
+		else:
+			self.incidents_last_mod = CHPData.last_updated()
 
 		self.incidents = incidents
 
