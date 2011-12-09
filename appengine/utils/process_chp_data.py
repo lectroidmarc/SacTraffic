@@ -164,8 +164,6 @@ coplingo = [
 	{ 'regex': re.compile(r'\bRHS\b', re.I), 'str': "right hand side" },
 	{ 'regex': re.compile(r'\bLHS\b', re.I), 'str': "left hand side" },
 
-	{ 'regex': re.compile(r'\s*-\s*', re.I), 'str': " - " },
-
 	{ 'regex': re.compile(r'^\[\d+\] ', re.I), 'str': "" }
 ]
 
