@@ -8,8 +8,11 @@
  * Creates a new traffic map.
  * @class Represents a traffic map.
  * @param {String} elementId An ID to load the map into.
+ * @param {Object} [opts] Options for the map.
+ * @param {Boolean} [opts.show_cameras] To show the live cameras.
+ * @param {Boolean} [opts.show_traffic] To show the traffic overlay.
  */
-function TrafficMap (elementId) {
+var TrafficMap = function (elementId, opts) {
 	this.center = new google.maps.LatLng(38.56, -121.40);
 	this.live_cams = [];
 	this.traffic_overlay = null;
@@ -91,6 +94,16 @@ function TrafficMap (elementId) {
 
 	this.gmap.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.make_traffic_button());
 	this.gmap.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.make_camera_button());
+
+	// Handle opts
+	if (typeof(opts) !== 'undefined') {
+		if (opts.show_cameras) {
+			this.show_live_cams();
+		}
+		if (opts.show_traffic) {
+			this.show_gtraffic();
+		}
+	}
 }
 
 /**
