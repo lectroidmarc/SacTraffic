@@ -11,7 +11,7 @@
 
 <link rel="alternate" type="application/atom+xml" title="Sac Traffic Atom Feed" href="/atom" />
 
-<meta name="viewport" content="width = 390" />
+<meta name = "viewport" content = "width = device-width">
 
 <script type="text/javascript">
 	var _gaq = _gaq || [];
@@ -33,83 +33,64 @@
 </head>
 
 <body>
-<div id="top_banner" class="ad leaderboard">
-	<script type="text/javascript"><!--
-		google_ad_client = "pub-0887871162421804";
-		if (screen.width <= 480) {
-			var banner = document.getElementById("top_banner");
-			banner.className = 'ad halfbanner';
-
-			/* Mobile Leaderboard */
-			google_ad_slot = "1236279869";
-			google_ad_width = 234;
-			google_ad_height = 60;
-		} else {
-			/* Leaderboard */
-			google_ad_slot = "3264684355";
-			google_ad_width = 728;
-			google_ad_height = 90;
-		}
-		//-->
-	</script>
-	<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+<div id="header">
+	<h1>SacTraffic Widget</h1>
+	<p class="info"><p>Want a widget of SacTraffic.org incidents for your site?</p>
 </div>
 
 <div id="content">
-	<div>
-		<h1>SacTraffic Widget</h1>
+	<p>Like this:</p>
 
-		<p>Want a widget of SacTraffic.org incidents for your site?  One like this:</p>
-
-		<div class="demowidget">
-			<script src="http://www.sactraffic.org/javascript/sactraffic-widget.min.js"></script>
-		</div>
-
-		<p>Simple, just add the following to your site, right where you want it:</p>
-
-		<blockquote class="copycode">
-			&lt;script src="http://www.sactraffic.org/javascript/sactraffic-widget.min.js"&gt;&lt;/script&gt;
-		</blockquote>
-
-		<h2>Ack, there's too many (or too few) incidents!</h2>
-
-		<p>Yeah, there's an opt for that: <select name="num">
-			<option>1</option>
-			<option>2</option>
-			<option>3</option>
-			<option>4</option>
-			<option>5</option>
-			<option>6</option>
-			<option>7</option>
-			<option>8</option>
-			<option>9</option>
-			<option selected="selected">10</option>
-			<option>11</option>
-			<option>12</option>
-			<option>13</option>
-			<option>14</option>
-			<option>15</option>
-			<option>16</option>
-			<option>17</option>
-			<option>18</option>
-			<option>19</option>
-			<option>20</option>
-		</select></p>
-
-		<h2>But it's ugly!</h2>
-
-		<p>We have themes:</p>
-		<ul>
-			<li><input type="radio" name="theme" value="blue" checked="checked"/> <strong>Blue</strong> - The cool blue default theme of SacTraffic.org.</li>
-			<li><input type="radio" name="theme" value="lectroid"/> <strong>Lectroid</strong> - Black and Orange like my favorite site.</li>
-			<li><input type="radio" name="theme" value="none"/> <strong>None</strong> - You don't need no stinking themes, you got the CSS covered.</li>
-		</ul>
+	<div class="demowidget">
+		<script src="http://www.sactraffic.org/javascript/sactraffic-widget.min.js"></script>
 	</div>
 
-	<div id="footer">
-		<span><a href="/about.html">About this site</a></span>
-	</div>
+	<p>Simple, just add the following to your site, right where you want it:</p>
+
+	<blockquote class="copycode">
+		&lt;script src="http://www.sactraffic.org/javascript/sactraffic-widget.min.js"&gt;&lt;/script&gt;
+	</blockquote>
+
+	<h2>Ack, there's too many (or too few) incidents!</h2>
+
+	<p>Yeah, there's an opt for that: <select name="num">
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
+		<option>5</option>
+		<option>6</option>
+		<option>7</option>
+		<option>8</option>
+		<option>9</option>
+		<option selected="selected">10</option>
+		<option>11</option>
+		<option>12</option>
+		<option>13</option>
+		<option>14</option>
+		<option>15</option>
+		<option>16</option>
+		<option>17</option>
+		<option>18</option>
+		<option>19</option>
+		<option>20</option>
+	</select></p>
+
+	<h2>But it's ugly!</h2>
+
+	<p>We have themes:</p>
+	<ul>
+		<li><input type="radio" name="theme" value="blue" checked="checked"/> <strong>Blue</strong> - The cool blue default theme of SacTraffic.org.</li>
+		<li><input type="radio" name="theme" value="lectroid"/> <strong>Lectroid</strong> - Black and Orange like my favorite site.</li>
+		<li><input type="radio" name="theme" value="none"/> <strong>None</strong> - You don't need no stinking themes, you got the CSS covered.</li>
+	</ul>
+
+
 </div> <!-- #content -->
+
+<div id="footer">
+	<span><a href="/about.html">About this site</a></span>
+</div>
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">
@@ -154,6 +135,3 @@
 <script type="text/javascript" src="http://media.sacbee.com/static/sacconnect/sacconnect-min.js"></script>
 </body>
 </html>
-<!--
-vim: ts=4
--->
