@@ -12,7 +12,7 @@ var trafficmap;
 /**
  * Setup code for the index page.
  */
-function init_index () {
+var init_index = function () {
 	if (screen.width > 480) {
 		trafficmap = new TrafficMap('map');
 		trafficmap.show_live_cams();
@@ -27,7 +27,7 @@ function init_index () {
 /**
  * Fetches the incident JSON and processes it accordingly.
  */
-function get_incidents (id) {
+var get_incidents = function (id) {
 	jQuery.getJSON('/json?dispatch=SACC', function (data) {
 		var incidents = new IncidentList(data);
 		incidents.makeList(jQuery('#incidentlist'));
