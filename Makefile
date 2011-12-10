@@ -14,8 +14,8 @@ FILES = appengine/static/javascript/sactraffic.min.js \
 	appengine/static/stylesheets/widget-blue.min.css \
 	appengine/static/stylesheets/widget-lectroid.min.css
 
-JS = appengine/static/javascript/date.js \
-	appengine/static/javascript/sactraffic-base.js \
+JS = appengine/static/javascript/sactraffic.js \
+	appengine/static/javascript/date.js \
 	appengine/static/javascript/incident.js \
 	appengine/static/javascript/incidentlist.js \
 	appengine/static/javascript/requestargs.js \
