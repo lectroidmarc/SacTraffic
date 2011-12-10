@@ -6,47 +6,6 @@
 // Set up the DOM structure we later modify.
 document.write('<div id="sactraffic_widget" style="display:none"><div class="head">Sacramento Traffic Incidents</div><ul></ul><div class="foot">From: <a href="http://www.sactraffic.org">http://www.sactraffic.org</a></div></div>');
 
-/* Template substitution (source: Doug Crockford) */
-if (typeof String.prototype.supplant !== 'function') {
-	/**
-	 * Template substitution.
-	 * @param {Object} o An object of keys to replace.
-	 */
-	String.prototype.supplant = function (o) {
-		return this.replace(/{([^{}]*)}/g, function (a, b) {
-			var r = o[b];
-			return typeof r === 'string' ? r : a;
-		});
-	};
-}
-
-/**
- * Extention of the Date class to support a Twittereque "ago" time.
- */
-Date.prototype.ago = function () {
-	var now = new Date();
-	var seconds_ago = (now.getTime() - this.getTime()) / 1000;
-
-	var template = "over {time} day{s} ago";
-	var time = Math.floor(seconds_ago / 86400);
-	var s = (time == 1) ? "" : "s";
-
-	if (seconds_ago < 60) {
-		return "less than a minute ago";
-	} else if (seconds_ago < 3600) {
-		template = "{time} minute{s} ago";
-		time = Math.round(seconds_ago / 60);
-		s = (time == 1) ? "" : "s";
-	} else if (seconds_ago < 86400) {
-		template = "over {time} hour{s} ago";
-		time = Math.floor(seconds_ago / 3600);
-		s = (time == 1) ? "" : "s";
-		if (time == 1) time = "an";
-	}
-
-	return template.supplant({time: time.toString(), s: s});
-};
-
 if (typeof SacTraffic === 'undefined') {
 	/** @namespace Namespace for the SacTraffic Widget */
 	var SacTraffic = { };

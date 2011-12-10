@@ -48,3 +48,26 @@ Date.prototype.getPrettyDateTime = function () {
 
 	return month + "/" + day + "/" + this.getFullYear() + " " + this.getPrettyTime();
 };
+
+/**
+ * Provides a Twittereque "ago" time.
+ */
+Date.prototype.ago = function () {
+	var now = new Date();
+	var seconds_ago = (now.getTime() - this.getTime()) / 1000;
+	var time = Math.floor(seconds_ago / 86400);
+	var s = (time == 1) ? "" : "s";
+
+	if (seconds_ago < 60) {
+		return "less than a minute ago";
+	} else if (seconds_ago < 3600) {
+		time = Math.round(seconds_ago / 60);
+		s = (time == 1) ? "" : "s";
+		return time.toString() + " minute" + s + " ago";
+	} else if (seconds_ago < 86400) {
+		time = Math.floor(seconds_ago / 3600);
+		s = (time == 1) ? "" : "s";
+		if (time == 1) time = "an";
+		return "over " + time.toString() + " hour" + s + " ago";
+	}
+};

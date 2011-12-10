@@ -22,6 +22,10 @@ JS = appengine/static/javascript/sactraffic.js \
 	appengine/static/javascript/trafficmap.js \
 	appengine/static/javascript/trafficnews.js
 
+WIDGET_JS = appengine/static/javascript/sactraffic-widget.js \
+	appengine/static/javascript/date.js \
+	appengine/static/javascript/string.js
+
 CSS = appengine/static/stylesheets/main.css \
 	appengine/static/stylesheets/awesome.css
 
@@ -29,6 +33,9 @@ all: ${FILES}
 
 
 appengine/static/javascript/sactraffic.min.js: ${JS}
+	${CLOSURE} -o $@ $^
+
+appengine/static/javascript/sactraffic-widget.min.js: ${WIDGET_JS}
 	${CLOSURE} -o $@ $^
 
 appengine/static/stylesheets/sactraffic.min.css: ${CSS}
