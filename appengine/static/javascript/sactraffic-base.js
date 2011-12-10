@@ -9,7 +9,7 @@ var trafficmap;
 /**
  * Setup code for the index page.
  */
-function init_index (id) {
+function init_index () {
 	if (screen.width > 480) {
 		trafficmap = new TrafficMap("map");
 		trafficmap.show_live_cams();
@@ -18,37 +18,37 @@ function init_index (id) {
 		//TrafficNews.show("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
 	}
 
-	get_incidents(id);
+	get_incidents(RequestArgs.get('id'));
 }
 
 /**
  * Fetches the incident JSON and processes it accordingly.
  */
 function get_incidents (id) {
-	var incidentId = (typeof (id) !== 'undefined') ? id : "";
-
-	jQuery.getJSON("/json?dispatch=SACC&id=" + incidentId, function (data) {
+	jQuery.getJSON("/json?dispatch=SACC", function (data) {
 		var incidents = new IncidentList(data);
 		incidents.makeList(jQuery('#incidentlist'));
 
-		// Handle the detail box if it's open
+		// Refresh the detail box if it's open, fallback to the id param
 		var detailboxId = jQuery('#detailbox .incidentID').html();
 		if (detailboxId) {
+			// See if the incident is still active, if it is refresh it,
+			// if not, close it.
 			var detailBoxIncident = incidents.getIncidentById(detailboxId);
 			if (typeof(detailBoxIncident) === 'undefined') {
 				incidents.getIncident(0).hideDetailBox();
 			} else {
 				incidents.getIncidentById(detailboxId).showDetailBox();
 			}
+		} else if (typeof (id) !== 'undefined') {
+			incidents.getIncidentById(id).showDetailBox();
 		}
 
 		if (typeof trafficmap !== 'undefined') {
 			trafficmap.update(incidents);
 		}
 
-		if (incidents.length > 0 && (incidents.length > 1 || incidents.getIncident(0).status != 'inactive')) {
-			setTimeout(get_incidents, 60000, id);
-		}
+		setTimeout(get_incidents, 60000);
 	});
 }
 

@@ -17,6 +17,7 @@ FILES = appengine/static/javascript/sactraffic.min.js \
 JS = appengine/static/javascript/sactraffic-base.js \
 	appengine/static/javascript/incident.js \
 	appengine/static/javascript/incidentlist.js \
+	appengine/static/javascript/requestargs.js \
 	appengine/static/javascript/trafficmap.js \
 	appengine/static/javascript/trafficnews.js
 
