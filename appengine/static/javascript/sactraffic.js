@@ -1,9 +1,12 @@
 /**
- * @fileoverview Base functions and globals for sactraffic.org
+ * @fileoverview Base functions and globals for sactraffic.org.
  * @requires jQuery
  */
 
-/** Global variable for the traffic map.  Allows other elements to interact with it if it's defined. */
+/**
+ * Global variable for the traffic map.
+ * Allows other elements to interact with it if it's defined.
+ */
 var trafficmap;
 
 /**
@@ -11,7 +14,7 @@ var trafficmap;
  */
 function init_index () {
 	if (screen.width > 480) {
-		trafficmap = new TrafficMap("map");
+		trafficmap = new TrafficMap('map');
 		trafficmap.show_live_cams();
 		//trafficmap.show_gtraffic();
 
@@ -25,7 +28,7 @@ function init_index () {
  * Fetches the incident JSON and processes it accordingly.
  */
 function get_incidents (id) {
-	jQuery.getJSON("/json?dispatch=SACC", function (data) {
+	jQuery.getJSON('/json?dispatch=SACC', function (data) {
 		var incidents = new IncidentList(data);
 		incidents.makeList(jQuery('#incidentlist'));
 

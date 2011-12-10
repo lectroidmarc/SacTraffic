@@ -12,7 +12,7 @@ var RequestArgs = function() {
     /**
      * Gets a query arg value.
      * @param {String} key The key to look for.
-     * @returns The key value.
+     * @returns {String} The key value.
      */
     get: function (key) {
       if (typeof($_GET) === 'undefined') {
@@ -31,5 +31,5 @@ var RequestArgs = function() {
 
       return _GET[key];
     }
-  }
+  };
 }();

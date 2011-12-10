@@ -43,7 +43,7 @@ var TrafficNews = function () {
 						);
 					});
 
-					if (show_sitenews) { jQuery('#sitenews').show("slow"); }
+					if (show_sitenews) { jQuery('#sitenews').show('slow'); }
 				}
 			});
 		}

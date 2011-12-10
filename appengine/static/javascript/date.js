@@ -1,5 +1,5 @@
 /**
- * @fileoverview Date extensions
+ * @fileoverview Date extensions.
  */
 
 /**
@@ -35,7 +35,7 @@ Date.prototype.getPrettyTime = function () {
 	}
 
 	return hours + ":" + minutes + " " + ampm;
-}
+};
 
 /**
  * Provides a "pretty" datetime format to the Date object.
@@ -47,4 +47,4 @@ Date.prototype.getPrettyDateTime = function () {
 	var day = (this.getDate() < 10) ? "0" + this.getDate() : this.getDate();
 
 	return month + "/" + day + "/" + this.getFullYear() + " " + this.getPrettyTime();
-}
+};
