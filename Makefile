@@ -5,7 +5,7 @@
 .SUFFIXES: .js .min.js .css .min.css
 .PHONY: clean
 
-YUICOMP = java -jar support/yuicompressor-2.4.2.jar
+YUICOMP = java -jar support/yuicompressor-2.4.7.jar
 CLOSURE = support/closure.py
 
 FILES = appengine/static/javascript/sactraffic.min.js \
@@ -32,14 +32,13 @@ appengine/static/javascript/sactraffic.min.js: ${JS}
 	${CLOSURE} -o $@ $^
 
 appengine/static/stylesheets/sactraffic.min.css: ${CSS}
-	cat $^ | ${YUICOMP} -o $@ --type css && perl -pi -e "s/screen and\(max/screen and \(max/" $@
-
+	cat $^ | ${YUICOMP} -o $@ --type css
 
 .js.min.js:
 	${CLOSURE} -o $@ $<
 
 .css.min.css:
-	${YUICOMP} -o $@ $< && perl -pi -e "s/screen and\(max/screen and \(max/" $@
+	${YUICOMP} -o $@ $<
 
 
 clean:
