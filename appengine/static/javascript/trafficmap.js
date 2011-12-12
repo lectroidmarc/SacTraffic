@@ -8,16 +8,15 @@
  * Creates a new traffic map.
  * @class Represents a traffic map.
  * @param {String} elementId An ID to load the map into.
- * @param {Object} [opts] Options for the map.
- * @param {Boolean} [opts.show_cameras] To show the live cameras.
- * @param {Boolean} [opts.show_traffic] To show the traffic overlay.
+ * @param {Object} [defaultState] Default state for the map.
+ * @param {Boolean} [defaultState.live_cams] To show the live cameras.
+ * @param {Boolean} [defaultState.traffic] To show the traffic overlay.
  */
-var TrafficMap = function (elementId, opts) {
+var TrafficMap = function (elementId, defaultState) {
+	this.loadState(defaultState);
 	this.center = new google.maps.LatLng(38.56, -121.40);
 	this.live_cams = [];
-	this.cameras_visible = false;
 	this.traffic_overlay = null;
-	this.traffic_visible = false;
 	this.marker_list = {};
 	this.cameraInfoWindow = new google.maps.InfoWindow();
 
@@ -98,14 +97,13 @@ var TrafficMap = function (elementId, opts) {
 	this.make_traffic_button();
 	this.make_camera_button();
 
-	// Handle opts
-	if (typeof(opts) !== 'undefined') {
-		if (opts.show_cameras) {
-			this.show_live_cams();
-		}
-		if (opts.show_traffic) {
-			this.show_gtraffic();
-		}
+	// Set initial map state
+	if (this.getState('live_cams')) {
+		this.show_live_cams();
+	}
+
+	if (this.getState('traffic')) {
+		this.show_gtraffic();
 	}
 }
 
@@ -121,7 +119,7 @@ TrafficMap.prototype.make_traffic_button = function () {
 	button_container.style.paddingTop = "2px";
 
 	this.traffic_button = jQuery('<div/>').html("Show Traffic").click(function () {
-		if (self.traffic_visible) {
+		if (self.getState('traffic')) {
 			self.hide_gtraffic();
 		} else {
 			self.show_gtraffic();
@@ -143,7 +141,7 @@ TrafficMap.prototype.make_camera_button = function () {
 	button_container.style.paddingTop = "2px";
 
 	this.camera_button = jQuery('<div/>').html("Show Cameras").click(function () {
-		if (self.cameras_visible) {
+		if (self.getState('live_cams')) {
 			self.hide_live_cams();
 		} else {
 			self.show_live_cams();
@@ -252,7 +250,7 @@ TrafficMap.prototype.show_live_cams = function () {
 	}
 
 	this.camera_button.html('Hide Cameras');
-	this.cameras_visible = true;
+	this.setState('live_cams', true);
 };
 
 /**
@@ -265,7 +263,7 @@ TrafficMap.prototype.hide_live_cams = function () {
 	}
 
 	this.camera_button.html('Show Cameras');
-	this.cameras_visible = false;
+	this.setState('live_cams', false);
 };
 
 /**
@@ -276,7 +274,7 @@ TrafficMap.prototype.show_gtraffic = function () {
 	this.traffic_overlay.setMap(this.gmap);
 
 	this.traffic_button.html('Hide Traffic');
-	this.traffic_visible = true;
+	this.setState('traffic', true);
 };
 
 /**
@@ -288,7 +286,7 @@ TrafficMap.prototype.hide_gtraffic = function () {
 	}
 
 	this.traffic_button.html('Show Traffic');
-	this.traffic_visible = false;
+	this.setState('traffic', false);
 };
 
 /**
@@ -310,6 +308,47 @@ TrafficMap.prototype.recenter = function () {
 
 TrafficMap.prototype.centerOnGeo = function (lat, lon) {
 	this.gmap.panTo(new google.maps.LatLng(lat, lon));
+};
+
+/**
+ * Initially loads map state from localSupport, falls back to given defaults.
+ * @param {Object} defaultState Default state to use if none saved.
+ */
+TrafficMap.prototype.loadState = function (defaultState) {
+	var state = null;
+
+	// Try localStorage first
+	if ('localStorage' in window && window['localStorage'] !== null) {
+		state = JSON.parse(localStorage.getItem('trafficmap_state')) || null;
+	}
+
+	// If localStorage didn't work try some defaults...
+	if (!state && typeof(defaultState) === 'object') {
+		state = defaultState;
+	}
+
+	this._mapstate = state || {};
+};
+
+/**
+ * Getter for map state.
+ * @param {String} key The key to get.
+ * @return {Any} The value.
+ */
+TrafficMap.prototype.getState = function (key) {
+	return this._mapstate[key];
+};
+
+/**
+ * Setter for map state.  Also saved to localStorage if possible.
+ * @param {String} key The key to set.
+ * @param {Any} value The value to set.
+ */
+TrafficMap.prototype.setState = function (key, value) {
+	this._mapstate[key] = value;
+	if ('localStorage' in window && window['localStorage'] !== null) {
+		localStorage.setItem('trafficmap_state', JSON.stringify(this._mapstate));
+	}
 };
 
 /**
