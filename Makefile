@@ -14,17 +14,17 @@ FILES = appengine/static/javascript/sactraffic.min.js \
 	appengine/static/stylesheets/widget-blue.min.css \
 	appengine/static/stylesheets/widget-lectroid.min.css
 
-JS = appengine/static/javascript/sactraffic.js \
-	appengine/static/javascript/date.js \
+JS = appengine/static/javascript/date.js \
 	appengine/static/javascript/incident.js \
 	appengine/static/javascript/incidentlist.js \
 	appengine/static/javascript/requestargs.js \
 	appengine/static/javascript/trafficmap.js \
-	appengine/static/javascript/trafficnews.js
+	appengine/static/javascript/trafficnews.js \
+	appengine/static/javascript/sactraffic.js
 
-WIDGET_JS = appengine/static/javascript/sactraffic-widget.js \
-	appengine/static/javascript/date.js \
-	appengine/static/javascript/string.js
+WIDGET_JS = appengine/static/javascript/date.js \
+	appengine/static/javascript/string.js \
+	appengine/static/javascript/sactraffic-widget.js
 
 CSS = appengine/static/stylesheets/main.css \
 	appengine/static/stylesheets/awesome.css
