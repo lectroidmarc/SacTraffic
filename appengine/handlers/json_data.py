@@ -59,5 +59,4 @@ class JsonHandler(incident_request.RequestHandler):
 			self.response.write(")")
 
 
-application = webapp2.WSGIApplication([('/json', JsonHandler)],
-									 debug=True)
+application = webapp2.WSGIApplication([('/json', JsonHandler)], debug=True)

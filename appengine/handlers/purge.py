@@ -27,5 +27,4 @@ class PurgeHandler(webapp2.RequestHandler):
 		self.response.write("Purged %d records." % count)
 
 
-application = webapp2.WSGIApplication([('/purge', PurgeHandler)],
-										 debug=True)
+application = webapp2.WSGIApplication([('/purge', PurgeHandler)], debug=True)

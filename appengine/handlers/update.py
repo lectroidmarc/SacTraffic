@@ -48,5 +48,4 @@ class UpdateHandler(webapp2.RequestHandler):
 		self.response.write(output_blurb)
 
 
-application = webapp2.WSGIApplication([('/update', UpdateHandler)],
-										 debug=True)
+application = webapp2.WSGIApplication([('/update', UpdateHandler)], debug=True)

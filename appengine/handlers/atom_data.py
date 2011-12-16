@@ -122,5 +122,4 @@ class AtomHandler(incident_request.RequestHandler):
 		self.response.write(ElementTree.tostring(feed))
 
 
-application = webapp2.WSGIApplication([('/atom', AtomHandler)],
-									 debug=True)
+application = webapp2.WSGIApplication([('/atom', AtomHandler)], debug=True)
