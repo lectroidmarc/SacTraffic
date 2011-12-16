@@ -3,10 +3,9 @@
 Returns CHP incident data in the JSON format.
 
 """
+import json
 import cPickle as pickle
 import webapp2
-
-from django.utils import simplejson as json
 
 from utils import incident_request
 
