@@ -126,9 +126,3 @@ class AtomHandler(incident_request.RequestHandler):
 
 application = webapp.WSGIApplication([('/atom', AtomHandler)],
 									 debug=True)
-
-def main():
-	util.run_wsgi_app(application)
-
-if __name__ == '__main__':
-	main()

@@ -51,10 +51,3 @@ class UpdateHandler(webapp.RequestHandler):
 
 application = webapp.WSGIApplication([('/update', UpdateHandler)],
 										 debug=True)
-
-def main():
-	util.run_wsgi_app(application)
-
-
-if __name__ == '__main__':
-	main()

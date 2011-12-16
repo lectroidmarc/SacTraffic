@@ -63,9 +63,3 @@ class JsonHandler(incident_request.RequestHandler):
 
 application = webapp.WSGIApplication([('/json', JsonHandler)],
 									 debug=True)
-
-def main():
-	util.run_wsgi_app(application)
-
-if __name__ == '__main__':
-	main()
