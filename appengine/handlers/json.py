@@ -4,9 +4,8 @@ Returns CHP incident data in the JSON format.
 
 """
 import pickle
+import webapp2
 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp import util
 from django.utils import simplejson as json
 
 from utils import incident_request
@@ -53,13 +52,13 @@ class JsonHandler(incident_request.RequestHandler):
 
 		callback = self.request.get("callback")
 		if callback != "":
-			self.response.out.write("%s(" % callback)
+			self.response.write("%s(" % callback)
 
-		self.response.out.write(json.dumps(output_list, sort_keys=True))
+		self.response.write(json.dumps(output_list, sort_keys=True))
 
 		if callback != "":
-			self.response.out.write(")")
+			self.response.write(")")
 
 
-application = webapp.WSGIApplication([('/json', JsonHandler)],
+application = webapp2.WSGIApplication([('/json', JsonHandler)],
 									 debug=True)
