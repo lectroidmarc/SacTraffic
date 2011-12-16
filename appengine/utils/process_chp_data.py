@@ -17,6 +17,8 @@ from utils import tzinfo, reverse_geocode
 from thirdparty import pubsubhubbub_publish
 
 
+debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
+
 def process_chp_xml(chpState):
 	"""Process a whole CHP feed in ETree format.
 
@@ -25,7 +27,7 @@ def process_chp_xml(chpState):
 		deferred.defer(process_chp_center, chpCenter, _queue="chpProcessQueue")
 
 	# Ping for the whole ATOM feed.  We do it here because we only do it once.
-	if not os.environ['SERVER_SOFTWARE'].startswith('Development'):
+	if not debug:
 		deferred.defer(pubsubhubbub_publish.publish, 'http://pubsubhubbub.appspot.com', 'http://www.sactraffic.org/atom', _queue="pshPingQueue")
 
 def process_chp_center(chpCenter):
@@ -121,7 +123,7 @@ def process_chp_center(chpCenter):
 
 	# Ping the PSH hub, use a set so we don't ping duplicates.
 	ping_set = set(psh_pings)
-	if not os.environ['SERVER_SOFTWARE'].startswith('Development'):
+	if not debug:
 		deferred.defer(pubsubhubbub_publish.publish, 'http://pubsubhubbub.appspot.com', ping_set, _queue="pshPingQueue")
 	else:
 		logging.info("Skipping PSH pings for %s on the development server. %s" % (incident.CenterID, ping_set))
