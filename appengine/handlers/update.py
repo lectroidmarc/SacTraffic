@@ -1,3 +1,9 @@
+"""Update handler.
+
+Fetches the CHP data from their media XML and parses it with Etree.  If it
+parses OK then it gets passed to a deferred processor.
+
+"""
 import logging
 import cPickle as pickle
 import webapp2
