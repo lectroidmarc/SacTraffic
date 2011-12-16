@@ -8,10 +8,10 @@ default_expiration: "365d"
 
 handlers:
 - url: /atom
-  script: handlers.atom.application
+  script: handlers.atom_data.application
 
 - url: /json
-  script: handlers.json.application
+  script: handlers.json_data.application
 
 - url: /update
   script: handlers.update.application
