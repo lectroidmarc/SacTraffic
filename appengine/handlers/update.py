@@ -1,5 +1,5 @@
 import logging
-import pickle
+import cPickle as pickle
 import webapp2
 import zlib
 from datetime import datetime, timedelta

@@ -2,7 +2,7 @@
 
 """
 import logging
-import pickle
+import cPickle as pickle
 import os
 import re
 import time

@@ -3,7 +3,7 @@
 Returns CHP incident data in the ATOM format.
 
 """
-import pickle
+import cPickle as pickle
 import re
 import time
 import urllib
