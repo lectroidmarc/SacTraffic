@@ -1,11 +1,16 @@
+"""Update handler.
+
+Fetches the CHP data from their media XML and parses it with Etree.  If it
+parses OK then it gets passed to a deferred processor.
+
+"""
 import logging
-import pickle
+import cPickle as pickle
+import webapp2
 import zlib
 from datetime import datetime, timedelta
 from xml.etree import ElementTree
 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp import util
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
 from google.appengine.runtime.apiproxy_errors import CapabilityDisabledError
@@ -14,7 +19,7 @@ from models import CHPData, CHPIncident
 from utils import process_chp_data
 
 
-class UpdateHandler(webapp.RequestHandler):
+class UpdateHandler(webapp2.RequestHandler):
 	def get(self):
 		output_blurb = "CHP Incidents loaded."
 
@@ -46,15 +51,7 @@ class UpdateHandler(webapp.RequestHandler):
 				logging.warning(error)
 				output_blurb = error
 
-		self.response.out.write(output_blurb)
+		self.response.write(output_blurb)
 
 
-application = webapp.WSGIApplication([('/update', UpdateHandler)],
-										 debug=True)
-
-def main():
-	util.run_wsgi_app(application)
-
-
-if __name__ == '__main__':
-	main()
+application = webapp2.WSGIApplication([('/update', UpdateHandler)], debug=True)

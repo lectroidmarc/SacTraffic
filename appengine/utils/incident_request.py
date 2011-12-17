@@ -2,16 +2,15 @@
 
 """
 import hashlib
-
+import webapp2
 from datetime import datetime
 
 from google.appengine.api import memcache
-from google.appengine.ext import webapp
 
 from models import CHPData, CHPIncident
 
 
-class RequestHandler(webapp.RequestHandler):
+class RequestHandler(webapp2.RequestHandler):
 	incidents_last_mod = None
 
 	def get_incidents(self):

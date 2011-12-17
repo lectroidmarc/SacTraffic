@@ -1,23 +1,24 @@
-application: lectroid-sactraffic
+application: lectroid-sactraffic-hrd
 version: 2
-runtime: python
+runtime: python27
 api_version: 1
+threadsafe: true
 
 default_expiration: "365d"
 
 handlers:
 - url: /atom
-  script: handlers/atom.py
+  script: handlers.atom_data.application
 
 - url: /json
-  script: handlers/json.py
+  script: handlers.json_data.application
 
 - url: /update
-  script: handlers/update.py
+  script: handlers.update.application
   login: admin
 
 - url: /purge
-  script: handlers/purge.py
+  script: handlers.purge.application
   login: admin
 
 # Static stuff

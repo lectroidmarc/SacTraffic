@@ -3,14 +3,12 @@
 Returns CHP incident data in the ATOM format.
 
 """
-import pickle
+import cPickle as pickle
 import re
 import time
 import urllib
+import webapp2
 from xml.etree import ElementTree
-
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp import util
 
 from utils import incident_request
 
@@ -120,15 +118,8 @@ class AtomHandler(incident_request.RequestHandler):
 		self.response.headers["Content-Type"] = "application/atom+xml"
 		self.send_conditional_headers()
 
-		self.response.out.write('<?xml version="1.0"?>')	# oh this can't be right!
-		self.response.out.write(ElementTree.tostring(feed))
+		self.response.write('<?xml version="1.0"?>')	# oh this can't be right!
+		self.response.write(ElementTree.tostring(feed))
 
 
-application = webapp.WSGIApplication([('/atom', AtomHandler)],
-									 debug=True)
-
-def main():
-	util.run_wsgi_app(application)
-
-if __name__ == '__main__':
-	main()
+application = webapp2.WSGIApplication([('/atom', AtomHandler)], debug=True)

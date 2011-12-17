@@ -4,16 +4,15 @@ Delete any incidents that have not been updated in over
 an hour from the last successful CHP data update.
 
 """
+import webapp2
 from datetime import datetime, timedelta
 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp import util
 from google.appengine.ext import db
 
 from models import CHPData, CHPIncident
 
 
-class PurgeHandler(webapp.RequestHandler):
+class PurgeHandler(webapp2.RequestHandler):
 	def get(self):
 		count = 0
 		chp_data = CHPData.get_by_key_name("chp_data")
@@ -25,14 +24,7 @@ class PurgeHandler(webapp.RequestHandler):
 			count = query.count()
 			db.delete(query)
 
-		self.response.out.write("Purged %d records." % count)
+		self.response.write("Purged %d records." % count)
 
 
-application = webapp.WSGIApplication([('/purge', PurgeHandler)],
-										 debug=True)
-
-def main():
-	util.run_wsgi_app(application)
-
-if __name__ == '__main__':
-	main()
+application = webapp2.WSGIApplication([('/purge', PurgeHandler)], debug=True)

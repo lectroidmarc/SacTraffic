@@ -1,15 +1,15 @@
-""" Reverse geocoding using the Google Geocoding API at:
+"""Reverse geocoding using the Google Geocoding API at:
 	http://code.google.com/apis/maps/documentation/geocoding/index.html#ReverseGeocoding
 
 	This pulls out the "long_name" of the "locality" type of the
 	"address_components" of the "postal_code" result type.  Make sense?
-"""
 
+"""
+import json
 import logging
 
 from models import CHPIncident
 from google.appengine.api import urlfetch
-from django.utils import simplejson as json
 
 
 def load_city (incident_key):
