@@ -15,12 +15,12 @@ from models import CHPData, CHPIncident
 class PurgeHandler(webapp2.RequestHandler):
 	def get(self):
 		count = 0
-		chp_data = CHPData.get_by_key_name("chp_data")
+		chp_data_last_updated = CHPData.last_updated()
 
-		if chp_data is not None:
+		if chp_data_last_updated is not None:
 			query = CHPIncident.all(keys_only=True)
 
-			query.filter('updated <', CHPData.last_updated() - timedelta(hours=1))
+			query.filter('updated <', chp_data_last_updated - timedelta(hours=1))
 			count = query.count()
 			db.delete(query)
 
