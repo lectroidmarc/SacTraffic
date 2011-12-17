@@ -19,6 +19,6 @@ Running `make` at the root level of the project will build the compressed files.
 
 ### Legacy LAMP version
 
-The older Apache/Perl version of the SacTraffic.org code is available in the `lecacy-lamp-version` branch.
+The older Apache/Perl version of the SacTraffic.org code is available at the `lecacy-lamp-version` tag.
 
 [sactraffic]: http://www.sactraffic.org "SacTraffic.org"
