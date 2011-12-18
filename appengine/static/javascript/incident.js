@@ -12,7 +12,6 @@
  * @property {String} Location
  * @property {Object} LogDetails
  * @property {String} LogTime
- * @property {Number} LogTimeEpoch
  * @property {String} LogType
  * @property {String} city
  * @property {Object} geolocation
@@ -30,7 +29,7 @@ var Incident = function (data) {
  */
 Incident.prototype.makeListItem = function (element) {
 	var self = this;
-	var incident_date = new Date(this.LogTimeEpoch * 1000);
+	var incident_date = new Date(this.LogTime * 1000);
 	var point = (this.geolocation) ? this.geolocation : null;
 
 	var li = jQuery('<li/>').attr('id', this.ID).addClass('incident').addClass('vevent').appendTo(element);

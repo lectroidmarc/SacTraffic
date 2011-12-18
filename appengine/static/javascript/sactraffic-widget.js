@@ -99,7 +99,7 @@ SacTraffic.updateWidget = function(data) {
 
 	for (var x = 0, xl = data.length; x < xl && x < SacTraffic.showNum; x++) {
 		var incident = data[x];
-		var logtime = new Date(incident.LogTimeEpoch * 1000);
+		var logtime = new Date(incident.LogTime * 1000);
 		var li = doc.createElement('li');
 
 		var template = '<a href="http://www.sactraffic.org/?id={ID}">{LogType}, {Location}</a> <span class="time">{time}</span>';

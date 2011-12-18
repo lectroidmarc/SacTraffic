@@ -369,7 +369,7 @@ TrafficMap.prototype.hide_incidents = function () {
 TrafficMap.prototype.make_marker = function (incident) {
 	var self = this;
 	var icon = this.default_icon;
-	var incident_date = new Date(incident.LogTimeEpoch * 1000);
+	var incident_date = new Date(incident.LogTime * 1000);
 
 	if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType)) {
 		// Hazard icon...
