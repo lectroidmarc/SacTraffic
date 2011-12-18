@@ -3,6 +3,6 @@
 *.zip
 *.crx
 *.pem
-appengine/static/javascript/*.min.js
-appengine/static/stylesheets/*.min.css
+*.min.js
+*.min.css
 chrome
