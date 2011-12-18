@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="awesome.css" />
+		<style>
+			body {
+				font-family: verdana, sans-serif;
+				font-size: 10pt;
+				width: 300px;
+				padding: 0;
+			}
+			.header {
+				border-bottom: 1px solid #ccc;
+			}
+			.header h1 {
+				font-size: 170%;
+				font-weight: normal;
+				margin: 0;
+			}
+
+			#incidents {
+				list-style-type: none;
+				padding-left: 0;
+			}
+			.incident {
+				border-radius: 5px;
+				margin-bottom: 7px;
+				padding: 2px;
+			}
+			.incident:hover {
+				box-shadow: 3px 3px 5px #ccc;
+				cursor: pointer;
+				background: #f0f0f0;
+			}
+			.logtype {
+				margin-bottom: -1px;
+			}
+			.location, .city, .distance {
+				color: #888;
+				font-size: 80%;
+				font-style: italic;
+				line-height: .9em;
+			}
+			.location, .city {
+				display: inline;
+			}
+
+			#noalerts {
+				margin-bottom: 12px;
+				font-style: italic;
+			}
+
+			.buttonbox {
+				border-top: 1px solid #ccc;
+				padding-top: 5px;
+				text-align: center;
+			}
+			.button {
+				background-color: #165279 !important;
+			}
+			.separator {
+				border-top: 2px groove white;
+				margin: 0 0 10px 0;
+			}
+		</style>
+		<script>
+			function init() {
+				var incidents = (localStorage.incidents) ? JSON.parse(localStorage.incidents) : [];
+
+				var ul = document.getElementById('incidents');
+
+				for (var x = 0; x < incidents.length; x++) {
+					var incident = incidents[x];
+
+					var li = document.createElement('li');
+					li.className = 'incident';
+					li.incidentID = incident.ID;
+					li.addEventListener('click', function () {
+						chrome.tabs.create({url: 'http://www.sactraffic.org/?id=' + this.incidentID});
+					});
+
+					var logtype = document.createElement('div');
+					logtype.className = 'logtype';
+					logtype.innerHTML = incident.LogType;
+					li.appendChild(logtype);
+
+					var location = document.createElement('div');
+					location.className = 'location';
+					location.innerHTML = incident.Location + ", ";
+					li.appendChild(location);
+
+					var city = document.createElement('div');
+					city.className = 'city';
+					city.innerHTML = (incident.city) ? incident.city : incident.Area;
+					li.appendChild(city);
+
+					if (incident.distance) {
+						var distance = document.createElement('div');
+						distance.className = 'distance';
+						distance.innerHTML = incident.distance + ' miles';
+						li.appendChild(distance);
+					}
+
+					ul.appendChild(li);
+				}
+
+				if (incidents.length == 0) {
+					// there were no incidents
+					var noalerts = document.getElementById('noalerts');
+					noalerts.innerHTML = "No alerts at this time.";
+				}
+			}
+		</script>
+	</head>
+	<body onload="init()">
+		<div class="header">
+			<h1>SacTraffic Alerts</h1>
+		</div>
+
+		<ul id="incidents"></ul>
+		<div id="noalerts"></div>
+
+		<div class="buttonbox">
+			<div class="awesome button" onclick="chrome.tabs.create({url: 'http://www.sactraffic.org'})">Go To Sactraffic.org</div>
+		</div>
+	</body>
+</html>

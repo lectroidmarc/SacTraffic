@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="loading_animation.js"></script>
+		<script src="latlon.js"></script>
+		<script>
+			var sacTrafficUrl = 'http://www.sactraffic.org';
+			var checkInterval = 60;
+			var currentPosition;
+			var now = new Date();
+			var lastCheckTime = Math.round(now.getTime() / 1000);
+			var loadingAnimation = new LoadingAnimation();
+			var prefs = (localStorage.prefs) ? JSON.parse(localStorage.prefs) : {};
+
+			function checkForUpdates(noSetTimeout) {
+				// refresh prefs (in case they changed)
+				prefs = (localStorage.prefs) ? JSON.parse(localStorage.prefs) : {};
+
+				// Update our current location
+				if (prefs.use_geolocation) {
+					navigator.geolocation.getCurrentPosition(
+						function(position) {
+							currentPosition = new LatLon(position.coords.latitude, position.coords.longitude);
+						},
+						function() {},	// fail quietly on errors
+						{
+							maximumAge: 300000
+						});
+				}
+
+				var xhr = new XMLHttpRequest();
+				xhr.open("GET", sacTrafficUrl + '/json?dispatch=SACC', true);
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState == 4) {
+						loadingAnimation.stop();
+
+						if (xhr.responseText !== "") {
+							var incidents = JSON.parse(xhr.responseText);
+							var checkLocation = prefs.use_geolocation && prefs.within_miles;
+							var active_incidents = [];
+							var new_incidents = [];
+
+							// We only want "new" and "active" incidents and since
+							// there's no way to query those we have to loop through
+							// and check each incident.
+							//
+							// We also use this loop to check the location.
+							for (var x = 0; x < incidents.length; x++) {
+								var incident = incidents[x];
+
+								if (incident.status == "inactive") {
+									continue;
+								}
+
+								// If the location hasn't been returned yet... punt
+								if (checkLocation && typeof(currentPosition) === 'undefined') {
+									continue;
+								}
+
+								// If we want a location and the incident doesn't have one... punt
+								if (checkLocation && !incident.geolocation) {
+									continue;
+								}
+
+								if (checkLocation) {
+									var kmDist = currentPosition.distanceTo(new LatLon(incident.geolocation.lat, incident.geolocation.lon));
+									var miDist = kmDist * 0.621371192;
+
+									if (miDist > prefs.within_miles) {
+										continue;
+									}
+
+									incident.distance = miDist.toFixed(2);
+								}
+
+								if (incident.LogTimeEpoch > lastCheckTime) {
+									new_incidents.push(incident);
+								}
+
+								active_incidents.push(incident);
+							}
+
+							// Save the active incidents so we can use them in
+							// a popup.
+							localStorage.incidents = JSON.stringify(active_incidents);
+
+							// Notifications?
+							if (prefs.use_notifications) {
+								showNotifications(new_incidents);
+							}
+
+							// Counter in the browser action badge
+ 							if (active_incidents.length > 0) {
+ 								chrome.browserAction.setBadgeText({text:String(active_incidents.length)});
+
+ 								// set the check time to the LogTime of the
+ 								// latest incident.
+ 								lastCheckTime = active_incidents[0].LogTimeEpoch;
+ 							} else {
+ 								chrome.browserAction.setBadgeText({text:""});
+ 							}
+						} else {
+							chrome.browserAction.setBadgeText({text:"?"});
+							console.log("An error occured with SacTraffic Notifier, could not contact sactraffic.org.");
+						}
+
+						if (typeof(noSetTimeout) === 'undefined') {
+							setTimeout(checkForUpdates, checkInterval * 1000);
+						}
+					}
+				}
+				xhr.send();
+			}
+
+			function showNotifications(incidents) {
+				if (incidents.length > 0) {
+					var iconUrl = 'sactraffic-48.png';
+					var title = (incidents.length == 1) ?
+						incidents[0].LogType :
+						'New CHP Incidents';
+					var body = (incidents.length == 1) ?
+						incidents[0].Location + ", " + incidents[0].city :
+						'There have been ' + incidents.length + ' new CHP incidents.';
+
+					var notification = webkitNotifications.createNotification(
+						iconUrl, title, body);
+					notification.show();
+
+					if (prefs.clear_notifications_in > 0) {
+						setTimeout(cancelNotification, prefs.clear_notifications_in * 1000, notification);
+					}
+				}
+			}
+
+			function cancelNotification(showing_note) {
+				showing_note.cancel();
+			}
+
+			// Listen for messages
+			chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+				if (request.getUpdates) {
+					checkForUpdates(true);
+				}
+			});
+
+			chrome.browserAction.setBadgeBackgroundColor({color:[22, 82, 121, 255]});
+			loadingAnimation.start();
+			checkForUpdates();
+		</script>
+	</head>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body {
+				font-family: verdana, sans-serif;
+				font-size: 80%;
+				margin: 10px;
+			}
+
+			#header {
+				padding-bottom:1.5em;
+				padding-top:1.5em;
+			}
+
+			#header h1 {
+				background:url('sactraffic-128.png') no-repeat;
+				background-size:67px;
+				background-position:1px 18px;
+				display:inline;
+				font-size: 170%;
+				font-weight: normal;
+				padding-bottom:43px;
+				padding-left:75px;
+				padding-top:40px;
+			}
+
+			.section-header {
+				background:#ebeff9;
+				border-top:1px solid #b5c7de;
+				font-size:99%;
+				padding:3px 0 2px 5px;
+				font-weight:bold;
+				margin-bottom:1em;
+				margin-top:2em;
+			}
+
+			.togglable {
+				margin-left: 2em;
+			}
+
+			.commentary {
+				font-style: italic;
+			}
+
+			#notifyblock, #geoblock {
+				display: none;
+			}
+
+			#clearnotificationsecs {
+				width: 3em;
+			}
+
+			#locationmap {
+				border: 1px solid #b5c7de;
+				height: 300px;
+				width: 300px;
+			}
+		</style>
+
+		<script>
+			var prefs = (localStorage.prefs) ? JSON.parse(localStorage.prefs) : {};
+
+			// Set some defaults
+			prefs.clear_notifications_in = (typeof(prefs.clear_notifications_in) !== 'undefined') ? prefs.clear_notifications_in : 15;
+			prefs.within_miles = (typeof(prefs.within_miles) !== 'undefined') ? prefs.within_miles : 5;
+
+			function toggleNotifyBlock() {
+				if (document.getElementById('notifications').checked) {
+					document.getElementById('notifyblock').style.display = 'block';
+				} else {
+					document.getElementById('notifyblock').style.display = 'none';
+				}
+			}
+
+			function toggleGeoBlock() {
+				if (document.getElementById('geolocation').checked) {
+					if (typeof(google) === 'undefined' || typeof(google.maps) === 'undefined') {
+						// Need Google Maps, dynamically load it and then call us again
+						var script = document.createElement("script");
+						script.type = "text/javascript";
+						script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=toggleGeoBlock";
+						document.body.appendChild(script);
+					} else {
+						document.getElementById('geoblock').style.display = 'block';
+						navigator.geolocation.getCurrentPosition(showMap);
+					}
+				} else {
+					document.getElementById('geoblock').style.display = 'none';
+				}
+			}
+
+			function showMap(loc) {
+				var center = new google.maps.LatLng(loc.coords.latitude, loc.coords.longitude);
+				var miles = prefs.within_miles;
+
+				var zoom = 11;
+				if (miles > 20) {
+					zoom = 8;
+				} else if (miles > 10) {
+					zoom = 9;
+				} else if (miles > 5) {
+					zoom = 10;
+				}
+
+				map = new google.maps.Map(document.getElementById("locationmap"), {
+					zoom: zoom,
+					center: center,
+					mapTypeControl: false,
+					streetViewControl: false,
+					draggable: false,
+					disableDoubleClickZoom: true,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				});
+
+				var marker = new google.maps.Marker({
+					position: center,
+					map: map,
+				});
+
+				circle = new google.maps.Circle({
+					center: center,
+					fillOpacity: 0.1,
+					strokeColor: "red",
+					strokeWeight: 1,
+					radius: miles * 1609.344,
+					map: map
+				});
+			}
+
+			function updateCircle(radius_in_miles) {
+				if (radius_in_miles > 0) {
+					circle.setRadius(radius_in_miles * 1609.344);
+					circle.setMap(map);
+				} else {
+					circle.setMap(null);
+				};
+			}
+
+			function save() {
+				prefs.use_notifications = document.getElementById('notifications').checked;
+				prefs.clear_notifications_in = Number(document.getElementById('clearnotificationsecs').value);
+				prefs.use_geolocation = document.getElementById('geolocation').checked;
+				prefs.within_miles = Number(document.getElementById('miles').value);
+
+				localStorage.prefs = JSON.stringify(prefs);
+
+				chrome.extension.sendRequest({ getUpdates: true });
+			}
+
+			function init() {
+				document.getElementById('notifications').checked = prefs.use_notifications;
+				document.getElementById('clearnotificationsecs').value = prefs.clear_notifications_in;
+				document.getElementById('geolocation').checked = prefs.use_geolocation;
+				document.getElementById('miles').value = prefs.within_miles;
+
+				toggleNotifyBlock();
+				toggleGeoBlock();
+			}
+		</script>
+	</head>
+	<body onload="init()">
+		<div id="header">
+			<h1>SacTraffic Extension Options</h1>
+		</div>
+
+		<div class="section-header">Notifications</div>
+		<p>
+			Show desktop notifications: <input id="notifications" type="checkbox" onclick="toggleNotifyBlock();save()">
+		</p>
+		<div class="togglable" id="notifyblock">
+			<p>
+				Clear desktop notifications after <input id="clearnotificationsecs" type="number" min="0" size="4" onchange="save()"> seconds.
+				<span class="commentary">(leave blank to clear desktop notifications manually)</span>
+			</p>
+		</div>
+
+		<div class="section-header">Geolocation</div>
+		<p>
+			Use geolocation: <input id="geolocation" type="checkbox" onclick="toggleGeoBlock();save()">
+		</p>
+		<div class="togglable" id="geoblock">
+			<p>
+				Your current location is:
+			</p>
+			<p>
+				<div id="locationmap"></div>
+			</p>
+			<p>
+				Only show incidents within <input id="miles" type="number" min="0" size="3" onchange="updateCircle(this.value);save()"> miles.
+			</p>
+		</div>
+	</body>
+</html>
