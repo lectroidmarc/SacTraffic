@@ -13,7 +13,7 @@
 				border-bottom: 1px solid #ccc;
 			}
 			.header h1 {
-				font-size: 170%;
+				font-size: 150%;
 				font-weight: normal;
 				margin: 0;
 			}
@@ -67,47 +67,47 @@
 			function init() {
 				var incidents = (localStorage.incidents) ? JSON.parse(localStorage.incidents) : [];
 
-				var ul = document.getElementById('incidents');
-
-				for (var x = 0; x < incidents.length; x++) {
-					var incident = incidents[x];
-
-					var li = document.createElement('li');
-					li.className = 'incident';
-					li.incidentID = incident.ID;
-					li.addEventListener('click', function () {
-						chrome.tabs.create({url: 'http://www.sactraffic.org/?id=' + this.incidentID});
-					});
-
-					var logtype = document.createElement('div');
-					logtype.className = 'logtype';
-					logtype.innerHTML = incident.LogType;
-					li.appendChild(logtype);
-
-					var location = document.createElement('div');
-					location.className = 'location';
-					location.innerHTML = incident.Location + ", ";
-					li.appendChild(location);
-
-					var city = document.createElement('div');
-					city.className = 'city';
-					city.innerHTML = (incident.city) ? incident.city : incident.Area;
-					li.appendChild(city);
-
-					if (incident.distance) {
-						var distance = document.createElement('div');
-						distance.className = 'distance';
-						distance.innerHTML = incident.distance + ' miles';
-						li.appendChild(distance);
-					}
-
-					ul.appendChild(li);
-				}
-
 				if (incidents.length == 0) {
-					// there were no incidents
+					// there are no incidents
 					var noalerts = document.getElementById('noalerts');
 					noalerts.innerHTML = "No alerts at this time.";
+				} else {
+					var ul = document.getElementById('incidents');
+
+					for (var x = 0; x < incidents.length; x++) {
+						var incident = incidents[x];
+
+						var li = document.createElement('li');
+						li.className = 'incident';
+						li.incidentID = incident.ID;
+						li.addEventListener('click', function () {
+							chrome.tabs.create({url: 'http://www.sactraffic.org/?id=' + this.incidentID});
+						});
+
+						var logtype = document.createElement('div');
+						logtype.className = 'logtype';
+						logtype.innerHTML = incident.LogType;
+						li.appendChild(logtype);
+
+						var location = document.createElement('div');
+						location.className = 'location';
+						location.innerHTML = incident.Location + ", ";
+						li.appendChild(location);
+
+						var city = document.createElement('div');
+						city.className = 'city';
+						city.innerHTML = (incident.city) ? incident.city : incident.Area;
+						li.appendChild(city);
+
+						if (incident.distance) {
+							var distance = document.createElement('div');
+							distance.className = 'distance';
+							distance.innerHTML = incident.distance + ' miles';
+							li.appendChild(distance);
+						}
+
+						ul.appendChild(li);
+					}
 				}
 			}
 		</script>
