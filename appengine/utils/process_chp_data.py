@@ -131,7 +131,7 @@ def process_chp_center(chpCenter):
 	# Reverse geocode the incidents if we haven't already
 	for incident in incident_list:
 		if incident.city is None and incident.geolocation is not None:
-			deferred.defer(reverse_geocode.load_city, incident.key(), _queue="reverseGeocodeQueue")
+			deferred.defer(reverse_geocode.load_city, incident, _queue="reverseGeocodeQueue")
 
 	logging.info("Processed %d incidents in %s." % (len(incident_list), chpCenter.attrib['ID']))
 
