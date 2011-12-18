@@ -1,7 +1,7 @@
 {
 	"name": "SacTraffic",
 	"description": "Displays the current incidents on SacTraffic.org, configurable.",
-	"version": "0.9",
+	"version": "0.9.1",
 	"icons": {
 		"128": "sactraffic-128.png"
 	},

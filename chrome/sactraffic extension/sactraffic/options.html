@@ -47,7 +47,7 @@
 				display: none;
 			}
 
-			#clearnotificationsecs {
+			#clearnotificationsecs, #miles {
 				width: 3em;
 			}
 
@@ -79,7 +79,7 @@
 						// Need Google Maps, dynamically load it and then call us again
 						var script = document.createElement("script");
 						script.type = "text/javascript";
-						script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=toggleGeoBlock";
+						script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyCqAWhoCTR35Otz1QSkigXKlhLQWBw8vOQ&sensor=false&callback=toggleGeoBlock";
 						document.body.appendChild(script);
 					} else {
 						document.getElementById('geoblock').style.display = 'block';
