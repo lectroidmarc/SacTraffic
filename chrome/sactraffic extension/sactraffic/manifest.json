@@ -1,7 +1,7 @@
 {
 	"name": "SacTraffic",
 	"description": "Displays the current incidents on SacTraffic.org, configurable.",
-	"version": "0.9.2",
+	"version": "0.9.3",
 	"icons": {
 		"128": "sactraffic-128.png"
 	},
@@ -15,6 +15,7 @@
 	"permissions": [
 		"geolocation",
 		"notifications",
+		"tabs",
 		"http://www.sactraffic.org/*"
 	],
 	"update_url": "http://www.lectroid.net/chrome/updates.xml"

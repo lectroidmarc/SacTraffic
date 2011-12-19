@@ -145,6 +145,35 @@
 				}
 			});
 
+			// If the last window is closed and notifications are off, stop pinging
+			// for updates.  No sense in polling for incidents when there's no way
+			// of seeing the results.
+			chrome.windows.onRemoved.addListener(function(windowId) {
+				chrome.windows.getAll({}, function(windows) {
+					if (windows.length == 0) {
+						var prefs = (localStorage.prefs) ? JSON.parse(localStorage.prefs) : {};
+						if (!prefs.use_notifications) {
+							clearTimeout(updateTimeout);
+						}
+					}
+				});
+			});
+
+			// If we create a window and it's the first window and notifications are
+			// off then we need to start checking for updates again (because we
+			// killed them above).
+			chrome.windows.onCreated.addListener(function(window) {
+				chrome.windows.getAll({}, function(windows) {
+					if (windows.length == 1) {
+						var prefs = (localStorage.prefs) ? JSON.parse(localStorage.prefs) : {};
+						if (!prefs.use_notifications) {
+							loadingAnimation.start();
+							checkForUpdates();
+						}
+					}
+				});
+			});
+
 			chrome.browserAction.setBadgeBackgroundColor({color:[22, 82, 121, 255]});
 			loadingAnimation.start();
 			checkForUpdates();
