@@ -9,8 +9,7 @@
 			var checkInterval = 60;
 			var updateTimeout;
 			var currentPosition;
-			var now = new Date();
-			var lastCheckTime = Math.round(now.getTime() / 1000);
+			var lastCheckTime = Math.round(Date.now() / 1000);
 			var loadingAnimation = new LoadingAnimation();
 
 			function checkForUpdates() {
