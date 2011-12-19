@@ -126,13 +126,11 @@
 
 					var prefs = (localStorage.prefs) ? JSON.parse(localStorage.prefs) : {};
 					if (prefs.clear_notifications_in > 0) {
-						setTimeout(cancelNotification, prefs.clear_notifications_in * 1000, notification);
+						setTimeout(function () {
+							notification.cancel();
+						}, prefs.clear_notifications_in * 1000);
 					}
 				}
-			}
-
-			function cancelNotification(showing_note) {
-				showing_note.cancel();
 			}
 
 			// Listen for messages
