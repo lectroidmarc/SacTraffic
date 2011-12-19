@@ -7,15 +7,14 @@
 			var saved_incidents = [];
 			var sacTrafficUrl = 'http://www.sactraffic.org';
 			var checkInterval = 60;
+			var updateTimeout;
 			var currentPosition;
 			var now = new Date();
 			var lastCheckTime = Math.round(now.getTime() / 1000);
 			var loadingAnimation = new LoadingAnimation();
-			var prefs = (localStorage.prefs) ? JSON.parse(localStorage.prefs) : {};
 
-			function checkForUpdates(noSetTimeout) {
-				// refresh prefs (in case they changed)
-				prefs = (localStorage.prefs) ? JSON.parse(localStorage.prefs) : {};
+			function checkForUpdates() {
+				var prefs = (localStorage.prefs) ? JSON.parse(localStorage.prefs) : {};
 
 				// Update our current location
 				if (prefs.use_geolocation) {
@@ -103,13 +102,11 @@
 							console.log("An error occured with SacTraffic Notifier, could not contact sactraffic.org.");
 						}
 
-						// Save the active incidents so we can use them in
-						// a popup.
+						// Now that they're loaded, put the active incidents in a global so
+						// we can use them in a popup.
 						saved_incidents = active_incidents;
 
-						if (typeof(noSetTimeout) === 'undefined') {
-							setTimeout(checkForUpdates, checkInterval * 1000);
-						}
+						updateTimeout = setTimeout(checkForUpdates, checkInterval * 1000);
 					}
 				}
 				xhr.send();
@@ -125,10 +122,10 @@
 						incidents[0].Location + ", " + incidents[0].city :
 						'There have been ' + incidents.length + ' new CHP incidents.';
 
-					var notification = webkitNotifications.createNotification(
-						iconUrl, title, body);
+					var notification = webkitNotifications.createNotification(iconUrl, title, body);
 					notification.show();
 
+					var prefs = (localStorage.prefs) ? JSON.parse(localStorage.prefs) : {};
 					if (prefs.clear_notifications_in > 0) {
 						setTimeout(cancelNotification, prefs.clear_notifications_in * 1000, notification);
 					}
@@ -142,7 +139,8 @@
 			// Listen for messages
 			chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 				if (request.getUpdates) {
-					checkForUpdates(true);
+					clearTimeout(updateTimeout);
+					checkForUpdates();
 				} else if (request.getIncidents) {
 					sendResponse(saved_incidents);
 				}
