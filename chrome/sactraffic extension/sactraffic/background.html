@@ -28,7 +28,7 @@
 				}
 
 				var xhr = new XMLHttpRequest();
-				xhr.open("GET", sacTrafficUrl + '/json?dispatch=SACC', true);
+				xhr.open("GET", sacTrafficUrl + '/json?dispatch=SACC&active_only=1', true);
 				xhr.onreadystatechange = function() {
 					if (xhr.readyState == 4) {
 						var active_incidents = [];
@@ -40,17 +40,8 @@
 							var checkLocation = prefs.use_geolocation && prefs.within_miles;
 							var new_incidents = [];
 
-							// We only want "new" and "active" incidents and since
-							// there's no way to query those we have to loop through
-							// and check each incident.
-							//
-							// We also use this loop to check the location.
 							for (var x = 0; x < incidents.length; x++) {
 								var incident = incidents[x];
-
-								if (incident.status == "inactive") {
-									continue;
-								}
 
 								if (checkLocation) {
 									// If the location hasn't been returned yet... punt

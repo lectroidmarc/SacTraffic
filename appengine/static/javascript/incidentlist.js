@@ -53,8 +53,6 @@ IncidentList.prototype.makeList = function (element) {
 
 		// TODO: Media info?
 
-		if (incident.status !== 'inactive') {
-			incident.makeListItem(ul);
-		}
+		incident.makeListItem(ul);
 	}
 };

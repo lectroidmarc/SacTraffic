@@ -21,6 +21,11 @@ class JsonHandler(incident_request.RequestHandler):
 		# Build a Python list we can convert to JSON
 		output_list = []
 		for incident in self.incidents:
+			# Since status is not a proper datastore field we can't filter on it
+			# in the normal way, but we can still filter on it in this loop.
+			if self.request.get("active_only") == '1' and incident.status == 'inactive':
+				continue
+
 			incident_dict = {
 				'Area': incident.Area,
 				'ID': incident.key().name(),

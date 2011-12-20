@@ -26,7 +26,7 @@ var init_index = function () {
  * Fetches the incident JSON and processes it accordingly.
  */
 var get_incidents = function (id) {
-	jQuery.getJSON('/json?dispatch=SACC', function (data) {
+	jQuery.getJSON('/json?dispatch=SACC&active_only=1', function (data) {
 		var incidents = new IncidentList(data);
 		incidents.makeList(jQuery('#incidentlist'));
 

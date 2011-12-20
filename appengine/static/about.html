@@ -51,6 +51,7 @@
 		<li><code>city</code> - If there is a valid location we'll reverse geocode it for something a little more granular than the CHP office.</li>
 		<li><code>since</code> - Shows only results since a certain time.  Takes an "epoch" timestamp.</li>
 		<li><code>roads</code> - [ATOM only].  Filters the results by a comma separated list of street names.</li>
+		<li><code>active_only</code> - [JSON only].  Set to "1" to get only new and active incidents.</li>
 		<li><code>callback</code> - [JSON only].  A callback for a JSONP request.</li>
 	</ul>
 	<p>So, for example, "STCC" is the Sacramento Communication Center code so <code>http://www.sactraffic.org/json?center=STCC</code> will get you all the Sacramento Valley incidents (covering Sacramento, Chico and Stockton dispatches), and <code>http:/www.sactraffic.org/json?dispatch=STCC</code> will get you just the Sacramento Dispatch incidents (what this site uses) and you can go further, to the area offices so, North Sacramento office incidents would be <code>http:/www.sactraffic.org/json?area=North%20Sacramento</code>. Going further you can specify a city, like Folsom, which will get you <code>http:/www.sactraffic.org/json?city=Folsom</code> for the incidents actually in Folsom.</p>
