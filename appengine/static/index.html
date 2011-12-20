@@ -27,7 +27,7 @@
 </script>
 </head>
 
-<body onload="init_index()">
+<body>
 <div id="header">
 	<h1>Live CHP traffic alerts in the Sacramento area</h1>
 	<p class="info">Sacramento area traffic alerts and incidents as reported by the California Highway Patrol. <span class="additional">Includes live reports of accidents and collisions of all types, road hazards and closures as well as media updates issued for CHP "sigalerts".</span></p>
@@ -104,7 +104,11 @@
 	}
 </script>
 <script type="text/javascript" src="/javascript/sactraffic.min.js"></script>
-
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		init_index();
+	});
+</script>
 <script type="text/javascript" src="http://media.sacbee.com/static/sacconnect/sacconnect-min.js"></script>
 </body>
 </html>
