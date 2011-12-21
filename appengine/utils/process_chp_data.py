@@ -14,7 +14,6 @@ from xml.etree import ElementTree
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
 from google.appengine.ext import deferred
-from google.appengine.runtime.apiproxy_errors import CapabilityDisabledError
 
 from models import CHPData, CHPIncident
 from utils import tzinfo, reverse_geocode
@@ -45,13 +44,9 @@ def update_chp_data():
 				logging.warning(error)
 				output_blurb = error
 			else:
-				try:
+				if db.WRITE_CAPABILITY.is_enabled():
 					CHPData(key_name="chp_data", data=zlib.compress(pickle.dumps(chp_etree))).put()
-				except CapabilityDisabledError:
-					error = "Google datastore in read-only mode, not processing CHP data."
-					logging.warning(error)
-					output_blurb = error
-				else:
+
 					# Now, finally, we process the CHP tree, breaking out each CHP
 					# center and deferring its processing
 					for chp_center in chp_etree:
@@ -60,6 +55,10 @@ def update_chp_data():
 					# Ping for the whole ATOM feed.  We do it here because we only do it once.
 					if not debug:
 						deferred.defer(pubsubhubbub_publish.publish, 'http://pubsubhubbub.appspot.com', 'http://www.sactraffic.org/atom', _queue="pshPingQueue")
+				else:
+					error = "Google datastore in read-only mode, not processing CHP data."
+					logging.warning(error)
+					output_blurb = error
 		else:
 			error = "CHP server returned " + str(result.status_code) + " status."
 			logging.warning(error)
