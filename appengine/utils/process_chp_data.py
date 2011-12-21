@@ -7,28 +7,65 @@ import os
 import re
 import time
 import urllib
+import zlib
 from datetime import datetime, timedelta
+from xml.etree import ElementTree
 
+from google.appengine.api import urlfetch
 from google.appengine.ext import db
 from google.appengine.ext import deferred
+from google.appengine.runtime.apiproxy_errors import CapabilityDisabledError
 
-from models import CHPIncident
+from models import CHPData, CHPIncident
 from utils import tzinfo, reverse_geocode
 from thirdparty import pubsubhubbub_publish
 
 
 debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 
-def process_chp_xml(chpState):
-	"""Process a whole CHP feed in ETree format.
+def update_chp_data():
+	"""Fetch the CHP data from the CHP and parse it.  If it parses OK, defer
+	processing of each CHP Center.
 
 	"""
-	for chpCenter in chpState:
-		deferred.defer(process_chp_center, chpCenter, _queue="chpProcessQueue")
+	output_blurb = "CHP Incidents loaded."
 
-	# Ping for the whole ATOM feed.  We do it here because we only do it once.
-	if not debug:
-		deferred.defer(pubsubhubbub_publish.publish, 'http://pubsubhubbub.appspot.com', 'http://www.sactraffic.org/atom', _queue="pshPingQueue")
+	try:
+		result = urlfetch.fetch("http://media.chp.ca.gov/sa_xml/sa.xml", deadline=60)
+	except urlfetch.DownloadError:
+		error = "DownloadError. CHP request took too long."
+		logging.warning(error)
+		output_blurb = error
+	else:
+		if result.status_code == 200:
+			try:
+				chp_etree = ElementTree.XML(result.content)
+			except ElementTree.ParseError, e:
+				error = "XML processing error. %s" % e.message
+				logging.warning(error)
+				output_blurb = error
+			else:
+				try:
+					CHPData(key_name="chp_data", data=zlib.compress(pickle.dumps(chp_etree))).put()
+				except CapabilityDisabledError:
+					error = "Google datastore in read-only mode, not processing CHP data."
+					logging.warning(error)
+					output_blurb = error
+				else:
+					# Now, finally, we process the CHP tree, breaking out each CHP
+					# center and deferring its processing
+					for chp_center in chp_etree:
+						deferred.defer(process_chp_center, chp_center, _queue="chpProcessQueue")
+
+					# Ping for the whole ATOM feed.  We do it here because we only do it once.
+					if not debug:
+						deferred.defer(pubsubhubbub_publish.publish, 'http://pubsubhubbub.appspot.com', 'http://www.sactraffic.org/atom', _queue="pshPingQueue")
+		else:
+			error = "CHP server returned " + str(result.status_code) + " status."
+			logging.warning(error)
+			output_blurb = error
+
+	return output_blurb
 
 def process_chp_center(chpCenter):
 	"""Process a CHP Center.
