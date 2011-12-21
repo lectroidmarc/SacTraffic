@@ -27,22 +27,20 @@ def update_chp_data():
 	processing of each CHP Center.
 
 	"""
-	output_blurb = "CHP Incidents loaded."
+	notice = "CHP Incidents loaded."
 
 	try:
 		result = urlfetch.fetch("http://media.chp.ca.gov/sa_xml/sa.xml", deadline=60)
 	except urlfetch.DownloadError:
-		error = "DownloadError. CHP request took too long."
-		logging.warning(error)
-		output_blurb = error
+		notice = "DownloadError. CHP request took too long."
+		logging.warning(notice)
 	else:
 		if result.status_code == 200:
 			try:
 				chp_etree = ElementTree.XML(result.content)
 			except ElementTree.ParseError, e:
-				error = "XML processing error. %s" % e.message
-				logging.warning(error)
-				output_blurb = error
+				notice = "XML processing error. %s" % e.message
+				logging.warning(notice)
 			else:
 				if db.WRITE_CAPABILITY.is_enabled():
 					CHPData(key_name="chp_data", data=zlib.compress(pickle.dumps(chp_etree))).put()
@@ -56,15 +54,13 @@ def update_chp_data():
 					if not debug:
 						deferred.defer(pubsubhubbub_publish.publish, 'http://pubsubhubbub.appspot.com', 'http://www.sactraffic.org/atom', _queue="pshPingQueue")
 				else:
-					error = "Google datastore in read-only mode, not processing CHP data."
-					logging.warning(error)
-					output_blurb = error
+					notice = "Google datastore in read-only mode, not processing CHP data."
+					logging.warning(notice)
 		else:
-			error = "CHP server returned " + str(result.status_code) + " status."
-			logging.warning(error)
-			output_blurb = error
+			notice = "CHP server returned " + str(result.status_code) + " status."
+			logging.warning(notice)
 
-	return output_blurb
+	return notice
 
 def process_chp_center(chpCenter):
 	"""Process a CHP Center.
