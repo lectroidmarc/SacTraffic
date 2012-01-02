@@ -19,6 +19,9 @@ from models import CHPData, CHPIncident
 from utils import tzinfo, reverse_geocode
 from thirdparty import pubsubhubbub_publish
 
+# Work around an App Engine bug with datetime.strptime
+import _strptime
+
 
 debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 
