@@ -69,13 +69,14 @@ def publish(hub, *urls):
     data = urllib.urlencode(
         {'hub.url': chunk, 'hub.mode': 'publish'}, doseq=True)
     try:
-      response = urllib2.urlopen(hub, data)
-    except (IOError, urllib2.HTTPError), e:
-      if hasattr(e, 'code') and e.code == 204:
-        continue
-      error = ''
-      if hasattr(e, 'read'):
-        error = e.read()
-      raise PublishError('%s, Response: "%s"' % (e, error))
+      response = urlfetch.fetch(url=hub,
+        payload=data,
+        method=urlfetch.POST,
+        headers={'Content-Type': 'application/x-www-form-urlencoded'})
     except urlfetch.DownloadError:
-	  logging.warning("PubSubHuhbub ping to '%s' timed out." % hub)
+      logging.warning("PubSubHuhbub ping to '%s' timed out." % hub)
+    else:
+      if response.status_code == 204:
+        continue
+      else:
+        raise PublishError('PubSubHuhbub hub "%s" returned: "%s"' % (hub, response.status_code))
