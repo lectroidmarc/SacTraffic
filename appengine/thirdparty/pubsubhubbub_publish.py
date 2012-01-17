@@ -36,7 +36,6 @@ __author__ = 'bslatkin@gmail.com (Brett Slatkin)'
 
 import urllib
 import urllib2
-import logging
 
 from google.appengine.api import urlfetch
 
@@ -74,7 +73,7 @@ def publish(hub, *urls):
         method=urlfetch.POST,
         headers={'Content-Type': 'application/x-www-form-urlencoded'})
     except urlfetch.DownloadError:
-      logging.warning("PubSubHuhbub ping to '%s' timed out." % hub)
+      raise PublishError('PubSubHuhbub ping to "%s" timed out.' % hub)
     else:
       if response.status_code == 204:
         continue
