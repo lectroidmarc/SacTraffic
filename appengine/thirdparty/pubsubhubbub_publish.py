@@ -71,9 +71,15 @@ def publish(hub, *urls):
       response = urlfetch.fetch(url=hub,
         payload=data,
         method=urlfetch.POST,
+        deadline=15,
         headers={'Content-Type': 'application/x-www-form-urlencoded'})
     except urlfetch.DownloadError:
-      raise PublishError('PubSubHuhbub ping to "%s" timed out.' % hub)
+      #raise PublishError('PubSubHuhbub ping to "%s" timed out.' % hub)
+
+      # New trick from the Google PubSubHub server is to process the ping
+      # correctly, but never respond.
+
+      continue
     else:
       if response.status_code == 204:
         continue
