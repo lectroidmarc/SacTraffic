@@ -18,23 +18,8 @@ var TrafficMap = function (elementId, defaultState) {
 	this.live_cams = [];
 	this.traffic_overlay = null;
 	this.marker_list = {};
+	this._icons = {};
 	this.cameraInfoWindow = new google.maps.InfoWindow();
-
-	// Set up the map icons
-	this.default_icon = new google.maps.MarkerImage('/images/map_markers.png',
-		new google.maps.Size(18, 18),
-		new google.maps.Point(18, 0),
-		new google.maps.Point(9, 9));
-
-	this.accident_icon = new google.maps.MarkerImage('/images/map_markers.png',
-		new google.maps.Size(18, 18),
-		new google.maps.Point(0, 0),
-		new google.maps.Point(9, 9));
-
-	this.default_icon_shadow = new google.maps.MarkerImage('/images/map_markers.png',
-		new google.maps.Size(23, 23),
-		new google.maps.Point(60, 0),
-		new google.maps.Point(9, 9));
 
 	var mapOptions = {
 		zoom: 11,
@@ -163,11 +148,6 @@ TrafficMap.prototype.show_live_cams = function () {
 			url: "/cameras.txt",
 			dataType: "text",
 			success: function (cameras) {
-				var camera_icon = new google.maps.MarkerImage("/images/map_markers.png",
-					new google.maps.Size(24, 24),
-					new google.maps.Point(36, 0),
-					new google.maps.Point(12, 12));
-
 				var rows = cameras.split(/\n/);
 				for (var x = 1, xl = rows.length; x < xl; x++) {
 					if (rows[x] === '' || rows[x].match(/^#/)) {
@@ -190,13 +170,13 @@ TrafficMap.prototype.show_live_cams = function () {
 				function make_camera_marker (camera) {
 					var marker = new google.maps.Marker({
 						position: new google.maps.LatLng(camera.location.lat, camera.location.lon),
-						icon: camera_icon,
+						icon: self.getIcon('camera'),
 						title: camera.name,
 						map: self.gmap
 					});
 
 					google.maps.event.addListener(marker, 'click', function() {
-						self.cameraInfoWindow.setContent('<div class="camera marker"><div class="name">Live Video</div><div class="button"><div class="awesome blue" onclick="window.open(\'' +  camera.url + '\')">' + camera.name + '</div></div>');
+						self.cameraInfoWindow.setContent('<div class="camera marker"><div class="name">Live Video</div><div class="button"><div class="awesome blue" onclick="window.open(\'' +	 camera.url + '\')">' + camera.name + '</div></div>');
 						self.cameraInfoWindow.open(self.gmap, marker);
 					});
 
@@ -331,21 +311,23 @@ TrafficMap.prototype.hide_incidents = function () {
  */
 TrafficMap.prototype.make_marker = function (incident) {
 	var self = this;
-	var icon = this.default_icon;
 	var incident_date = new Date(incident.LogTime * 1000);
 
-	if (/Traffic Hazard|Disabled Vehicle/.test(incident.LogType)) {
-		// Hazard icon...
-		// Note: placeholder, we don't actually have a hazard icon
-	} else if (/Collision|Fatality|Hit \& Run/.test(incident.LogType)) {
-		// Collision icon...
-		icon = this.accident_icon;
+	var icon = this.getIcon();
+	if (/Fire/.test(incident.LogType)) {
+		icon = this.getIcon('fire');
+	} else if (/Maintenance|Construction/.test(incident.LogType)) {
+		icon = this.getIcon('maintenance');
+	} else if (/Ambulance Enroute|Fatality/.test(incident.LogType)) {
+		icon = this.getIcon('collision-serious');
+	} else if (/Collision/.test(incident.LogType)) {
+		icon = this.getIcon('collision');
 	}
 
 	var marker = new google.maps.Marker({
 		position: new google.maps.LatLng(incident.geolocation.lat, incident.geolocation.lon),
 		icon: icon,
-		shadow: this.default_icon_shadow,
+		shadow: this.getIcon('shadow'),
 		title: incident.LogType,
 		map: this.gmap
 	});
@@ -360,3 +342,48 @@ TrafficMap.prototype.make_marker = function (incident) {
 
 	return marker;
 };
+
+/**
+ * Icon generator for the traffic map.
+ * @param {String} type The type of icon to return.
+ */
+TrafficMap.prototype.getIcon = function (type) {
+	if (typeof(type) === 'undefined') {
+		type = 'generic';
+	}
+
+	if (typeof(this._icons[type]) === 'undefined') {
+		var url = '/images/map_markers.png';
+		var size = new google.maps.Size(32, 37);
+		var origin = new google.maps.Point(0, 0);
+		var anchor = new google.maps.Point(16, 37);
+		var scaledSize = null;
+
+		switch (type) {
+			case 'maintenance':
+				origin = new google.maps.Point(32, 0);
+				break;
+			case 'collision-serious':
+				origin = new google.maps.Point(64, 0);
+				break;
+			case 'collision':
+				origin = new google.maps.Point(96, 0);
+				break;
+			case 'fire':
+				origin = new google.maps.Point(128, 0);
+				break;
+			case 'camera':
+				origin = new google.maps.Point(160, 0);
+				break;
+			case 'shadow':
+				size = new google.maps.Size(51, 37);
+				origin = new google.maps.Point(0, 37);
+				anchor = new google.maps.Point(26, 37);
+				break;
+		}
+
+		this._icons[type] = new google.maps.MarkerImage(url, size, origin, anchor, scaledSize);
+	}
+
+	return this._icons[type];
+}

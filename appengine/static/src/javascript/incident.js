@@ -142,21 +142,21 @@ Incident.prototype.getIcon = function () {
 	var name;
 	var cssPosition;
 
-	if (/Traffic Hazard|Disabled Vehicle/.test(this.LogType)) {
-		name = "Hazard";
-		cssPosition = "-18px 0px";
-	} else if (/Collision|Fatality|Hit \& Run/.test(this.LogType)) {
-		name = "Collision";
-		cssPosition = "0px 0px";
-	} else if (/Fire/.test(this.LogType)) {
+	if (/Fire/.test(this.LogType)) {
 		name = "Fire";
-		cssPosition = "-18px 0px";
-	} else if (/Ped/.test(this.LogType)) {
-		name = "Pedestrian";
-		cssPosition = "-18px 0px";
+		cssPosition = "-128px 0px";
+	} else if (/Maintenance|Construction/.test(this.LogType)) {
+		name = 'Maintenance';
+		cssPosition = "-32px 0px";
+	} else if (/Ambulance Enroute|Fatality/.test(this.LogType)) {
+		name = 'Collision-serious';
+		cssPosition = "-64px 0px";
+	} else if (/Collision/.test(this.LogType)) {
+		name = 'Collision';
+		cssPosition = "-96px 0px";
 	} else {
 		name = "Hazard";
-		cssPosition = "-18px 0px";
+		cssPosition = "0px 0px";
 	}
 
 	return {
