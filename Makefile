@@ -11,7 +11,8 @@ CLOSURE = java -jar support/closure-compiler.jar
 FILES = appengine/static/sactraffic.min.js \
 	appengine/static/sactraffic.min.css \
 
-JS = appengine/static/src/javascript/date.js \
+JS = appengine/static/src/javascript/array.js \
+	appengine/static/src/javascript/date.js \
 	appengine/static/src/javascript/incident.js \
 	appengine/static/src/javascript/incidentlist.js \
 	appengine/static/src/javascript/requestargs.js \

@@ -9,42 +9,40 @@
  * @class Represents a traffic map.
  * @param {String} elementId An ID to load the map into.
  * @param {Object} [defaultState] Default state for the map.
- * @param {Boolean} [defaultState.live_cams] To show the live cameras.
+ * @param {Boolean} [defaultState._live_cams] To show the live cameras.
  * @param {Boolean} [defaultState.traffic] To show the traffic overlay.
  */
 var TrafficMap = function (elementId, defaultState) {
+	var self = this;
+
 	this.loadState(defaultState);
-	this.center = new google.maps.LatLng(38.56, -121.40);
-	this.live_cams = [];
-	this.traffic_overlay = null;
-	this.marker_list = {};
+	this._live_cams = [];
+	this._traffic_overlay = null;
+	this._markers = {};
 	this._icons = {};
+	this._globalInfoWindow = new google.maps.InfoWindow();
 	this.cameraInfoWindow = new google.maps.InfoWindow();
 	this._map_has_been_moved = false;
 
 	var mapOptions = {
 		zoom: 11,
-		center: this.center,
+		center: new google.maps.LatLng(38.56, -121.40),
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
-		streetViewControl: false,
-		mapTypeControl: false,
 		scrollwheel: false,
-		navigationControlOptions: {
-			style: google.maps.NavigationControlStyle.SMALL
-		}
+		disableDefaultUI: true
 	};
 
 	this.gmap = new google.maps.Map(document.getElementById(elementId), mapOptions);
 
-	// Save the map's center after a user drag...
-	var self = this;
-	google.maps.event.addListener(this.gmap, "dragend", function() {
-		self.center = self.gmap.getCenter();
-	});
-
 	// Setup the map buttons.
 	this.make_traffic_button();
 	this.make_camera_button();
+	var recenter_btn = document.getElementById('recenter_btn');
+	recenter_btn.onclick = function () {
+		this.style.display = 'none';
+		self._map_has_been_moved = false;
+		self.fitIncidents();
+	};
 
 	this.gmap.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('mapcontrol'));
 
@@ -56,6 +54,22 @@ var TrafficMap = function (elementId, defaultState) {
 	if (this.getState('traffic')) {
 		this.show_gtraffic();
 	}
+
+	// Events...
+	google.maps.event.addListener(this.gmap, 'dragend', function() {
+		recenter_btn.style.display = 'block';
+		self._map_has_been_moved = true;
+	});
+	google.maps.event.addListener(this.gmap, 'dblclick', function() {
+		recenter_btn.style.display = 'block';
+		self._map_has_been_moved = true;
+	});
+	google.maps.event.addListener(this.gmap, 'resize', function() {
+		self.fitIncidents();
+	});
+	google.maps.event.addListener(this._globalInfoWindow, 'closeclick', function() {
+		self.resize();
+	});
 }
 
 /**
@@ -99,17 +113,25 @@ TrafficMap.prototype.make_camera_button = function () {
  * @param {Incidents} incidents The incidents object fetched via AJAX.
  */
 TrafficMap.prototype.update = function (incidents) {
-	this.hide_incidents();
-	this.marker_list = {};
+	this.incidents = incidents;
 
-	for (var x = 0, xl = incidents.length; x < xl; x++) {
-		var incident = incidents.getIncident(x);
-
-		if (incident.status != "inactive" && incident.geolocation && incident.LogType != "Media Information") {
-			var marker = this.make_marker(incident);
-			this.marker_list[incident.ID] = marker;
+	// remove markers for incidents we no longer have
+	for (var id in this._markers) {
+		if (!this.incidents.containsId(id)) {
+			this._markers[id].setMap(null);
+			delete this._markers[id];
 		}
 	}
+
+	for (var id in this.incidents.getIncidents()) {
+		var incident = this.incidents.getIncidentById(id);
+
+		if (incident.geolocation) {
+			this._markers[incident.ID] = this.make_marker(incident);
+		}
+	}
+
+	this.fitIncidents();
 };
 
 /**
@@ -133,10 +155,30 @@ TrafficMap.prototype.show_incident = function (incidents, incident_id) {
 };
 
 /**
+ * Moves the map to cover the all the incidents.
+ */
+TrafficMap.prototype.fitIncidents = function () {
+	if (typeof(this.incidents) !== 'undefined' && this.incidents.size() > 1 && !this._map_has_been_moved) {
+		var bounds = this.incidents.getBounds();
+		this.gmap.fitBounds(new google.maps.LatLngBounds(
+			new google.maps.LatLng (bounds.sw.lat, bounds.sw.lon),
+			new google.maps.LatLng (bounds.ne.lat, bounds.ne.lon)
+		));
+	}
+};
+
+/**
+ * Tells Google to resize.
+ */
+TrafficMap.prototype.resize = function () {
+	google.maps.event.trigger(this.gmap, 'resize');
+};
+
+/**
  * Shows the live cams.
  */
 TrafficMap.prototype.show_live_cams = function () {
-	if (this.live_cams.length === 0) {
+	if (this._live_cams.length === 0) {
 		var self = this;
 
 		jQuery.ajax({
@@ -159,7 +201,7 @@ TrafficMap.prototype.show_live_cams = function () {
 						}
 					};
 
-					self.live_cams.push(make_camera_marker(camera));
+					self._live_cams.push(make_camera_marker(camera));
 				}
 
 				function make_camera_marker (camera) {
@@ -171,8 +213,8 @@ TrafficMap.prototype.show_live_cams = function () {
 					});
 
 					google.maps.event.addListener(marker, 'click', function() {
-						self.cameraInfoWindow.setContent('<div class="camera marker"><div class="name">Live Video</div><div class="button"><div class="button blue" onclick="window.open(\'' +	 camera.url + '\')">' + camera.name + '</div></div>');
-						self.cameraInfoWindow.open(self.gmap, marker);
+						self._globalInfoWindow.setContent('<div class="camera marker"><div class="name">Live Video</div><div class="button"><div class="button blue" onclick="window.open(\'' +	 camera.url + '\')">' + camera.name + '</div></div>');
+						self._globalInfoWindow.open(self.gmap, marker);
 					});
 
 					return marker;
@@ -181,8 +223,8 @@ TrafficMap.prototype.show_live_cams = function () {
 			}
 		});
 	} else {
-		for (var x = 0, xl = this.live_cams.length; x < xl; x++) {
-			var cam_marker = this.live_cams[x];
+		for (var x = 0, xl = this._live_cams.length; x < xl; x++) {
+			var cam_marker = this._live_cams[x];
 			cam_marker.setMap(this.gmap);
 		}
 	}
@@ -195,8 +237,8 @@ TrafficMap.prototype.show_live_cams = function () {
  * Hides the live cams.
  */
 TrafficMap.prototype.hide_live_cams = function () {
-	for (var x = 0, xl = this.live_cams.length; x < xl; x++) {
-		var cam_marker = this.live_cams[x];
+	for (var x = 0, xl = this._live_cams.length; x < xl; x++) {
+		var cam_marker = this._live_cams[x];
 		cam_marker.setMap(null);
 	}
 
@@ -208,8 +250,8 @@ TrafficMap.prototype.hide_live_cams = function () {
  * Shows Google traffic info.
  */
 TrafficMap.prototype.show_gtraffic = function () {
-	this.traffic_overlay = new google.maps.TrafficLayer();
-	this.traffic_overlay.setMap(this.gmap);
+	this._traffic_overlay = new google.maps.TrafficLayer();
+	this._traffic_overlay.setMap(this.gmap);
 
 	this.traffic_button.innerHTML = 'Hide Traffic';
 	this.setState('traffic', true);
@@ -219,8 +261,8 @@ TrafficMap.prototype.show_gtraffic = function () {
  * Hides Google traffic info.
  */
 TrafficMap.prototype.hide_gtraffic = function () {
-	if (this.traffic_overlay) {
-		this.traffic_overlay.setMap(null);
+	if (this._traffic_overlay) {
+		this._traffic_overlay.setMap(null);
 	}
 
 	this.traffic_button.innerHTML = 'Show Traffic';
@@ -232,8 +274,8 @@ TrafficMap.prototype.hide_gtraffic = function () {
  * @param {String} incident_id The incident ID to center on.
  */
 TrafficMap.prototype.center_on_id = function (incident_id) {
-	if (this.marker_list[incident_id]) {
-		this.gmap.panTo(this.marker_list[incident_id].getPosition());
+	if (this._markers[incident_id]) {
+		this.gmap.panTo(this._markers[incident_id].getPosition());
 	}
 };
 
@@ -299,8 +341,8 @@ TrafficMap.prototype.setState = function (key, value) {
  * Hides the CHP incidents.
  */
 TrafficMap.prototype.hide_incidents = function () {
-	for (var id in this.marker_list) {
-		var marker = this.marker_list[id];
+	for (var id in this._markers) {
+		var marker = this._markers[id];
 		marker.setMap(null);
 	}
 };
@@ -312,7 +354,6 @@ TrafficMap.prototype.hide_incidents = function () {
  */
 TrafficMap.prototype.make_marker = function (incident) {
 	var self = this;
-	var incident_date = new Date(incident.LogTime * 1000);
 
 	var icon = this.getIcon();
 	if (/Fire/.test(incident.LogType)) {
@@ -325,20 +366,25 @@ TrafficMap.prototype.make_marker = function (incident) {
 		icon = this.getIcon('collision');
 	}
 
-	var marker = new google.maps.Marker({
-		position: new google.maps.LatLng(incident.geolocation.lat, incident.geolocation.lon),
-		icon: icon,
-		shadow: this.getIcon('shadow'),
-		title: incident.LogType,
-		map: this.gmap
-	});
-
-	var infowindow = new google.maps.InfoWindow({
-		content: '<div class="marker"><div class="logtype">' + incident.LogType + '</div><div class="location">' + incident.Location + '</div><div class="logtime">' + incident_date.getPrettyDateTime() + '</div></div>'
-	});
+	var marker = this._markers[incident.ID];
+	if (typeof(marker) === 'undefined') {
+		marker = new google.maps.Marker({
+			position: new google.maps.LatLng(incident.geolocation.lat, incident.geolocation.lon),
+			icon: icon,
+			shadow: this.getIcon('shadow'),
+			title: incident.LogType,
+			map: this.gmap
+		});
+	} else {
+		marker.setIcon(icon);
+		marker.setTitle(incident.LogType);
+		google.maps.event.clearListeners(marker, 'click');
+	}
 
 	google.maps.event.addListener(marker, 'click', function() {
-		infowindow.open(self.gmap, marker);
+	  var logtime = new Date(incident.LogTime * 1000);
+		self._globalInfoWindow.setContent('<div class="marker"><div class="logtype">' + incident.LogType + '</div><div class="location">' + incident.Location + '</div><div class="logtime">' + logtime.getPrettyDateTime() + '</div></div>');
+		self._globalInfoWindow.open(self.gmap, marker);
 	});
 
 	return marker;

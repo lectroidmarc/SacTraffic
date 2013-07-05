@@ -7,28 +7,12 @@
  * Creates a list of CHP Incidents from CHP Incident data.
  * @class Represents a set of CHP Incidents.
  * @param {Array} data An array of CHP Incidents from SacTraffic.org.
- * @property {Number} length The number of Incidents in the list.
  */
 var IncidentList = function (data) {
-	this.length = data.length;
-	this._incidents = [];
-	this._index = {};
+	this._incidents = {};
+	this._bounds = {};
 
-	for (var x = 0; x < data.length; x++) {
-		var incident = new Incident(data[x]);
-
-		this._incidents.push(incident);
-		this._index[incident.ID] = x;
-	}
-};
-
-/**
- * Gets an Incident by it's index number.
- * @param {Number} index The Incident's index in the IncidentList.
- * @returns {Incident}
- */
-IncidentList.prototype.getIncident = function(index) {
-	return this._incidents[index];
+	this.update(data);
 };
 
 /**
@@ -37,7 +21,79 @@ IncidentList.prototype.getIncident = function(index) {
  * @returns {Incident}
  */
 IncidentList.prototype.getIncidentById = function(id) {
-	return this._incidents[this._index[id]];
+	return this._incidents[id];
+};
+
+IncidentList.prototype.getIncidents = function() {
+	return this._incidents;
+};
+
+IncidentList.prototype.getIncidents = function() {
+	return this._incidents;
+};
+
+IncidentList.prototype.addIncident = function (incident) {
+	if (typeof this._incidents[incident.ID] === 'undefined' || !this._incidents[incident.ID].compare(incident)) {
+		this._incidents[incident.ID] = incident;
+	}
+};
+
+IncidentList.prototype.delIncident = function (incident) {
+	delete this._incidents[incident.ID];
+};
+
+IncidentList.prototype.size = function () {
+	var size = 0;
+	for (var incident_id in this.getIncidents()) {
+		size++;
+	}
+	return size;
+};
+
+IncidentList.prototype.update = function (data) {
+	var lats = [];
+	var lons = [];
+	var new_data_ids = [];
+
+	// Add or update existing incidents
+	for (var x = 0; x < data.length; x++) {
+		var incident = new Incident(data[x]);
+		new_data_ids.push(incident.ID);
+
+		if (incident.geolocation) {
+			lats.push(incident.geolocation.lat);
+			lons.push(incident.geolocation.lon);
+		}
+
+		this.addIncident(incident);
+	}
+
+	this._bounds = {
+		sw: {
+			lat: lats.min(),
+			lon: lons.min()
+		},
+		ne: {
+			lat: lats.max(),
+			lon: lons.max()
+		}
+	};
+
+	// Remove incidents we no longer have
+	for (var id in this.getIncidents()) {
+		var incident = this.getIncidentById(id);
+		if (new_data_ids.indexOf(incident.ID) === -1) {
+			this.delIncident(incident);
+		}
+	}
+};
+
+/**
+ * Get the bounding box of the incidents.
+ * @returns {Object}
+ */
+IncidentList.prototype.getBounds = function() {
+	return this._bounds;
 };
 
 /**
@@ -48,8 +104,8 @@ IncidentList.prototype.makeList = function (element) {
 	element.empty();
 	var ul = jQuery('<ul/>').addClass('incidents').appendTo(element);
 
-	for (var x = 0; x < this.length; x++) {
-		var incident = this.getIncident(x);
+	for (var id in this._incidents) {
+		var incident = this.getIncidentById(id);
 
 		// TODO: Media info?
 

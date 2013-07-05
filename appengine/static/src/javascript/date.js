@@ -30,6 +30,8 @@ Date.prototype.getPrettyTime = function () {
 	if (hours > 12) {
 		ampm = "PM";
 		hours -= 12;
+	} else if (hours == 12) {
+		ampm = "PM";
 	} else if (hours == 0) {
 		hours = "12";
 	}
