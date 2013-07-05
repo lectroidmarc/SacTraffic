@@ -221,7 +221,10 @@ def deCopIfy(text):
 	for lingo in coplingo:
 		text = re.sub(lingo['regex'], lingo['str'], text)
 
-	return text[0].upper() + text[1:]
+	if text == "":
+		return text
+	else:
+		return text[0].upper() + text[1:]
 
 def geoConvertTBXY(center, tbxy):
 	"""Converts TBXY points to Lat/Long.
