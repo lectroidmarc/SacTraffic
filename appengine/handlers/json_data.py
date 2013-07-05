@@ -32,7 +32,6 @@ class JsonHandler(incident_request.RequestHandler):
 				'Location': incident.Location,
 				'LogDetails': pickle.loads(incident.LogDetails),
 				'LogTime': incident.logTimeEpoch,
-				'LogTimeEpoch': incident.logTimeEpoch,
 				'LogType': incident.LogType,
 				'TBXY': incident.TBXY,
 				'ThomasBrothers': incident.ThomasBrothers,
