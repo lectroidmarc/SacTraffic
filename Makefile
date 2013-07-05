@@ -8,8 +8,8 @@
 YUICOMP = java -jar support/yuicompressor-2.4.7.jar
 CLOSURE = java -jar support/closure-compiler.jar
 
-FILES = appengine/static/javascript/sactraffic.min.js \
-	appengine/static/stylesheets/sactraffic.min.css \
+FILES = appengine/static/sactraffic.min.js \
+	appengine/static/sactraffic.min.css \
 
 JS = appengine/static/src/javascript/date.js \
 	appengine/static/src/javascript/incident.js \
@@ -25,10 +25,10 @@ CSS = appengine/static/src/stylesheets/main.css \
 
 all: ${FILES}
 
-appengine/static/javascript/sactraffic.min.js: ${JS}
+appengine/static/sactraffic.min.js: ${JS}
 	${CLOSURE} --js_output_file $@ --js $^
 
-appengine/static/stylesheets/sactraffic.min.css: ${CSS}
+appengine/static/sactraffic.min.css: ${CSS}
 	cat $^ | ${YUICOMP} -o $@ --type css
 
 clean:

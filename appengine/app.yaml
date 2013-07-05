@@ -22,12 +22,14 @@ handlers:
   login: admin
 
 # Static stuff
-- url: /stylesheets
-  static_dir: static/stylesheets
+- url: /sactraffic.min.js
+  static_files: static/sactraffic.min.js
+  upload: static/sactraffic.min.js
   expiration: "10m"
 
-- url: /javascript
-  static_dir: static/javascript
+- url: /sactraffic.min.css
+  static_files: static/sactraffic.min.css
+  upload: static/sactraffic.min.css
   expiration: "10m"
 
 - url: /apple-touch-icon.png
