@@ -55,13 +55,6 @@ code {
 /**
  * @section General class styles
  */
-.awesome.blue {
-	background-color: #165279 !important;
-	font-size: 11px !important;
-	margin: 0 5px;
-	width: 90px;
-}
-
 .codeblock {
 	background: #f3f3f3;
 	border: 1px solid #aaa;
@@ -98,10 +91,6 @@ code {
 .marker.camera .button {
 	text-align: center;
 	padding-bottom: 5px;
-}
-
-.marker.camera .button .awesome {
-	width: inherit;
 }
 
 /**
@@ -266,7 +255,7 @@ code {
  * @section Right Column
  */
 #rightcol {
-	border-top-right-radius: 10px;
+	/* border-top-right-radius: 10px; Maps no likey */
 	border-bottom-right-radius: 10px;
 	min-height: 650px;
 	overflow: hidden;
@@ -283,7 +272,7 @@ code {
 	display: none;
 	float: left;
 	height: 470px;
-	left: -7px;	/* to make the shadow look like a drawer */
+	left: -7px; /* to make the shadow look like a drawer */
 	min-width: 220px;
 	overflow: auto;
 	padding: 5px 5px 5px 12px;
@@ -349,7 +338,49 @@ code {
 	border-top: 1px solid #e4e4e4;
 	border-right: 1px solid #e4e4e4;
 	border-bottom: 1px solid #e4e4e4;
-	border-top-right-radius: 10px;
+}
+
+#mapcontrol {
+	margin: 10px;
+	text-align: right;
+}
+
+#mapcontrol .menubutton {
+	background-color: #111;
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(255,255,255,.2)), color-stop(0.5, rgba(150,150,150,.2)), to(rgba(0,0,0,.0)));
+	background-image: -moz-linear-gradient(top, rgba(255,255,255,.2), rgba(150,150,150,.2), rgba(0,0,0,.0));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#30ffffff,endColorstr=#10000000) progid:DXImageTransform.Microsoft.Shadow(color=#000000,direction=135,strength=2);
+	border-radius: 5px;
+	color: #fff;
+	font-size: 32px;
+	height: 30px;
+	line-height: 25px;
+	margin-bottom: 5px;
+	margin-left: 50px;
+	opacity: .6;
+	text-align: center;
+	width: 62px;
+}
+
+#mapcontrol .mapmenu {
+	height: 0;
+	opacity: .7;
+	overflow: hidden;
+
+	-webkit-transition: all .4s ease;
+	-moz-transition: all .4s ease;
+}
+
+#mapcontrol:hover .mapmenu {
+	height: 100px;
+	opacity: .9;
+}
+
+#mapcontrol .mapmenu .button {
+	display: block;
+	font-size: 11px;
+	margin-bottom: 5px;
+	width: 92px;
 }
 
 #sitenews ul {

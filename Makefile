@@ -20,7 +20,7 @@ JS = appengine/static/src/javascript/date.js \
 	appengine/static/src/javascript/sactraffic.js
 
 CSS = appengine/static/src/stylesheets/main.css \
-	appengine/static/src/stylesheets/awesome.css
+	appengine/static/src/stylesheets/button.css
 
 
 all: ${FILES}

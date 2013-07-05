@@ -20,6 +20,7 @@ var TrafficMap = function (elementId, defaultState) {
 	this.marker_list = {};
 	this._icons = {};
 	this.cameraInfoWindow = new google.maps.InfoWindow();
+	this._map_has_been_moved = false;
 
 	var mapOptions = {
 		zoom: 11,
@@ -45,6 +46,8 @@ var TrafficMap = function (elementId, defaultState) {
 	this.make_traffic_button();
 	this.make_camera_button();
 
+	this.gmap.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('mapcontrol'));
+
 	// Set initial map state
 	if (this.getState('live_cams')) {
 		this.show_live_cams();
@@ -62,19 +65,15 @@ var TrafficMap = function (elementId, defaultState) {
  */
 TrafficMap.prototype.make_traffic_button = function () {
 	var self = this;
-	var button_container = document.createElement('div');
-	button_container.style.paddingBottom = "2px";
-	button_container.style.paddingTop = "2px";
 
-	this.traffic_button = jQuery('<div/>').html("Show Traffic").click(function () {
+	this.traffic_button = document.getElementById('traffic_btn');
+	this.traffic_button.onclick = function () {
 		if (self.getState('traffic')) {
 			self.hide_gtraffic();
 		} else {
 			self.show_gtraffic();
 		}
-	}).addClass('awesome blue').appendTo(button_container);
-
-	this.gmap.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(button_container);
+	};
 };
 
 /**
@@ -84,19 +83,15 @@ TrafficMap.prototype.make_traffic_button = function () {
  */
 TrafficMap.prototype.make_camera_button = function () {
 	var self = this;
-	var button_container = document.createElement('div');
-	button_container.style.paddingBottom = "2px";
-	button_container.style.paddingTop = "2px";
 
-	this.camera_button = jQuery('<div/>').html("Show Cameras").click(function () {
+	this.camera_button = document.getElementById('camera_btn');
+	this.camera_button.onclick = function () {
 		if (self.getState('live_cams')) {
 			self.hide_live_cams();
 		} else {
 			self.show_live_cams();
 		}
-	}).addClass('awesome blue').appendTo(button_container);
-
-	this.gmap.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(button_container);
+	};
 };
 
 /**
@@ -176,7 +171,7 @@ TrafficMap.prototype.show_live_cams = function () {
 					});
 
 					google.maps.event.addListener(marker, 'click', function() {
-						self.cameraInfoWindow.setContent('<div class="camera marker"><div class="name">Live Video</div><div class="button"><div class="awesome blue" onclick="window.open(\'' +	 camera.url + '\')">' + camera.name + '</div></div>');
+						self.cameraInfoWindow.setContent('<div class="camera marker"><div class="name">Live Video</div><div class="button"><div class="button blue" onclick="window.open(\'' +	 camera.url + '\')">' + camera.name + '</div></div>');
 						self.cameraInfoWindow.open(self.gmap, marker);
 					});
 
@@ -192,7 +187,7 @@ TrafficMap.prototype.show_live_cams = function () {
 		}
 	}
 
-	this.camera_button.html('Hide Cameras');
+	this.camera_button.innerHTML = 'Hide Cameras';
 	this.setState('live_cams', true);
 };
 
@@ -205,7 +200,7 @@ TrafficMap.prototype.hide_live_cams = function () {
 		cam_marker.setMap(null);
 	}
 
-	this.camera_button.html('Show Cameras');
+	this.camera_button.innerHTML = 'Show Cameras';
 	this.setState('live_cams', false);
 };
 
@@ -216,7 +211,7 @@ TrafficMap.prototype.show_gtraffic = function () {
 	this.traffic_overlay = new google.maps.TrafficLayer();
 	this.traffic_overlay.setMap(this.gmap);
 
-	this.traffic_button.html('Hide Traffic');
+	this.traffic_button.innerHTML = 'Hide Traffic';
 	this.setState('traffic', true);
 };
 
@@ -228,7 +223,7 @@ TrafficMap.prototype.hide_gtraffic = function () {
 		this.traffic_overlay.setMap(null);
 	}
 
-	this.traffic_button.html('Show Traffic');
+	this.traffic_button.innerHTML = 'Show Traffic';
 	this.setState('traffic', false);
 };
 
@@ -279,11 +274,17 @@ TrafficMap.prototype.loadState = function (defaultState) {
  * @return {Any} The value.
  */
 TrafficMap.prototype.getState = function (key) {
+	if (typeof(this._mapstate) === 'undefined') {
+		if ('localStorage' in window && window['localStorage'] !== null) {
+			this._mapstate = JSON.parse(localStorage.getItem('trafficmap_state')) || {};
+		}
+	}
+
 	return this._mapstate[key];
 };
 
 /**
- * Setter for map state.  Also saved to localStorage if possible.
+ * Setter for map state. Also saved to localStorage if possible.
  * @param {String} key The key to set.
  * @param {Any} value The value to set.
  */
