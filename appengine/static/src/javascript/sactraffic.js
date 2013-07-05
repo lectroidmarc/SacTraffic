@@ -52,3 +52,9 @@ var get_incidents = function (id) {
 		setTimeout(get_incidents, 60000);
 	});
 }
+
+window.addEventListener('resize', function () {
+  if (typeof trafficmap !== "undefined") {
+    trafficmap.resize();
+  }
+});

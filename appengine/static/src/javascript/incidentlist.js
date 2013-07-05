@@ -42,6 +42,14 @@ IncidentList.prototype.delIncident = function (incident) {
 	delete this._incidents[incident.ID];
 };
 
+IncidentList.prototype.containsId = function (id) {
+	var ids = [];
+	for (var incident_id in this.getIncidents()) {
+		ids.push(incident_id);
+	}
+	return (ids.indexOf(id) === -1) ? false : true;
+};
+
 IncidentList.prototype.size = function () {
 	var size = 0;
 	for (var incident_id in this.getIncidents()) {

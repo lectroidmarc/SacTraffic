@@ -382,7 +382,7 @@ TrafficMap.prototype.make_marker = function (incident) {
 	}
 
 	google.maps.event.addListener(marker, 'click', function() {
-	  var logtime = new Date(incident.LogTime * 1000);
+		var logtime = new Date(incident.LogTime * 1000);
 		self._globalInfoWindow.setContent('<div class="marker"><div class="logtype">' + incident.LogType + '</div><div class="location">' + incident.Location + '</div><div class="logtime">' + logtime.getPrettyDateTime() + '</div></div>');
 		self._globalInfoWindow.open(self.gmap, marker);
 	});
