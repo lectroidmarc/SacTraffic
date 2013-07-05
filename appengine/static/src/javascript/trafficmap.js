@@ -36,41 +36,6 @@ var TrafficMap = function (elementId, defaultState) {
 		new google.maps.Point(60, 0),
 		new google.maps.Point(9, 9));
 
-	var sactrafficMapStyle = [
-		{
-			featureType: "landscape",
-			elementType: "all",
-			stylers: [
-				{ lightness: 100 }
-			]
-		},
-		{
-			featureType: "road.highway",
-			elementType: "geometry",
-			stylers: [
-				{ hue: "#ff0000" },
-				{ saturation: -25 }
-			]
-		},
-		{
-			featureType: "road.arterial",
-			elementType: "geometry",
-			stylers: [
-				{ saturation: -100 },
-				{ visibility: "simplified" }
-			]
-		},
-		{
-			featureType: "road.arterial",
-			elementType: "labels",
-			stylers: [
-				{ saturation: -100 },
-				{ lightness: 10 }
-			]
-		}
-	];
-	var sactrafficMapType = new google.maps.StyledMapType(sactrafficMapStyle, {name: "SacTraffic"});
-
 	var mapOptions = {
 		zoom: 11,
 		center: this.center,
@@ -84,8 +49,6 @@ var TrafficMap = function (elementId, defaultState) {
 	};
 
 	this.gmap = new google.maps.Map(document.getElementById(elementId), mapOptions);
-	this.gmap.mapTypes.set('sactraffic', sactrafficMapType);
-	this.gmap.setMapTypeId('sactraffic');
 
 	// Save the map's center after a user drag...
 	var self = this;
