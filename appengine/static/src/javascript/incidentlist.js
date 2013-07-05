@@ -100,9 +100,8 @@ IncidentList.prototype.getBounds = function() {
  * Makes a standard unordered list for the display of Incidents.
  * @param {String|jQuery} element An element (a selector, element, HTML string, or jQuery object) to append the unordered list to.
  */
-IncidentList.prototype.makeList = function (element) {
-	element.empty();
-	var ul = jQuery('<ul/>').addClass('incidents').appendTo(element);
+IncidentList.prototype.makeList = function (ul) {
+	ul.empty();
 
 	for (var id in this._incidents) {
 		var incident = this.getIncidentById(id);

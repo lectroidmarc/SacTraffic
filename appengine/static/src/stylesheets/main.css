@@ -151,22 +151,21 @@ code {
 	width: 350px;
 }
 
-#leftcol .loading {
+#leftcol .incidents {
+	margin: 0;
+	padding: 0;
+}
+
+#leftcol .incidents .loading {
 	background: #ffffff;
 	border: 0;
 	height: 30px;
 	text-align: center;
 }
 
-#leftcol .loading img {
-	float: none;
+#leftcol .incidents .loading img {
 	height: 19px;
 	width: 220px;
-}
-
-#leftcol .incidents {
-	margin: 0;
-	padding: 0;
 }
 
 #leftcol .incident {
