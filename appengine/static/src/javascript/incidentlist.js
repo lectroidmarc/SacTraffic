@@ -106,16 +106,18 @@ IncidentList.prototype.getBounds = function() {
 
 /**
  * Makes a standard unordered list for the display of Incidents.
- * @param {String|jQuery} element An element (a selector, element, HTML string, or jQuery object) to append the unordered list to.
+ * @param {String} ul_class The class of the unordered list to append the incidents to.
  */
-IncidentList.prototype.makeList = function (ul) {
-	ul.empty();
+IncidentList.prototype.makeList = function (ul_class) {
+	var count = 0;
+	$('.' + ul_class).empty();
 
 	for (var id in this._incidents) {
 		var incident = this.getIncidentById(id);
 
 		// TODO: Media info?
 
-		incident.makeListItem(ul);
+		var top_or_bottom = (count++ < 3) ? 'top' : 'bottom';
+		incident.makeListItem($('.' + ul_class + '.' + top_or_bottom));
 	}
 };

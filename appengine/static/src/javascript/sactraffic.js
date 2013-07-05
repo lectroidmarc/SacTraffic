@@ -28,7 +28,7 @@ var init_index = function () {
 var get_incidents = function (id) {
 	jQuery.getJSON('/json?dispatch=SACC&active_only=1', function (data) {
 		var incidents = new IncidentList(data);
-		incidents.makeList(jQuery('#incidentlist'));
+		incidents.makeList('incidents');
 
 		// Refresh the detail box if it's open, fallback to the id param
 		var detailboxId = jQuery('#detailbox .incidentID').html();
