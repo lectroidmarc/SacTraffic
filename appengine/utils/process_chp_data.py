@@ -34,14 +34,13 @@ def update_chp_data():
 
 	try:
 		result = urlfetch.fetch("http://media.chp.ca.gov/sa_xml/sa.xml", deadline=60)
-	except urlfetch.DownloadError:
-		notice = "DownloadError. CHP request took too long."
+	except urlfetch.DownloadError as notice:
 		logging.warning(notice)
 	else:
 		if result.status_code == 200:
 			try:
 				chp_etree = ElementTree.XML(result.content)
-			except ElementTree.ParseError, e:
+			except ElementTree.ParseError as e:
 				notice = "XML processing error. %s" % e.message
 				logging.warning(notice)
 			else:
