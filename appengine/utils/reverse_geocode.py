@@ -33,7 +33,7 @@ def load_city (incident):
 								incident.city = component['long_name']
 								incident.put()
 								return
-				logging.info("No city found for %s." % incident.key().name())
+				logging.info("No city found for %s." % incident.key.string_id())
 				incident.city = ""	# set the city to "" so we don't keep trying to geocode it.
 				incident.put()
 			else:
