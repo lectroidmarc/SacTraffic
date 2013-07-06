@@ -168,7 +168,6 @@ def process_chp_center(chpCenter):
 	else:
 		logging.info("Skipping PSH pings for %s on the development server. %s" % (incident.CenterID, ping_set))
 
-
 	# Reverse geocode the incidents if we haven't already
 	for incident in incident_list:
 		if incident.city is None and incident.geolocation is not None:
@@ -178,6 +177,7 @@ def process_chp_center(chpCenter):
 				logging.info("Skipping reverse geocode for %s on the development server." % (incident.Area))
 
 	logging.info("Processed %d incidents in %s." % (len(incident_list), chpCenter.attrib['ID']))
+
 
 # Use app cahing and regex compiling
 # List of translations available at: http://www.freqofnature.com/frequencies/ca/chpcodes.html
