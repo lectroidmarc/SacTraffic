@@ -90,7 +90,7 @@ def process_chp_center(chpCenter):
 			pacific_tz = tzinfo.Pacific()
 			log_time = log_time - pacific_tz.utcoffset(log_time)
 
-			incident_key_name = "%s.%s.%s.%d" % (chpCenter.attrib['ID'], chpDispatch.attrib['ID'], chpLog.attrib['ID'], time.mktime(log_time.timetuple()))
+			incident_key_name = "%s.%s.%s" % (chpCenter.attrib['ID'], chpDispatch.attrib['ID'], chpLog.attrib['ID'])
 			incident_key = ndb.Key(CHPIncident, incident_key_name)
 
 			incident = incident_key.get()
@@ -100,6 +100,7 @@ def process_chp_center(chpCenter):
 					DispatchID = chpDispatch.attrib['ID'],
 					LogID = chpLog.attrib['ID'])
 
+			# I'm note sure if LogTime changes or not... be safe.
 			incident.LogTime = log_time
 
 			(logtypeid, dash, logtype) = chpLog.find('LogType').text.strip('"').partition("-")
