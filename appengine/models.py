@@ -54,17 +54,3 @@ class CHPIncident(ndb.Model):
 	def logTimeLocal(self):
 		pacific_tz = tzinfo.Pacific()
 		return (self.LogTime + pacific_tz.utcoffset(self.LogTime))
-
-	@property
-	def status(self):
-		if self.LogTime > datetime.utcnow() - timedelta(minutes=5):
-			# less than 5 min old == new
-			return 'new'
-
-		if self.updated < CHPData.last_updated() - timedelta(minutes=15):
-			# not updated w/in 15 min of the last successful update == inactive
-			# 15 min assumes 3 misses on a 5 min cron cycle.
-			return 'inactive'
-
-		# what's left... active
-		return 'active'

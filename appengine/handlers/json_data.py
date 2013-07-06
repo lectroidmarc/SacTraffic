@@ -21,11 +21,6 @@ class JsonHandler(incident_request.RequestHandler):
 		# Build a Python list we can convert to JSON
 		output_list = []
 		for incident in self.incidents:
-			# Since status is not a proper datastore field we can't filter on it
-			# in the normal way, but we can still filter on it in this loop.
-			if self.request.get("active_only") == '1' and incident.status == 'inactive':
-				continue
-
 			incident_dict = {
 				'Area': incident.Area,
 				'ID': incident.key.string_id(),
@@ -34,8 +29,7 @@ class JsonHandler(incident_request.RequestHandler):
 				'LogTime': incident.logTimeEpoch,
 				'LogType': incident.LogType,
 				'TBXY': incident.TBXY,
-				'ThomasBrothers': incident.ThomasBrothers,
-				'status': incident.status
+				'ThomasBrothers': incident.ThomasBrothers
 			}
 
 			if incident.geolocation is not None:

@@ -96,9 +96,6 @@ class AtomHandler(incident_request.RequestHandler):
 				static_map_url = "http://maps.google.com/maps/api/staticmap?%s" % static_map_opts
 				description = '%s<img src="%s" width="200" height="200" border="1"/>' % (description, static_map_url)
 
-			if incident.status == "inactive":
-				description = "%s<p style=\"font-style:italic\">This incident is no longer active.</p>" % description
-
 			entry = ElementTree.SubElement (feed, 'entry')
 
 			ElementTree.SubElement(entry, 'title').text = title
