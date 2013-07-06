@@ -45,6 +45,8 @@ def update_chp_data():
 				notice = "XML processing error. %s" % e.message
 				logging.warning(notice)
 			else:
+				# Store the raw CHP data.  Mostly so we have a marker of the last
+				# successful update.
 				chp_data_key = ndb.Key(CHPData, 'chp_data')
 				CHPData(key=chp_data_key, data=zlib.compress(pickle.dumps(chp_etree))).put()
 
@@ -77,8 +79,6 @@ def process_chp_center(chpCenter):
 			continue
 
 		for chpLog in chpDispatch:
-			pacific = tzinfo.Pacific()
-
 			# There are two different time formats in the CHP feed.  Try the
 			# "standard" format first, then fall back to the new SAHB format.
 			try:
@@ -87,7 +87,8 @@ def process_chp_center(chpCenter):
 				log_time = datetime.strptime(chpLog.find('LogTime').text, '"%b %d %Y %I:%M%p"')
 
 			# Duct tape to get the timezone right
-			log_time = log_time - pacific.utcoffset(log_time)
+			pacific_tz = tzinfo.Pacific()
+			log_time = log_time - pacific_tz.utcoffset(log_time)
 
 			incident_key_name = "%s.%s.%s.%d" % (chpCenter.attrib['ID'], chpDispatch.attrib['ID'], chpLog.attrib['ID'], time.mktime(log_time.timetuple()))
 			incident_key = ndb.Key(CHPIncident, incident_key_name)
@@ -167,10 +168,14 @@ def process_chp_center(chpCenter):
 	else:
 		logging.info("Skipping PSH pings for %s on the development server. %s" % (incident.CenterID, ping_set))
 
+
 	# Reverse geocode the incidents if we haven't already
 	for incident in incident_list:
 		if incident.city is None and incident.geolocation is not None:
-			deferred.defer(reverse_geocode.load_city, incident, _queue="reverseGeocodeQueue")
+			if not debug:
+				deferred.defer(reverse_geocode.load_city, incident, _queue="reverseGeocodeQueue")
+			else:
+				logging.info("Skipping reverse geocode for %s on the development server." % (incident.Area))
 
 	logging.info("Processed %d incidents in %s." % (len(incident_list), chpCenter.attrib['ID']))
 
