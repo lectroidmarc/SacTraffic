@@ -143,8 +143,6 @@ code {
  */
 #leftcol {
 	border-right: 1px solid #e4e4e4;
-	border-top-left-radius: 10px;
-	border-bottom-left-radius: 10px;
 	float: left;
 	height: 650px;
 	overflow: auto;
@@ -178,6 +176,10 @@ code {
 
 #leftcol .incident:hover {
 	background: #e4e4e4;
+}
+
+#leftcol .incident:first-child {
+	border-top-left-radius: 10px;
 }
 
 #leftcol .incident:last-child {
