@@ -45,16 +45,10 @@ class JsonHandler(incident_request.RequestHandler):
 
 		# Output
 		self.response.headers["Content-Type"] = "application/json"
+		self.response.headers["Access-Control-Allow-Origin"] = "*"
 		self.send_conditional_headers()
 
-		callback = self.request.get("callback")
-		if callback != "":
-			self.response.write("%s(" % callback)
-
 		self.response.write(json.dumps(output_list, sort_keys=True))
-
-		if callback != "":
-			self.response.write(")")
 
 
 application = webapp2.WSGIApplication([('/json', JsonHandler)], debug=True)
