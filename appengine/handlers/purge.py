@@ -16,8 +16,9 @@ class PurgeHandler(webapp2.RequestHandler):
 	def get(self):
 	  # We need to be careful here.  It's possible this handler could run in the
 	  # window between when the CHPData is updated and when the incidents get
-	  # updated.  So throw in 5 minutes of padding, the worst that could happen
-	  # is an expired incident could live 5 minutes longer.
+	  # updated.  So throw in 5 minutes of padding.
+	  #
+	  # See also: https://developers.google.com/appengine/docs/python/ndb/#writes
 		query = CHPIncident.query(CHPIncident.updated < CHPData.last_updated() - timedelta(minutes=5))
 		count = query.count()
 		keys = query.fetch(keys_only=True)
