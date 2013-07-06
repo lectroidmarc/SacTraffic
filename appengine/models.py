@@ -6,58 +6,45 @@ import time
 
 from datetime import datetime, timedelta
 
-from google.appengine.ext import db
-from google.appengine.api import memcache
+from google.appengine.ext import ndb
 
 from utils import tzinfo
 
-class CHPData(db.Model):
+class CHPData(ndb.Model):
 	"""Holds the last successful CHP data fetch.
 
 	"""
-	data = db.BlobProperty(required=True)
-	updated = db.DateTimeProperty(auto_now=True)
-
-	def put(self):
-		"""Stick the updated date into memcache on put().
-
-		"""
-		memcache.set("%s-updated" % self.key().id_or_name(), self.updated)
-		db.Model.put(self)
+	data = ndb.BlobProperty(required=True)
+	updated = ndb.DateTimeProperty(auto_now=True)
 
 	@classmethod
 	def last_updated(cls):
 		"""Gets the last updated date of the CHP Data.
 
 		"""
-		chp_data_last_updated = memcache.get("chp_data-updated")
-		if chp_data_last_updated is None:
-			chp_data = cls.get_by_key_name("chp_data")
-			if chp_data is not None:
-				memcache.add("chp_data-updated", chp_data.updated)
-				chp_data_last_updated = chp_data.updated
-
-		return chp_data_last_updated
+		chp_data_key = ndb.Key(cls, 'chp_data')
+		chp_data = chp_data_key.get()
+		return chp_data.updated
 
 
-class CHPIncident(db.Model):
+class CHPIncident(ndb.Model):
 	"""Represents a CHP Incident.
 
 	"""
-	CenterID = db.StringProperty(required=True)
-	DispatchID = db.StringProperty(required=True)
-	LogID = db.StringProperty(required=True)
-	LogTime = db.DateTimeProperty()
-	LogType = db.StringProperty()
-	LogTypeID = db.StringProperty()
-	Location = db.StringProperty()
-	Area = db.StringProperty()
-	ThomasBrothers = db.TextProperty()
-	TBXY = db.TextProperty()
-	LogDetails = db.BlobProperty()
-	geolocation = db.GeoPtProperty()
-	city = db.StringProperty()
-	updated = db.DateTimeProperty(auto_now=True)
+	CenterID = ndb.StringProperty(required=True)
+	DispatchID = ndb.StringProperty(required=True)
+	LogID = ndb.StringProperty(required=True)
+	LogTime = ndb.DateTimeProperty()
+	LogType = ndb.StringProperty()
+	LogTypeID = ndb.StringProperty()
+	Location = ndb.StringProperty()
+	Area = ndb.StringProperty()
+	ThomasBrothers = ndb.TextProperty()
+	TBXY = ndb.TextProperty()
+	LogDetails = ndb.BlobProperty()
+	geolocation = ndb.GeoPtProperty()
+	city = ndb.StringProperty()
+	updated = ndb.DateTimeProperty(auto_now=True)
 
 	@property
 	def logTimeEpoch(self):

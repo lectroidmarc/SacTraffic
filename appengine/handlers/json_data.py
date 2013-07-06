@@ -28,7 +28,7 @@ class JsonHandler(incident_request.RequestHandler):
 
 			incident_dict = {
 				'Area': incident.Area,
-				'ID': incident.key().name(),
+				'ID': incident.key.string_id(),
 				'Location': incident.Location,
 				'LogDetails': pickle.loads(incident.LogDetails),
 				'LogTime': incident.logTimeEpoch,

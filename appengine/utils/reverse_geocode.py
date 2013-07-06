@@ -29,7 +29,7 @@ def load_city (incident):
 					if result['types'].count('postal_code') > 0:
 						for component in result['address_components']:
 							if component['types'].count('locality') > 0:
-								logging.info("setting %s city to %s." % (incident.key().name(), component['long_name']))
+								logging.info("setting %s city to %s." % (incident.key.string_id(), component['long_name']))
 								incident.city = component['long_name']
 								incident.put()
 								return

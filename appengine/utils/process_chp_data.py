@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 from xml.etree import ElementTree
 
 from google.appengine.api import urlfetch
-from google.appengine.ext import db
+from google.appengine.ext import ndb
 from google.appengine.ext import deferred
 
 from models import CHPData, CHPIncident
@@ -45,20 +45,17 @@ def update_chp_data():
 				notice = "XML processing error. %s" % e.message
 				logging.warning(notice)
 			else:
-				if db.WRITE_CAPABILITY.is_enabled():
-					CHPData(key_name="chp_data", data=zlib.compress(pickle.dumps(chp_etree))).put()
+				chp_data_key = ndb.Key(CHPData, 'chp_data')
+				CHPData(key=chp_data_key, data=zlib.compress(pickle.dumps(chp_etree))).put()
 
-					# Now, finally, we process the CHP tree, breaking out each CHP
-					# center and deferring its processing
-					for chp_center in chp_etree:
-						deferred.defer(process_chp_center, chp_center, _queue="chpProcessQueue")
+				# Now, finally, we process the CHP tree, breaking out each CHP
+				# center and deferring its processing
+				for chp_center in chp_etree:
+					deferred.defer(process_chp_center, chp_center, _queue="chpProcessQueue")
 
-					# Ping for the whole ATOM feed.  We do it here because we only do it once.
-					if not debug:
-						deferred.defer(pubsubhubbub_publish.publish, 'http://pubsubhubbub.appspot.com', 'http://www.sactraffic.org/atom', _queue="pshPingQueue")
-				else:
-					notice = "Google datastore in read-only mode, not processing CHP data."
-					logging.warning(notice)
+				# Ping for the whole ATOM feed.  We do it here because we only do it once.
+				if not debug:
+					deferred.defer(pubsubhubbub_publish.publish, 'http://pubsubhubbub.appspot.com', 'http://www.sactraffic.org/atom', _queue="pshPingQueue")
 		else:
 			notice = "CHP server returned " + str(result.status_code) + " status."
 			logging.warning(notice)
@@ -80,17 +77,24 @@ def process_chp_center(chpCenter):
 			continue
 
 		for chpLog in chpDispatch:
+			pacific = tzinfo.Pacific()
+
 			# There are two different time formats in the CHP feed.  Try the
 			# "standard" format first, then fall back to the new SAHB format.
 			try:
-				log_time = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"').replace(tzinfo=tzinfo.Pacific())
+				log_time = datetime.strptime(chpLog.find('LogTime').text, '"%m/%d/%Y %I:%M:%S %p"')
 			except ValueError:
-				log_time = datetime.strptime(chpLog.find('LogTime').text, '"%b %d %Y %I:%M%p"').replace(tzinfo=tzinfo.Pacific())
+				log_time = datetime.strptime(chpLog.find('LogTime').text, '"%b %d %Y %I:%M%p"')
 
-			key_name = "%s.%s.%s.%d" % (chpCenter.attrib['ID'], chpDispatch.attrib['ID'], chpLog.attrib['ID'], time.mktime(log_time.timetuple()))
-			incident = CHPIncident.get_by_key_name(key_name)
+			# Duct tape to get the timezone right
+			log_time = log_time - pacific.utcoffset(log_time)
+
+			incident_key_name = "%s.%s.%s.%d" % (chpCenter.attrib['ID'], chpDispatch.attrib['ID'], chpLog.attrib['ID'], time.mktime(log_time.timetuple()))
+			incident_key = ndb.Key(CHPIncident, incident_key_name)
+
+			incident = incident_key.get()
 			if incident is None:
-				incident = CHPIncident(key_name = key_name,
+				incident = CHPIncident(key = incident_key,
 					CenterID = chpCenter.attrib['ID'],
 					DispatchID = chpDispatch.attrib['ID'],
 					LogID = chpLog.attrib['ID'])
@@ -115,7 +119,7 @@ def process_chp_center(chpCenter):
 			try:
 				latlon = chpLog.find('LATLON').text.strip('"')
 				if latlon != "0:0":
-					incident.geolocation = db.GeoPt(
+					incident.geolocation = ndb.GeoPt(
 						lat = float(latlon.partition(":")[0]) / 1000000,
 						lon = float(latlon.partition(":")[2]) / 1000000 * -1
 					)
@@ -154,7 +158,7 @@ def process_chp_center(chpCenter):
 			incident_list.append(incident)
 
 	# Store the incidents in a batch
-	db.put(incident_list)
+	ndb.put_multi(incident_list)
 
 	# Ping the PSH hub, use a set so we don't ping duplicates.
 	ping_set = set(psh_pings)
@@ -236,17 +240,17 @@ def geoConvertTBXY(center, tbxy):
 		tbxy_parts = tbxy.partition(":")
 
 		if center == "STCC":
-			return db.GeoPt(
+			return ndb.GeoPt(
 				lat = float(tbxy_parts[2]) * 0.00000274 +	 33.172,
 				lon = float(tbxy_parts[0]) * 0.0000035  - 144.966
 			)
 		elif center == "SLCC":
-			return db.GeoPt(
+			return ndb.GeoPt(
 				lat = float(tbxy_parts[2]) * 0.00000275 +	 30.054,
 				lon = float(tbxy_parts[0]) * 0.00000329 - 126.589
 			)
 		elif center == "FRCC":
-			return db.GeoPt(
+			return ndb.GeoPt(
 				lat = float(tbxy_parts[2]) * 0.00000274 +	 30.84,
 				lon = float(tbxy_parts[0]) * 0.00000335 -  141
 			)

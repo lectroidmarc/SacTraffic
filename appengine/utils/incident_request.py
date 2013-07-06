@@ -5,8 +5,6 @@ import hashlib
 import webapp2
 from datetime import datetime
 
-from google.appengine.api import memcache
-
 from models import CHPData, CHPIncident
 
 
@@ -24,38 +22,27 @@ class RequestHandler(webapp2.RequestHandler):
 		city = self.request.get("city")
 		since = self.request.get("since")
 
-		memcache_key = "incidents-%s-%s-%s-%s-%s-%s" % (id, center, dispatch, area, city, since)
-		memcache_expiry_time = 60
+		if id == "":
+			query = CHPIncident.query().order(-CHPIncident.LogTime)
+			if center != "":
+				query = query.filter(CHPIncident.CenterID == center)
+			if dispatch != "":
+				query = query.filter(CHPIncident.DispatchID == dispatch)
+			if area != "":
+				query = query.filter(CHPIncident.Area == area)
+			if city != "":
+				query = query.filter(CHPIncident.city == city)
+			if since != "":
+				query = query.filter(CHPIncident.LogTime > datetime.fromtimestamp(float(since)))
 
-		incidents = memcache.get(memcache_key)
-		if incidents is None:
-			if id == "":
-				query = CHPIncident.all()
-				query.order('-LogTime')
-				if center != "":
-					query.filter('CenterID =', center)
-				if dispatch != "":
-					query.filter('DispatchID =', dispatch)
-				if area != "":
-					query.filter('Area =', area)
-				if city != "":
-					query.filter('city =', city)
-				if since != "":
-					query.filter('LogTime >', datetime.fromtimestamp(float(since)))
-
-				incidents = query.fetch(10000)
-			else:
-				# Handle single incident requests, slightly different approach
-				# We want to use get_by_key_name() instead of filtering.
-				incidents = []
-				incident = CHPIncident.get_by_key_name(id)
-				if incident is not None:
-					incidents.append(incident)
-
-			try:
-				memcache.add(memcache_key, incidents, memcache_expiry_time)
-			except ValueError:
-				pass
+			incidents = query.fetch(10000)
+		else:
+			# Handle single incident requests directly, instead of filtering.
+			incidents = []
+			incident_key = ndb.Key(CHPIncident, id)
+			incident = incident_key.get()
+			if incident is not None:
+				incidents.append(incident)
 
 		if len(incidents) > 0:
 			self.incidents_last_mod = max(incidents, key=lambda incident: incident.updated).updated
