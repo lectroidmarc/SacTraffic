@@ -112,21 +112,20 @@ def process_chp_center(chpCenter):
 				incident.LogTypeID = logtypeid.strip()
 
 			incident.Location = deCopIfy(chpLog.find('Location').text.strip('"'))
-			incident.Area = chpLog.find('Area').text.strip('"')
-			incident.ThomasBrothers = chpLog.find('ThomasBrothers').text.strip('"')
 
-			# Like the LogTime above, there are now two location formats.
-			# This time we try the SAHB LATLON first, then fall back to TBXY.
-			try:
-				latlon = chpLog.find('LATLON').text.strip('"')
-				if latlon != "0:0":
-					incident.geolocation = ndb.GeoPt(
-						lat = float(latlon.partition(":")[0]) / 1000000,
-						lon = float(latlon.partition(":")[2]) / 1000000 * -1
-					)
-			except AttributeError:
-				incident.TBXY = chpLog.find('TBXY').text.strip('"')
-				incident.geolocation = geoConvertTBXY(incident.CenterID, incident.TBXY)
+			# Make sure the location and the locationDesc aren't dupes
+			locationDesc = deCopIfy(chpLog.find('LocationDesc').text.strip('"'))
+			if (incident.Location.upper() != locationDesc.upper()):
+				incident.LocationDesc = locationDesc
+
+			incident.Area = chpLog.find('Area').text.strip('"')
+
+			latlon = chpLog.find('LATLON').text.strip('"')
+			if latlon is not None and latlon != "0:0":
+				incident.geolocation = ndb.GeoPt(
+					lat = float(latlon.partition(":")[0]) / 1000000,
+					lon = float(latlon.partition(":")[2]) / 1000000 * -1
+				)
 
 			# Special handling for the LogDetails
 			LogDetails = {
@@ -195,12 +194,14 @@ coplingo = [
 	{ 'regex': re.compile(r'\bOFR\b', re.I), 'str': "offramp" },
 	{ 'regex': re.compile(r'\bONR\b', re.I), 'str': "onramp" },
 	{ 'regex': re.compile(r'\bCON\b', re.I), 'str': "connector" },
+	{ 'regex': re.compile(r'\bBETW\b', re.I), 'str': "between" },
 
 	{ 'regex': re.compile(r'\bAT\b', re.I), 'str': "at" },
 	{ 'regex': re.compile(r'\bON\b', re.I), 'str': "on" },
 	{ 'regex': re.compile(r'\bTO\b', re.I), 'str': "to" },
 
 	{ 'regex': re.compile(r'\bSR51\b', re.I), 'str': "CAP CITY FWY" },
+	{ 'regex': re.compile(r'\b(Mm|Sr)\s*(\d+)\b', re.I), 'str': r'Hwy \2' },
 
 	{ 'regex': re.compile(r' \/ ', re.I), 'str': " at " },
 	{ 'regex': re.compile(r'\bTrfc\b', re.I), 'str': "Traffic" },
@@ -234,30 +235,3 @@ def deCopIfy(text):
 		return text
 	else:
 		return text[0].upper() + text[1:]
-
-def geoConvertTBXY(center, tbxy):
-	"""Converts TBXY points to Lat/Long.
-
-	Mostly...
-
-	"""
-	if tbxy != "":
-		tbxy_parts = tbxy.partition(":")
-
-		if center == "STCC":
-			return ndb.GeoPt(
-				lat = float(tbxy_parts[2]) * 0.00000274 +	 33.172,
-				lon = float(tbxy_parts[0]) * 0.0000035  - 144.966
-			)
-		elif center == "SLCC":
-			return ndb.GeoPt(
-				lat = float(tbxy_parts[2]) * 0.00000275 +	 30.054,
-				lon = float(tbxy_parts[0]) * 0.00000329 - 126.589
-			)
-		elif center == "FRCC":
-			return ndb.GeoPt(
-				lat = float(tbxy_parts[2]) * 0.00000274 +	 30.84,
-				lon = float(tbxy_parts[0]) * 0.00000335 -  141
-			)
-
-	return None

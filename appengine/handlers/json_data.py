@@ -25,11 +25,10 @@ class JsonHandler(incident_request.RequestHandler):
 				'Area': incident.Area,
 				'ID': incident.key.string_id(),
 				'Location': incident.Location,
+				'LocationDesc': incident.LocationDesc,
 				'LogDetails': pickle.loads(incident.LogDetails),
 				'LogTime': incident.logTimeEpoch,
-				'LogType': incident.LogType,
-				'TBXY': incident.TBXY,
-				'ThomasBrothers': incident.ThomasBrothers
+				'LogType': incident.LogType
 			}
 
 			if incident.geolocation is not None:

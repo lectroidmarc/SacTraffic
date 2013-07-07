@@ -10,6 +10,7 @@
  * @property {String} Area
  * @property {String} ID
  * @property {String} Location
+ * @property {String} LocationDesc
  * @property {Object} LogDetails
  * @property {String} LogTime
  * @property {String} LogType
