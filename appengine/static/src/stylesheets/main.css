@@ -239,6 +239,10 @@ code {
 	font-size: 9pt;
 }
 
+#leftcol .incident .city {
+	font-size: 9pt;
+}
+
 #leftcol .incident .logtime {
 	font-size: 8pt;
 	color: gray;

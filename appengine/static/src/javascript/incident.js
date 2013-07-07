@@ -32,7 +32,7 @@ Incident.prototype.makeListItem = function (element) {
 	var incident_date = new Date(this.LogTime * 1000);
 	var point = (this.geolocation) ? this.geolocation : null;
 
-	var li = jQuery('<li/>').attr('id', this.ID).addClass('incident').addClass('vevent').appendTo(element);
+	var incident_li = jQuery('<li/>').attr('id', this.ID).addClass('incident').addClass('vevent').appendTo(element);
 
 	this.moreButton = jQuery('<div/>').addClass('more').click(function () {
 		if (jQuery(this).hasClass('opened')) {
@@ -44,23 +44,26 @@ Incident.prototype.makeListItem = function (element) {
 		jQuery(this).addClass('mousedown');
 	}).mouseup(function () {
 		jQuery(this).removeClass('mousedown');
-	}).appendTo(li);
+	}).appendTo(incident_li);
 
 
 	// The marker icon
-	jQuery('<div/>').addClass('marker').css('background-position', this.getIcon().cssPosition).appendTo(li);
+	jQuery('<div/>').addClass('marker').css('background-position', this.getIcon().cssPosition).appendTo(incident_li);
 
 	// Summary...
-	jQuery('<div/>').addClass('logtype summary').html(this.LogType).appendTo(li);
+	jQuery('<div/>').addClass('logtype summary').html(this.LogType).appendTo(incident_li);
 
 	// Location
+	jQuery('<div/>').addClass('location').html(this.Location).appendTo(incident_li);
+
+	// City
 	var city = (this.city) ? this.city : this.Area;
-	jQuery('<div/>').addClass('location').html(this.Location + "<br/>" + city).appendTo(li);
+	jQuery('<div/>').addClass('city').html(city).appendTo(incident_li);
 
 	// Time
 	jQuery('<div/>').addClass('logtime').html(incident_date.getPrettyDateTime()).append(
 		jQuery('<span/>').addClass('dtstart').html(incident_date.getISO8601())
-	).appendTo(li);
+	).appendTo(incident_li);
 
 	// Add the geo microfoemat
 	if (point) {
@@ -68,7 +71,7 @@ Incident.prototype.makeListItem = function (element) {
 			jQuery('<span/>').addClass('latitude').html(point.lat)
 		).append(
 			jQuery('<span/>').addClass('longitude').html(point.lon)
-		).appendTo(li);
+		).appendTo(incident_li);
 	}
 };
 
