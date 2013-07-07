@@ -17,7 +17,6 @@ JS = appengine/static/src/javascript/array.js \
 	appengine/static/src/javascript/incidentlist.js \
 	appengine/static/src/javascript/requestargs.js \
 	appengine/static/src/javascript/trafficmap.js \
-	appengine/static/src/javascript/trafficnews.js \
 	appengine/static/src/javascript/sactraffic.js
 
 CSS = appengine/static/src/stylesheets/main.css \
