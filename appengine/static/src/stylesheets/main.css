@@ -310,10 +310,12 @@ code {
 }
 
 #detailbox .content {
-	bottom: 45px;
+	bottom: 40px;
+	left: 12px;
 	position: absolute;
-	top: 30px;
-	overflow-y: scroll;
+	right: 0;
+	top: 25px;
+	overflow-y: auto;
 }
 
 #detailbox .incidentID {
