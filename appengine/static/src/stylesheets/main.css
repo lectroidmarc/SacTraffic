@@ -313,7 +313,7 @@ code {
 	bottom: 45px;
 	position: absolute;
 	top: 30px;
-	overflow: scroll;
+	overflow-y: scroll;
 }
 
 #detailbox .incidentID {
