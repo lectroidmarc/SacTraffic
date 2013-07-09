@@ -24,7 +24,10 @@ class CHPData(ndb.Model):
 		"""
 		chp_data_key = ndb.Key(cls, 'chp_data')
 		chp_data = chp_data_key.get()
-		return chp_data.updated
+		if chp_data is not None:
+			return chp_data.updated
+		else:
+			return None
 
 
 class CHPIncident(ndb.Model):
