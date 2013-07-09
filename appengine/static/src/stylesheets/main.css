@@ -291,7 +291,10 @@ code {
 	background: #e6e6e6;
 	border-top-right-radius: 10px;
 	height: 25px;
-	margin: -5px -5px 10px;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
 }
 
 #detailbox .closebox {
@@ -304,6 +307,13 @@ code {
 
 #detailbox .closebox:hover {
 	background: #d0d0d0;
+}
+
+#detailbox .content {
+	bottom: 45px;
+	position: absolute;
+	top: 30px;
+	overflow: scroll;
 }
 
 #detailbox .incidentID {
@@ -334,7 +344,11 @@ code {
 
 #detailbox .footer {
 	border-top: 1px solid #ddd;
+	bottom: 8px;
+	left: 0;
 	padding-top: 7px;
+	position: absolute;
+	right: 0;
 	text-align: center;
 }
 
