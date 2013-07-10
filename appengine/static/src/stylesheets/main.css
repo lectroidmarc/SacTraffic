@@ -223,7 +223,7 @@ code {
 }
 
 #leftcol .incident .marker {
-	background-image: url('/images/map_markers.png');
+	background-image: url('/images/map_markers.png?v=3');
 	float: left;
 	height: 37px;
 	margin: 3px 4px 1px 0;

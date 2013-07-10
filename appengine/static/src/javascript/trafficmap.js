@@ -400,7 +400,7 @@ TrafficMap.prototype.getIcon = function (type) {
 	}
 
 	if (typeof(this._icons[type]) === 'undefined') {
-		var url = '/images/map_markers.png';
+		var url = '/images/map_markers.png?v=3';
 		var size = new google.maps.Size(32, 37);
 		var origin = new google.maps.Point(0, 0);
 		var anchor = new google.maps.Point(16, 37);
