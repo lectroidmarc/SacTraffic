@@ -8,7 +8,6 @@
 import json
 import logging
 
-from models import CHPIncident
 from google.appengine.api import urlfetch
 
 
@@ -18,9 +17,9 @@ def load_city (incident):
 
 	"""
 	try:
-		result = urlfetch.fetch("http://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=false" % (incident.geolocation.lat, incident.geolocation.lon))
-	except urlfetch.DownloadError:
-		logging.warning("DownloadError. Reverse Geocode request took too long.")
+		result = urlfetch.fetch("https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=false" % (incident.geolocation.lat, incident.geolocation.lon))
+	except urlfetch.DownloadError as err:
+		logging.warning(err)
 	else:
 		if result.status_code == 200:
 			data = json.loads(result.content)
@@ -33,10 +32,10 @@ def load_city (incident):
 								incident.city = component['long_name']
 								incident.put()
 								return
-				logging.info("No city found for %s." % incident.key.string_id())
+				logging.info("No city found for %s.", incident.key.string_id())
 				incident.city = ""	# set the city to "" so we don't keep trying to geocode it.
 				incident.put()
 			else:
-				logging.warning("Google replied with a %s status in the geocode JSON." % data['status'])
+				logging.warning("Google replied with a %s status in the geocode JSON.", data['status'])
 		else:
-			logging.warning("Google returned a " + str(result.status_code) + " status.")
+			logging.warning("Google returned a %d status.", result.status_code)
