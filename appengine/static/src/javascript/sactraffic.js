@@ -14,7 +14,7 @@ var trafficmap;
  */
 var init_index = function () {
 	if (screen.width > 480) {
-		trafficmap = new TrafficMap('map', { live_cams: true });
+		trafficmap = new TrafficMap('map');
 
 		//TrafficNews.show("#sactraffic_news", "http://www.lectroid.net/category/sactrafficorg/feed/", 7);
 	}
