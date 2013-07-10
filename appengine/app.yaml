@@ -40,14 +40,25 @@ handlers:
   static_files: static/images/favicon.ico
   upload: static/images/favicon.ico
 
+- url: /robots.txt
+  static_files: static/robots.txt
+  upload: static/robots.txt
+
+- url: /images
+  static_dir: static/images
+
+- url: /data
+  static_dir: static/data
+
+- url: /(.*)\.html
+  static_files: static/\1.html
+  upload: static/(.*)\.html
+  expiration: "10m"
+
 - url: /
   static_files: static/index.html
   upload: static/index.html
   expiration: "10m"
-
-- url: /(.*)
-  static_files: static/\1
-  upload: static/(.*)
 
 builtins:
 - deferred: on

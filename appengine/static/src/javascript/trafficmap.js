@@ -182,7 +182,7 @@ TrafficMap.prototype.show_live_cams = function () {
 		var self = this;
 
 		jQuery.ajax({
-			url: "/cameras.txt",
+			url: "/data/cameras.txt",
 			dataType: "text",
 			success: function (cameras) {
 				var rows = cameras.split(/\n/);
