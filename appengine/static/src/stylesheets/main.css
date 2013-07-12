@@ -1,6 +1,13 @@
 /**
  * Sactraffic.org styles
  */
+
+/* http://www.morethanamap.com/demos/basemaps/new-york */
+/* $('#incident_container .header').click(function () { $('#incident_container').toggleClass('closed'); }); */
+
+/**
+ * @section Basics
+ */
 html, body { height: 100% }
 body {
 	color: #333;
@@ -17,33 +24,14 @@ a:hover {
 	text-decoration: underline;
 }
 
-a:visited {
-	color: blue;
-}
-
 img {
 	border: 0;
 }
 
+
 /**
- * @section General class styles
+ * @section Marker Info Window styles
  */
-.codeblock {
-	background: #f3f3f3;
-	border: 1px solid #aaa;
-	border-radius: 5px;
-	font-family: monospace;
-	font-size: 9pt;
-	margin-left: 40px;
-	padding: 5px;
-	white-space: pre;
-	width: 80%;
-}
-
-.info {
-	font-style: italic;
-}
-
 .marker .logtype {
 	margin-top: 3px;
 	font-weight: bold;
@@ -66,6 +54,7 @@ img {
 	padding-bottom: 5px;
 }
 
+
 /**
  * @section Header
  */
@@ -80,38 +69,35 @@ img {
 }
 
 #header p {
+  display: inline-block;
 	font-size: 170%;
 	font-weight: normal;
 	margin: 14px 20px;
 }
 
-#mediainfo {
-	border: 1px solid red;
-	background-color: #fee;
-	margin: 0px 25px 15px 25px;
-	display: none;
+#header .menu {
+  display: inline-block;
+  float: right;
+  list-style: none;
+  margin: 0;
 }
 
-#mediainfo ul {
-	display: block;
-	margin: 0;
-	padding: 5px;
+#header .menu li {
+  border-left: 1px solid #999;
+  color: #666;
+  float: left;
+  height: 40px;
+  padding-top: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  width: 120px;
 }
 
-#mediainfo li {
-	font-size: 10pt;
-	list-style: none;
-	margin: 5px;
-	padding: 0;
+#header .menu li a,
+#header .menu li a:visited {
+  color: #666;
 }
 
-#mediainfo span.alert {
-	font-weight: bold;
-	margin-right: 5px;
-}
-/* End Header */
-
-/* http://www.morethanamap.com/demos/basemaps/new-york */
 
 /**
  * @section Content
@@ -123,7 +109,6 @@ img {
 	right: 0;
 	bottom: 0;
 }
-/* End Content */
 
 
 /**
@@ -143,10 +128,6 @@ img {
 #incident_container.closed {
   height: 115px;
 }
-
-/*
-  $('#incident_container .header').click(function () { $('#incident_container').toggleClass('closed'); });
-*/
 
 #incident_container .header {
   background: #598ffd;
@@ -241,112 +222,25 @@ img {
 }
 
 #incident_container .details {
-	border-top: 1px solid #ddd;
 	display: none;
 	font-size: 8pt;
 	list-style: none;
-	padding: 0;
-	margin: 10px 0 0 0;
-	padding-top: 10px;
+	margin: 5px 0 0 0;
+	padding: 10px;
 }
 
 #incident_container .details.show {
   display: block;
 }
 
-#detailbox .detail {
-	line-height: 150%;
+#incident_container .details .detailtime {
+  font-weight: bold;
 }
-
-#detailbox .detailtime {
-	font-weight: bold;
-}
-
-#detailbox .footer {
-	border-top: 1px solid #ddd;
-	bottom: 8px;
-	left: 0;
-	padding-top: 7px;
-	position: absolute;
-	right: 0;
-	text-align: center;
-}
-/* End Left Column */
 
 
 /**
- * @section Right Column
+ * @section Map & Map controls
  */
-#rightcol {
-	/* border-top-right-radius: 10px; Maps no likey */
-	border-bottom-right-radius: 10px;
-	min-height: 650px;
-	overflow: hidden;
-	position: relative;
-	display: none;
-}
-
-#detailbox {
-	background: white;
-	border-bottom: 1px solid #e4e4e4;
-	border-bottom-right-radius: 10px;
-	border-top: 1px solid #e4e4e4;
-	border-top-right-radius: 10px;
-	box-shadow: 5px 5px 5px #888;
-	display: none;
-	float: left;
-	height: 470px;
-	left: -7px; /* to make the shadow look like a drawer */
-	min-width: 220px;
-	overflow: auto;
-	padding: 5px 5px 5px 12px;
-	position: absolute;
-	top: 10px;
-	width: 0;
-	z-index: 1;
-}
-
-#detailbox .header {
-	background: #e6e6e6;
-	border-top-right-radius: 10px;
-	height: 25px;
-	left: 0;
-	position: absolute;
-	right: 0;
-	top: 0;
-}
-
-#detailbox .closebox {
-	height: 12px;
-	width: 12px;
-	border: 1px solid #ccc;
-	float: right;
-	margin: 5px 8px 0 0;
-}
-
-#detailbox .closebox:hover {
-	background: #d0d0d0;
-}
-
-#detailbox .content {
-	bottom: 40px;
-	left: 12px;
-	position: absolute;
-	right: 0;
-	top: 25px;
-	overflow-y: auto;
-}
-
-#detailbox .incidentID {
-	display: none;
-}
-
-#detailbox .logtype {
-	font-weight: bold;
-}
-
-
-
 #map {
 	height: 100%;
 	width: 100%;
@@ -400,61 +294,28 @@ img {
 	width: 92px;
 }
 
-#sitenews ul {
-	list-style: none;
-	margin-left: 0;
-	padding-left: 0;
-	padding-right: 10px;
-}
-
-#freewayfeeds {
-	border-bottom-right-radius: 10px;
-	background: #f3f3f3;
-	height: 141px;
-	padding: 2px 10px 5px 10px;
-}
-
-#freewayfeeds input {
-	height: 12px;
-	width: 110px;
-	font-size: 8pt;
-	border: 1px solid #165279;
-}
-
-#freewayfeeds ul {
-	list-style: none;
-	margin: 0;
-	padding-left: 0;
-}
-/* End Right Column */
-
-
-/**
- * @section Footer
- */
-#footer {
-	clear: both;
-	border-top: 1px solid #ccc;
-	font-size: 8pt;
-	color: #ccc;
-	margin: 0 10px 20px;
-}
-
-#footer span {
-	float: right;
-}
-
-#footer a {
-	color: gray;
-}
-/* End Footer */
-
 
 /**
  * @section Other
  */
 #video_canvas {
 	margin: 0 auto;
+}
+
+.codeblock {
+	background: #f3f3f3;
+	border: 1px solid #aaa;
+	border-radius: 5px;
+	font-family: monospace;
+	font-size: 9pt;
+	margin-left: 40px;
+	padding: 5px;
+	white-space: pre;
+	width: 80%;
+}
+
+.info {
+	font-style: italic;
 }
 
 
@@ -489,7 +350,6 @@ img {
 	width: 300px;
 	height: 250px;
 }
-/* End Ads */
 
 
 /**

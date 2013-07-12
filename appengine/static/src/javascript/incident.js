@@ -80,68 +80,6 @@ Incident.prototype.makeListItem = function (element) {
 };
 
 /**
- * Shows a "detail box" populated with the incident's details.
- */
-Incident.prototype.showDetailBox = function () {
-	var detailBox = jQuery('#detailbox');
-	var content = jQuery('#detailbox .content').empty();
-	var geolocation = this.geolocation;
-
-	// Close box
-	jQuery('#detailbox .closebox').unbind('click').click(this.hideDetailBox);
-	// Show on Map button
-	jQuery('#detailbox .showonmap').unbind('click').click(function () {
-		if (trafficmap) {
-			trafficmap.centerOnGeo(geolocation.lat, geolocation.lon);
-		}
-	});
-
-	jQuery('<div/>').addClass('incidentID').html(this.ID).appendTo(content);
-	jQuery('<div/>').addClass('logtype').html(this.LogType).appendTo(content);
-	var city = (this.city) ? this.city : this.Area;
-	jQuery('<div/>').addClass('location').html(this.Location + "<br/>" + city).appendTo(content);
-
-	var ul = jQuery('<ul/>').addClass('details').appendTo(content);
-	for (var x = 0; x < this.LogDetails.details.length; x++) {
-		var detail = this.LogDetails.details[x];
-
-		var li = jQuery('<li/>').addClass('detail').appendTo(ul);
-		jQuery('<span/>').addClass('detailtime').html(detail.DetailTime.replace(/.*\d\d\d\d\s+/, '') + ": ").appendTo(li);
-		jQuery('<span/>').addClass('incidentdetail').html(detail.IncidentDetail).appendTo(li);
-	}
-
-	if (this.LogDetails.details.length === 0) {
-		jQuery('<div/>').addClass('details').html('No details.').replaceAll(ul);
-	}
-
-	// "Close" any opened detailbox buttons
-	jQuery('.opened').removeClass('opened');
-	this.moreButton.addClass('opened');
-
-	detailBox.show().animate({
-		width: '40%',
-		'min-width': '300px'
-	}, 'fast');
-};
-
-/**
- * Hides a "detail box" populated with the incident's details.
- */
-Incident.prototype.hideDetailBox = function () {
-	var detailBox = jQuery('#detailbox');
-
-	detailBox.animate({
-		width: '0',
-		'min-width': '0'
-	}, 'fast', function () {
-		detailBox.hide();
-		jQuery('#detailbox .content').empty();
-		// "Close" any opened detailbox buttons
-		jQuery('.opened').removeClass('opened');
-	});
-};
-
-/**
  * Returns icon information based on the Incident type.
  * @returns {Object}
  */

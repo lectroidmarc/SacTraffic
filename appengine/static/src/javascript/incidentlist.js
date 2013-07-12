@@ -117,7 +117,6 @@ IncidentList.prototype.makeList = function (ul_class) {
 
 		// TODO: Media info?
 
-		var top_or_bottom = (count++ < 3) ? 'top' : 'bottom';
-		incident.makeListItem($('.' + ul_class + '.' + top_or_bottom));
+		incident.makeListItem($('.' + ul_class));
 	}
 };
