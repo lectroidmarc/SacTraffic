@@ -20,7 +20,8 @@ JS = appengine/static/src/javascript/array.js \
 	appengine/static/src/javascript/sactraffic.js
 
 CSS = appengine/static/src/stylesheets/main.css \
-	appengine/static/src/stylesheets/button.css
+	appengine/static/src/stylesheets/button.css \
+	appengine/static/src/stylesheets/entypo.css
 
 
 all: ${FILES}
