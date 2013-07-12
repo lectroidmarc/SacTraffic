@@ -1,12 +1,12 @@
 /**
  * Sactraffic.org styles
  */
+html, body { height: 100% }
 body {
 	color: #333;
 	font-family: verdana, sans-serif;
 	font-size: 10pt;
 	margin: 0;
-	min-width: 900px;
 }
 
 a {
@@ -23,33 +23,6 @@ a:visited {
 
 img {
 	border: 0;
-}
-
-h1, h2, h3, h4, h5, h6 {
-	color: black;
-	font-weight: normal;
-}
-
-h1 {
-	font-size: 170%;
-	border-bottom: 1px solid #ccc;
-	margin-bottom: 10px;
-	margin-top: 0;
-}
-
-h1 img {
-	vertical-align: middle;
-}
-
-h2 {
-	font-size: 120%;
-	border-bottom: 1px solid #ccc;
-	margin: 5px 0 10px 0;
-}
-
-code {
-	background: #f6f6f6;
-	border: 1px dotted #aaa;
 }
 
 /**
@@ -97,9 +70,19 @@ code {
  * @section Header
  */
 #header {
-	background: #f1f1f1;
-	border-bottom: 1px solid #e4e4e4;
-	padding: 10px;
+	box-shadow: 0 0 3px 0 rgba(0, 0, 0, .33);
+	height: 60px;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 100;
+}
+
+#header p {
+	font-size: 170%;
+	font-weight: normal;
+	margin: 14px 20px;
 }
 
 #mediainfo {
@@ -128,101 +111,104 @@ code {
 }
 /* End Header */
 
+/* http://www.morethanamap.com/demos/basemaps/new-york */
 
 /**
  * @section Content
  */
 #content {
-	padding: 10px;
+	position: absolute;
+	top: 60px;
+	left: 0;
+	right: 0;
+	bottom: 0;
 }
 /* End Content */
 
 
 /**
- * @section Left Column
+ * @section Incident Container
  */
-#leftcol {
-	border-right: 1px solid #e4e4e4;
-	float: left;
-	height: 650px;
-	overflow: auto;
-	width: 350px;
+#incident_container {
+	background: rgba(255, 255, 255, 0.9);
+	border-radius: 10px;
+	box-shadow: 2px 2px 10px #999;
+	height: 90%;
+	margin: 20px;
+	min-height: 115px;	/* header + footer */
+	transition: height 0.5s;
+	width: 315px;
 }
 
-#leftcol .incidents {
+#incident_container.closed {
+  height: 115px;
+}
+
+/*
+  $('#incident_container .header').click(function () { $('#incident_container').toggleClass('closed'); });
+*/
+
+#incident_container .header {
+  background: #598ffd;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  cursor: pointer;
+	height: 35px;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+#incident_container .content {
+	bottom: 80px;
+	left: 0;
+	overflow: auto;
+	position: absolute;
+	right: 0;
+	top: 35px;
+}
+
+#incident_container .footer {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  bottom: 0;
+  height: 80px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+#incident_container .incidents {
 	margin: 0;
 	padding: 0;
 }
 
-#leftcol .incidents .loading {
+#incident_container .incidents .loading {
 	background: #ffffff;
 	border: 0;
 	height: 30px;
 	text-align: center;
 }
 
-#leftcol .incidents .loading img {
+#incident_container .incidents .loading img {
 	height: 19px;
 	width: 220px;
 }
 
-#leftcol .incident {
+#incident_container .incident {
 	border-bottom: 1px solid #e4e4e4;
-	background: #f3f3f3;
+	cursor: pointer;
 	list-style: none;
 	padding: 5px 7px;
 	line-height: 130%;
 }
 
-#leftcol .incident:hover {
-	background: #e4e4e4;
+#incident_container .incident:hover {
+	background: #f3f3f3;
 }
 
-#leftcol .incident:first-child {
-	border-top-left-radius: 10px;
-}
-
-#leftcol .incident:last-child {
-	border-bottom: 0;
-	border-bottom-left-radius: 10px;
-}
-
-#leftcol .incident .more {
-	background-image: url('/images/more_sprites.png');
-	background-position: -6px -3px;
-	display: none;
-	height: 18px;
-	width: 17px;
-	float: right;
-}
-
-#leftcol .incident:hover .more
-{
-	display: block;
-}
-
-#leftcol .incident .more.opened {
-	display: block;
-	background-position: -38px -3px;
-}
-
-#leftcol .incident .more:hover {
-	background-position: -6px -35px;
-}
-
-#leftcol .incident .more.mousedown:hover {
-	background-position: -6px -67px;
-}
-
-#leftcol .incident .more.opened:hover {
-	background-position: -38px -35px;
-}
-
-#leftcol .incident .more.opened.mousedown:hover {
-	background-position: -38px -67px;
-}
-
-#leftcol .incident .marker {
+#incident_container .incident .marker {
 	background-image: url('/images/map_markers.png?v=3');
 	float: left;
 	height: 37px;
@@ -230,28 +216,60 @@ code {
 	width: 32px;
 }
 
-#leftcol .incident .logtype {
+#incident_container .incident .logtype {
 	margin-top: 3px;
 	font-weight: bold;
 }
 
-#leftcol .incident .location {
+#incident_container .incident .location {
 	font-size: 9pt;
 }
 
-#leftcol .incident .city {
+#incident_container .incident .city {
 	font-size: 9pt;
 }
 
-#leftcol .incident .logtime {
+#incident_container .incident .logtime {
 	font-size: 8pt;
 	color: gray;
 	font-style: italic;
 }
 
-#leftcol .incident .dtstart,
-#leftcol .incident .geo {
+#incident_container .incident .dtstart,
+#incident_container .incident .geo {
 	display: none;
+}
+
+#incident_container .details {
+	border-top: 1px solid #ddd;
+	display: none;
+	font-size: 8pt;
+	list-style: none;
+	padding: 0;
+	margin: 10px 0 0 0;
+	padding-top: 10px;
+}
+
+#incident_container .details.show {
+  display: block;
+}
+
+#detailbox .detail {
+	line-height: 150%;
+}
+
+#detailbox .detailtime {
+	font-weight: bold;
+}
+
+#detailbox .footer {
+	border-top: 1px solid #ddd;
+	bottom: 8px;
+	left: 0;
+	padding-top: 7px;
+	position: absolute;
+	right: 0;
+	text-align: center;
 }
 /* End Left Column */
 
@@ -265,6 +283,7 @@ code {
 	min-height: 650px;
 	overflow: hidden;
 	position: relative;
+	display: none;
 }
 
 #detailbox {
@@ -326,39 +345,11 @@ code {
 	font-weight: bold;
 }
 
-#detailbox .details {
-	border-top: 1px solid #ddd;
-	font-size: 8pt;
-	height: 340px;
-	list-style: none;
-	padding: 0;
-	margin: 10px 0 0 0;
-	padding-top: 10px;
-}
 
-#detailbox .detail {
-	line-height: 150%;
-}
-
-#detailbox .detailtime {
-	font-weight: bold;
-}
-
-#detailbox .footer {
-	border-top: 1px solid #ddd;
-	bottom: 8px;
-	left: 0;
-	padding-top: 7px;
-	position: absolute;
-	right: 0;
-	text-align: center;
-}
 
 #map {
-	height: 500px;
-	border-top: 1px solid #e4e4e4;
-	border-right: 1px solid #e4e4e4;
-	border-bottom: 1px solid #e4e4e4;
+	height: 100%;
+	width: 100%;
 }
 
 #mapcontrol {
@@ -510,14 +501,14 @@ code {
 		min-width: 0;
 	}
 
-	#leftcol {
+	#incident_container {
 		border-right: 0;
 		border-top-right-radius: 10px;
 		border-bottom-right-radius: 10px;
 		height: auto
 	}
 
-	#leftcol .incident:last-child {
+	#incident_container .incident:last-child {
 		border-bottom-right-radius: 10px;
 	}
 

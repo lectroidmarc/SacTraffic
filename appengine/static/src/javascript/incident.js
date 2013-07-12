@@ -33,20 +33,9 @@ Incident.prototype.makeListItem = function (element) {
 	var incident_date = new Date(this.LogTime * 1000);
 	var point = (this.geolocation) ? this.geolocation : null;
 
-	var incident_li = jQuery('<li/>').attr('id', this.ID).addClass('incident').addClass('vevent').appendTo(element);
-
-	this.moreButton = jQuery('<div/>').addClass('more').click(function () {
-		if (jQuery(this).hasClass('opened')) {
-			self.hideDetailBox();
-		} else {
-			self.showDetailBox();
-		}
-	}).mousedown(function () {
-		jQuery(this).addClass('mousedown');
-	}).mouseup(function () {
-		jQuery(this).removeClass('mousedown');
-	}).appendTo(incident_li);
-
+	var incident_li = jQuery('<li/>').attr('id', this.ID).addClass('incident').addClass('vevent').appendTo(element).click(function () {
+	  $(this).find('.details').toggleClass('show');
+	});
 
 	// The marker icon
 	jQuery('<div/>').addClass('marker').css('background-position', this.getIcon().cssPosition).appendTo(incident_li);
@@ -73,6 +62,20 @@ Incident.prototype.makeListItem = function (element) {
 		).append(
 			jQuery('<span/>').addClass('longitude').html(point.lon)
 		).appendTo(incident_li);
+	}
+
+	// Add details
+	var details_ul = jQuery('<ul/>').addClass('details').appendTo(incident_li);
+	for (var x = 0; x < this.LogDetails.details.length; x++) {
+		var detail = this.LogDetails.details[x];
+
+		var detail_li = jQuery('<li/>').addClass('detail').appendTo(details_ul);
+		jQuery('<span/>').addClass('detailtime').html(detail.DetailTime.replace(/.*\d\d\d\d\s+/, '') + ": ").appendTo(detail_li);
+		jQuery('<span/>').addClass('incidentdetail').html(detail.IncidentDetail).appendTo(detail_li);
+	}
+
+	if (this.LogDetails.details.length === 0) {
+		jQuery('<div/>').addClass('details').html('No details.').replaceAll(details_ul);
 	}
 };
 

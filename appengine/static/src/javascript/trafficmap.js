@@ -45,6 +45,8 @@ var TrafficMap = function (elementId, defaultState) {
 	};
 
 	this.gmap.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('mapcontrol'));
+  this.gmap.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('incident_container'));
+
 
 	// Set initial map state
 	if (this.getState('live_cams')) {
