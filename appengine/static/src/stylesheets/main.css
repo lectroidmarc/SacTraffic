@@ -68,7 +68,7 @@ img {
 	z-index: 100;
 }
 
-#header p {
+#header .title {
   display: inline-block;
 	font-size: 170%;
 	font-weight: normal;
@@ -356,34 +356,7 @@ img {
  * Smartphone overrides.
  */
 @media only screen and (max-device-width: 480px) {
-	body {
-		width: 420px;
-		min-width: 0;
-	}
-
 	#incident_container {
-		border-right: 0;
-		border-top-right-radius: 10px;
-		border-bottom-right-radius: 10px;
-		height: auto
-	}
-
-	#incident_container .incident:last-child {
-		border-bottom-right-radius: 10px;
-	}
-
-	.codeblock {
-		font-size: 5pt;
-		overflow: hidden;
-		margin-left: 0;
-		width: inherit;
-	}
-
-	#mediainfo {
-		margin: 10px;;
-	}
-
-	#rightcol {
-		display: none;
+		margin: 0;
 	}
 }
