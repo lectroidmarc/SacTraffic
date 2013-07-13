@@ -10,22 +10,22 @@
  */
 html, body { height: 100% }
 body {
-	color: #333;
-	font-family: verdana, sans-serif;
-	font-size: 10pt;
-	margin: 0;
+  color: #333;
+  font-family: verdana, sans-serif;
+  font-size: 10pt;
+  margin: 0;
 }
 
 a {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 img {
-	border: 0;
+  border: 0;
 }
 
 
@@ -33,25 +33,25 @@ img {
  * @section Marker Info Window styles
  */
 .marker .logtype {
-	margin-top: 3px;
-	font-weight: bold;
+  margin-top: 3px;
+  font-weight: bold;
 }
 
 .marker .logtime {
-	margin-top: 3px;
-	font-size: 8pt;
-	color: gray;
-	font-style: italic;
+  margin-top: 3px;
+  font-size: 8pt;
+  color: gray;
+  font-style: italic;
 }
 
 .marker.camera .name {
-	font-weight: bold;
-	margin-bottom: 10px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .marker.camera .button {
-	text-align: center;
-	padding-bottom: 5px;
+  text-align: center;
+  padding-bottom: 5px;
 }
 
 
@@ -59,20 +59,20 @@ img {
  * @section Header
  */
 #header {
-	box-shadow: 0 0 4px 0 rgba(0, 0, 0, .33);
-	height: 60px;
-	left: 0;
-	position: absolute;
-	right: 0;
-	top: 0;
-	z-index: 100;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, .33);
+  height: 60px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 100;
 }
 
 #header .title {
   display: inline-block;
-	font-size: 170%;
-	font-weight: normal;
-	margin: 14px 20px;
+  font-size: 170%;
+  font-weight: normal;
+  margin: 14px 20px;
 }
 
 #header .menu {
@@ -104,11 +104,11 @@ img {
  * @section Content
  */
 #content {
-	position: absolute;
-	top: 60px;
-	left: 0;
-	right: 0;
-	bottom: 0;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 
@@ -116,14 +116,14 @@ img {
  * @section Incident Container
  */
 #incident_container {
-	background: rgba(255, 255, 255, 0.9);
-	border-radius: 10px;
-	box-shadow: 2px 2px 10px #999;
-	height: 90%;
-	margin: 20px;
-	min-height: 115px;	/* header + footer */
-	transition: height 0.5s;
-	width: 315px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px #999;
+  height: 90%;
+  margin: 20px;
+  min-height: 115px;  /* header + footer */
+  transition: height 0.5s;
+  width: 315px;
 }
 
 #incident_container.closed {
@@ -134,11 +134,11 @@ img {
   background: #598ffd;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-	height: 35px;
-	left: 0;
-	position: absolute;
-	right: 0;
-	top: 0;
+  height: 35px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 
   -moz-user-select: none;
   -ms-user-select: none;
@@ -169,15 +169,16 @@ img {
 }
 
 #incident_container .content {
-	bottom: 80px;
-	left: 0;
-	overflow: auto;
-	position: absolute;
-	right: 0;
-	top: 35px;
+  bottom: 80px;
+  left: 0;
+  overflow: auto;
+  position: absolute;
+  right: 0;
+  top: 35px;
 }
 
 #incident_container .footer {
+  background: #fff;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   bottom: 0;
@@ -188,72 +189,72 @@ img {
 }
 
 #incident_container .incidents {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 #incident_container .incidents .loading {
-	background: #ffffff;
-	border: 0;
-	height: 30px;
-	text-align: center;
+  background: #ffffff;
+  border: 0;
+  height: 30px;
+  text-align: center;
 }
 
 #incident_container .incidents .loading img {
-	height: 19px;
-	width: 220px;
+  height: 19px;
+  width: 220px;
 }
 
 #incident_container .incident {
-	border-bottom: 1px solid #e4e4e4;
-	cursor: pointer;
-	list-style: none;
-	padding: 5px 7px;
-	line-height: 130%;
+  border-bottom: 1px solid #e4e4e4;
+  cursor: pointer;
+  list-style: none;
+  padding: 5px 7px;
+  line-height: 130%;
 }
 
 #incident_container .incident:hover {
-	background: #f3f3f3;
+  background: #f3f3f3;
 }
 
 #incident_container .incident .marker {
-	background-image: url('/images/map_markers.png?v=3');
-	float: left;
-	height: 37px;
-	margin: 3px 4px 1px 0;
-	width: 32px;
+  background-image: url('/images/map_markers.png?v=3');
+  float: left;
+  height: 37px;
+  margin: 3px 4px 1px 0;
+  width: 32px;
 }
 
 #incident_container .incident .logtype {
-	margin-top: 3px;
-	font-weight: bold;
+  margin-top: 3px;
+  font-weight: bold;
 }
 
 #incident_container .incident .location {
-	font-size: 9pt;
+  font-size: 9pt;
 }
 
 #incident_container .incident .city {
-	font-size: 9pt;
+  font-size: 9pt;
 }
 
 #incident_container .incident .logtime {
-	font-size: 8pt;
-	color: gray;
-	font-style: italic;
+  font-size: 8pt;
+  color: gray;
+  font-style: italic;
 }
 
 #incident_container .incident .dtstart,
 #incident_container .incident .geo {
-	display: none;
+  display: none;
 }
 
 #incident_container .details {
-	display: none;
-	font-size: 8pt;
-	list-style: none;
-	margin: 5px 0 0 0;
-	padding: 10px;
+  display: none;
+  font-size: 8pt;
+  list-style: none;
+  margin: 5px 0 0 0;
+  padding: 10px;
 }
 
 #incident_container .details.show {
@@ -269,57 +270,57 @@ img {
  * @section Map & Map controls
  */
 #map {
-	height: 100%;
-	width: 100%;
+  height: 100%;
+  width: 100%;
 }
 
 #mapcontrol {
-	margin: 10px;
-	text-align: right;
+  margin: 10px;
+  text-align: right;
 
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
 }
 
 #mapcontrol .menubutton {
-	background-color: #111;
-	background-image: -moz-linear-gradient(top, rgba(255,255,255,.2), rgba(150,150,150,.2), rgba(0,0,0,.0));
-	background-image: -ms-linear-gradient(top, rgba(255,255,255,.2), rgba(150,150,150,.2), rgba(0,0,0,.0));
-	background-image: -webkit-linear-gradient(top, rgba(255,255,255,.2), rgba(150,150,150,.2), rgba(0,0,0,.0));
-	border-radius: 5px;
-	color: #fff;
-	font-family: 'EntypoRegular';
-	font-size: 42px;
-	height: 30px;
-	line-height: 30px;
-	margin-bottom: 5px;
-	margin-left: 50px;
-	opacity: .6;
-	text-align: center;
-	width: 62px;
+  background-color: #111;
+  background-image: -moz-linear-gradient(top, rgba(255,255,255,.2), rgba(150,150,150,.2), rgba(0,0,0,.0));
+  background-image: -ms-linear-gradient(top, rgba(255,255,255,.2), rgba(150,150,150,.2), rgba(0,0,0,.0));
+  background-image: -webkit-linear-gradient(top, rgba(255,255,255,.2), rgba(150,150,150,.2), rgba(0,0,0,.0));
+  border-radius: 5px;
+  color: #fff;
+  font-family: 'EntypoRegular';
+  font-size: 42px;
+  height: 30px;
+  line-height: 30px;
+  margin-bottom: 5px;
+  margin-left: 50px;
+  opacity: .6;
+  text-align: center;
+  width: 62px;
 }
 
 #mapcontrol .mapmenu {
-	height: 0;
-	opacity: .7;
-	overflow: hidden;
+  height: 0;
+  opacity: .7;
+  overflow: hidden;
 
-	-webkit-transition: all .4s ease;
-	-moz-transition: all .4s ease;
+  -webkit-transition: all .4s ease;
+  -moz-transition: all .4s ease;
 }
 
 #mapcontrol:hover .mapmenu {
-	height: 100px;
-	opacity: .9;
+  height: 100px;
+  opacity: .9;
 }
 
 #mapcontrol .mapmenu .button {
-	display: block;
-	font-size: 11px;
-	font-weight: normal;
-	margin-bottom: 5px;
-	width: 92px;
+  display: block;
+  font-size: 11px;
+  font-weight: normal;
+  margin-bottom: 5px;
+  width: 92px;
 }
 
 
@@ -327,23 +328,23 @@ img {
  * @section Other
  */
 #video_canvas {
-	margin: 0 auto;
+  margin: 0 auto;
 }
 
 .codeblock {
-	background: #f3f3f3;
-	border: 1px solid #aaa;
-	border-radius: 5px;
-	font-family: monospace;
-	font-size: 9pt;
-	margin-left: 40px;
-	padding: 5px;
-	white-space: pre;
-	width: 80%;
+  background: #f3f3f3;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 9pt;
+  margin-left: 40px;
+  padding: 5px;
+  white-space: pre;
+  width: 80%;
 }
 
 .info {
-	font-style: italic;
+  font-style: italic;
 }
 
 
@@ -351,32 +352,32 @@ img {
  * @section Ads
  */
 .ad {
-	margin: 10px auto;
+  margin: 10px auto;
 }
 
 .leaderboard {
-	width: 728px;
-	height: 90px;
+  width: 728px;
+  height: 90px;
 }
 
 .banner {
-	width: 468px;
-	height: 60px;
+  width: 468px;
+  height: 60px;
 }
 
 .halfbanner {
-	width: 234px;
-	height: 60px;
+  width: 234px;
+  height: 60px;
 }
 
 .largerec {
-	width: 336px;
-	height: 280px;
+  width: 336px;
+  height: 280px;
 }
 
 .medrec {
-	width: 300px;
-	height: 250px;
+  width: 300px;
+  height: 250px;
 }
 
 
@@ -384,11 +385,11 @@ img {
  * Smartphone overrides.
  */
 @media only screen and (max-device-width: 480px) {
-	 #header {
-  	background: #598ffd;
-  	border-top-left-radius: 10px;
-  	border-top-right-radius: 10px;
-  	color: white;
+   #header {
+    background: #598ffd;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: white;
   }
 
   #header .title {
@@ -398,34 +399,34 @@ img {
   }
 
   #header .menu li {
-  	border-left: 1px solid #999;
+    border-left: 1px solid #999;
     width: 60px;
   }
 
-	#header .menu li a,
-	#header .menu li a:visited {
-  	color: #ddd;
-	}
+  #header .menu li a,
+  #header .menu li a:visited {
+    color: #ddd;
+  }
 
   #content {
     top: 25px;
   }
 
-	#incident_container {
-		box-shadow: none;
-		height: 100%;
-		margin: 0;
-	}
+  #incident_container {
+    box-shadow: none;
+    height: 100%;
+    margin: 0;
+  }
 
-	#incident_container .header {
-	  display: none;
-	}
+  #incident_container .header {
+    display: none;
+  }
 
-	#incident_container .footer {
-	  box-shadow: 0 0 4px 0 rgba(0, 0, 0, .33);
-	}
+  #incident_container .footer {
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, .33);
+  }
 
-	#map, #mapcontrol {
-		display: none;
-	}
+  #map, #mapcontrol {
+    display: none;
+  }
 }
