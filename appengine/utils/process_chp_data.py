@@ -210,6 +210,15 @@ coplingo = [
 	{ 'regex': re.compile(r'\bVeh\b', re.I), 'str': "Vehicle" },
 	{ 'regex': re.compile(r'\bUnkn\b', re.I), 'str': "Unknown" },
 	{ 'regex': re.compile(r'\bUnk\b', re.I), 'str': "Unknown" },
+	{ 'regex': re.compile(r'\brdwy\b', re.I), 'str': "Roadway" },
+
+	{ 'regex': re.compile(r'\btoyt\b', re.I), 'str': "Toyota" },
+	{ 'regex': re.compile(r'\bniss\b', re.I), 'str': "Nissan" },
+	{ 'regex': re.compile(r'\bchev\b', re.I), 'str': "Chevy" },
+
+	{ 'regex': re.compile(r'\bsil\b', re.I), 'str': "silver" },
+	{ 'regex': re.compile(r'\bwhi\b', re.I), 'str': "white" },
+	{ 'regex': re.compile(r'\bblk\b', re.I), 'str': "black" },
 
 	{ 'regex': re.compile(r'\b1141\b', re.I), 'str': "Ambulance" },
 
