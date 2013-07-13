@@ -59,7 +59,7 @@ img {
  * @section Header
  */
 #header {
-	box-shadow: 0 0 3px 0 rgba(0, 0, 0, .33);
+	box-shadow: 0 0 4px 0 rgba(0, 0, 0, .33);
 	height: 60px;
 	left: 0;
 	position: absolute;
@@ -384,6 +384,13 @@ img {
  * Smartphone overrides.
  */
 @media only screen and (max-device-width: 480px) {
+	 #header {
+  	background: #598ffd;
+  	border-top-left-radius: 10px;
+  	border-top-right-radius: 10px;
+  	color: white;
+  }
+
   #header .title {
     font-size: 110%;
     margin: 10px;
@@ -391,18 +398,34 @@ img {
   }
 
   #header .menu li {
+  	border-left: 1px solid #999;
     width: 60px;
   }
+
+	#header .menu li a,
+	#header .menu li a:visited {
+  	color: #ddd;
+	}
 
   #content {
     top: 25px;
   }
 
 	#incident_container {
+		box-shadow: none;
+		height: 100%;
 		margin: 0;
 	}
 
 	#incident_container .header {
 	  display: none;
+	}
+
+	#incident_container .footer {
+	  box-shadow: 0 0 4px 0 rgba(0, 0, 0, .33);
+	}
+
+	#map, #mapcontrol {
+		display: none;
 	}
 }
