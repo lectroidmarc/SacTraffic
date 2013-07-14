@@ -332,18 +332,6 @@ img {
   margin: 0 auto;
 }
 
-.codeblock {
-  background: #f3f3f3;
-  border: 1px solid #aaa;
-  border-radius: 5px;
-  font-family: monospace;
-  font-size: 9pt;
-  margin-left: 40px;
-  padding: 5px;
-  white-space: pre;
-  width: 80%;
-}
-
 .info {
   font-style: italic;
 }
