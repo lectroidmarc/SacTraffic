@@ -44,7 +44,7 @@ var get_incidents = function () {
 };
 
 var show_incident = function (evt, incident) {
-  console.log('Hello ' + incident.ID);
+  //console.log('Hello ' + incident.ID);
   var incident_li = $('<li/>').attr('id', incident.ID.replace(/\./g, '_')).addClass('incident').addClass('vevent').prependTo(this.element).click(function () {
     $(this).find('.details').slideToggle();
   });
@@ -52,7 +52,7 @@ var show_incident = function (evt, incident) {
   // The marker icon
   $('<div/>').addClass('marker').css('background-position', incident.getIcon().cssPosition).appendTo(incident_li);
 
-  // Summary...
+  // Summary/LogType
   $('<div/>').addClass('logtype summary').text(incident.LogType).appendTo(incident_li);
 
   // Location
@@ -96,8 +96,11 @@ var show_incident = function (evt, incident) {
 };
 
 var update_incident = function (evt, incident) {
-  console.log('Oh, it\'s you, ' + incident.ID);
+  //console.log('Oh, it\'s you, ' + incident.ID);
   var incident_li = $('#' + incident.ID.replace(/\./g, '_'));
+
+  // The marker icon
+  incident_li.children('logtype').css('background-position', incident.getIcon().cssPosition);
 
   // Summary/LogType
   incident_li.children('logtype').text(incident.LogType);
@@ -116,7 +119,7 @@ var update_incident = function (evt, incident) {
 };
 
 var remove_incident = function (evt, id) {
-  console.log('Goodbye ' + id);
+  //console.log('Goodbye ' + id);
   var incident_li = $('#' + id.replace(/\./g, '_'));
 
   incident_li.slideUp(function () {
