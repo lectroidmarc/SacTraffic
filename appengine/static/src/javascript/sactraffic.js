@@ -34,7 +34,7 @@ var show_incident = function (evt, incident) {
   var point = (incident.geolocation) ? incident.geolocation : null;
 
   var incident_li = $('<li/>').attr('id', incident.ID.replace(/\./g, '_')).addClass('incident').addClass('vevent').appendTo(this.element).click(function () {
-    $(incident).find('.details').toggleClass('show');
+    $(this).find('.details').slideToggle();
   });
 
   // The marker icon
