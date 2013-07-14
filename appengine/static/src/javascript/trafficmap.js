@@ -125,8 +125,8 @@ TrafficMap.prototype.update = function (incidents) {
     }
   }
 
-  for (var id in this.incidents.getIncidents()) {
-    var incident = this.incidents.getIncidentById(id);
+  for (var id in this.incidents.incidents) {
+    var incident = this.incidents.getIncident(id);
 
     if (incident.geolocation) {
       this._markers[incident.ID] = this.make_marker(incident);

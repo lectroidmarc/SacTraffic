@@ -8,11 +8,9 @@
  * @class Represents a set of CHP Incidents.
  * @param {Array} data An array of CHP Incidents from SacTraffic.org.
  */
-var IncidentList = function (data) {
-	this._incidents = {};
-	this._bounds = {};
-
-	this.update(data);
+var IncidentList = function (element) {
+  this.element = element;
+  this.incidents = {};
 };
 
 /**
@@ -20,106 +18,79 @@ var IncidentList = function (data) {
  * @param {String} id The Incident's CHP ID.
  * @returns {Incident}
  */
-IncidentList.prototype.getIncidentById = function(id) {
-	return this._incidents[id];
-};
-
-IncidentList.prototype.getIncidents = function() {
-	return this._incidents;
-};
-
-IncidentList.prototype.getIncidents = function() {
-	return this._incidents;
+IncidentList.prototype.getIncident = function(id) {
+  return this.incidents[id];
 };
 
 IncidentList.prototype.addIncident = function (incident) {
-	if (typeof this._incidents[incident.ID] === 'undefined' || !this._incidents[incident.ID].compare(incident)) {
-		this._incidents[incident.ID] = incident;
-	}
+  var event_name = (typeof this.incidents[incident.ID] === 'undefined') ? 'st_new_incident' : 'st_update_incident';
+
+  this.incidents[incident.ID] = incident;
+  $(this).trigger(event_name, [incident]);
 };
 
 IncidentList.prototype.delIncident = function (incident) {
-	delete this._incidents[incident.ID];
+  delete this.incidents[incident.ID];
+  $(this).trigger('st_delete_incident', [incident.ID]);
 };
 
 IncidentList.prototype.containsId = function (id) {
-	var ids = [];
-	for (var incident_id in this.getIncidents()) {
-		ids.push(incident_id);
-	}
-	return (ids.indexOf(id) === -1) ? false : true;
+  return (Object.keys(this.incidents).indexOf(id) === -1) ? false : true;
 };
 
 IncidentList.prototype.size = function () {
-	var size = 0;
-	for (var incident_id in this.getIncidents()) {
-		size++;
-	}
-	return size;
+  var size = 0;
+  for (var incident_id in this.incidents) {
+    size++;
+  }
+  return size;
+};
+
+IncidentList.prototype.getBounds = function () {
+  var lats = [];
+  var lons = [];
+
+  for (var incident_id in this.incidents) {
+    var incident = this.incidents[incident_id];
+
+    if (incident.geolocation) {
+      lats.push(incident.geolocation.lat);
+      lons.push(incident.geolocation.lon);
+    }
+  }
+
+  return {
+    sw: {
+      lat: lats.min(),
+      lon: lons.min()
+    },
+    ne: {
+      lat: lats.max(),
+      lon: lons.max()
+    }
+  };
 };
 
 IncidentList.prototype.update = function (data) {
-	var lats = [];
-	var lons = [];
-	var new_data_ids = [];
+  var update_ids = [];
 
-	// Add or update existing incidents
-	for (var x = 0; x < data.length; x++) {
-		var incident = new Incident(data[x]);
+  // Add or update existing incidents
+  for (var x = 0; x < data.length; x++) {
+    var incident = new Incident(data[x]);
 
-		// Skip Silver and Amber Alerts...
-		var alert_re = /(SILVER|AMBER) Alert/i;
-		if (alert_re.test(incident.LogType)) continue;
+    // Skip Silver and Amber Alerts...
+    var alert_re = /(SILVER|AMBER) Alert/i;
+    if (alert_re.test(incident.LogType)) continue;
 
-		new_data_ids.push(incident.ID);
+    update_ids.push(incident.ID);
+    this.addIncident(incident);
+  }
 
-		if (incident.geolocation) {
-			lats.push(incident.geolocation.lat);
-			lons.push(incident.geolocation.lon);
-		}
-
-		this.addIncident(incident);
-	}
-
-	this._bounds = {
-		sw: {
-			lat: lats.min(),
-			lon: lons.min()
-		},
-		ne: {
-			lat: lats.max(),
-			lon: lons.max()
-		}
-	};
-
-	// Remove incidents we no longer have
-	for (var id in this.getIncidents()) {
-		var incident = this.getIncidentById(id);
-		if (new_data_ids.indexOf(incident.ID) === -1) {
-			this.delIncident(incident);
-		}
-	}
-};
-
-/**
- * Get the bounding box of the incidents.
- * @returns {Object}
- */
-IncidentList.prototype.getBounds = function() {
-	return this._bounds;
-};
-
-/**
- * Makes a standard unordered list for the display of Incidents.
- * @param {String} ul_class The class of the unordered list to append the incidents to.
- */
-IncidentList.prototype.makeList = function (ul_class) {
-	var count = 0;
-	$('.' + ul_class).empty();
-
-	for (var id in this._incidents) {
-		var incident = this.getIncidentById(id);
-
-		incident.makeListItem($('.' + ul_class));
-	}
+  // Remove incidents we no longer have
+  for (var id in this.incidents) {
+    var incident = this.getIncident(id);
+    if (update_ids.indexOf(incident.ID) === -1) {
+      this.delIncident(incident);
+    }
+  }
 };

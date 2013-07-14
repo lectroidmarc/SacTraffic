@@ -83,7 +83,10 @@
 <script type="text/javascript" src="/sactraffic.min.js"></script>
 <script type="text/javascript">
   jQuery(document).ready(function() {
-    init_index();
+    if (screen.width > 480) {
+      trafficmap = new TrafficMap('map');
+    }
+    get_incidents();
   });
 </script>
 </body>
