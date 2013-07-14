@@ -1,6 +1,6 @@
 /**
  * @fileoverview Base functions and globals for sactraffic.org.
- * @requires $
+ * @requires jQuery
  */
 
 /**
@@ -29,10 +29,6 @@ var get_incidents = function () {
 
 var show_incident = function (evt, incident) {
   console.log('Hello ' + incident.ID);
-
-  var incident_date = new Date(incident.LogTime * 1000);
-  var point = (incident.geolocation) ? incident.geolocation : null;
-
   var incident_li = $('<li/>').attr('id', incident.ID.replace(/\./g, '_')).addClass('incident').addClass('vevent').appendTo(this.element).click(function () {
     $(this).find('.details').slideToggle();
   });
@@ -41,26 +37,27 @@ var show_incident = function (evt, incident) {
   $('<div/>').addClass('marker').css('background-position', incident.getIcon().cssPosition).appendTo(incident_li);
 
   // Summary...
-  $('<div/>').addClass('logtype summary').html(incident.LogType).appendTo(incident_li);
+  $('<div/>').addClass('logtype summary').text(incident.LogType).appendTo(incident_li);
 
   // Location
-  $('<div/>').addClass('location').html(incident.Location).appendTo(incident_li);
+  $('<div/>').addClass('location').text(incident.Location).appendTo(incident_li);
 
   // City
   var city = (incident.city) ? incident.city : incident.Area;
-  $('<div/>').addClass('city').html(city).appendTo(incident_li);
+  $('<div/>').addClass('city').text(city).appendTo(incident_li);
 
   // Time
-  $('<div/>').addClass('logtime').html(incident_date.getPrettyDateTime()).append(
-    $('<span/>').addClass('dtstart').html(incident_date.getISO8601())
+  var incident_date = new Date(incident.LogTime * 1000);
+  $('<div/>').addClass('logtime').text(incident_date.getPrettyDateTime()).append(
+    $('<span/>').addClass('dtstart').text(incident_date.getISO8601())
   ).appendTo(incident_li);
 
-  // Add the geo microfoemat
-  if (point) {
+  // Add the geo microformat
+  if (incident.geolocation) {
     $('<div/>').addClass('geo').append(
-      $('<span/>').addClass('latitude').html(point.lat)
+      $('<span/>').addClass('latitude').text(incident.geolocation.lat)
     ).append(
-      $('<span/>').addClass('longitude').html(point.lon)
+      $('<span/>').addClass('longitude').text(incident.geolocation.lon)
     ).appendTo(incident_li);
   }
 
@@ -84,8 +81,10 @@ var show_incident = function (evt, incident) {
 
 var update_incident = function (evt, incident) {
   console.log('Oh, it\'s you, ' + incident.ID);
-
   var incident_li = $('#' + incident.ID.replace(/\./g, '_'));
+
+  // Summary/LogType
+  incident_li.children('logtype').text(incident.LogType);
 
   // Details -- simply replace them...
   if (incident.LogDetails.details.length > 0) {
@@ -94,15 +93,14 @@ var update_incident = function (evt, incident) {
       var detail = incident.LogDetails.details[x];
 
       var detail_li = $('<li/>').addClass('detail').appendTo(details_ul);
-      $('<span/>').addClass('detailtime').html(detail.DetailTime.replace(/.*\d\d\d\d\s+/, '') + ": ").appendTo(detail_li);
-      $('<span/>').addClass('incidentdetail').html(detail.IncidentDetail).appendTo(detail_li);
+      $('<span/>').addClass('detailtime').text(detail.DetailTime.replace(/.*\d\d\d\d\s+/, '') + ": ").appendTo(detail_li);
+      $('<span/>').addClass('incidentdetail').text(detail.IncidentDetail).appendTo(detail_li);
     }
   }
 };
 
 var remove_incident = function (evt, id) {
   console.log('Goodbye ' + id);
-
   var incident_li = $('#' + id.replace(/\./g, '_'));
 
   incident_li.slideUp(function () {
