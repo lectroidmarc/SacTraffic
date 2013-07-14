@@ -119,17 +119,13 @@ TrafficMap.prototype.update = function (incidents) {
   // remove markers for incidents we no longer have
   for (var id in this._markers) {
     if (!this.incidents.containsId(id)) {
-      this._markers[id].setMap(null);
-      delete this._markers[id];
+      this.removeIncident(id);
     }
   }
 
   for (var id in this.incidents.incidents) {
     var incident = this.incidents.getIncident(id);
-
-    if (incident.geolocation) {
-      this._markers[incident.ID] = this.make_marker(incident);
-    }
+    this.addIncident(incident);
   }
 
   this.fitIncidents();
@@ -188,7 +184,7 @@ TrafficMap.prototype.show_live_cams = function () {
         function make_camera_marker (camera) {
           var marker = new google.maps.Marker({
             position: new google.maps.LatLng(camera.location.lat, camera.location.lon),
-            icon: self.getIcon('camera'),
+            icon: self.getMapIcon('camera'),
             title: camera.name,
             map: self.gmap
           });
@@ -306,30 +302,25 @@ TrafficMap.prototype.hide_incidents = function () {
  * @param {Incident} incident The incident.
  * @returns {GMarker}
  */
-TrafficMap.prototype.make_marker = function (incident) {
+TrafficMap.prototype.addIncident = function (incident) {
   var self = this;
 
-  var icon = this.getIcon();
-  if (/Fire/.test(incident.LogType)) {
-    icon = this.getIcon('fire');
-  } else if (/Maintenance|Construction/.test(incident.LogType)) {
-    icon = this.getIcon('maintenance');
-  } else if (/Ambulance Enroute|Fatality/.test(incident.LogType)) {
-    icon = this.getIcon('collision-serious');
-  } else if (/Collision/.test(incident.LogType)) {
-    icon = this.getIcon('collision');
-  }
+  if (!incident.geolocation) return;
 
+  var icon = this.getMapIcon(incident.getIcon().name);
   var marker = this._markers[incident.ID];
   if (typeof(marker) === 'undefined') {
     marker = new google.maps.Marker({
       position: new google.maps.LatLng(incident.geolocation.lat, incident.geolocation.lon),
       icon: icon,
-      shadow: this.getIcon('shadow'),
+      shadow: this.getMapIcon('shadow'),
       title: incident.LogType,
       map: this.gmap
     });
+
+    this._markers[incident.ID] = marker;
   } else {
+    // Update the icon, incase it's changed.
     marker.setIcon(icon);
     marker.setTitle(incident.LogType);
     google.maps.event.clearListeners(marker, 'click');
@@ -344,11 +335,16 @@ TrafficMap.prototype.make_marker = function (incident) {
   return marker;
 };
 
+TrafficMap.prototype.removeIncident = function (id) {
+  this._markers[id].setMap(null);
+  delete this._markers[id];
+};
+
 /**
  * Icon generator for the traffic map.
  * @param {String} type The type of icon to return.
  */
-TrafficMap.prototype.getIcon = function (type) {
+TrafficMap.prototype.getMapIcon = function (type) {
   if (typeof(type) === 'undefined') {
     type = 'generic';
   }
@@ -361,16 +357,16 @@ TrafficMap.prototype.getIcon = function (type) {
     var scaledSize = null;
 
     switch (type) {
-      case 'maintenance':
+      case 'Maintenance':
         origin = new google.maps.Point(32, 0);
         break;
-      case 'collision-serious':
+      case 'Collision-serious':
         origin = new google.maps.Point(64, 0);
         break;
-      case 'collision':
+      case 'Collision':
         origin = new google.maps.Point(96, 0);
         break;
-      case 'fire':
+      case 'Fire':
         origin = new google.maps.Point(128, 0);
         break;
       case 'camera':

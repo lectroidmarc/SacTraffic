@@ -29,9 +29,9 @@ IncidentList.prototype.addIncident = function (incident) {
   $(this).trigger(event_name, [incident]);
 };
 
-IncidentList.prototype.delIncident = function (incident) {
-  delete this.incidents[incident.ID];
-  $(this).trigger('st_delete_incident', [incident.ID]);
+IncidentList.prototype.removeIncident = function (id) {
+  delete this.incidents[id];
+  $(this).trigger('st_delete_incident', [id]);
 };
 
 IncidentList.prototype.containsId = function (id) {
@@ -92,9 +92,8 @@ IncidentList.prototype.update = function (incident_data) {
 
   // Remove incidents we no longer have
   for (var id in this.incidents) {
-    var incident = this.getIncident(id);
-    if (update_ids.indexOf(incident.ID) === -1) {
-      this.delIncident(incident);
+    if (update_ids.indexOf(id) === -1) {
+      this.removeIncident(id);
     }
   }
 };
