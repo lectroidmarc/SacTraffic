@@ -15,76 +15,76 @@
 <meta name = "viewport" content = "width = device-width">
 
 <script type="text/javascript">
-	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', 'UA-4894819-1']);
-	_gaq.push(['_trackPageview']);
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4894819-1']);
+  _gaq.push(['_trackPageview']);
 
-	(function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	})();
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
 </script>
 </head>
 
 <body>
 <div id="header">
-	<div class="title">Live CHP traffic alerts in the Sacramento area</div>
-	<ul class="menu">
-	  <li><a href="https://github.com/lectroidmarc/SacTraffic/blob/master/README.md">About</a></li>
-	</ul>
+  <div class="title">Live CHP traffic alerts in the Sacramento area</div>
+  <ul class="menu">
+    <li><a href="https://github.com/lectroidmarc/SacTraffic/blob/master/README.md">About</a></li>
+  </ul>
 </div>
 
 <div id="content">
-	<div id="map"></div>
+  <div id="map"></div>
 
-	<div id="mapcontrol">
-		<div class="menubutton">⚙</div>
-		<div class="mapmenu">
-			<div id="camera_btn" class="button blue">Show Cameras</div>
-			<div id="traffic_btn" class="button blue">Show Traffic</div>
-			<div id="recenter_btn" class="button blue" style="display: none">Recenter Map</div>
-		</div>
-	</div>
+  <div id="mapcontrol">
+    <div class="menubutton">⚙</div>
+    <div class="mapmenu">
+      <div id="camera_btn" class="button blue">Show Cameras</div>
+      <div id="traffic_btn" class="button blue">Show Traffic</div>
+      <div id="recenter_btn" class="button blue" style="display: none">Recenter Map</div>
+    </div>
+  </div>
 
-	<div id="incident_container">
-		<div class="header">
-		  <div class="closebox"></div>
-		</div>
+  <div id="incident_container">
+    <div class="header">
+      <div class="closebox"></div>
+    </div>
 
-		<div class="content">
-			<ul class="incidents">
-				<li class="loading"><img src="/images/loading.gif" alt="loading" /></ul>
-			</ul>
-		</div>
+    <div class="content">
+      <ul class="incidents">
+        <li class="loading"><img src="/images/loading.gif" alt="loading" /></ul>
+      </ul>
+    </div>
 
-		<div class="footer">
-			<div class="ad halfbanner">
-				<script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-				<ins class="adsbygoogle"
-					style="display:inline-block;width:234px;height:60px"
-					data-ad-client="ca-pub-0887871162421804"
-					data-ad-slot="4567477638"></ins>
-				<script>
-					(adsbygoogle = window.adsbygoogle || []).push({});
-				</script>
-			</div>
-		</div>
-	</div>
+    <div class="footer">
+      <div class="ad halfbanner">
+        <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <ins class="adsbygoogle"
+          style="display:inline-block;width:234px;height:60px"
+          data-ad-client="ca-pub-0887871162421804"
+          data-ad-slot="4567477638"></ins>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
-	google.load("jquery", "1");
-	if (screen.width > 480) {
-		google.load("maps", "3", {"other_params":"key=AIzaSyCqAWhoCTR35Otz1QSkigXKlhLQWBw8vOQ&sensor=false"});
-	}
+  google.load("jquery", "1");
+  if (screen.width > 480) {
+    google.load("maps", "3", {"other_params":"key=AIzaSyCqAWhoCTR35Otz1QSkigXKlhLQWBw8vOQ&sensor=false"});
+  }
 </script>
 <script type="text/javascript" src="/sactraffic.min.js"></script>
 <script type="text/javascript">
-	jQuery(document).ready(function() {
-		init_index();
-	});
+  jQuery(document).ready(function() {
+    init_index();
+  });
 </script>
 </body>
 </html>
