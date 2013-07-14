@@ -29,7 +29,7 @@ var get_incidents = function () {
 
 var show_incident = function (evt, incident) {
   console.log('Hello ' + incident.ID);
-  var incident_li = $('<li/>').attr('id', incident.ID.replace(/\./g, '_')).addClass('incident').addClass('vevent').appendTo(this.element).click(function () {
+  var incident_li = $('<li/>').attr('id', incident.ID.replace(/\./g, '_')).addClass('incident').addClass('vevent').prependTo(this.element).click(function () {
     $(this).find('.details').slideToggle();
   });
 

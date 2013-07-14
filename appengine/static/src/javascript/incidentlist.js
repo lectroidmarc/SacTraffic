@@ -71,12 +71,16 @@ IncidentList.prototype.getBounds = function () {
   };
 };
 
-IncidentList.prototype.update = function (data) {
+IncidentList.prototype.update = function (incident_data) {
   var update_ids = [];
 
+  // Incidents arrive in decending chronological order. Reverse them so we
+  // can prepend them in the DOM.
+  incident_data.reverse();
+
   // Add or update existing incidents
-  for (var x = 0; x < data.length; x++) {
-    var incident = new Incident(data[x]);
+  for (var x = 0; x < incident_data.length; x++) {
+    var incident = new Incident(incident_data[x]);
 
     // Skip Silver and Amber Alerts...
     var alert_re = /(SILVER|AMBER) Alert/i;
