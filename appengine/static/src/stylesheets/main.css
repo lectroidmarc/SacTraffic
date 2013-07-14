@@ -386,7 +386,7 @@ img {
  * Smartphone overrides.
  */
 @media only screen and (min-device-width: 481px) and (max-device-width: 768px) {
-	#header .title {
+  #header .title {
     font-size: 150%;
     margin: 17px 10px;
   }
@@ -395,8 +395,6 @@ img {
 @media only screen and (max-device-width: 480px) {
    #header {
     background: #598ffd;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
     color: white;
   }
 
@@ -407,13 +405,13 @@ img {
   }
 
   #header .menu li {
-    border-left: 1px solid #999;
+    border-left: 1px solid #eee;
     width: 60px;
   }
 
   #header .menu li a,
   #header .menu li a:visited {
-    color: #ddd;
+    color: #eee;
   }
 
   #content {
@@ -432,6 +430,8 @@ img {
 
   #incident_container .footer {
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, .33);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
   #map, #mapcontrol {
