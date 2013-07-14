@@ -12,10 +12,9 @@
  * @param {Boolean} [defaultState._live_cams] To show the live cameras.
  * @param {Boolean} [defaultState.traffic] To show the traffic overlay.
  */
-var TrafficMap = function (elementId, defaultState) {
+var TrafficMap = function (elementId) {
   var self = this;
 
-  this.loadState(defaultState);
   this._live_cams = [];
   this._traffic_overlay = null;
   this._markers = {};
@@ -134,26 +133,6 @@ TrafficMap.prototype.update = function (incidents) {
   }
 
   this.fitIncidents();
-};
-
-/**
- * Show a single incident on the map.
- * @param {Incidents} incidents The incidents object fetched via AJAX.
- * @param {String} incident_id The incident ID to show.
- */
-TrafficMap.prototype.show_incident = function (incidents, incident_id) {
-  for (var x = 0, xl = incidents.length; x < xl; x++) {
-    var incident = incidents[x];
-    if (incident.ID == incident_id) {
-      if (incident.geolocation) {
-        var marker = this.make_marker(incident);
-        this.center = marker.getPosition();
-        this.recenter();
-        this.gmap.setZoom(13);
-      }
-      break;
-    }
-  }
 };
 
 /**
@@ -281,35 +260,8 @@ TrafficMap.prototype.center_on_id = function (incident_id) {
   }
 };
 
-/**
- * Recenters the map on the saved center.
- */
-TrafficMap.prototype.recenter = function () {
-  this.gmap.panTo(this.center);
-};
-
 TrafficMap.prototype.centerOnGeo = function (lat, lon) {
   this.gmap.panTo(new google.maps.LatLng(lat, lon));
-};
-
-/**
- * Initially loads map state from localSupport, falls back to given defaults.
- * @param {Object} defaultState Default state to use if none saved.
- */
-TrafficMap.prototype.loadState = function (defaultState) {
-  var state = null;
-
-  // Try localStorage first
-  if ('localStorage' in window && window['localStorage'] !== null) {
-    state = JSON.parse(localStorage.getItem('trafficmap_state')) || null;
-  }
-
-  // If localStorage didn't work try some defaults...
-  if (!state && typeof(defaultState) === 'object') {
-    state = defaultState;
-  }
-
-  this._mapstate = state || {};
 };
 
 /**
@@ -324,7 +276,7 @@ TrafficMap.prototype.getState = function (key) {
     }
   }
 
-  return this._mapstate[key];
+  return this._mapstate[key] || false;
 };
 
 /**
