@@ -66,30 +66,47 @@ var show_incident = function (evt, incident) {
 
   // Add details
   var details_ul = $('<ul/>').addClass('details').appendTo(incident_li);
-  for (var x = 0; x < incident.LogDetails.details.length; x++) {
-    var detail = incident.LogDetails.details[x];
+  if (incident.LogDetails.details.length > 0) {
+    for (var x = 0; x < incident.LogDetails.details.length; x++) {
+      var detail = incident.LogDetails.details[x];
 
-    var detail_li = $('<li/>').addClass('detail').appendTo(details_ul);
-    $('<span/>').addClass('detailtime').html(detail.DetailTime.replace(/.*\d\d\d\d\s+/, '') + ": ").appendTo(detail_li);
-    $('<span/>').addClass('incidentdetail').html(detail.IncidentDetail).appendTo(detail_li);
+      var detail_li = $('<li/>').addClass('detail').appendTo(details_ul);
+      $('<span/>').addClass('detailtime').text(detail.DetailTime.replace(/.*\d\d\d\d\s+/, '') + ": ").appendTo(detail_li);
+      $('<span/>').addClass('incidentdetail').text(detail.IncidentDetail).appendTo(detail_li);
+    }
+  } else {
+    $('<li/>').addClass('detail').text('No details.').appendTo(details_ul);
   }
 
-  if (incident.LogDetails.details.length === 0) {
-    $('<div/>').addClass('details').html('No details.').replaceAll(details_ul);
-  }
+  // Show it
+  incident_li.slideDown();
 };
 
 var update_incident = function (evt, incident) {
-  console.log('Hello again ' + incident.ID);
+  console.log('Oh, it\'s you, ' + incident.ID);
+
+  var incident_li = $('#' + incident.ID.replace(/\./g, '_'));
+
+  // Details -- simply replace them...
+  if (incident.LogDetails.details.length > 0) {
+    var details_ul = incident_li.children('.details').empty();
+    for (var x = 0; x < incident.LogDetails.details.length; x++) {
+      var detail = incident.LogDetails.details[x];
+
+      var detail_li = $('<li/>').addClass('detail').appendTo(details_ul);
+      $('<span/>').addClass('detailtime').html(detail.DetailTime.replace(/.*\d\d\d\d\s+/, '') + ": ").appendTo(detail_li);
+      $('<span/>').addClass('incidentdetail').html(detail.IncidentDetail).appendTo(detail_li);
+    }
+  }
 };
 
 var remove_incident = function (evt, id) {
   console.log('Goodbye ' + id);
 
-  var $incident_element = $('#' + id.replace(/\./g, '_'));
+  var incident_li = $('#' + id.replace(/\./g, '_'));
 
-  $incident_element.slideUp(function () {
-    $incident_element.remove();
+  incident_li.slideUp(function () {
+    incident_li.remove();
   });
 };
 
