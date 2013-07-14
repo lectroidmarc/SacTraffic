@@ -385,6 +385,13 @@ img {
 /**
  * Smartphone overrides.
  */
+@media only screen and (min-device-width: 481px) and (max-device-width: 768px) {
+	#header .title {
+    font-size: 150%;
+    margin: 17px 10px;
+  }
+}
+
 @media only screen and (max-device-width: 480px) {
    #header {
     background: #598ffd;
