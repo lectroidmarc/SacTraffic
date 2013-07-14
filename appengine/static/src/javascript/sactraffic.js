@@ -28,14 +28,14 @@ var get_incidents = function () {
         // Show something that says "no incidents" if we have no incidents.
         if (incidents.size() === 0) {
           if (incidents.element.children('.noincidents').length === 0) {
-            $('<li/>').addClass('noincidents').text('No CHP incidents currently').appendTo(incidents.element);
+            $('<li/>').addClass('noincidents').text('No current CHP incidents.').appendTo(incidents.element);
           }
         } else {
           incidents.element.children('.noincidents').remove();
         }
       }
 
-      //setTimeout(get_incidents, 60000);
+      setTimeout(get_incidents, 30000);
     },
     complete: function (jqXHR, textStatus) {
       incidents.element.find('.loading').remove();
