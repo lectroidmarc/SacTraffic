@@ -200,6 +200,10 @@ img {
   text-align: center;
 }
 
+#incident_container .incidents .noincidents {
+  text-align: center;
+}
+
 #incident_container .incidents .loading img {
   height: 19px;
   width: 220px;

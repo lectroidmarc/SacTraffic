@@ -14,16 +14,30 @@ var incidents = new IncidentList($('.incidents'));
  * Fetches the incident JSON and processes it accordingly.
  */
 var get_incidents = function () {
-  $.getJSON('/json?dispatch=SACC', function (data) {
-    incidents.element.find('.loading').remove();
+  $.ajax({
+    url: '/json?dispatch=SACC',
+    ifModified: true,
+    success: function (data, textStatus, jqXHR) {
+      incidents.update(data);
 
-    incidents.update(data);
+      if (typeof trafficmap !== 'undefined') {
+        trafficmap.update(incidents);
+      }
 
-    if (typeof trafficmap !== 'undefined') {
-      trafficmap.update(incidents);
+      // Show something that says "no incidents" if we have no incidents.
+      if (incidents.size() === 0) {
+        if (incidents.element.children('.noincidents').length === 0) {
+          $('<li/>').addClass('noincidents').text('No CHP incidents currently').appendTo(incidents.element);
+        }
+      } else {
+        incidents.element.children('.noincidents').remove();
+      }
+
+      //setTimeout(get_incidents, 60000);
+    },
+    complete: function (jqXHR, textStatus) {
+      incidents.element.find('.loading').remove();
     }
-
-    //setTimeout(get_incidents, 60000);
   });
 };
 
