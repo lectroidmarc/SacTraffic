@@ -66,6 +66,11 @@ IncidentList.prototype.update = function (data) {
 	// Add or update existing incidents
 	for (var x = 0; x < data.length; x++) {
 		var incident = new Incident(data[x]);
+
+		// Skip Silver and Amber Alerts...
+		var alert_re = /(SILVER|AMBER) Alert/i;
+		if (alert_re.test(incident.LogType)) continue;
+
 		new_data_ids.push(incident.ID);
 
 		if (incident.geolocation) {
@@ -114,8 +119,6 @@ IncidentList.prototype.makeList = function (ul_class) {
 
 	for (var id in this._incidents) {
 		var incident = this.getIncidentById(id);
-
-		// TODO: Media info?
 
 		incident.makeListItem($('.' + ul_class));
 	}
