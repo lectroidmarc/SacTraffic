@@ -257,10 +257,6 @@ img {
   padding: 10px;
 }
 
-#incident_container .details.show {
-  display: block;
-}
-
 #incident_container .details .detailtime {
   font-weight: bold;
 }
