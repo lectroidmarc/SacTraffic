@@ -250,6 +250,11 @@ TrafficMap.prototype.center_on_id = function (incident_id) {
   }
 };
 
+/**
+ * Centers the map on the given latitude and longitude.
+ * @param {Number} lat The latitude.
+ * @param {Number} lon The longitude.
+ */
 TrafficMap.prototype.centerOnGeo = function (lat, lon) {
   this.gmap.panTo(new google.maps.LatLng(lat, lon));
 };
@@ -292,9 +297,8 @@ TrafficMap.prototype.hide_incidents = function () {
 };
 
 /**
- * Makes a GMarker for a given incident.
+ * Adds a Marker for a given incident.
  * @param {Incident} incident The incident.
- * @returns {GMarker}
  */
 TrafficMap.prototype.addIncident = function (incident) {
   var self = this;
@@ -328,6 +332,10 @@ TrafficMap.prototype.addIncident = function (incident) {
   });
 };
 
+/**
+ * Removes a Marker for a given incident.
+ * @param {String} id The incident ID to remove.
+ */
 TrafficMap.prototype.removeIncident = function (id) {
   this._markers[id].setMap(null);
   delete this._markers[id];

@@ -14,14 +14,18 @@ var IncidentList = function (element) {
 };
 
 /**
- * Gets an Incident by it's CHP ID.
- * @param {String} id The Incident's CHP ID.
+ * Gets an Incident by it's ID.
+ * @param {String} id The Incident's ID.
  * @returns {Incident}
  */
 IncidentList.prototype.getIncident = function(id) {
   return this.incidents[id];
 };
 
+/**
+ * Add an Incident to the IncidentList.
+ * @param {Incident} incident The Incident to add.
+ */
 IncidentList.prototype.addIncident = function (incident) {
   var event_name = (typeof this.incidents[incident.ID] === 'undefined') ? 'st_new_incident' : 'st_update_incident';
 
@@ -29,15 +33,28 @@ IncidentList.prototype.addIncident = function (incident) {
   $(this).trigger(event_name, [incident]);
 };
 
+/**
+ * Remove an Incident from the IncidentList.
+ * @param {String} id The Incident id to remove.
+ */
 IncidentList.prototype.removeIncident = function (id) {
   delete this.incidents[id];
   $(this).trigger('st_delete_incident', [id]);
 };
 
+/**
+ * Test is a given ID is in the IncidentList.
+ * @param {String} id The Incident id to remove.
+ * @returns {boolean}
+ */
 IncidentList.prototype.containsId = function (id) {
   return (Object.keys(this.incidents).indexOf(id) === -1) ? false : true;
 };
 
+/**
+ * Returns the number of incidents in the IncidentList.
+ * @returns {number}
+ */
 IncidentList.prototype.size = function () {
   var size = 0;
   for (var incident_id in this.incidents) {
@@ -46,6 +63,10 @@ IncidentList.prototype.size = function () {
   return size;
 };
 
+/**
+ * Gets the bounds of the Incidents in the IncidentList.
+ * @returns {Object}
+ */
 IncidentList.prototype.getBounds = function () {
   var lats = [];
   var lons = [];
@@ -71,6 +92,10 @@ IncidentList.prototype.getBounds = function () {
   };
 };
 
+/**
+ * Udpates the IncidentList with new data from the server.
+ * @params {Object} incident_data the server data.
+ */
 IncidentList.prototype.update = function (incident_data) {
   var update_ids = [];
 
