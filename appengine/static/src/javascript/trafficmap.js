@@ -4,6 +4,8 @@
  * @requires jQuery
  */
 
+google.maps.visualRefresh = true;
+
 /**
  * Creates a new traffic map.
  * @class Represents a traffic map.
