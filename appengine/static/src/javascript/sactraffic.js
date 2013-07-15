@@ -3,12 +3,10 @@
  * @requires jQuery
  */
 
-/**
- * Global variable for the traffic map.
- * Allows other elements to interact with it if it's defined.
- */
-var trafficmap;
 var incidents = new IncidentList($('.incidents'));
+if (screen.width > 480) {
+  var trafficmap = new TrafficMap('map', incidents);
+}
 
 /**
  * Fetches the incident JSON and processes it accordingly.
@@ -20,10 +18,6 @@ var get_incidents = function () {
     success: function (data, textStatus, jqXHR) {
       if (textStatus === 'success') {
         incidents.update(data);
-
-        if (typeof trafficmap !== 'undefined') {
-          trafficmap.update(incidents);
-        }
 
         // Show something that says "no incidents" if we have no incidents.
         if (incidents.size() === 0) {
@@ -44,7 +38,7 @@ var get_incidents = function () {
 };
 
 var show_incident = function (evt, incident) {
-  //console.log('Hello ' + incident.ID);
+  console.debug('Hello ' + incident.ID);
   var incident_li = $('<li/>').attr('id', incident.ID.replace(/\./g, '_')).addClass('incident').addClass('vevent').prependTo(this.element).click(function () {
     $(this).find('.details').slideToggle();
   });
@@ -96,7 +90,7 @@ var show_incident = function (evt, incident) {
 };
 
 var update_incident = function (evt, incident) {
-  //console.log('Oh, it\'s you, ' + incident.ID);
+  console.debug('Oh, it\'s you, ' + incident.ID);
   var incident_li = $('#' + incident.ID.replace(/\./g, '_'));
 
   // The marker icon
@@ -119,7 +113,7 @@ var update_incident = function (evt, incident) {
 };
 
 var remove_incident = function (evt, id) {
-  //console.log('Goodbye ' + id);
+  console.debug('Goodbye ' + id);
   var incident_li = $('#' + id.replace(/\./g, '_'));
 
   incident_li.slideUp(function () {

@@ -15,11 +15,12 @@ if (typeof google !== 'undefined' && typeof google.maps !== 'undefined')
  * @param {Boolean} [defaultState._live_cams] To show the live cameras.
  * @param {Boolean} [defaultState.traffic] To show the traffic overlay.
  */
-var TrafficMap = function (elementId) {
+var TrafficMap = function (elementId, incidents) {
   var self = this;
 
   this._live_cams = [];
   this._traffic_overlay = null;
+  this._incidents = incidents;
   this._markers = {};
   this._icons = {};
   this._globalInfoWindow = new google.maps.InfoWindow();
@@ -76,6 +77,16 @@ var TrafficMap = function (elementId) {
   google.maps.event.addListener(this._globalInfoWindow, 'closeclick', function() {
     self.resize();
   });
+
+  $(this._incidents).on('st_new_incident', function (evt, incident) {
+    self.addIncident(incident);
+  });
+  $(this._incidents).on('st_update_incident', function (evt, incident) {
+    self.addIncident(incident);
+  });
+  $(this._incidents).on('st_delete_incident', function (evt, id) {
+    self.removeIncident(id);
+  });
 }
 
 /**
@@ -115,33 +126,11 @@ TrafficMap.prototype.make_camera_button = function () {
 };
 
 /**
- * Update incident data.
- * @param {Incidents} incidents The incidents object fetched via AJAX.
- */
-TrafficMap.prototype.update = function (incidents) {
-  this.incidents = incidents;
-
-  // remove markers for incidents we no longer have
-  for (var id in this._markers) {
-    if (!this.incidents.containsId(id)) {
-      this.removeIncident(id);
-    }
-  }
-
-  for (var id in this.incidents.incidents) {
-    var incident = this.incidents.getIncident(id);
-    this.addIncident(incident);
-  }
-
-  this.fitIncidents();
-};
-
-/**
  * Moves the map to cover the all the incidents.
  */
 TrafficMap.prototype.fitIncidents = function () {
-  if (typeof(this.incidents) !== 'undefined' && this.incidents.size() > 1 && !this._map_has_been_moved) {
-    var bounds = this.incidents.getBounds();
+  if (this._incidents.size() > 0 && !this._map_has_been_moved) {
+    var bounds = this._incidents.getBounds();
     this.gmap.fitBounds(new google.maps.LatLngBounds(
       new google.maps.LatLng (bounds.sw.lat, bounds.sw.lon),
       new google.maps.LatLng (bounds.ne.lat, bounds.ne.lon)
@@ -324,6 +313,7 @@ TrafficMap.prototype.addIncident = function (incident) {
     });
 
     this._markers[incident.ID] = marker;
+    this.fitIncidents();
   } else {
     // Update the icon, incase it's changed.
     marker.setIcon(icon);
@@ -336,13 +326,12 @@ TrafficMap.prototype.addIncident = function (incident) {
     self._globalInfoWindow.setContent('<div class="marker"><div class="logtype">' + incident.LogType + '</div><div class="location">' + incident.Location + '</div><div class="logtime">' + logtime.getPrettyDateTime() + '</div></div>');
     self._globalInfoWindow.open(self.gmap, marker);
   });
-
-  return marker;
 };
 
 TrafficMap.prototype.removeIncident = function (id) {
   this._markers[id].setMap(null);
   delete this._markers[id];
+  this.fitIncidents();
 };
 
 /**

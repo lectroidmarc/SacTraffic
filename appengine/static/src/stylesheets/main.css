@@ -406,6 +406,7 @@ img {
 
   #incident_container {
     box-shadow: none;
+    display: block;
     height: 100%;
     margin: 0;
   }
