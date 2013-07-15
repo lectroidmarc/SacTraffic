@@ -184,7 +184,7 @@ TrafficMap.prototype.show_live_cams = function () {
           });
 
           google.maps.event.addListener(marker, 'click', function() {
-            self._globalInfoWindow.setContent('<div class="camera marker"><div class="name">Live Video</div><div class="button"><div class="button blue" onclick="window.open(\'' +  camera.url + '\')">' + camera.name + '</div></div>');
+            self._globalInfoWindow.setContent('<div class="camera marker"><div class="name">Live Video: ' + camera.name + '</div><div class="button blue" onclick="window.open(\'' +  camera.url + '\')">Show</div>');
             self._globalInfoWindow.open(self.gmap, marker);
           });
 
