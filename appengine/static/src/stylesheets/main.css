@@ -33,14 +33,11 @@ img {
  * @section Marker Info Window styles
  */
 .marker .logtype {
-  margin-top: 3px;
   font-weight: bold;
 }
 
 .marker .logtime {
-  margin-top: 3px;
-  font-size: 8pt;
-  color: gray;
+  font-size: smaller;
   font-style: italic;
 }
 
