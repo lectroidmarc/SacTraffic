@@ -15,7 +15,6 @@ JS = appengine/static/src/javascript/array.js \
 	appengine/static/src/javascript/date.js \
 	appengine/static/src/javascript/incident.js \
 	appengine/static/src/javascript/incidentlist.js \
-	appengine/static/src/javascript/requestargs.js \
 	appengine/static/src/javascript/trafficmap.js \
 	appengine/static/src/javascript/sactraffic.js
 
