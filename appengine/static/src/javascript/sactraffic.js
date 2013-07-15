@@ -38,7 +38,7 @@ var get_incidents = function () {
 };
 
 var show_incident = function (evt, incident) {
-  console.debug('Hello ' + incident.ID);
+  //console.debug('Hello ' + incident.ID);
   var incident_li = $('<li/>').attr('id', incident.ID.replace(/\./g, '_')).addClass('incident').addClass('vevent').prependTo(this.element).click(function () {
     $(this).find('.details').slideToggle();
   });
@@ -90,7 +90,7 @@ var show_incident = function (evt, incident) {
 };
 
 var update_incident = function (evt, incident) {
-  console.debug('Oh, it\'s you, ' + incident.ID);
+  //console.debug('Oh, it\'s you, ' + incident.ID);
   var incident_li = $('#' + incident.ID.replace(/\./g, '_'));
 
   // The marker icon
@@ -113,7 +113,7 @@ var update_incident = function (evt, incident) {
 };
 
 var remove_incident = function (evt, id) {
-  console.debug('Goodbye ' + id);
+  //console.debug('Goodbye ' + id);
   var incident_li = $('#' + id.replace(/\./g, '_'));
 
   incident_li.slideUp(function () {
