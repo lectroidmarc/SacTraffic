@@ -4,7 +4,8 @@
  * @requires jQuery
  */
 
-google.maps.visualRefresh = true;
+if (typeof google !== 'undefined' && typeof google.maps !== 'undefined')
+  google.maps.visualRefresh = true;
 
 /**
  * Creates a new traffic map.
@@ -22,7 +23,6 @@ var TrafficMap = function (elementId) {
   this._markers = {};
   this._icons = {};
   this._globalInfoWindow = new google.maps.InfoWindow();
-  this.cameraInfoWindow = new google.maps.InfoWindow();
   this._map_has_been_moved = false;
 
   var mapOptions = {
@@ -69,6 +69,9 @@ var TrafficMap = function (elementId) {
   });
   google.maps.event.addListener(this.gmap, 'resize', function() {
     self.fitIncidents();
+  });
+  google.maps.event.addListener(this.gmap, 'tilesloaded', function() {
+    $('#incident_container').slideDown();
   });
   google.maps.event.addListener(this._globalInfoWindow, 'closeclick', function() {
     self.resize();

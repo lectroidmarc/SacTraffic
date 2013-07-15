@@ -85,7 +85,10 @@
   jQuery(document).ready(function() {
     if (screen.width > 480) {
       trafficmap = new TrafficMap('map');
+    } else {
+      $('#incident_container').show();
     }
+
     get_incidents();
   });
 </script>

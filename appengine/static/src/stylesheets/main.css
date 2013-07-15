@@ -119,6 +119,7 @@ img {
   background: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
   box-shadow: 2px 2px 10px #999;
+  display: none;
   height: 90%;
   margin: 20px;
   min-height: 115px;  /* header + footer */
