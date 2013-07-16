@@ -1,9 +1,12 @@
 /**
  * @fileoverview Date extensions.
+ * @external Date
  */
 
 /**
  * Provides an ISO 8601 datetime format to the Date object.
+ * @method external:Date#getISO8601
+ * @returns {String}
  */
 Date.prototype.getISO8601 = function () {
 	var month = (this.getMonth() + 1 < 10) ? "0" + this.getMonth() + 1 : this.getMonth() + 1;
@@ -19,8 +22,10 @@ Date.prototype.getISO8601 = function () {
 
 /**
  * Provides a "pretty" time-only format to the Date object.
- *
- * Like: 7:12 PM
+ * @example
+ * date.getPrettyTime(); // returns 7:12 PM
+ * @method external:Date#getPrettyTime
+ * @returns {String}
  */
 Date.prototype.getPrettyTime = function () {
 	var minutes = (this.getMinutes() < 10) ? "0" + this.getMinutes() : this.getMinutes();
@@ -41,8 +46,10 @@ Date.prototype.getPrettyTime = function () {
 
 /**
  * Provides a "pretty" datetime format to the Date object.
- *
- * Like: 12/04/2011 7:12 PM
+ * @example
+ * date.getPrettyDateTime(); // returns 12/04/2011 7:12 PM
+ * @method external:Date#getPrettyDateTime
+ * @returns {String}
  */
 Date.prototype.getPrettyDateTime = function () {
 	var month = this.getMonth() + 1;
@@ -53,6 +60,8 @@ Date.prototype.getPrettyDateTime = function () {
 
 /**
  * Provides a Twittereque "ago" time.
+ * @method external:Date#ago
+ * @returns {String}
  */
 Date.prototype.ago = function () {
 	var now = new Date();

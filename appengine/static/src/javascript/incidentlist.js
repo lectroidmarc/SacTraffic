@@ -25,6 +25,8 @@ IncidentList.prototype.getIncident = function(id) {
 /**
  * Add an Incident to the IncidentList.
  * @param {Incident} incident The Incident to add.
+ * @fires IncidentList#st_new_incident
+ * @fires IncidentList#st_update_incident
  */
 IncidentList.prototype.addIncident = function (incident) {
   var event_name = (typeof this.incidents[incident.ID] === 'undefined') ? 'st_new_incident' : 'st_update_incident';
@@ -36,6 +38,7 @@ IncidentList.prototype.addIncident = function (incident) {
 /**
  * Remove an Incident from the IncidentList.
  * @param {String} id The Incident id to remove.
+ * @fires IncidentList#st_delete_incident
  */
 IncidentList.prototype.removeIncident = function (id) {
   delete this.incidents[id];
