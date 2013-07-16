@@ -3,8 +3,10 @@
  * @requires jQuery
  */
 
+/** Global holding the CHP Incidents */
 var incidents = new IncidentList($('.incidents'));
 if (screen.width > 480) {
+  /** Global holding the CHP Traffic Map */
   var trafficmap = new TrafficMap('map', incidents);
 }
 
