@@ -37,6 +37,11 @@ var get_incidents = function () {
   });
 };
 
+/**
+ * Handler to show new incidents.
+ * @param {eventObject} evt The jQuery event object.
+ * @param {Incident} incident The new Incident.
+ */
 var show_incident = function (evt, incident) {
   //console.debug('Hello ' + incident.ID);
   var incident_li = $('<li/>').attr('id', incident.ID.replace(/\./g, '_')).addClass('incident').addClass('vevent').prependTo(this.element).click(function () {
@@ -89,6 +94,11 @@ var show_incident = function (evt, incident) {
   incident_li.slideDown();
 };
 
+/**
+ * Handler to update incidents.
+ * @param {eventObject} evt The jQuery event object.
+ * @param {Incident} incident The updated Incident.
+ */
 var update_incident = function (evt, incident) {
   //console.debug('Oh, it\'s you, ' + incident.ID);
   var incident_li = $('#' + incident.ID.replace(/\./g, '_'));
@@ -112,6 +122,11 @@ var update_incident = function (evt, incident) {
   }
 };
 
+/**
+ * Handler to remove incidents.
+ * @param {eventObject} evt The jQuery event object.
+ * @param {String} id The deleted incident ID.
+ */
 var remove_incident = function (evt, id) {
   //console.debug('Goodbye ' + id);
   var incident_li = $('#' + id.replace(/\./g, '_'));
