@@ -1,6 +1,6 @@
 /**
  * @fileoverview Contains code defining the TrafficMap class.
- * @requires Google Maps API
+ * @requires GoogleMaps
  * @requires jQuery
  */
 
@@ -11,9 +11,7 @@ if (typeof google !== 'undefined' && typeof google.maps !== 'undefined')
  * Creates a new traffic map.
  * @class Represents a traffic map.
  * @param {String} elementId An ID to load the map into.
- * @param {Object} [defaultState] Default state for the map.
- * @param {Boolean} [defaultState._live_cams] To show the live cameras.
- * @param {Boolean} [defaultState.traffic] To show the traffic overlay.
+ * @param {IncidentList} incidents An IncidentList to link to the map.
  */
 var TrafficMap = function (elementId, incidents) {
   var self = this;
@@ -92,7 +90,6 @@ var TrafficMap = function (elementId, incidents) {
 /**
  * Makes a show/hide traffic button to enable/disable the traffic overlay
  * on the map.
- * @returns {DOMelement}
  */
 TrafficMap.prototype.make_traffic_button = function () {
   var self = this;
@@ -110,7 +107,6 @@ TrafficMap.prototype.make_traffic_button = function () {
 /**
  * Makes a show/hide camera button to enable/disable the live camera markers
  * on the map.
- * @returns {DOMelement}
  */
 TrafficMap.prototype.make_camera_button = function () {
   var self = this;

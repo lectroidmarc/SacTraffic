@@ -29,10 +29,23 @@ IncidentList.prototype.getIncident = function(id) {
  * @fires IncidentList#st_update_incident
  */
 IncidentList.prototype.addIncident = function (incident) {
-  var event_name = (typeof this.incidents[incident.ID] === 'undefined') ? 'st_new_incident' : 'st_update_incident';
-
   this.incidents[incident.ID] = incident;
-  $(this).trigger(event_name, [incident]);
+
+  if (typeof this.incidents[incident.ID] === 'undefined') {
+    /**
+     * A new Incident event.
+     * @event IncidentList#st_new_incident
+     * @param {Incident} incident The incident created.
+     */
+    $(this).trigger('st_new_incident', [incident]);
+  } else {
+    /**
+     * An updated Incident event.
+     * @event IncidentList#st_update_incident
+     * @param {Incident} incident The incident updated.
+     */
+    $(this).trigger('st_update_incident', [incident]);
+  }
 };
 
 /**
@@ -42,6 +55,12 @@ IncidentList.prototype.addIncident = function (incident) {
  */
 IncidentList.prototype.removeIncident = function (id) {
   delete this.incidents[id];
+
+  /**
+   * An Incident delete event.
+   * @event IncidentList#st_delete_incident
+   * @param {String} id The incident ID deleted.
+   */
   $(this).trigger('st_delete_incident', [id]);
 };
 
@@ -97,7 +116,7 @@ IncidentList.prototype.getBounds = function () {
 
 /**
  * Udpates the IncidentList with new data from the server.
- * @params {Object} incident_data the server data.
+ * @param {Object} incident_data the server data.
  */
 IncidentList.prototype.update = function (incident_data) {
   var update_ids = [];
