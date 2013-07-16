@@ -3,10 +3,11 @@
 #
 
 .SUFFIXES: .js .min.js .css .min.css
-.PHONY: clean
+.PHONY: clean jsdoc
 
 YUICOMP = java -jar support/yuicompressor-2.4.7.jar
 CLOSURE = java -jar support/closure-compiler.jar
+JSDOC = ../jsdoc/jsdoc
 
 FILES = appengine/static/sactraffic.min.js \
 	appengine/static/sactraffic.min.css \
@@ -31,5 +32,9 @@ appengine/static/sactraffic.min.js: ${JS}
 appengine/static/sactraffic.min.css: ${CSS}
 	cat $^ | ${YUICOMP} -o $@ --type css
 
+jsdoc:
+	${JSDOC} -p -c support/jsdoc.json --destination jsdoc
+
 clean:
 	rm -f ${FILES}
+	rm -fr jsdoc
