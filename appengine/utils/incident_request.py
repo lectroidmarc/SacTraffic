@@ -15,34 +15,23 @@ class RequestHandler(webapp2.RequestHandler):
 		"""Return CHP incidents given various request args.
 
 		"""
-		id = self.request.get("id")
 		center = self.request.get("center")
 		dispatch = self.request.get("dispatch")
 		area = self.request.get("area")
 		city = self.request.get("city")
-		since = self.request.get("since")
 
-		if id == "":
-			query = CHPIncident.query().order(-CHPIncident.LogTime)
-			if center != "":
-				query = query.filter(CHPIncident.CenterID == center)
-			if dispatch != "":
-				query = query.filter(CHPIncident.DispatchID == dispatch)
-			if area != "":
-				query = query.filter(CHPIncident.Area == area)
-			if city != "":
-				query = query.filter(CHPIncident.city == city)
-			if since != "":
-				query = query.filter(CHPIncident.LogTime > datetime.fromtimestamp(float(since)))
+		query = CHPIncident.query().order(-CHPIncident.LogTime)
 
-			incidents = query.fetch(10000)
-		else:
-			# Handle single incident requests directly, instead of filtering.
-			incidents = []
-			incident_key = ndb.Key(CHPIncident, id)
-			incident = incident_key.get()
-			if incident is not None:
-				incidents.append(incident)
+		if city != "":
+			query = query.filter(CHPIncident.city == city)
+		elif area != "":
+			query = query.filter(CHPIncident.Area == area)
+		elif dispatch != "":
+			query = query.filter(CHPIncident.DispatchID == dispatch)
+		elif center != "":
+			query = query.filter(CHPIncident.CenterID == center)
+
+		incidents = query.fetch(10000)
 
 		if len(incidents) > 0:
 			self.incidents_last_mod = max(incidents, key=lambda incident: incident.updated).updated

@@ -19,7 +19,6 @@ Yes... and no*. There are both [JSON](http://json.org/) and [ATOM](http://tools.
 * `dispatch` - The CHP Dispatch Center.  This is probably what you want.
 * `area` - The CHP Office. The breaks the Dispatch Centers down further into offices.
 * `city` - If there is a valid location we'll reverse geocode it for something a little more granular than the CHP office.
-* `since` - Shows only results since a certain time. Takes an "epoch" timestamp, good for incremental updates.
 * `roads` - [ATOM only]. Filters the results by a comma separated list of street names.
 
 So, for example, "SAHB" is the Sacramento Center code so http://www.sactraffic.org/json?center=SAHB will get you all the Sacramento Valley incidents (covering Sacramento, Chico and Stockton dispatches), and http:/www.sactraffic.org/json?dispatch=STCC will get you just the Sacramento Dispatch incidents (this is what this site uses).
