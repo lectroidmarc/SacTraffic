@@ -149,8 +149,8 @@ img {
   color: white;
   cursor: pointer;
   float: right;
-  font-family: 'EntypoRegular';
-  font-size: 40px;
+  font-family: 'fontello';
+  font-size: 16px;
   height: 20px;
   line-height: 20px;
   margin: 6px 10px 0 0;
@@ -289,10 +289,10 @@ img {
   background-image: -webkit-linear-gradient(top, rgba(255,255,255,.2), rgba(150,150,150,.2), rgba(0,0,0,.0));
   border-radius: 5px;
   color: #fff;
-  font-family: 'EntypoRegular';
-  font-size: 45px;
+  font-family: 'fontello';
+  font-size: 20px;
   height: 30px;
-  line-height: 30px;
+  line-height: 32px;
   margin-bottom: 5px;
   margin-left: 50px;
   opacity: .6;

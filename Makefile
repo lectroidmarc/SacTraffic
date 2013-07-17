@@ -21,7 +21,7 @@ JS = appengine/static/src/javascript/array.js \
 
 CSS = appengine/static/src/stylesheets/main.css \
 	appengine/static/src/stylesheets/button.css \
-	appengine/static/src/stylesheets/entypo.css
+	appengine/static/src/stylesheets/fontello.css
 
 
 all: ${FILES}
