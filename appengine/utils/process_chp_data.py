@@ -7,7 +7,6 @@ import os
 import re
 import time
 import urllib
-import zlib
 from datetime import datetime, timedelta
 from xml.etree import ElementTree
 
@@ -46,8 +45,7 @@ def update_chp_data():
 			else:
 				# Store the raw CHP data.  Mostly so we have a marker of the last
 				# successful update.
-				chp_data_key = ndb.Key(CHPData, 'chp_data')
-				CHPData(key=chp_data_key, data=zlib.compress(pickle.dumps(chp_etree))).put()
+				CHPData.save_chp_data(chp_etree);
 
 				# Now, finally, we process the CHP tree, breaking out each CHP
 				# center and deferring its processing

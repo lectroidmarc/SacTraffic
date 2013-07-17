@@ -3,6 +3,8 @@
 """
 
 import time
+import cPickle as pickle
+import zlib
 
 from datetime import datetime, timedelta
 
@@ -16,6 +18,14 @@ class CHPData(ndb.Model):
 	"""
 	data = ndb.BlobProperty(required=True)
 	updated = ndb.DateTimeProperty(auto_now=True)
+
+	@classmethod
+	def save_chp_data(cls, chp_data):
+		"""Store the last raw CHP data successfully fetched.
+
+		"""
+		chp_data_key = ndb.Key(cls, 'chp_data')
+		CHPData(key=chp_data_key, data=zlib.compress(pickle.dumps(chp_data))).put()
 
 	@classmethod
 	def last_updated(cls):
