@@ -29,8 +29,6 @@ IncidentList.prototype.getIncident = function(id) {
  * @fires IncidentList#st_update_incident
  */
 IncidentList.prototype.addIncident = function (incident) {
-  this.incidents[incident.ID] = incident;
-
   if (typeof this.incidents[incident.ID] === 'undefined') {
     /**
      * A new Incident event.
@@ -46,6 +44,8 @@ IncidentList.prototype.addIncident = function (incident) {
      */
     $(this).trigger('st_update_incident', [incident]);
   }
+
+  this.incidents[incident.ID] = incident;
 };
 
 /**
