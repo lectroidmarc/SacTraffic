@@ -5,17 +5,22 @@
 /**
  * Creates an Incident from CHP Incident data.
  * @class Represents a CHP Incident.
+ * @this Incident
  * @param {Object} data A CHP Incident.
  * @property {String} Area
  * @property {String} ID
  * @property {String} Location
  * @property {String} LocationDesc
  * @property {Object} LogDetails
+ * @property {Array.<Object>} LogDetails.details
+ * @property {String} LogDetails.details.DetailTime
+ * @property {String} LogDetails.details.IncidentDetail
  * @property {String} LogTime
  * @property {String} LogType
  * @property {String} city
  * @property {Object} geolocation
- * @property {String} status
+ * @property {Number} geolocation.lat
+ * @property {Number} geolocation.lon
  */
 var Incident = function (data) {
   for (var key in data) {

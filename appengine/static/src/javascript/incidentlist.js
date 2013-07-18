@@ -6,6 +6,7 @@
 /**
  * Creates a list of CHP Incidents from CHP Incident data.
  * @class Represents a set of CHP Incidents.
+ * @this IncidentList
  * @param {Array} data An array of CHP Incidents from SacTraffic.org.
  */
 var IncidentList = function (element) {
