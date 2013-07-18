@@ -46,7 +46,6 @@ var TrafficMap = function (elementId, incidents) {
 
   this.gmap.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('mapcontrol'));
   this.gmap.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('incident_container'));
-  $('#incident_container .header .closebox').click(function () { $('#incident_container').toggleClass('closed'); });
 
   // Set initial map state
   if (this.getState('live_cams')) {
@@ -71,6 +70,7 @@ var TrafficMap = function (elementId, incidents) {
   });
   google.maps.event.addListener(this.gmap, 'tilesloaded', function() {
     $('#incident_container').slideDown();
+    $('#incident_container .header .closebox').click(function () { $('#incident_container').toggleClass('closed'); });
   });
   google.maps.event.addListener(this._globalInfoWindow, 'closeclick', function() {
     self.resize();
