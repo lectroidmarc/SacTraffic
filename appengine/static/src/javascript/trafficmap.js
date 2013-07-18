@@ -69,8 +69,9 @@ var TrafficMap = function (elementId, incidents) {
     self.fitIncidents();
   });
   google.maps.event.addListener(this.gmap, 'tilesloaded', function() {
-    $('#incident_container').slideDown();
-    $('#incident_container .header .closebox').click(function () { $('#incident_container').toggleClass('closed'); });
+    $('#incident_container').slideDown(function () {
+      $('#incident_container .header .closebox').click(function () { $('#incident_container').toggleClass('closed'); });
+    });
   });
   google.maps.event.addListener(this._globalInfoWindow, 'closeclick', function() {
     self.resize();
