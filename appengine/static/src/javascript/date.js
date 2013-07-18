@@ -9,15 +9,10 @@
  * @returns {String}
  */
 Date.prototype.getISO8601 = function () {
-	var month = (this.getMonth() + 1 < 10) ? "0" + this.getMonth() + 1 : this.getMonth() + 1;
-	var day = (this.getDate() < 10) ? "0" + this.getDate() : this.getDate();
-	var hours = (this.getHours() < 10) ? "0" + this.getHours() : this.getHours();
-	var minutes = (this.getMinutes() < 10) ? "0" + this.getMinutes() : this.getMinutes();
-	var seconds = (this.getSeconds() < 10) ? "0" + this.getSeconds() : this.getSeconds();
-
+	var month = this.getMonth() + 1;
 	var offset = this.getTimezoneOffset() / 60;
 
-	return this.getFullYear() + "-" + month + "-" + day + "T" + hours + ":" + minutes + ":" + seconds + "-0" + offset + "00";
+	return this.getFullYear() + "-" + month.zeroPad() + "-" + this.getDate().zeroPad() + "T" + this.getHours().zeroPad() + ":" + this.getMinutes().zeroPad() + ":" + this.getSeconds().zeroPad() + "-0" + offset + "00";
 };
 
 /**
@@ -28,7 +23,6 @@ Date.prototype.getISO8601 = function () {
  * @returns {String}
  */
 Date.prototype.getPrettyTime = function () {
-	var minutes = (this.getMinutes() < 10) ? "0" + this.getMinutes() : this.getMinutes();
 	var hours = this.getHours();
 	var ampm = "AM";
 
@@ -41,7 +35,7 @@ Date.prototype.getPrettyTime = function () {
 		hours = "12";
 	}
 
-	return hours + ":" + minutes + " " + ampm;
+	return hours + ":" + this.getMinutes().zeroPad() + " " + ampm;
 };
 
 /**
@@ -53,9 +47,8 @@ Date.prototype.getPrettyTime = function () {
  */
 Date.prototype.getPrettyDateTime = function () {
 	var month = this.getMonth() + 1;
-	var day = (this.getDate() < 10) ? "0" + this.getDate() : this.getDate();
 
-	return month + "/" + day + "/" + this.getFullYear() + " " + this.getPrettyTime();
+	return month + "/" + this.getDate().zeroPad() + "/" + this.getFullYear() + " " + this.getPrettyTime();
 };
 
 /**

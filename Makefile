@@ -13,6 +13,7 @@ FILES = appengine/static/sactraffic.min.js \
 	appengine/static/sactraffic.min.css \
 
 JS = appengine/static/src/javascript/array.js \
+	appengine/static/src/javascript/number.js \
 	appengine/static/src/javascript/date.js \
 	appengine/static/src/javascript/incident.js \
 	appengine/static/src/javascript/incidentlist.js \
@@ -27,7 +28,7 @@ CSS = appengine/static/src/stylesheets/main.css \
 all: ${FILES}
 
 appengine/static/sactraffic.min.js: ${JS}
-	${CLOSURE} --js_output_file $@ --js $^
+	${CLOSURE} --compilation_level SIMPLE_OPTIMIZATIONS --js_output_file $@ --js $^
 
 appengine/static/sactraffic.min.css: ${CSS}
 	cat $^ | ${YUICOMP} -o $@ --type css
