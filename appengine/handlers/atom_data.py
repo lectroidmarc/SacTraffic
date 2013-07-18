@@ -3,7 +3,6 @@
 Returns CHP incident data in the ATOM format.
 
 """
-import cPickle as pickle
 import re
 import time
 import urllib
@@ -74,7 +73,7 @@ class AtomHandler(incident_request.RequestHandler):
 			if city is None:
 				city = incident.Area
 			title = "%s: %s, %s" % (incident.LogType, incident.Location, city)
-			details = pickle.loads(incident.LogDetails)
+			details = incident.LogDetails
 			description = "<ul>"
 			for detail in details['details']:
 				description = "%s<li>%s: %s</li>" % (description, detail['DetailTime'], detail['IncidentDetail'])

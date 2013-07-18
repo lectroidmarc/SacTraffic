@@ -4,7 +4,6 @@ Returns CHP incident data in the JSON format.
 
 """
 import json
-import cPickle as pickle
 import webapp2
 
 from utils import incident_request
@@ -26,7 +25,7 @@ class JsonHandler(incident_request.RequestHandler):
 				'ID': incident.key.string_id(),
 				'Location': incident.Location,
 				'LocationDesc': incident.LocationDesc,
-				'LogDetails': pickle.loads(incident.LogDetails),
+				'LogDetails': incident.LogDetails,
 				'LogTime': incident.logTimeEpoch,
 				'LogType': incident.LogType
 			}

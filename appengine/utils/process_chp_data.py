@@ -141,7 +141,7 @@ def process_chp_center(chpCenter):
 				except AttributeError:
 					pass
 
-			incident.LogDetails = pickle.dumps(LogDetails)
+			incident.LogDetails = LogDetails
 
 			# Set up the PSH pings.  Note, we are NOT checking for actual
 			# changes in the data, we are just assuming that the existance of

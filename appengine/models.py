@@ -3,7 +3,6 @@
 """
 
 import time
-import cPickle as pickle
 import zlib
 
 from datetime import datetime, timedelta
@@ -16,7 +15,7 @@ class CHPData(ndb.Model):
 	"""Holds the last successful CHP data fetch.
 
 	"""
-	data = ndb.BlobProperty(required=True)
+	data = ndb.PickleProperty(required=True, compressed=True)
 	updated = ndb.DateTimeProperty(auto_now=True)
 
 	@classmethod
@@ -25,7 +24,7 @@ class CHPData(ndb.Model):
 
 		"""
 		chp_data_key = ndb.Key(cls, 'chp_data')
-		CHPData(key=chp_data_key, data=zlib.compress(pickle.dumps(chp_data))).put()
+		CHPData(key=chp_data_key, data=chp_data).put()
 
 	@classmethod
 	def last_updated(cls):
@@ -53,7 +52,7 @@ class CHPIncident(ndb.Model):
 	Location = ndb.TextProperty()
 	LocationDesc = ndb.TextProperty()
 	Area = ndb.StringProperty()
-	LogDetails = ndb.BlobProperty()
+	LogDetails = ndb.PickleProperty(compressed=True)
 	geolocation = ndb.GeoPtProperty()
 	city = ndb.StringProperty()
 	updated = ndb.DateTimeProperty(auto_now=True)
