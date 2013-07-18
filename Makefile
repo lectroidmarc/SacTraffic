@@ -20,6 +20,10 @@ JS = appengine/static/src/javascript/array.js \
 	appengine/static/src/javascript/trafficmap.js \
 	appengine/static/src/javascript/sactraffic.js
 
+# https://closure-compiler.googlecode.com/git/contrib/externs/
+EXTERNS = appengine/static/src/javascript/externs/jquery-1.9.js \
+	appengine/static/src/javascript/externs/google_maps_api_v3_12.js
+
 CSS = appengine/static/src/stylesheets/main.css \
 	appengine/static/src/stylesheets/button.css \
 	appengine/static/src/stylesheets/fontello.css
@@ -28,7 +32,7 @@ CSS = appengine/static/src/stylesheets/main.css \
 all: ${FILES}
 
 appengine/static/sactraffic.min.js: ${JS}
-	${CLOSURE} --compilation_level SIMPLE_OPTIMIZATIONS --js_output_file $@ --js $^
+	${CLOSURE} --compilation_level ADVANCED_OPTIMIZATIONS --externs ${EXTERNS} --js_output_file $@ --js $^
 
 appengine/static/sactraffic.min.css: ${CSS}
 	cat $^ | ${YUICOMP} -o $@ --type css
