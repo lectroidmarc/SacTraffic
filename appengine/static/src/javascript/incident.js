@@ -23,9 +23,15 @@
  * @property {Number} geolocation.lon
  */
 var Incident = function (data) {
-  for (var key in data) {
-    this[key] = data[key];
-  }
+  this.Area = data.Area;
+  this.ID = data.ID;
+  this.Location = data.Location;
+  this.LocationDesc = data.LocationDesc;
+  this.LogDetails = data.LogDetails;
+  this.LogTime = data.LogTime;
+  this.LogType = data.LogType;
+  this.city = data.city;
+  this.geolocation = data.geolocation;
 }
 
 /**
