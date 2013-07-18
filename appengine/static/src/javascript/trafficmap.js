@@ -10,6 +10,7 @@ if (typeof google !== 'undefined' && typeof google.maps !== 'undefined')
 /**
  * Creates a new traffic map.
  * @class Represents a traffic map.
+ * @this TrafficMap
  * @param {String} elementId An ID to load the map into.
  * @param {IncidentList} incidents An IncidentList to link to the map.
  */
@@ -378,7 +379,13 @@ TrafficMap.prototype.getMapIcon = function (type) {
         break;
     }
 
-    this._icons[type] = new google.maps.MarkerImage(url, size, origin, anchor, scaledSize);
+    this._icons[type] = {
+      anchor: anchor,
+      origin: origin,
+      scaledSize: scaledSize,
+      size: size,
+      url: url
+    };
   }
 
   return this._icons[type];
