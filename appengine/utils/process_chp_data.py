@@ -127,8 +127,7 @@ def process_chp_center(chpCenter):
 
 			# Special handling for the LogDetails
 			LogDetails = {
-				'details': [],
-				'units': []
+				'details': []
 			}
 			logdetails_element = chpLog.find('LogDetails')
 			for element in logdetails_element:
