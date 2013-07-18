@@ -41,6 +41,7 @@ var get_incidents = function () {
 
 /**
  * Handler to show new incidents.
+ * @this IncidentList
  * @param {eventObject} evt The jQuery event object.
  * @param {Incident} incident The new Incident.
  */
@@ -147,3 +148,6 @@ window.addEventListener('resize', function () {
     trafficmap.resize();
   }
 });
+
+// Start this thing...
+get_incidents();

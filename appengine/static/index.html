@@ -73,17 +73,13 @@
   </div>
 </div>
 
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
-  google.load("jquery", "1");
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="//www.google.com/jsapi"></script>
+<script>
   if (screen.width > 480) {
-    google.load("maps", "3", {"other_params":"key=AIzaSyCqAWhoCTR35Otz1QSkigXKlhLQWBw8vOQ&sensor=false"});
+    google.load('maps', '3', {'other_params': 'key=AIzaSyCqAWhoCTR35Otz1QSkigXKlhLQWBw8vOQ&sensor=false'});
   }
 </script>
-<script type="text/javascript" src="/sactraffic.min.js"></script>
-<script type="text/javascript">
-  // Get this party started...
-  get_incidents();
-</script>
+<script src="/sactraffic.min.js"></script>
 </body>
 </html>
