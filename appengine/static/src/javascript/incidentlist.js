@@ -31,6 +31,8 @@ IncidentList.prototype.getIncident = function(id) {
  */
 IncidentList.prototype.addIncident = function (incident) {
   if (typeof this.incidents[incident.ID] === 'undefined') {
+    this.incidents[incident.ID] = incident;
+
     /**
      * A new Incident event.
      * @event IncidentList#st_new_incident
@@ -38,6 +40,8 @@ IncidentList.prototype.addIncident = function (incident) {
      */
     $(this).trigger('st_new_incident', [incident]);
   } else {
+    this.incidents[incident.ID] = incident;
+
     /**
      * An updated Incident event.
      * @event IncidentList#st_update_incident
@@ -45,8 +49,6 @@ IncidentList.prototype.addIncident = function (incident) {
      */
     $(this).trigger('st_update_incident', [incident]);
   }
-
-  this.incidents[incident.ID] = incident;
 };
 
 /**
