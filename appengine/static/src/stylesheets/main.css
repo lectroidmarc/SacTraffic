@@ -1,5 +1,5 @@
 /**
- * Sactraffic.org styles
+ * @fileinfo Sactraffic.org styles
  */
 
 /* http://www.morethanamap.com/demos/basemaps/new-york */
@@ -322,19 +322,6 @@ img {
   width: 92px;
 }
 
-
-/**
- * @section Other
- */
-#video_canvas {
-  margin: 0 auto;
-}
-
-.info {
-  font-style: italic;
-}
-
-
 /**
  * @section Ads
  */
@@ -365,63 +352,4 @@ img {
 .medrec {
   width: 300px;
   height: 250px;
-}
-
-
-/**
- * Smartphone overrides.
- */
-@media only screen and (min-device-width: 481px) and (max-device-width: 768px) {
-  #header .title {
-    font-size: 150%;
-    margin: 17px 10px;
-  }
-}
-
-@media only screen and (max-device-width: 480px) {
-   #header {
-    background: #598ffd;
-    color: white;
-  }
-
-  #header .title {
-    font-size: 110%;
-    margin: 10px;
-    width: 230px;
-  }
-
-  #header .menu li {
-    border-left: 1px solid #eee;
-    width: 60px;
-  }
-
-  #header .menu li a,
-  #header .menu li a:visited {
-    color: #eee;
-  }
-
-  #content {
-    top: 25px;
-  }
-
-  #incident_container {
-    box-shadow: none;
-    display: block;
-    height: 100%;
-    margin: 0;
-  }
-
-  #incident_container .header {
-    display: none;
-  }
-
-  #incident_container .footer {
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, .33);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  #map, #mapcontrol {
-    display: none;
-  }
 }

@@ -25,6 +25,7 @@ EXTERNS = appengine/static/src/javascript/externs/jquery-1.9.js \
 	appengine/static/src/javascript/externs/google_maps_api_v3_12.js
 
 CSS = appengine/static/src/stylesheets/main.css \
+  appengine/static/src/stylesheets/mobile.css \
 	appengine/static/src/stylesheets/button.css \
 	appengine/static/src/stylesheets/fontello.css
 
