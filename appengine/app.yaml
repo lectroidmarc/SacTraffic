@@ -56,11 +56,13 @@ handlers:
 - url: /(.*)\.html
   static_files: static/\1.html
   upload: static/(.*)\.html
+  mime_type: text/html; charset=UTF-8
   expiration: "10m"
 
 - url: /
   static_files: static/index.html
   upload: static/index.html
+  mime_type: text/html; charset=UTF-8
   expiration: "10m"
 
 builtins:
