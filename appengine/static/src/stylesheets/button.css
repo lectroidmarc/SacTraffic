@@ -1,22 +1,21 @@
 .button {
   background-color: #111;
-  color: #fff;
-  padding: 5px 10px 6px;
-  font-size: 13px;
-
   background-image: -moz-linear-gradient(top, rgba(255,255,255,.2), rgba(150,150,150,.2), rgba(0,0,0,.0));
   background-image: -ms-linear-gradient(top, rgba(255,255,255,.2), rgba(150,150,150,.2), rgba(0,0,0,.0));
   background-image: -webkit-linear-gradient(top, rgba(255,255,255,.2), rgba(150,150,150,.2), rgba(0,0,0,.0));
-
   border-radius: 5px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  color: #fff;
   cursor: pointer;
   display: inline-block;
+  font-size: 13px;
   font-weight: bold;
   line-height: 1em;
+  padding: 5px 10px 6px;
   text-align: center;
 
   -moz-user-select: none;
+  -ms-user-select: none;
   -webkit-user-select: none;
 }
 
@@ -27,13 +26,11 @@
 }
 
 .button:active {
-  padding: 6px 10px 5px;
-
   background-image: -moz-linear-gradient(top, rgba(0,0,0,.2), rgba(150,150,150,.2), rgba(255,255,255,.2));
   background-image: -ms-linear-gradient(top, rgba(0,0,0,.2), rgba(150,150,150,.2), rgba(255,255,255,.2));
   background-image: -webkit-linear-gradient(top, rgba(0,0,0,.2), rgba(150,150,150,.2), rgba(255,255,255,.2));
-
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.7);
+  padding: 6px 10px 5px;
 }
 
 .button.blue {
