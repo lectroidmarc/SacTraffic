@@ -5,7 +5,7 @@
  */
 
 if (typeof google !== 'undefined' && typeof google.maps !== 'undefined')
-  google.maps.visualRefresh = true;
+  google.maps['visualRefresh'] = true;
 
 /**
  * Creates a new traffic map.
