@@ -23,15 +23,33 @@
  * @property {Number} geolocation.lon
  */
 var Incident = function (data) {
-  this.Area = data.Area;
-  this.ID = data.ID;
-  this.Location = data.Location;
-  this.LocationDesc = data.LocationDesc;
-  this.LogDetails = data.LogDetails;
-  this.LogTime = data.LogTime;
-  this.LogType = data.LogType;
-  this.city = data.city;
-  this.geolocation = data.geolocation;
+  this.Area = data['Area'];
+  this.ID = data['ID'];
+  this.Location = data['Location'];
+  this.LocationDesc = data['LocationDesc'];
+  this.LogDetails = {
+    details: []
+  };
+  this.LogTime = data['LogTime'];
+  this.LogType = data['LogType'];
+  this.city = data['city'];
+
+  if (data['geolocation']) {
+    this.geolocation = {
+      lat: data['geolocation']['lat'],
+      lon: data['geolocation']['lon']
+    };
+  }
+
+  if (data['LogDetails']) {
+    for (var x = 0; x < data['LogDetails']['details'].length; x++) {
+      var detail = data['LogDetails']['details'][x];
+      this.LogDetails.details.push({
+        DetailTime: detail['DetailTime'],
+        IncidentDetail: detail['IncidentDetail']
+      });
+    }
+  }
 }
 
 /**
