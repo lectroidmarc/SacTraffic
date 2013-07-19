@@ -16,7 +16,7 @@ if (screen.width > 480) {
 var get_incidents = function () {
   $.ajax({
     url: '/json?dispatch=SACC',
-    ifModified: true,
+    'ifModified': true,
     success: function (data, textStatus, jqXHR) {
       if (textStatus === 'success') {
         incidents.update(data);
