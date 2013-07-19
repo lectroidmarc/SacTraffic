@@ -239,16 +239,6 @@ TrafficMap.prototype.hide_gtraffic = function () {
 };
 
 /**
- * Centers the map on the given incident ID.
- * @param {String} incident_id The incident ID to center on.
- */
-TrafficMap.prototype.center_on_id = function (incident_id) {
-  if (this._markers[incident_id]) {
-    this.gmap.panTo(this._markers[incident_id].getPosition());
-  }
-};
-
-/**
  * Centers the map on the given latitude and longitude.
  * @param {Number} lat The latitude.
  * @param {Number} lon The longitude.
@@ -285,17 +275,7 @@ TrafficMap.prototype.setState = function (key, value) {
 };
 
 /**
- * Hides the CHP incidents.
- */
-TrafficMap.prototype.hide_incidents = function () {
-  for (var id in this._markers) {
-    var marker = this._markers[id];
-    marker.setMap(null);
-  }
-};
-
-/**
- * Adds a Marker for a given incident.
+ * Adds a Marker for a given incident.  Also supports updating existing markers.
  * @param {Incident} incident The incident.
  */
 TrafficMap.prototype.addIncident = function (incident) {
