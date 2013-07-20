@@ -5,7 +5,7 @@
 
 /** Global holding the CHP Incidents */
 var incidents = new IncidentList($('.incidents'));
-if (screen.width > 600) {
+if (typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
   /** Global holding the CHP Traffic Map */
   var trafficmap = new TrafficMap('map', incidents);
 }
