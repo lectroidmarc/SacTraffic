@@ -3,19 +3,23 @@
  */
 
 /**
- * @section medium wide
+ * @section Tablets in portrait mode
  */
-@media only screen and (min-device-width: 481px) and (max-device-width: 768px) {
+@media only screen and (min-device-width: 601px) and (max-device-width: 800px) and (orientation: portrait) {
   #header .title {
-    font-size: 150%;
+    font-size: 140%;
     margin: 17px 10px;
+  }
+
+  #header .menu li {
+    width: 100px;
   }
 }
 
 /**
- * Phones
+ * @section Phones (basically, no map)
  */
-@media only screen and (max-device-width: 480px) {
+@media only screen and (max-device-width: 600px) {
    #header {
     background: #598ffd;
     color: white;
