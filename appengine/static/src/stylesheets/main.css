@@ -57,7 +57,7 @@ img {
  */
 #header {
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, .33);
-  height: 60px;
+  height: 55px;
   left: 0;
   position: absolute;
   right: 0;
@@ -69,7 +69,7 @@ img {
   display: inline-block;
   font-size: 170%;
   font-weight: normal;
-  margin: 14px 20px;
+  margin: 13px 20px;
 }
 
 #header .menu {
@@ -84,7 +84,7 @@ img {
   border-left: 1px solid #999;
   color: #666;
   float: left;
-  height: 40px;
+  height: 35px;
   padding-top: 20px;
   text-align: center;
   text-transform: uppercase;
@@ -102,7 +102,7 @@ img {
  */
 #content {
   position: absolute;
-  top: 60px;
+  top: 55px;
   left: 0;
   right: 0;
   bottom: 0;
