@@ -56,6 +56,10 @@
     display: none;
   }
 
+  #incident_container .incident:hover {
+    background: inherit;
+  }
+
   #incident_container .footer {
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, .33);
     border-bottom-left-radius: 0;
