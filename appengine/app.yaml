@@ -32,10 +32,6 @@ handlers:
   upload: static/sactraffic.min.css
   expiration: "10m"
 
-- url: /apple-touch-icon.png
-  static_files: static/images/sactraffic.png
-  upload: static/images/sactraffic.png
-
 - url: /favicon.ico
   static_files: static/images/favicon.ico
   upload: static/images/favicon.ico
