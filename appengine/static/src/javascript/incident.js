@@ -66,7 +66,7 @@ Incident.prototype.getIcon = function () {
   } else if (/Maintenance|Construction/.test(this.LogType)) {
     name = 'Maintenance';
     cssPosition = "-32px 0px";
-  } else if (/Ambulance Enroute|Fatality/.test(this.LogType)) {
+  } else if (/Ambulance Enroute|Fatality|Major Injury/.test(this.LogType)) {
     name = 'Collision-serious';
     cssPosition = "-64px 0px";
   } else if (/Collision/.test(this.LogType)) {
