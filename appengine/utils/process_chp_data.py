@@ -69,13 +69,18 @@ def process_chp_center(chpCenter):
 	psh_pings = []
 	dash_re = re.compile(r'\s*-\s*')
 
+	center_id = chpCenter.attrib['ID']
+
 	for chpDispatch in chpCenter:
-		# For some reason, sometimes the Dispatch ID is blank
-		# so skip these.
-		if chpDispatch.attrib['ID'] == "":
+		dispatch_id = chpDispatch.attrib['ID']
+
+		# For some reason, sometimes the Dispatch ID is blank so skip these.
+		if dispatch_id == "":
 			continue
 
 		for chpLog in chpDispatch:
+			log_id = chpLog.attrib['ID']
+
 			# There are two different time formats in the CHP feed.  Try the
 			# "standard" format first, then fall back to the new SAHB format.
 			try:
@@ -87,19 +92,24 @@ def process_chp_center(chpCenter):
 			pacific_tz = tzinfo.Pacific()
 			log_time = log_time - pacific_tz.utcoffset(log_time)
 
-			incident_key_name = "%s.%s.%s" % (chpCenter.attrib['ID'], chpDispatch.attrib['ID'], chpLog.attrib['ID'])
+			incident_key_name = "%s.%s.%s" % (center_id, dispatch_id, log_id)
 			incident_key = ndb.Key(CHPIncident, incident_key_name)
 
 			incident = incident_key.get()
 			if incident is None:
 				incident = CHPIncident(key = incident_key,
-					CenterID = chpCenter.attrib['ID'],
-					DispatchID = chpDispatch.attrib['ID'],
-					LogID = chpLog.attrib['ID'])
+					CenterID = center_id,
+					DispatchID = dispatch_id,
+					LogID = log_id,
+					LogTime = log_time,
+					Area = chpLog.find('Area').text.strip('"'))
 
-			# I'm note sure if LogTime changes or not... be safe.
-			incident.LogTime = log_time
+			#
+			# THe following are attributes that can change between updates so reset
+			# them from the data given.
+			#
 
+			# LogType and LogTypeID
 			(logtypeid, dash, logtype) = chpLog.find('LogType').text.strip('"').partition("-")
 			if dash == '':
 				# If 'dash' is missing then the hyphen was missing, if so we
@@ -109,15 +119,16 @@ def process_chp_center(chpCenter):
 				incident.LogType = deCopIfy(re.sub(dash_re, ' - ', logtype.strip()))
 				incident.LogTypeID = logtypeid.strip()
 
+			# Location
 			incident.Location = deCopIfy(chpLog.find('Location').text.strip('"'))
 
+			# LocationDesc
 			# Make sure the location and the locationDesc aren't dupes
 			locationDesc = deCopIfy(chpLog.find('LocationDesc').text.strip('"'))
 			if (incident.Location.upper() != locationDesc.upper()):
 				incident.LocationDesc = locationDesc
 
-			incident.Area = chpLog.find('Area').text.strip('"')
-
+			# geolocation
 			latlon = chpLog.find('LATLON').text.strip('"')
 			if latlon is not None and latlon != "0:0":
 				incident.geolocation = ndb.GeoPt(
@@ -125,7 +136,7 @@ def process_chp_center(chpCenter):
 					lon = float(latlon.partition(":")[2]) / 1000000 * -1
 				)
 
-			# Special handling for the LogDetails
+			# LogDetails
 			LogDetails = {
 				'details': []
 			}
@@ -139,7 +150,6 @@ def process_chp_center(chpCenter):
 					LogDetails[element.tag].append(detail_dict)
 				except AttributeError:
 					pass
-
 			incident.LogDetails = LogDetails
 
 			# Set up the PSH pings.  Note, we are NOT checking for actual
