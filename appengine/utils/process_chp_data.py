@@ -174,13 +174,17 @@ def process_chp_center(chpCenter):
 	else:
 		logging.info("Skipping PSH pings for %s on the development server. %s" % (incident.CenterID, ping_set))
 
-	# Reverse geocode the incidents if we haven't already
-	for incident in incident_list:
-		if incident.city is None and incident.geolocation is not None:
-			if not debug:
-				deferred.defer(reverse_geocode.load_city, incident, _queue="reverseGeocodeQueue")
-			else:
-				logging.info("Skipping reverse geocode for %s on the development server." % (incident.Area))
+	if center_id == 'SAHB':
+		# Limit reverse geocoding to only the SAHB center because we keep hitting
+		# OVER_QUERY_LIMIT errors with the Google Geocoder.
+
+		# Reverse geocode the incidents if we haven't already
+		for incident in incident_list:
+			if incident.city is None and incident.geolocation is not None:
+				if not debug:
+					deferred.defer(reverse_geocode.load_city, incident, _queue="reverseGeocodeQueue")
+				else:
+					logging.info("Skipping reverse geocode for %s on the development server." % (incident.Area))
 
 	logging.info("Processed %d incidents in %s." % (len(incident_list), chpCenter.attrib['ID']))
 
