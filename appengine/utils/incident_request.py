@@ -39,7 +39,7 @@ class RequestHandler(webapp2.RequestHandler):
 			incidents = query.fetch(10000)
 
 			try:
-				memcache.set(memcache_key, incidents, time.mktime(cache_time))
+				memcache.set(memcache_key, incidents, 300)
 			except:
 				pass
 
