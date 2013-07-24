@@ -5,6 +5,8 @@ import hashlib
 import webapp2
 from datetime import datetime
 
+from google.appengine.api import memcache
+
 from models import CHPData, CHPIncident
 
 
@@ -20,18 +22,26 @@ class RequestHandler(webapp2.RequestHandler):
 		area = self.request.get("area")
 		city = self.request.get("city")
 
-		query = CHPIncident.query().order(-CHPIncident.LogTime)
+		memcache_key = "incidents-%s-%s-%s-%s" % (center, dispatch, area, city)
+		incidents = memcache.get(memcache_key)
+		if incidents is None:
+			query = CHPIncident.query().order(-CHPIncident.LogTime)
 
-		if city != "":
-			query = query.filter(CHPIncident.city == city)
-		elif area != "":
-			query = query.filter(CHPIncident.Area == area)
-		elif dispatch != "":
-			query = query.filter(CHPIncident.DispatchID == dispatch)
-		elif center != "":
-			query = query.filter(CHPIncident.CenterID == center)
+			if city != "":
+				query = query.filter(CHPIncident.city == city)
+			elif area != "":
+				query = query.filter(CHPIncident.Area == area)
+			elif dispatch != "":
+				query = query.filter(CHPIncident.DispatchID == dispatch)
+			elif center != "":
+				query = query.filter(CHPIncident.CenterID == center)
 
-		incidents = query.fetch(10000)
+			incidents = query.fetch(10000)
+
+			try:
+				memcache.set(memcache_key, incidents, time.mktime(cache_time))
+			except:
+				pass
 
 		if len(incidents) > 0:
 			self.incidents_last_mod = max(incidents, key=lambda incident: incident.updated).updated
