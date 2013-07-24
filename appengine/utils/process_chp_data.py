@@ -157,7 +157,8 @@ def process_chp_center(chpCenter):
 			# an incident in the CHP feed declares it as "updated" so we ping.
 			psh_pings.append('http://www.sactraffic.org/atom?center=%s' % urllib.quote(incident.CenterID))
 			psh_pings.append('http://www.sactraffic.org/atom?dispatch=%s' % urllib.quote(incident.DispatchID))
-			psh_pings.append('http://www.sactraffic.org/atom?area=%s' % urllib.quote(incident.Area))
+			if incident.Area is not None and incident.Area != "":
+				psh_pings.append('http://www.sactraffic.org/atom?area=%s' % urllib.quote(incident.Area))
 			if incident.city is not None and incident.city != "":
 				psh_pings.append('http://www.sactraffic.org/atom?city=%s' % urllib.quote(incident.city.encode('utf8')))
 
