@@ -36,7 +36,7 @@ class CHPData(ndb.Model):
 		if chp_data is not None:
 			return chp_data.updated
 		else:
-			return None
+			return datetime.now()
 
 
 class CHPIncident(ndb.Model):
