@@ -22,9 +22,11 @@ class RequestHandler(webapp2.RequestHandler):
 		area = self.request.get("area")
 		city = self.request.get("city")
 
+		is_pubsubhubbub_request = "pubsubhubbub" in self.request.headers['User-Agent']
+
 		memcache_key = "incidents-%s-%s-%s-%s" % (center, dispatch, area, city)
 		incidents = memcache.get(memcache_key)
-		if incidents is None:
+		if incidents is None or is_pubsubhubbub_request:
 			query = CHPIncident.query().order(-CHPIncident.LogTime)
 
 			if city != "":
