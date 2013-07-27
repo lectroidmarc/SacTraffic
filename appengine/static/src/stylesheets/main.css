@@ -191,22 +191,6 @@ img {
   padding: 0;
 }
 
-#incident_container .incidents .loading {
-  background: #ffffff;
-  border: 0;
-  height: 30px;
-  text-align: center;
-}
-
-#incident_container .incidents .noincidents {
-  text-align: center;
-}
-
-#incident_container .incidents .loading img {
-  height: 19px;
-  width: 220px;
-}
-
 #incident_container .incident {
   border-bottom: 1px solid #e4e4e4;
   cursor: pointer;
@@ -218,6 +202,23 @@ img {
 
 #incident_container .incident:hover {
   background: #f3f3f3;
+}
+
+#incident_container .incident.loading {
+  border: 0;
+  display: block;
+  padding-top: 12px;
+  text-align: center;
+}
+
+#incident_container .incident.loading img {
+  height: 19px;
+  width: 220px;
+}
+
+#incident_container .incident.noincidents {
+  text-align: center;
+  display: block;
 }
 
 #incident_container .incident .marker {
