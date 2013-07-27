@@ -3,12 +3,12 @@
  */
 
 /**
- * @section Tablets in portrait mode
+ * @section Tablets (medium sized things)
  */
-@media only screen and (min-device-width: 601px) and (max-device-width: 800px) and (orientation: portrait) {
+@media only screen and (min-device-width: 601px) and (max-device-width: 800px) {
   #header .title {
     font-size: 150%;
-    margin: 17px 10px;
+    margin: 15px 10px;
   }
 
   #header .title .extended {
@@ -21,17 +21,16 @@
 }
 
 /**
- * @section Phones (basically, no map)
+ * @section Phones (things too small for a map)
  */
 @media only screen and (max-device-width: 600px) {
-   #header {
-    background: #598ffd;
-    color: white;
+  #header {
+    background: #eee;
   }
 
   #header .title {
-    font-size: 120%;
-    margin: 17px 10px;
+    font-size: 135%;
+    margin: 16px 10px;
   }
 
   #header .title .extended {
@@ -39,13 +38,8 @@
   }
 
   #header .menu li {
-    border-left: 1px solid #eee;
+    border-left: 1px solid #ccc;
     width: 60px;
-  }
-
-  #header .menu li a,
-  #header .menu li a:visited {
-    color: #eee;
   }
 
   #content {
