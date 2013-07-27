@@ -33,8 +33,8 @@ handlers:
   expiration: "10m"
 
 - url: /favicon.ico
-  static_files: static/images/favicon.ico
-  upload: static/images/favicon.ico
+  static_files: static/images/cone_16.ico
+  upload: static/images/cone_16.ico
 
 - url: /robots.txt
   static_files: static/robots.txt
