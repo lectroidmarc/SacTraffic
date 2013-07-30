@@ -1,9 +1,12 @@
-"""Reverse geocoding using the Google Geocoding API at:
-	http://code.google.com/apis/maps/documentation/geocoding/index.html#ReverseGeocoding
+"""Reverse geocoding using the GeoNames API at:
+	http://www.geonames.org/export/reverse-geocoding.html
 
-	This pulls out the "long_name" of the "locality" type of the
-	"address_components" of the "postal_code" result type.  Make sense?
+	This pulls out the "placeName" of the first "postalCode" which should be
+	the zip code under the location.
 
+	Note: GeoNames works on "credits".  30000 credit daily limit and 2000 hourly.
+	findNearbyPostalCodes is 2 credits per request, 3 credits for more
+	than 500 records.
 """
 import json
 import logging
@@ -17,25 +20,29 @@ def load_city (incident):
 
 	"""
 	try:
-		result = urlfetch.fetch("https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=false" % (incident.geolocation.lat, incident.geolocation.lon))
+		result = urlfetch.fetch("http://api.geonames.org/findNearbyPostalCodesJSON?lat=%f&lng=%f&username=lectroidmarc" % (incident.geolocation.lat, incident.geolocation.lon))
 	except urlfetch.DownloadError as err:
 		logging.warning(err)
 	else:
 		if result.status_code == 200:
 			data = json.loads(result.content)
-			if data['status'] == "OK":
-				for result in data['results']:
-					if result['types'].count('postal_code') > 0:
-						for component in result['address_components']:
-							if component['types'].count('locality') > 0:
-								logging.info("setting %s city to %s." % (incident.key.string_id(), component['long_name']))
-								incident.city = component['long_name']
-								incident.put()
-								return
-				logging.info("No city found for %s.", incident.key.string_id())
-				incident.city = ""	# set the city to "" so we don't keep trying to geocode it.
+			if 'postalCodes' in data:
+				local_postal_code = data['postalCodes'][0]
+				if 'placeName' in local_postal_code:
+					city = local_postal_code['placeName']
+
+					logging.info("setting %s city to %s." % (incident.key.string_id(), city))
+					incident.city = city
+				else:
+					logging.info("No city found for %s.", incident.key.string_id())
+					incident.city = ""	# set the city to "" so we don't keep trying to geocode it.
+
 				incident.put()
+			elif 'status' in data:
+				logging.warning("GeoNames replied with: %s", data['status']['message'])
 			else:
-				logging.warning("Google replied with a %s status in the geocode JSON.", data['status'])
+				logging.warning("Unknown response from GeoNames.")
+
+
 		else:
-			logging.warning("Google returned a %d status.", result.status_code)
+			logging.warning("GeoNames returned a %d status.", result.status_code)

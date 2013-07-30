@@ -176,8 +176,8 @@ def process_chp_center(chpCenter):
 		logging.info("Skipping PSH pings for %s on the development server. %s" % (incident.CenterID, ping_set))
 
 	if center_id == 'SAHB':
-		# Limit reverse geocoding to only the SAHB center because we keep hitting
-		# OVER_QUERY_LIMIT errors with the Google Geocoder.
+		# Limit reverse geocoding to only the SAHB center to limit the number of
+		# requests to the geocoder, we are _Sac_ Traffic after all.
 
 		# Reverse geocode the incidents if we haven't already
 		for incident in incident_list:
