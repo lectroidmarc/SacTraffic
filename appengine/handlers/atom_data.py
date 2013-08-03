@@ -45,6 +45,11 @@ class AtomHandler(incident_request.RequestHandler):
 		ElementTree.SubElement(feed, 'id').text = 'tag:traffic.lectroid.net,2010-06-24:100'
 		ElementTree.SubElement(feed, 'updated').text = self.incidents_last_mod.strftime("%Y-%m-%dT%H:%M:%SZ")
 
+		# site link...
+		ElementTree.SubElement(feed, 'link', {
+			'href': "http://www.sactraffic.org"
+		})
+
 		# self link...
 		self_href = "http://%s/atom" % self.request.environ['HTTP_HOST']
 		query_string = "?" + self.request.environ['QUERY_STRING']
@@ -66,7 +71,6 @@ class AtomHandler(incident_request.RequestHandler):
 			})
 
 		# logo & icon
-		ElementTree.SubElement(feed, 'logo').text = "http://%s/images/sactraffic.png" % self.request.environ['HTTP_HOST']
 		ElementTree.SubElement(feed, 'icon').text = "http://%s/favicon.ico" % self.request.environ['HTTP_HOST']
 
 		for incident in self.incidents:
@@ -92,11 +96,7 @@ class AtomHandler(incident_request.RequestHandler):
 					"markers": "color:0x165279|%f,%f" % (incident.geolocation.lat, incident.geolocation.lon),
 					"zoom": "12",
 					"maptype": "roadmap",
-					"sensor": "false",
-					"style": "feature:landscape|lightness:100",
-					"style": "feature:road.highway|element:geometry|hue:0xff0000|saturation:-25",
-					"style": "feature:road.arterial|element:geometry|saturation:-100|visibility:simplified",
-					"style": "feature:road.arterial|element:labels|saturation:-100|lightness:10"
+					"sensor": "true"
 				})
 				static_map_url = "http://maps.google.com/maps/api/staticmap?%s" % static_map_opts
 				description = '%s<img src="%s" width="200" height="200" border="1"/>' % (description, static_map_url)
