@@ -22,6 +22,11 @@ class RequestHandler(webapp2.RequestHandler):
 		area = self.request.get("area")
 		city = self.request.get("city")
 
+		# Change this for the West Sac News-Leger since no one appears home there
+		if "http://www.westsac.com/news-ledger" in self.request.headers['User-Agent']:
+			if dispatch == "":
+				dispatch = 'SACC'
+
 		memcache_key = "incidents-%s-%s-%s-%s" % (center, dispatch, area, city)
 
 		# Don't even try the cache if this looks like a PubSubHubBub request.

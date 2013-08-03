@@ -30,6 +30,12 @@ class AtomHandler(incident_request.RequestHandler):
 		if self.request.get("dispatch") == "SACC":
 			title = "SacTraffic: Sacramento Area Traffic Incidents"
 		roads = self.request.get("roads")
+
+		# Change this for the West Sac News-Leger since no one appears home there
+		if "http://www.westsac.com/news-ledger" in self.request.headers['User-Agent']:
+			if roads == "i-5,i-80,i-50,i-99":
+				roads = "I5,I80,US50,Hwy 99"
+
 		if roads != "":
 			title = "%s (%s)" % (title, roads)
 
