@@ -33,7 +33,7 @@ img {
  * @section Marker Info Window styles
  */
 .marker .logtype {
-  font-weight: bold;
+  font-weight: bold !important; /* override google maps */
 }
 
 .marker .logtime {
@@ -197,7 +197,6 @@ img {
   display: none;
   list-style: none;
   padding: 5px 7px;
-  line-height: 130%;
 }
 
 #incident_container .incident:hover {
@@ -219,6 +218,12 @@ img {
 #incident_container .incident.noincidents {
   text-align: center;
   display: block;
+}
+
+#incident_container .incident div {
+  font-family: verdana, sans-serif;
+  font-size: 10pt;
+  line-height: 130%;
 }
 
 #incident_container .incident .marker {
