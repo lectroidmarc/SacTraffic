@@ -71,7 +71,14 @@ var TrafficMap = function (elementId, incidents) {
   });
   google.maps.event.addListener(this.gmap, 'tilesloaded', function() {
     $('#incident_container').slideDown(function () {
-      $('#incident_container .header .closebox').click(function () { $('#incident_container').toggleClass('closed'); });
+      $('#incident_container .header .closebox').click(function () {
+        if (window._gaq) {
+          var action = ($('#incident_container').hasClass('closed')) ? 'to_open' : 'to_close';
+          _gaq.push(['_trackEvent', 'Container Closebox', action]);
+        }
+
+        $('#incident_container').toggleClass('closed');
+      });
     });
   });
   google.maps.event.addListener(this._globalInfoWindow, 'closeclick', function() {
@@ -182,6 +189,9 @@ TrafficMap.prototype.show_live_cams = function () {
           });
 
           google.maps.event.addListener(marker, 'click', function() {
+            if (window._gaq)
+              _gaq.push(['_trackEvent', 'Show Camera', 'clicked', camera.name]);
+
             self._globalInfoWindow.setContent('<div class="camera marker"><div class="name">Live Video: ' + camera.name + '</div><div class="button blue" onclick="window.open(\'' +  camera.url + '\')">Show</div>');
             self._globalInfoWindow.open(self.gmap, marker);
           });
@@ -304,6 +314,9 @@ TrafficMap.prototype.addIncident = function (incident) {
   }
 
   google.maps.event.addListener(marker, 'click', function() {
+    if (window._gaq)
+      _gaq.push(['_trackEvent', 'Show Incident', 'clicked', incident.LogType]);
+
     var logtime = new Date(incident.LogTime * 1000);
     self._globalInfoWindow.setContent('<div class="marker"><div class="logtype">' + incident.LogType + '</div><div class="location">' + incident.Location + '</div><div class="logtime">' + logtime.getPrettyDateTime() + '</div></div>');
     self._globalInfoWindow.open(self.gmap, marker);
