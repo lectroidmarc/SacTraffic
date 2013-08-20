@@ -72,8 +72,8 @@ var TrafficMap = function (elementId, incidents) {
   google.maps.event.addListener(this.gmap, 'tilesloaded', function() {
     $('#incident_container').slideDown(function () {
       $('#incident_container .header .closebox').click(function () {
-        if (window._gaq) {
-          var action = ($('#incident_container').hasClass('closed')) ? 'to_open' : 'to_close';
+        if (_gaq) {
+          var action = ($('#incident_container').hasClass('closed')) ? 'container_open' : 'container_close';
           _gaq.push(['_trackEvent', 'Container Closebox', action]);
         }
 
@@ -189,7 +189,7 @@ TrafficMap.prototype.show_live_cams = function () {
           });
 
           google.maps.event.addListener(marker, 'click', function() {
-            if (window._gaq)
+            if (_gaq)
               _gaq.push(['_trackEvent', 'Show Camera', 'clicked', camera.name]);
 
             self._globalInfoWindow.setContent('<div class="camera marker"><div class="name">Live Video: ' + camera.name + '</div><div class="button blue" onclick="window.open(\'' +  camera.url + '\')">Show</div>');
@@ -314,7 +314,7 @@ TrafficMap.prototype.addIncident = function (incident) {
   }
 
   google.maps.event.addListener(marker, 'click', function() {
-    if (window._gaq)
+    if (_gaq)
       _gaq.push(['_trackEvent', 'Show Incident', 'clicked', incident.LogType]);
 
     var logtime = new Date(incident.LogTime * 1000);

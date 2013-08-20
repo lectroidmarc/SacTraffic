@@ -48,8 +48,8 @@ var get_incidents = function () {
 var show_incident = function (evt, incident) {
   //console.debug('Hello ' + incident.ID);
   var incident_li = $('<li/>').attr('id', incident.ID.replace(/\./g, '_')).addClass('incident').addClass('vevent').prependTo(this.element).click(function () {
-    if (window._gaq)
-      _gaq.push(['_trackEvent', 'Toggle Incident Details', 'clicked']);
+    if (_gaq)
+      _gaq.push(['_trackEvent', 'Toggle Incident Details', 'clicked', incident.ID]);
 
     $(this).find('.details').slideToggle();
   });
