@@ -73,8 +73,8 @@ var TrafficMap = function (elementId, incidents) {
     $('#incident_container').slideDown(function () {
       $('#incident_container .header .closebox').click(function () {
         if (_gaq) {
-          var action = ($('#incident_container').hasClass('closed')) ? 'container_open' : 'container_close';
-          _gaq.push(['_trackEvent', 'Container Closebox', action]);
+          var action = ($('#incident_container').hasClass('closed')) ? 'container_open_click' : 'container_close_click';
+          _gaq.push(['_trackEvent', 'Container Closebox Click', action]);
         }
 
         $('#incident_container').toggleClass('closed');
@@ -190,7 +190,7 @@ TrafficMap.prototype.show_live_cams = function () {
 
           google.maps.event.addListener(marker, 'click', function() {
             if (_gaq)
-              _gaq.push(['_trackEvent', 'Show Camera', 'clicked', camera.name]);
+              _gaq.push(['_trackEvent', 'Marker Click', 'camera_marker_click', camera.name]);
 
             self._globalInfoWindow.setContent('<div class="camera marker"><div class="name">Live Video: ' + camera.name + '</div><div class="button blue" onclick="window.open(\'' +  camera.url + '\')">Show</div>');
             self._globalInfoWindow.open(self.gmap, marker);
@@ -315,7 +315,7 @@ TrafficMap.prototype.addIncident = function (incident) {
 
   google.maps.event.addListener(marker, 'click', function() {
     if (_gaq)
-      _gaq.push(['_trackEvent', 'Show Incident', 'clicked', incident.LogType]);
+      _gaq.push(['_trackEvent', 'Marker Click', 'incident_marker_click', incident.LogType]);
 
     var logtime = new Date(incident.LogTime * 1000);
     self._globalInfoWindow.setContent('<div class="marker"><div class="logtype">' + incident.LogType + '</div><div class="location">' + incident.Location + '</div><div class="logtime">' + logtime.getPrettyDateTime() + '</div></div>');
