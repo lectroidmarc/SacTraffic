@@ -149,21 +149,32 @@ img {
   color: white;
   cursor: pointer;
   float: right;
-  font-family: 'fontello';
-  font-size: 16px;
   height: 20px;
-  line-height: 20px;
   margin: 6px 10px 0 0;
   text-align: center;
   width: 20px;
 }
 
-#incident_container .header .closebox:before {
+#incident_container .header .closebox .arrow {
+  font-family: 'fontello';
+  font-size: 16px;
+  line-height: 20px;
+
+  -moz-transition: -moz-transform 0.5s;
+  -ms-transition: -ms-transform 0.5s;
+  -webkit-transition: -webkit-transform 0.5s;
+  transition: transform 0.5s;
+}
+
+#incident_container .header .closebox .arrow:before {
   content: '\e75c';
 }
 
-#incident_container.closed .header .closebox:before {
-  content: '\e75f';
+#incident_container.closed .header .closebox .arrow {
+  -moz-transform: rotate(-180deg);
+  -ms-transform: rotate(-180deg);
+  -webkit-transform: rotate(-180deg);
+  transform: rotate(-180deg);
 }
 
 #incident_container .content {
